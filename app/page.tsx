@@ -158,7 +158,7 @@ export default function Home() {
           </article>
 
           <figure className="front-page-photo">
-            <img data-parallax="photo" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
+            <img data-scroll-parallax="photo" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
             <figcaption>▲ 결혼을 앞둔 두 사람. 실제 사진으로 교체할 자리입니다.</figcaption>
           </figure>
 
@@ -176,13 +176,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="people-page section-pad" id="people" data-reveal="page">
+      <section className="people-page section-pad" id="people">
         <PageFolio page="2면" topics="PEOPLE / SOCIAL / CELEBRITY" />
         <SectionHead className="people-section-head" label="PEOPLE DESK / FIELD REPORT" title={<>사랑은 <span>제보로 확인된다</span></>} note={<>친구들의 관찰과<br />가상 축복을 한 면에 묶었습니다.</>} />
         <Rule className="people-rule" />
         <div className="people-layout">
           <div className="friend-report">
-            <article className="friend-lead" data-reveal="column">
+            <article className="friend-lead">
               <p className="article-label">{friendNotes[0][0]}</p>
               <h3>{friendNotes[0][1]}</h3>
               <p>{friendNotes[0][2]}</p>
@@ -199,7 +199,7 @@ export default function Home() {
             </div>
           </div>
 
-          <aside className="celebrity-file" data-reveal="column">
+          <aside className="celebrity-file">
             <div className="file-heading">
               <div>
                 <p className="article-label">WORLD WIRE / PARODY FILE</p>
@@ -221,7 +221,7 @@ export default function Home() {
         <div className="page-bottomline"><span>2면 끝</span><span>다음 면: 사설·속보·유명인 포토 와이어</span></div>
       </section>
 
-      <section className="extra-page section-pad" id="extra" data-reveal="page">
+      <section className="extra-page section-pad" id="extra">
         <PageFolio page="2면 하단" topics="EDITORIAL / EXTRA / PHOTO WIRE" />
         <div className="extra-masthead">
           <div>
@@ -233,7 +233,7 @@ export default function Home() {
         <Rule className="extra-rule" />
 
         <div className="extra-layout">
-          <article className="editorial-column" data-reveal="column">
+          <article className="editorial-column">
             <p className="article-label">EDITORIAL / 오늘의 사설</p>
             <h3>{extraDesk[0][1]}</h3>
             <p className="editorial-quote">“이제는 두 사람의 다음 장면을 독자들이 직접 목격해야 한다.”</p>
@@ -241,7 +241,7 @@ export default function Home() {
             <div className="article-byline">결혼일보 편집국 만장일치 · 패러디 사설</div>
           </article>
 
-          <div className="extra-briefs" data-reveal="column">
+          <div className="extra-briefs">
             {extraDesk.slice(1, 3).map(([label, title, copy], index) => (
               <article className={`extra-brief extra-brief-${index + 1}`} key={label}>
                 <p className="article-label">{label}</p>
@@ -251,7 +251,7 @@ export default function Home() {
             ))}
           </div>
 
-          <aside className="editorial-note" data-reveal="column">
+          <aside className="editorial-note">
             <p className="article-label">편집국 메모</p>
             <p>이 지면에서 가장 객관적인 사실은 단 하나입니다.</p>
             <strong>둘이 함께 있으면<br />주변이 좋아진다.</strong>
@@ -259,7 +259,7 @@ export default function Home() {
           </aside>
         </div>
 
-        <section className="celebrity-photo-wire" data-reveal="column">
+        <section className="celebrity-photo-wire">
           <div className="photo-wire-heading">
             <div>
               <p className="article-label">PHOTO WIRE / WORLD DESK</p>
@@ -282,12 +282,12 @@ export default function Home() {
         </section>
 
         <div className="extra-bottom-grid">
-          <article className="extra-brief extra-brief-standalone" data-reveal="column">
+          <article className="extra-brief extra-brief-standalone">
             <p className="article-label">{extraDesk[3][0]}</p>
             <h3>{extraDesk[3][1]}</h3>
             <p>{extraDesk[3][2]}</p>
           </article>
-          <aside className="classified-strip" data-reveal="column">
+          <aside className="classified-strip">
             <p className="article-label">구인·구혼·구독 / CLASSIFIED</p>
             <h3>한원영·이나경<br /><em>평생 이용권</em></h3>
             <p>조건: 서로를 계속 좋아할 것.<br />혜택: 매일의 편, 평생의 동료, 가족식 초대.</p>
@@ -297,14 +297,14 @@ export default function Home() {
         <div className="page-bottomline"><span>중간면 끝</span><span>다음 면: 사진과 연애 연표</span></div>
       </section>
 
-      <section className="feature-page section-pad" id="feature" data-reveal="page">
+      <section className="feature-page section-pad" id="feature">
         <PageFolio page="3면" topics="PHOTO / ARCHIVE / LONG READ" />
         <SectionHead className="feature-section-head" label="FEATURE / PHOTO JOURNAL" title={<>다음 장면은 <span>기록된다</span></>} note={<>사진 한 장과 연애 연표를<br />하나의 특집 기사로 엮었습니다.</>} />
         <Rule className="feature-rule" />
         <div className="feature-layout">
-          <article className="photo-story" data-reveal="column">
+          <article className="photo-story">
             <figure className="photo-feature">
-              <img data-parallax="photo" src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
+              <img data-scroll-parallax="photo" src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
               <figcaption>▲ 두 사람이 함께 앉을 자리. 이날의 가장 중요한 배경이 됩니다.</figcaption>
             </figure>
             <div className="photo-story-copy">
@@ -316,7 +316,7 @@ export default function Home() {
             </div>
           </article>
 
-          <aside className="archive-column" data-reveal="column">
+          <aside className="archive-column">
             <p className="article-label">ARCHIVE / SAMPLE DATA</p>
             <h3>두 사람의<br /><em>연애 연표</em></h3>
             <div className="timeline-list">
@@ -338,12 +338,12 @@ export default function Home() {
         <div className="page-bottomline"><span>3면 끝</span><span>다음 면: 가족이 꼭 확인할 예식 정보</span></div>
       </section>
 
-      <section className="service-page section-pad" id="details" data-reveal="page">
+      <section className="service-page section-pad" id="details">
         <PageFolio page="4면" topics="CITY DESK / FAMILY CEREMONY / NOTE" />
         <SectionHead className="service-section-head" label="SERVICE / CITY DESK" title={<>예식 정보는 <span>마지막 면</span>에</>} note={<>이 면만큼은 패러디 없이<br />가족식 안내만 전합니다.</>} />
         <Rule className="service-rule" />
         <div className="service-layout">
-          <div className="venue-block" data-reveal="column">
+          <div className="venue-block">
             <div className="venue-heading"><p className="article-label">VENUE / FACT CHECK</p><h3>오시는 길</h3><span>현장 안내 데스크</span></div>
             <div className="details-layout">
               <div className="map-card" role="img" aria-label="서울 아카이브 홀 약도 예시">
@@ -369,8 +369,8 @@ export default function Home() {
             </div>
           </div>
 
-          <aside className="family-note-panel" id="family-note" data-reveal="column">
-            <div className="family-note-stamp" data-reveal="stamp">FAMILY<br />EDITION</div>
+          <aside className="family-note-panel" id="family-note">
+            <div className="family-note-stamp">FAMILY<br />EDITION</div>
             <p className="article-label">FAMILY NOTE / 가족식 안내</p>
             <h3>작은 식사를<br /><em>함께 나눠요.</em></h3>
             <p>50명 남짓한 가족식으로 조용히 진행합니다. 참석 여부를 따로 받지 않고, 오시는 가족에게 감사한 마음을 준비하겠습니다.</p>
