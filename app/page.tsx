@@ -39,7 +39,17 @@ function Rule({ className = "" }: { className?: string }) {
   return <div className={`rule ${className}`} aria-hidden="true" />;
 }
 
-function DeskTitle({
+function PageFolio({ page, topics }: { page: string; topics: string }) {
+  return (
+    <div className="page-folio">
+      <span>결혼일보 / {page}</span>
+      <span>{topics}</span>
+      <span>THE COUPLE TIMES · 2026</span>
+    </div>
+  );
+}
+
+function SectionHead({
   label,
   title,
   note,
@@ -49,7 +59,7 @@ function DeskTitle({
   note: ReactNode;
 }) {
   return (
-    <div className="desk-heading">
+    <div className="section-header">
       <div>
         <p className="article-label">{label}</p>
         <h2>{title}</h2>
@@ -90,6 +100,13 @@ export default function Home() {
           <strong>박서준·한지우, 5년 열애 끝 결혼 발표… 지인들 “이제야?”</strong>
           <span className="breaking-time">14:00 UPDATED</span>
         </div>
+        <nav className="front-index" aria-label="신문 섹션 바로가기">
+          <span>이번 호 목차</span>
+          <a href="#people">2면 사람들</a>
+          <a href="#feature">3면 기록</a>
+          <a href="#details">4면 예식 정보</a>
+          <a href="#rsvp">독자 엽서</a>
+        </nav>
 
         <div className="front-page-grid">
           <article className="lead-story">
@@ -120,111 +137,131 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="friend-desk section-pad">
-        <DeskTitle label="SOCIAL DESK / FRIEND REPORT" title={<>친구들이 말하는 <span>두 사람</span></>} note={<>구체적인 제보만<br />짧게 싣습니다.</>} />
+      <section className="people-page section-pad" id="people">
+        <PageFolio page="2면" topics="PEOPLE / SOCIAL / CELEBRITY" />
+        <SectionHead label="PEOPLE DESK / FIELD REPORT" title={<>사랑은 <span>제보로 확인된다</span></>} note={<>친구들의 관찰과<br />가상 축복을 한 면에 묶었습니다.</>} />
         <Rule />
-        <div className="friend-grid">
-          {friendNotes.map(([label, title, copy]) => (
-            <article className="friend-note" key={label}>
-              <p className="article-label">{label}</p>
-              <h3>{title}</h3>
-              <p>{copy}</p>
+        <div className="people-layout">
+          <div className="friend-report">
+            <article className="friend-lead">
+              <p className="article-label">{friendNotes[0][0]}</p>
+              <h3>{friendNotes[0][1]}</h3>
+              <p>{friendNotes[0][2]}</p>
+              <div className="article-byline">사회부 입수 자료 · 주변인 1인 익명 제보</div>
             </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="celebrity-desk section-pad">
-        <DeskTitle label="CELEBRITY DESK / 가상 패러디" title={<>유명인들의 <span>축복 릴레이</span></>} note={<>실제 축하 메시지가 아닙니다.<br />이름만 빌린 한 줄 패러디입니다.</>} />
-        <Rule />
-        <div className="celebrity-grid">
-          {celebrityDesk.map(([name, angle], index) => (
-            <article className="celebrity-entry" key={name}>
-              <span className="celebrity-number">{String(index + 1).padStart(2, "0")}</span>
-              <div>
-                <h3>{name}</h3>
-                <p>{angle}</p>
-                <small>가상 축하 코멘트 · 초안</small>
-              </div>
-            </article>
-          ))}
-        </div>
-        <p className="celebrity-footer">실제 초대 명단과 축하 메시지로 교체할 수 있는 자리입니다.</p>
-      </section>
-
-      <section className="photo-desk section-pad">
-        <DeskTitle label="PHOTO JOURNAL" title={<>사진 한 장과 <span>짧은 문장</span></>} note={<>사진은 샘플입니다.<br />실제 사진으로 교체해 주세요.</>} />
-        <Rule />
-        <div className="photo-spread">
-          <figure className="photo-feature">
-            <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
-            <figcaption>▲ 두 사람이 함께 앉을 자리. 이날의 가장 중요한 배경이 됩니다.</figcaption>
-          </figure>
-          <div className="photo-copy">
-            <p className="article-label">사진 옆 칼럼</p>
-            <h3>좋은 소식은<br />자꾸 읽고 싶어진다</h3>
-            <p>꽃이 놓이고, 의자가 준비되고, 하객의 메시지가 쌓인다. 두 사람의 다음 장은 거창한 선언보다 이런 작은 장면들로 시작된다.</p>
-            <div className="photo-caption-box">FILE NO. 1017<br />LOVE / ARCHIVE / A-01</div>
-          </div>
-        </div>
-      </section>
-
-      <section className="archive-desk section-pad">
-        <DeskTitle label="ARCHIVE / SAMPLE DATA" title={<>두 사람의 <span>연애 연표</span></>} note={<>샘플 데이터입니다.<br />실제 이야기로 바꿔주세요.</>} />
-        <Rule />
-        <div className="archive-layout">
-          <div className="timeline-list">
-            {timeline.map(([date, title, copy]) => (
-              <div className="timeline-row" key={date}>
-                <time>{date}</time>
-                <div><strong>{title}</strong><p>{copy}</p></div>
-              </div>
-            ))}
-          </div>
-          <div className="fact-sheet">
-            <p className="article-label">초안용 팩트 시트</p>
-            <div><strong>5년</strong><span>함께한 시간</span></div>
-            <Rule />
-            <div><strong>1팀</strong><span>앞으로의 생활</span></div>
-            <Rule />
-            <div><strong>∞</strong><span>이어질 이야기</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section className="details-desk section-pad" id="details">
-        <DeskTitle label="CITY DESK / FACT CHECK" title={<>예식 정보 <span>정확히 읽기</span></>} note={<>이 면만큼은<br />사실을 전합니다.</>} />
-        <Rule />
-        <div className="details-layout">
-          <div className="map-card" role="img" aria-label="서울 아카이브 홀 약도 예시">
-            <div className="map-road road-one" />
-            <div className="map-road road-two" />
-            <div className="map-road road-three" />
-            <div className="map-station">성수역 3번 출구</div>
-            <div className="map-pin">서울<br />아카이브 홀</div>
-            <div className="map-compass">N<br /><span>↑</span></div>
-          </div>
-          <div className="schedule-sheet">
-            {schedule.map(([label, value, note]) => (
-              <div className="schedule-row" key={label}>
-                <span>{label}</span>
-                <div><strong>{value}</strong><small>{note}</small></div>
-              </div>
-            ))}
-            <div className="button-row">
-              <a className="text-button" href="#details">지도 보기 ↗</a>
-              <a className="text-button dark" href="tel:02-1234-5678">전화하기 ↗</a>
+            <div className="friend-brief-grid">
+              {friendNotes.slice(1).map(([label, title, copy]) => (
+                <article className="friend-brief" key={label}>
+                  <p className="article-label">{label}</p>
+                  <h3>{title}</h3>
+                  <p>{copy}</p>
+                </article>
+              ))}
             </div>
           </div>
+
+          <aside className="celebrity-file">
+            <div className="file-heading">
+              <div>
+                <p className="article-label">WORLD WIRE / PARODY FILE</p>
+                <h3>유명인들의<br /><em>축복 릴레이</em></h3>
+              </div>
+              <span>별책<br />A-01</span>
+            </div>
+            <p className="tiny-note">실제 축하 메시지가 아닙니다. 이름만 빌린 한 줄 패러디입니다.</p>
+            <div className="celebrity-list">
+              {celebrityDesk.map(([name, angle], index) => (
+                <article className="celebrity-entry" key={name}>
+                  <span className="celebrity-number">{String(index + 1).padStart(2, "0")}</span>
+                  <div><h4>{name}</h4><p>{angle}</p></div>
+                </article>
+              ))}
+            </div>
+          </aside>
         </div>
+        <div className="page-bottomline"><span>2면 끝</span><span>다음 면: 사진과 연애 연표</span></div>
       </section>
 
-      <section className="rsvp-section section-pad" id="rsvp">
-        <div className="rsvp-stamp">PLEASE<br />JOIN US</div>
-        <p className="article-label">READER RESPONSE / 독자 엽서</p>
-        <h2>마지막 문장을<br /><em>함께 써주세요.</em></h2>
-        <p className="rsvp-copy">참석 여부를 미리 알려주시면 두 사람을 위한 자리를 준비하겠습니다.</p>
-        <a className="rsvp-button" href="mailto:hello@example.com?subject=박서준%20한지우%20결혼일보%20독자%20엽서">축하 메시지와 참석 여부 보내기 <span>→</span></a>
+      <section className="feature-page section-pad" id="feature">
+        <PageFolio page="3면" topics="PHOTO / ARCHIVE / LONG READ" />
+        <SectionHead label="FEATURE / PHOTO JOURNAL" title={<>다음 장면은 <span>기록된다</span></>} note={<>사진 한 장과 연애 연표를<br />하나의 특집 기사로 엮었습니다.</>} />
+        <Rule />
+        <div className="feature-layout">
+          <article className="photo-story">
+            <figure className="photo-feature">
+              <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
+              <figcaption>▲ 두 사람이 함께 앉을 자리. 이날의 가장 중요한 배경이 됩니다.</figcaption>
+            </figure>
+            <div className="photo-story-copy">
+              <div>
+                <p className="article-label">PHOTO NOTE / FILE NO. 1017</p>
+                <h3>좋은 소식은<br />자꾸 읽고 싶어진다</h3>
+              </div>
+              <p>꽃이 놓이고, 의자가 준비되고, 하객의 메시지가 쌓인다. 두 사람의 다음 장은 거창한 선언보다 이런 작은 장면들로 시작된다.</p>
+            </div>
+          </article>
+
+          <aside className="archive-column">
+            <p className="article-label">ARCHIVE / SAMPLE DATA</p>
+            <h3>두 사람의<br /><em>연애 연표</em></h3>
+            <div className="timeline-list">
+              {timeline.map(([date, title, copy]) => (
+                <div className="timeline-row" key={date}>
+                  <time>{date}</time>
+                  <div><strong>{title}</strong><p>{copy}</p></div>
+                </div>
+              ))}
+            </div>
+            <div className="fact-sheet">
+              <p className="article-label">초안용 팩트 시트</p>
+              <div><strong>5년</strong><span>함께한 시간</span></div>
+              <div><strong>1팀</strong><span>앞으로의 생활</span></div>
+              <div><strong>∞</strong><span>이어질 이야기</span></div>
+            </div>
+          </aside>
+        </div>
+        <div className="page-bottomline"><span>3면 끝</span><span>다음 면: 독자가 꼭 확인할 예식 정보</span></div>
+      </section>
+
+      <section className="service-page section-pad" id="details">
+        <PageFolio page="4면" topics="CITY DESK / SERVICE / RSVP" />
+        <SectionHead label="SERVICE / CITY DESK" title={<>예식 정보는 <span>마지막 면</span>에</>} note={<>이 면만큼은 패러디 없이<br />사실만 정확히 전합니다.</>} />
+        <Rule />
+        <div className="service-layout">
+          <div className="venue-block">
+            <div className="venue-heading"><p className="article-label">VENUE / FACT CHECK</p><h3>오시는 길</h3><span>현장 안내 데스크</span></div>
+            <div className="details-layout">
+              <div className="map-card" role="img" aria-label="서울 아카이브 홀 약도 예시">
+                <div className="map-road road-one" />
+                <div className="map-road road-two" />
+                <div className="map-road road-three" />
+                <div className="map-station">성수역 3번 출구</div>
+                <div className="map-pin">서울<br />아카이브 홀</div>
+                <div className="map-compass">N<br /><span>↑</span></div>
+              </div>
+              <div className="schedule-sheet">
+                {schedule.map(([label, value, note]) => (
+                  <div className="schedule-row" key={label}>
+                    <span>{label}</span>
+                    <div><strong>{value}</strong><small>{note}</small></div>
+                  </div>
+                ))}
+                <div className="button-row">
+                  <a className="text-button" href="#details">지도 보기 ↗</a>
+                  <a className="text-button light" href="tel:02-1234-5678">전화하기 ↗</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <aside className="rsvp-panel" id="rsvp">
+            <div className="rsvp-stamp">PLEASE<br />JOIN US</div>
+            <p className="article-label">READER RESPONSE / 독자 엽서</p>
+            <h3>마지막 문장을<br /><em>함께 써주세요.</em></h3>
+            <p>참석 여부를 미리 알려주시면 두 사람을 위한 자리를 준비하겠습니다.</p>
+            <a className="rsvp-button" href="mailto:hello@example.com?subject=박서준%20한지우%20결혼일보%20독자%20엽서">축하 메시지와 참석 여부 보내기 <span>→</span></a>
+          </aside>
+        </div>
       </section>
 
       <footer className="footer section-pad">
