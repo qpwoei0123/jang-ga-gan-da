@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "결혼갤러리 — 박서준·한지우 결혼함",
-  description: "두 사람의 결혼 소식을 커뮤니티 개념글처럼 읽는 모바일 청첩장.",
+  title: "결혼일보 — 박서준·한지우 특집호",
+  description: "두 사람의 결혼 소식을 한 부의 신문으로 읽는 모바일 청첩장.",
 };
 
 const friendThreads = [
@@ -125,53 +125,58 @@ export default function Home() {
 
       <header className="site-chrome">
         <div className="site-chrome-inner">
-          <a className="site-logo" href="#top"><span className="logo-mark">ㄷ</span> 결혼갤러리</a>
+          <a className="site-logo" href="#top"><span className="logo-mark">결</span> 결혼일보</a>
           <nav className="chrome-nav" aria-label="페이지 메뉴">
-            <a href="#friends">개념글</a>
-            <a href="#reactions">실시간</a>
-            <a href="#details">공지</a>
+            <a href="#friends">사회면</a>
+            <a href="#reactions">국제면</a>
+            <a href="#details">오시는 길</a>
           </nav>
-          <a className="chrome-cta" href="#rsvp">참석 여부 ↗</a>
+          <a className="chrome-cta" href="#rsvp">독자 엽서 ↗</a>
         </div>
       </header>
 
       <section className="community-hero section-pad" id="top">
+        <div className="newspaper-masthead">
+          <div className="masthead-side">THE COUPLE<br />TIMES</div>
+          <div className="masthead-title">결혼일보</div>
+          <div className="masthead-side masthead-right">WEDDING EDITION<br />제1호 · 가격: 축복 한마디</div>
+        </div>
         <div className="route-line">
-          <span><i className="live-dot" /> 실시간 개념글</span>
-          <span>결혼갤러리 &gt; 자랑</span>
-          <span>2026.10.17</span>
+          <span>SEOUL / 결혼일보 특집호</span>
+          <span>2026.10.17 토요일</span>
+          <span>실존 보도 아님 · 초안용 패러디</span>
         </div>
 
         <div className="hero-grid">
           <div className="hero-copy">
-            <div className="post-heading-meta"><span className="tag hot">HIT</span><span>결혼 / 자랑글</span></div>
+            <div className="post-heading-meta"><span className="tag hot">속보</span><span>1면 톱기사 / 결혼 특집</span></div>
             <h1>박서준·한지우<br /><span>결혼함</span></h1>
             <p className="hero-deck">와 이 둘이 진짜 결혼을 한다고? 주변에서는 이미 부부 취급 중이었는데 이제 식까지 올린다고 함.</p>
-            <div className="tag-row"><span>#드디어</span><span>#이왜진</span><span>#축하함</span></div>
+            <div className="tag-row"><span>혼인 발표</span><span>지인 제보</span><span>가상 패러디</span></div>
             <div className="thread-stats"><span>조회 2,026</span><span>추천 99</span><span>댓글 34</span><span>공유 ↗</span></div>
             <div className="hero-actions">
-              <a className="primary-link" href="#rsvp">축하 / 참석 남기기 ↘</a>
-              <a className="secondary-link" href="#friends">댓글 먼저 보기 ↓</a>
+              <a className="primary-link" href="#rsvp">독자 엽서 보내기 ↘</a>
+              <a className="secondary-link" href="#friends">친구 제보 읽기 ↓</a>
             </div>
           </div>
 
           <figure className="hero-media">
             <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
             <figcaption>▲ 샘플 사진입니다. 실제 커플 사진으로 교체해 주세요.</figcaption>
-            <span className="image-note">이왜진</span>
+            <span className="image-note">사진 / 샘플</span>
           </figure>
         </div>
 
         <article className="lead-thread">
-          <div className="post-topline"><span>작성자: 관리자</span><span>2026.10.17 14:00</span><span>스크랩 12</span></div>
+          <div className="post-topline"><span>취재: 결혼일보 공동취재단</span><span>2026.10.17 14:00</span><span>사진: 샘플 이미지</span></div>
           <p>두 사람이 오는 10월 17일 서울 아카이브 홀에서 결혼식을 올립니다. 단점이 뭐냐고 물어봤는데 7초 동안 웃기만 함. 아직 발견 못 한 듯.</p>
           <p>아무튼 둘이 같이 있으면 주변 사람까지 편해지는 효과가 있으니 참석해서 직접 확인 바람.</p>
-          <div className="best-reply"><span className="best-label">베스트 댓글</span><strong>ㅇㅇ(211.36)</strong><p>이 정도면 결혼식이 아니라 정식 업데이트임 ㅋㅋ</p></div>
+          <div className="best-reply"><span className="best-label">독자 반응</span><strong>ㅇㅇ(211.36)</strong><p>이 정도면 결혼식이 아니라 정식 업데이트임 ㅋㅋ</p></div>
         </article>
       </section>
 
       <section className="thread-section section-pad" id="friends">
-        <SectionBar channel="친구 제보 / 댓글형 기사" title={<>댓글로 먼저 알려드립니다 <em>이 둘 근황</em></>} note={<>아는 사람들의<br />구체적인 목격담</>} />
+        <SectionBar channel="SOCIAL DESK / 친구 제보" title={<>친구들이 말하는 <em>두 사람</em></>} note={<>사회면 제보<br />구체적인 목격담</>} />
         <Rule />
         <div className="thread-list">
           {friendThreads.map((thread) => (
@@ -195,8 +200,8 @@ export default function Home() {
       </section>
 
       <section className="reaction-section section-pad" id="reactions">
-        <SectionBar channel="해외반응 / 가상 패러디" title={<>유명인 반응도 <em>올라옴</em></>} note={<>실제 메시지 아님<br />이름만 빌린 한 줄 패러디</>} />
-        <div className="notice-line"><span className="tag blue-tag">NOTICE</span><p>아래 문장은 실제 발언·초대·지지를 의미하지 않습니다. 그냥 이 결혼을 축하하는 가상 댓글입니다.</p></div>
+        <SectionBar channel="WORLD WIRE / 가상 패러디" title={<>유명인들의 <em>축복 릴레이</em></>} note={<>국제면 패러디<br />실제 메시지 아님</>} />
+        <div className="notice-line"><span className="tag blue-tag">가상 축복</span><p>아래 문장은 실제 발언·초대·지지를 의미하지 않습니다. 이름만 빌린 한 줄 패러디입니다.</p></div>
         <div className="reaction-board">
           {celebrityDesk.map(([name, copy], index) => (
             <article className="public-reaction" key={name}>
@@ -212,7 +217,7 @@ export default function Home() {
       </section>
 
       <section className="photo-section section-pad" id="photo">
-        <SectionBar channel="사진 게시판 / 현장" title={<>사진 한 장 올라왔는데 <em>분위기 좋음</em></>} note={<>짤은 샘플입니다.<br />실제 사진으로 교체해 주세요.</>} />
+        <SectionBar channel="PHOTO JOURNAL / 현장" title={<>현장 사진 한 장과 <em>독자 반응</em></>} note={<>사진은 샘플입니다.<br />실제 사진으로 교체해 주세요.</>} />
         <Rule />
         <div className="photo-thread">
           <figure className="photo-media">
@@ -233,7 +238,7 @@ export default function Home() {
       </section>
 
       <section className="archive-section section-pad" id="archive">
-        <SectionBar channel="연애 기록 / 검색 결과" title={<>과거글 털어봄 <em>전부 이어져 있었음</em></>} note={<>샘플 데이터입니다.<br />실제 연표로 바꿔주세요.</>} />
+        <SectionBar channel="ARCHIVE / 연애 기록" title={<>두 사람의 연애 연표 <em>전부 이어져 있었다</em></>} note={<>자료실 샘플입니다.<br />실제 연표로 바꿔주세요.</>} />
         <Rule />
         <div className="archive-grid">
           <div className="activity-log">
@@ -261,8 +266,8 @@ export default function Home() {
 
       <section className="notice-section section-pad" id="details">
         <div className="notice-heading">
-          <div><span className="notice-stamp">공지</span><h2>이건 진짜 정보임</h2></div>
-          <p>날짜·장소·교통은<br />정확히 확인해 주세요.</p>
+          <div><span className="notice-stamp">오시는 길</span><h2>예식 정보</h2></div>
+          <p>이 면만큼은 진짜 정보입니다.<br />날짜·장소·교통을 확인해 주세요.</p>
         </div>
         <Rule className="notice-rule" />
         <div className="details-layout">
@@ -294,12 +299,12 @@ export default function Home() {
       <section className="reply-section section-pad" id="rsvp">
         <div className="reply-layout">
           <div>
-            <p className="section-channel">회원님들의 답글을 기다립니다</p>
-            <h2>참석 여부<br /><em>남겨주실?</em></h2>
+            <p className="section-channel">READER RESPONSE / 독자 엽서</p>
+            <h2>마지막 문장에<br /><em>답해주세요.</em></h2>
           </div>
           <div className="reply-cta-box">
-            <p>읽고도 답글 안 남기면 조금 섭섭함. 참석 여부와 축하 한마디를 보내주세요.</p>
-            <a className="reply-button" href="mailto:hello@example.com?subject=박서준%20한지우%20결혼갤러리%20답글">축하 / 참석 답글 남기기 ↗</a>
+            <p>신문을 끝까지 읽어주셨다면 독자 엽서에 참석 여부와 축하 한마디를 남겨주세요.</p>
+            <a className="reply-button" href="mailto:hello@example.com?subject=박서준%20한지우%20결혼일보%20독자%20엽서">축하 / 참석 엽서 보내기 ↗</a>
             <small>메일 주소와 내용은 샘플입니다. 실제 정보로 교체해 주세요.</small>
           </div>
         </div>
@@ -307,7 +312,7 @@ export default function Home() {
 
       <footer className="footer section-pad">
         <Rule />
-        <div className="footer-columns"><span>결혼갤러리 · THE COUPLE GALLERY</span><span>본 페이지는 두 사람 자랑으로 구성됩니다.</span><span>MADE WITH LOVE / 2026</span></div>
+        <div className="footer-columns"><span>결혼일보 · THE COUPLE TIMES</span><span>본 신문은 두 사람 자랑으로 구성됩니다.</span><span>MADE WITH LOVE / 2026</span></div>
         <p className="footer-note">실존 인물의 이름을 사용한 문장은 모두 초안용 가상 패러디이며, 실제 발언이나 지지를 의미하지 않습니다.</p>
       </footer>
     </main>
