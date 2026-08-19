@@ -20,3 +20,7 @@
 - Layout: one continuous newspaper sheet, dense columns, hard edges, no floating dashboard cards.
 - Content: every article, statistic, ad, quote, and alert is a love letter disguised as news.
 - Responsive: retain two-column newspaper rhythm on small screens where possible; stack only the lead, map, and primary action when readability requires it.
+
+## Distillation decisions
+
+The page keeps one reading path: headline, specific friend reports, a compact parody celebrity list, photo, relationship archive, venue facts, and RSVP. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, and duplicate praise blocks were removed because they added volume without making the invitation more personal. Celebrity names remain only as clearly labeled one-line parody placeholders for future real messages.
