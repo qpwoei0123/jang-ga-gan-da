@@ -21,7 +21,7 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
 .invitation-shell { position: relative; isolation: isolate; width: min(100%, 820px); margin: 0 auto; overflow: hidden; background: var(--paper); box-shadow: 0 0 60px rgb(37 30 20 / 18%); }
-.paper-grain { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: .19; mix-blend-mode: multiply; background-image: url("/paper-crumple.png"), radial-gradient(circle at 20% 30%, rgb(57 47 32 / 22%) 0 .7px, transparent 1px), radial-gradient(circle at 70% 60%, rgb(57 47 32 / 17%) 0 .6px, transparent 1px), repeating-linear-gradient(0deg, transparent 0 5px, rgb(66 52 33 / 4%) 5px 6px); background-size: 560px 560px, 7px 8px, 11px 10px, auto; }
+.paper-grain { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: .29; mix-blend-mode: multiply; background-image: url("/paper-crumple.png"), url("/paper-crumple.png"), radial-gradient(circle at 20% 30%, rgb(57 47 32 / 22%) 0 .7px, transparent 1px), radial-gradient(circle at 70% 60%, rgb(57 47 32 / 17%) 0 .6px, transparent 1px), repeating-linear-gradient(0deg, transparent 0 5px, rgb(66 52 33 / 4%) 5px 6px); background-position: 0 0, 140px 220px, 0 0, 0 0, 0 0; background-size: 520px 520px, 330px 330px, 7px 8px, 11px 10px, auto; background-blend-mode: multiply, soft-light, multiply, multiply, multiply; }
 .section-pad { padding: 34px 38px; }
 .rule { height: 1px; background: var(--line-strong); opacity: 1; }
 .short-rule { width: 54px; margin: 17px 0; background: var(--red); }
