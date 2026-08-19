@@ -2,26 +2,25 @@
 
 ## Direction contract
 
-**THESIS:** 결혼식 초대장을 부부 특집의 한 호로 만든다. 신문 제호·다단 편집·기사 지면을 주인공으로 두고, 게시판식 농담은 기사 제목과 독자 반응에만 섞는다.
+**THESIS:** 결혼식 초대장을 부부 특집의 한 호로 바꾼다. 평범한 히어로-소개-장소 순서를 거부하고, 첫 화면부터 속보·특집·가상 국제면이 쏟아지는 과밀한 신문을 연다.
 
-**OWN-WORLD:** 따뜻한 신문용지, 검은 잉크, 신호 빨강과 전신 파랑, 바랜 머스터드가 만드는 브로드시트. 세리프 제호와 큰 기사 제목, 얇은 규칙선, 작은 취재 캡션, 종이 주름이 전체 지면을 묶는다.
+**OWN-WORLD:** 오래된 지역 일간지와 황색 주간지의 다단 규칙선, 기사 제목, 작은 데이터 캡션, 긴급 속보 띠를 모바일 폭에 맞게 압축한다. 종이 주름과 잉크 번짐은 모든 면을 연결하는 물성이다.
 
-**STORY:** 방문자는 ‘박서준·한지우 결혼함’이라는 톱기사를 읽고, 친구들의 제보·독자 반응·유명인 패러디를 보며 둘의 관계를 웃음으로 이해한다. 마지막에는 파란 사실면에서 실제 날짜·장소·RSVP를 확인한다.
+**STORY:** 방문자는 ‘이 부부가 결혼한다’에서 시작해 ‘이 정도로 사랑받는 사람들이구나’로 웃으며 이동하고, 마지막에 실제 예식 정보와 RSVP를 확인한다. 실존 인물·기관을 언급하는 기사는 모두 가상 패러디로 표시한다.
 
-**FIRST VIEWPORT:** 얇은 발행 바, ‘결혼일보’ 제호, 날짜·특집호 정보, 대형 톱기사, 사진, 취재 메타와 독자 반응을 신문 1면처럼 보여준다. 첫 화면만 봐도 무엇을 축하하는지와 마지막에 어디로 답하는지가 보인다.
+**FIRST VIEWPORT:** 상단 발행 정보, 신문 제호 ‘결혼일보’, 긴급 속보, 신랑신부의 대형 톱기사, 사진, 트럼프 축복 패러디 기사, 결혼 지수를 한 화면 안에 밀도 있게 배치한다.
 
-**FORM:** 모바일 브로드시트 콜라주. 데스크톱에서는 기사·사진·사이드 반응을 다단으로 펼치고, 모바일에서는 지면 순서를 유지하며 접는다. 불규칙성은 기사 높이와 사진 각도에서만 만들고, 선·캡션·여백은 일관되게 유지한다.
+**FORM:** 모바일 브로드시트 콜라주. 불규칙한 기사 높이와 사진 각도는 허용하되, 1px 규칙선·반복 캡션·2~3열 그리드가 질서를 만든다.
 
 ## System rules
 
-- Surface: warm newsprint with generated crumple texture and low-opacity ink grain; the outer canvas is a muted tabletop.
-- Palette: paper ivory, ink black, signal red, wire-service blue, and faded mustard. Bright color stays under 10% of the page.
-- Type: expressive serif for the masthead, headlines, and article copy; narrow sans and compact monospace only for metadata, usernames, timestamps, and counts.
-- Layout: one continuous newspaper sheet, dense columns, double rules, captions, photos, and one full-bleed fact-check page; no app-like dashboard chrome.
-- Content: every post is a specific observation, reaction, or useful instruction. Filler statistics are out; sample facts are labeled and easy to replace.
-- Voice: formal news framing carrying dry, short, self-aware community phrasing inside quotes and friend reports. ㅋㅋ, ㄹㅇ, 이왜진, and 드디어 are accents, not the page's identity. No direct quotation from a real post and no claim that a celebrity actually endorsed the couple.
-- Responsive: desktop retains newspaper columns; mobile keeps the masthead, lead, photo, and fact page readable before collapsing secondary articles.
+- Surface: warm newsprint with generated crumple texture and low-opacity ink grain.
+- Palette: paper ivory, ink black, signal red, wire-service blue, faded mustard, moss green.
+- Type: condensed sans for metadata and labels; expressive serif for headlines; narrow body copy for article density.
+- Layout: one continuous newspaper sheet, dense columns, hard edges, no floating dashboard cards.
+- Content: every article, statistic, ad, quote, and alert is a love letter disguised as news.
+- Responsive: retain two-column newspaper rhythm on small screens where possible; stack only the lead, map, and primary action when readability requires it.
 
 ## Distillation decisions
 
-The page keeps one reading path: newspaper masthead, lead article, specific friend reports, a compact parody celebrity desk, photo journal, relationship archive, venue facts, and RSVP. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, and duplicate praise blocks were removed because they added volume without making the invitation more personal. Community mechanics remain as evidence inside the newspaper—short replies, usernames, counters, and deadpan exaggeration—not as the visual identity itself.
+The page keeps one reading path: headline, specific friend reports, a compact parody celebrity list, photo, relationship archive, venue facts, and RSVP. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, and duplicate praise blocks were removed because they added volume without making the invitation more personal. Celebrity names remain only as clearly labeled one-line parody placeholders for future real messages.
