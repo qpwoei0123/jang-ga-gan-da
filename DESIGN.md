@@ -32,3 +32,7 @@ The long scroll is edited as four newspaper pages rather than a stack of equal s
 ## Pattern variation
 
 The page uses a shared editorial grid but changes the dominant composition per page: people is a report-plus-sidebar spread, feature is an archive rail beside a photo-led article, and service is a full-width venue bulletin followed by a horizontal family-note strip. Rules are treated as translucent warm ink rather than pure black, with red and blue lines reserved for section changes and factual/service moments.
+
+## Motion direction
+
+Scroll motion should feel like a newspaper page being revealed, not a generic landing-page cascade. Page groups use a clipped editorial reveal, photos receive a restrained seven-pixel viewport-relative drift, and the family note gets one stamped arrival. The default HTML remains visible without script, and reduced-motion preferences disable all transforms and transitions.

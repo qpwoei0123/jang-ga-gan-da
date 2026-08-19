@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import ScrollEffects from "./scroll-effects";
 
 export const metadata: Metadata = {
   title: "결혼일보 — 한원영·이나경 특집호",
@@ -75,6 +76,7 @@ export default function Home() {
   return (
     <main className="invitation-shell">
       <div className="paper-grain" aria-hidden="true" />
+      <ScrollEffects />
 
       <header className="utility-bar">
         <span>초안용 가상 패러디 · 실제 보도 아님</span>
@@ -121,7 +123,7 @@ export default function Home() {
           </article>
 
           <figure className="front-page-photo">
-            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
+            <img data-parallax="photo" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
             <figcaption>▲ 결혼을 앞둔 두 사람. 실제 사진으로 교체할 자리입니다.</figcaption>
           </figure>
 
@@ -139,13 +141,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="people-page section-pad" id="people">
+      <section className="people-page section-pad" id="people" data-reveal="page">
         <PageFolio page="2면" topics="PEOPLE / SOCIAL / CELEBRITY" />
         <SectionHead className="people-section-head" label="PEOPLE DESK / FIELD REPORT" title={<>사랑은 <span>제보로 확인된다</span></>} note={<>친구들의 관찰과<br />가상 축복을 한 면에 묶었습니다.</>} />
         <Rule className="people-rule" />
         <div className="people-layout">
           <div className="friend-report">
-            <article className="friend-lead">
+            <article className="friend-lead" data-reveal="column">
               <p className="article-label">{friendNotes[0][0]}</p>
               <h3>{friendNotes[0][1]}</h3>
               <p>{friendNotes[0][2]}</p>
@@ -162,7 +164,7 @@ export default function Home() {
             </div>
           </div>
 
-          <aside className="celebrity-file">
+          <aside className="celebrity-file" data-reveal="column">
             <div className="file-heading">
               <div>
                 <p className="article-label">WORLD WIRE / PARODY FILE</p>
@@ -184,14 +186,14 @@ export default function Home() {
         <div className="page-bottomline"><span>2면 끝</span><span>다음 면: 사진과 연애 연표</span></div>
       </section>
 
-      <section className="feature-page section-pad" id="feature">
+      <section className="feature-page section-pad" id="feature" data-reveal="page">
         <PageFolio page="3면" topics="PHOTO / ARCHIVE / LONG READ" />
         <SectionHead className="feature-section-head" label="FEATURE / PHOTO JOURNAL" title={<>다음 장면은 <span>기록된다</span></>} note={<>사진 한 장과 연애 연표를<br />하나의 특집 기사로 엮었습니다.</>} />
         <Rule className="feature-rule" />
         <div className="feature-layout">
-          <article className="photo-story">
+          <article className="photo-story" data-reveal="column">
             <figure className="photo-feature">
-              <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
+              <img data-parallax="photo" src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
               <figcaption>▲ 두 사람이 함께 앉을 자리. 이날의 가장 중요한 배경이 됩니다.</figcaption>
             </figure>
             <div className="photo-story-copy">
@@ -203,7 +205,7 @@ export default function Home() {
             </div>
           </article>
 
-          <aside className="archive-column">
+          <aside className="archive-column" data-reveal="column">
             <p className="article-label">ARCHIVE / SAMPLE DATA</p>
             <h3>두 사람의<br /><em>연애 연표</em></h3>
             <div className="timeline-list">
@@ -225,12 +227,12 @@ export default function Home() {
         <div className="page-bottomline"><span>3면 끝</span><span>다음 면: 가족이 꼭 확인할 예식 정보</span></div>
       </section>
 
-      <section className="service-page section-pad" id="details">
+      <section className="service-page section-pad" id="details" data-reveal="page">
         <PageFolio page="4면" topics="CITY DESK / FAMILY CEREMONY / NOTE" />
         <SectionHead className="service-section-head" label="SERVICE / CITY DESK" title={<>예식 정보는 <span>마지막 면</span>에</>} note={<>이 면만큼은 패러디 없이<br />가족식 안내만 전합니다.</>} />
         <Rule className="service-rule" />
         <div className="service-layout">
-          <div className="venue-block">
+          <div className="venue-block" data-reveal="column">
             <div className="venue-heading"><p className="article-label">VENUE / FACT CHECK</p><h3>오시는 길</h3><span>현장 안내 데스크</span></div>
             <div className="details-layout">
               <div className="map-card" role="img" aria-label="서울 아카이브 홀 약도 예시">
@@ -256,8 +258,8 @@ export default function Home() {
             </div>
           </div>
 
-          <aside className="family-note-panel" id="family-note">
-            <div className="family-note-stamp">FAMILY<br />EDITION</div>
+          <aside className="family-note-panel" id="family-note" data-reveal="column">
+            <div className="family-note-stamp" data-reveal="stamp">FAMILY<br />EDITION</div>
             <p className="article-label">FAMILY NOTE / 가족식 안내</p>
             <h3>작은 식사를<br /><em>함께 나눠요.</em></h3>
             <p>50명 남짓한 가족식으로 조용히 진행합니다. 참석 여부를 따로 받지 않고, 오시는 가족에게 감사한 마음을 준비하겠습니다.</p>
