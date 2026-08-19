@@ -2,25 +2,26 @@
 
 ## Direction contract
 
-**THESIS:** 결혼식 초대장을 부부 특집의 한 호로 바꾼다. 평범한 히어로-소개-장소 순서를 거부하고, 첫 화면부터 속보·특집·가상 국제면이 쏟아지는 과밀한 신문을 연다.
+**THESIS:** 결혼일보를 ‘결혼갤러리의 대형 개념글’로 바꾼다. 얌전한 브로드시트 기사 순서를 거부하고, 게시글 제목·작성자·조회수·추천·댓글이 곧 신문의 편집 문법이 되게 한다.
 
-**OWN-WORLD:** 오래된 지역 일간지와 황색 주간지의 다단 규칙선, 기사 제목, 작은 데이터 캡션, 긴급 속보 띠를 모바일 폭에 맞게 압축한다. 종이 주름과 잉크 번짐은 모든 면을 연결하는 물성이다.
+**OWN-WORLD:** 밝은 종이 바탕 위에 차콜 잉크, 코발트 블루, 라임 형광을 얹은 모바일 커뮤니티 UI. 둥근 카드 대신 1~2px 선, 촘촘한 목록, 사각 태그, 모노 메타데이터를 쓰고, 종이 주름은 화면 전체를 묶는 물성으로 남긴다.
 
-**STORY:** 방문자는 ‘이 부부가 결혼한다’에서 시작해 ‘이 정도로 사랑받는 사람들이구나’로 웃으며 이동하고, 마지막에 실제 예식 정보와 RSVP를 확인한다. 실존 인물·기관을 언급하는 기사는 모두 가상 패러디로 표시한다.
+**STORY:** 방문자는 ‘박서준·한지우 결혼함’이라는 개념글을 열고, 친구들의 제보·베스트 댓글·유명인 패러디 반응을 읽으며 둘의 관계를 웃음으로 이해한다. 마지막에는 ‘공지’로 전환해 실제 날짜·장소·RSVP를 놓치지 않는다.
 
-**FIRST VIEWPORT:** 상단 발행 정보, 신문 제호 ‘결혼일보’, 긴급 속보, 신랑신부의 대형 톱기사, 사진, 트럼프 축복 패러디 기사, 결혼 지수를 한 화면 안에 밀도 있게 배치한다.
+**FIRST VIEWPORT:** 커뮤니티 상단바, 결혼갤러리 경로, 대형 게시글 제목, 조회·추천·댓글 메타, 샘플 사진, 베스트 댓글을 한 덩어리로 보여준다. 첫 화면만 봐도 무엇을 축하하는 페이지인지와 어디서 답해야 하는지가 보인다.
 
-**FORM:** 모바일 브로드시트 콜라주. 불규칙한 기사 높이와 사진 각도는 허용하되, 1px 규칙선·반복 캡션·2~3열 그리드가 질서를 만든다.
+**FORM:** 게시판 스레드와 신문 1면의 하이브리드. 데스크톱에서는 글·댓글·반응을 나란히 펼치고, 모바일에서는 한 줄씩 이어지는 피드로 자연스럽게 접는다. 불규칙성은 문장 길이와 강조 위치에서만 만들고, 선과 메타 위치는 고정한다.
 
 ## System rules
 
-- Surface: warm newsprint with generated crumple texture and low-opacity ink grain.
-- Palette: paper ivory, ink black, signal red, wire-service blue, faded mustard, moss green.
-- Type: condensed sans for metadata and labels; expressive serif for headlines; narrow body copy for article density.
-- Layout: one continuous newspaper sheet, dense columns, hard edges, no floating dashboard cards.
-- Content: every article, statistic, ad, quote, and alert is a love letter disguised as news.
-- Responsive: retain two-column newspaper rhythm on small screens where possible; stack only the lead, map, and primary action when readability requires it.
+- Surface: neutral paper with generated crumple texture and low-opacity ink grain; the outer canvas is cooler and more screen-like than the previous warm broadsheet.
+- Palette: paper white, charcoal ink, cobalt blue, lime highlight, and one tomato red alert color.
+- Type: heavy system sans for titles and Korean copy; compact monospace only for usernames, timestamps, counts, and route data.
+- Layout: one continuous sheet, thread bars, reply rows, hard rules, and a few full-bleed color notices; no generic feature-card grid.
+- Content: every post is a specific observation, reaction, or useful instruction. Filler statistics are out; sample facts are labeled and easy to replace.
+- Voice: dry, short, self-aware community phrasing with restrained use of ㅋㅋ, ㄹㅇ, 이왜진, and 드디어. No direct quotation from a real post and no claim that a celebrity actually endorsed the couple.
+- Responsive: desktop opens the thread into parallel evidence columns; mobile keeps the same order as a single readable feed and preserves large tap targets.
 
 ## Distillation decisions
 
-The page keeps one reading path: headline, specific friend reports, a compact parody celebrity list, photo, relationship archive, venue facts, and RSVP. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, and duplicate praise blocks were removed because they added volume without making the invitation more personal. Celebrity names remain only as clearly labeled one-line parody placeholders for future real messages.
+The page keeps one reading path: community headline, specific friend reports, comment-style celebrity parody, photo thread, relationship archive, venue notice, and RSVP. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, and duplicate praise blocks were removed because they added volume without making the invitation more personal. The new tone is derived from broad community mechanics—short posts, usernames, counters, reply timing, deadpan exaggeration—not from any identifiable user's writing.
