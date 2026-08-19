@@ -19,6 +19,18 @@ const timeline = [
   ["2026. 06", "결혼 전격 발표", "주변 지인 전원 ‘드디어’라는 반응을 보였다."],
 ];
 
+const celebrityDesk = [
+  ["도널드 트럼프", "이 결혼은 역사상 가장 위대하다. 두 사람 모두 아주 훌륭하다."],
+  ["테일러 스위프트", "Love Story가 현실이 된 순간. 이제 이 노래의 주인공은 두 사람이다."],
+  ["데이비드 베컴", "두 사람의 팀워크라면 어떤 연장전도 이겨낼 수 있다."],
+  ["BTS RM", "서로의 문장이 되어, 오래도록 좋은 문장을 써 내려가길."],
+  ["아이유", "좋은 날, 좋은 사람, 좋은 소식. 이보다 더 완벽한 조합은 없다."],
+  ["손흥민", "평생 원팀으로 뛰는 두 분의 앞날을 진심으로 응원한다."],
+  ["라이언 레이놀즈", "신랑의 유머가 제 유머를 이길 가능성은… 결혼을 축하합니다."],
+  ["비욘세", "싱글 레이디 시대의 종료를 공식 선언합니다. 두 분은 이미 완벽한 듀오."],
+  ["유재석", "두 분이 행복하면 저도 행복합니다. 이건 진짜 뉴스입니다."],
+];
+
 function Rule({ className = "" }: { className?: string }) {
   return <div className={`rule ${className}`} aria-hidden="true" />;
 }
@@ -190,6 +202,30 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="celebrity-desk section-pad">
+        <div className="desk-heading compact-heading">
+          <div>
+            <p className="article-label">CELEBRITY DESK / 가상 패러디</p>
+            <h2>세계 유명인들의 <span>축복 릴레이</span></h2>
+          </div>
+          <p>실제 축하 메시지가 아닙니다.<br />그러나 마음만큼은 진짜입니다.</p>
+        </div>
+        <Rule />
+        <div className="celebrity-grid">
+          {celebrityDesk.map(([name, quote], index) => (
+            <article className={`celebrity-entry celebrity-entry-${index % 3}`} key={name}>
+              <span className="celebrity-number">{String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <h3>{name}</h3>
+                <p>“{quote}”</p>
+                <small>가상 축하 코멘트 · 결혼일보 편집부 각색</small>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="celebrity-footer">다음 호 예고: 하객 명단에 오르고 싶다는 유명인들의 문의가 이어지고 있습니다.</div>
       </section>
 
       <section className="photo-desk section-pad">

@@ -90,6 +90,20 @@ figcaption { margin-top: 7px; color: var(--muted); font-size: 9px; line-height: 
 .quote-interview.red-paper { color: var(--paper); background: var(--red); border-color: var(--red); }
 .red-paper .article-label, .red-paper small { color: #f0d4a2; }
 
+.celebrity-desk { background: var(--paper); }
+.celebrity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 21px; border-top: 2px solid var(--ink); }
+.celebrity-entry { display: grid; grid-template-columns: 26px 1fr; gap: 10px; min-height: 128px; padding: 14px 14px 12px 0; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.celebrity-entry:nth-child(3n) { padding-right: 0; border-right: 0; }
+.celebrity-entry:nth-child(n + 4) { padding-top: 17px; }
+.celebrity-entry-0 h3 { color: var(--red); }
+.celebrity-entry-1 h3 { color: var(--blue); }
+.celebrity-entry-2 h3 { color: var(--moss); }
+.celebrity-number { color: var(--muted); font-size: 9px; font-weight: 900; letter-spacing: .08em; }
+.celebrity-entry h3 { margin: 0 0 7px; font-family: var(--serif); font-size: 19px; line-height: 1; letter-spacing: -.06em; }
+.celebrity-entry p { margin: 0 0 8px; font-family: var(--serif); font-size: 11px; line-height: 1.45; }
+.celebrity-entry small { color: var(--muted); font-size: 8px; line-height: 1.25; }
+.celebrity-footer { margin-top: 14px; padding: 8px 0; border-top: 1px dotted var(--ink); border-bottom: 1px dotted var(--ink); color: var(--red); font-family: var(--serif); font-size: 11px; }
+
 .photo-desk { background: var(--paper-dark); }
 .photo-spread { display: grid; grid-template-columns: 1.2fr .8fr; gap: 24px; margin-top: 22px; align-items: start; }
 .photo-feature { margin: 0; }
@@ -182,6 +196,9 @@ figcaption { margin-top: 7px; color: var(--muted); font-size: 9px; line-height: 
   .newspaper-article:nth-child(2n) { padding-right: 0; border-right: 0; }
   .newspaper-article:nth-child(n + 3) { margin-top: 22px; padding-top: 19px; border-top: 1px solid var(--ink); }
   .opinion-grid, .photo-spread, .details-layout { grid-template-columns: 1fr; }
+  .celebrity-grid { grid-template-columns: repeat(2, 1fr); }
+  .celebrity-entry:nth-child(3n) { padding-right: 11px; border-right: 1px solid var(--ink); }
+  .celebrity-entry:nth-child(2n) { padding-right: 0; border-right: 0; }
   .editorial-column { padding-right: 0; border-right: 0; column-count: 2; }
   .photo-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
   .photo-copy .article-label, .photo-copy h3, .photo-caption-box { grid-column: 1 / -1; }
@@ -229,6 +246,11 @@ figcaption { margin-top: 7px; color: var(--muted); font-size: 9px; line-height: 
   .editorial-column h3 { font-size: 28px; }
   .editorial-column p { font-size: 10px; }
   .quote-interview p:not(.article-label) { font-size: 17px; }
+  .celebrity-grid { gap: 0 11px; }
+  .celebrity-entry { min-height: 0; padding-right: 11px !important; }
+  .celebrity-entry:nth-child(2n) { padding-right: 0 !important; }
+  .celebrity-entry h3 { font-size: 17px; }
+  .celebrity-entry p { font-size: 10px; }
   .photo-copy { display: block; }
   .photo-copy h3 { font-size: 29px; }
   .photo-copy p:not(.article-label) { font-size: 11px; }
