@@ -28,3 +28,7 @@ The page keeps one reading path: headline, specific friend reports, a compact pa
 ## Editorial topology
 
 The long scroll is edited as four newspaper pages rather than a stack of equal sections. The front page carries the dominant lead, photo, wire column, and contents line. Page 2 groups the friend report with the parody celebrity file as a people spread. Page 3 combines the photo essay and relationship archive as one feature. The final page groups venue facts and RSVP as the service desk. Page folios, running topics, continuation lines, and bottom-of-page handoffs create the rhythm of a real issue.
+
+## Pattern variation
+
+The page uses a shared editorial grid but changes the dominant composition per page: people is a report-plus-sidebar spread, feature is an archive rail beside a photo-led article, and service is a full-width venue bulletin followed by a horizontal RSVP strip. Rules are treated as translucent warm ink rather than pure black, with red and blue lines reserved for section changes and factual/service moments.

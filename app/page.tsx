@@ -53,13 +53,15 @@ function SectionHead({
   label,
   title,
   note,
+  className = "",
 }: {
   label: string;
   title: ReactNode;
   note: ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="section-header">
+    <div className={`section-header ${className}`}>
       <div>
         <p className="article-label">{label}</p>
         <h2>{title}</h2>
@@ -139,8 +141,8 @@ export default function Home() {
 
       <section className="people-page section-pad" id="people">
         <PageFolio page="2면" topics="PEOPLE / SOCIAL / CELEBRITY" />
-        <SectionHead label="PEOPLE DESK / FIELD REPORT" title={<>사랑은 <span>제보로 확인된다</span></>} note={<>친구들의 관찰과<br />가상 축복을 한 면에 묶었습니다.</>} />
-        <Rule />
+        <SectionHead className="people-section-head" label="PEOPLE DESK / FIELD REPORT" title={<>사랑은 <span>제보로 확인된다</span></>} note={<>친구들의 관찰과<br />가상 축복을 한 면에 묶었습니다.</>} />
+        <Rule className="people-rule" />
         <div className="people-layout">
           <div className="friend-report">
             <article className="friend-lead">
@@ -184,8 +186,8 @@ export default function Home() {
 
       <section className="feature-page section-pad" id="feature">
         <PageFolio page="3면" topics="PHOTO / ARCHIVE / LONG READ" />
-        <SectionHead label="FEATURE / PHOTO JOURNAL" title={<>다음 장면은 <span>기록된다</span></>} note={<>사진 한 장과 연애 연표를<br />하나의 특집 기사로 엮었습니다.</>} />
-        <Rule />
+        <SectionHead className="feature-section-head" label="FEATURE / PHOTO JOURNAL" title={<>다음 장면은 <span>기록된다</span></>} note={<>사진 한 장과 연애 연표를<br />하나의 특집 기사로 엮었습니다.</>} />
+        <Rule className="feature-rule" />
         <div className="feature-layout">
           <article className="photo-story">
             <figure className="photo-feature">
@@ -225,8 +227,8 @@ export default function Home() {
 
       <section className="service-page section-pad" id="details">
         <PageFolio page="4면" topics="CITY DESK / SERVICE / RSVP" />
-        <SectionHead label="SERVICE / CITY DESK" title={<>예식 정보는 <span>마지막 면</span>에</>} note={<>이 면만큼은 패러디 없이<br />사실만 정확히 전합니다.</>} />
-        <Rule />
+        <SectionHead className="service-section-head" label="SERVICE / CITY DESK" title={<>예식 정보는 <span>마지막 면</span>에</>} note={<>이 면만큼은 패러디 없이<br />사실만 정확히 전합니다.</>} />
+        <Rule className="service-rule" />
         <div className="service-layout">
           <div className="venue-block">
             <div className="venue-heading"><p className="article-label">VENUE / FACT CHECK</p><h3>오시는 길</h3><span>현장 안내 데스크</span></div>
