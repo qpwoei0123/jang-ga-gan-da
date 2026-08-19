@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "결혼일보 — 박서준·한지우 특집호",
+  title: "결혼일보 — 한원영·이나경 특집호",
   description: "두 사람의 결혼을 한 부의 신문으로 기록한 모바일 청첩장.",
 };
 
@@ -23,7 +23,7 @@ const celebrityDesk = [
 ];
 
 const timeline = [
-  ["2021. 04", "첫 만남", "친구들의 기억 속 두 사람이 처음 같은 장면에 등장한 달."],
+  ["2016. 04", "첫 만남", "친구들의 기억 속 두 사람이 처음 같은 장면에 등장한 달."],
   ["2022. 08", "여름 휴가", "사진 842장 중 서로를 찍은 사진이 811장으로 확인됨."],
   ["2024. 12", "다음 장 논의", "각자의 냉장고에서 상대방의 물건이 발견되기 시작함."],
   ["2026. 06", "결혼 발표", "주변 지인 전원 ‘드디어’라는 반응을 보임."],
@@ -79,7 +79,7 @@ export default function Home() {
       <header className="utility-bar">
         <span>초안용 가상 패러디 · 실제 보도 아님</span>
         <span>2026년 10월 17일 토요일</span>
-        <a href="#rsvp">독자 엽서 보내기 ↘</a>
+        <a href="#family-note">가족식 안내 보기 ↘</a>
       </header>
 
       <section className="newspaper-header section-pad" id="top">
@@ -95,11 +95,11 @@ export default function Home() {
         </div>
         <div className="paper-deck">
           <strong>두 사람이 만났고, 모두가 기다렸으며, 오늘의 1면이 완성됐다.</strong>
-          <span>박서준 &amp; 한지우의 결혼 소식</span>
+          <span>한원영 &amp; 이나경의 결혼 소식</span>
         </div>
         <div className="breaking-strip">
           <span>긴급속보</span>
-          <strong>박서준·한지우, 5년 열애 끝 결혼 발표… 지인들 “이제야?”</strong>
+          <strong>한원영·이나경, 10년 연애 끝 결혼 발표… 가족들 “이제야?”</strong>
           <span className="breaking-time">14:00 UPDATED</span>
         </div>
         <nav className="front-index" aria-label="신문 섹션 바로가기">
@@ -107,13 +107,13 @@ export default function Home() {
           <a href="#people">2면 사람들</a>
           <a href="#feature">3면 기록</a>
           <a href="#details">4면 예식 정보</a>
-          <a href="#rsvp">독자 엽서</a>
+          <a href="#family-note">가족 안내</a>
         </nav>
 
         <div className="front-page-grid">
           <article className="lead-story">
             <p className="article-label">1면 톱기사 / EXCLUSIVE</p>
-            <h2>박서준·한지우,<br /><em>결혼을 선언하다</em></h2>
+            <h2>한원영·이나경,<br /><em>결혼을 선언하다</em></h2>
             <p className="lead-summary">서로의 하루를 가장 먼저 묻던 두 사람이 이제 서로의 내일을 가장 먼저 책임지기로 했다.</p>
             <Rule className="short-rule" />
             <p className="dense-copy">두 사람은 오는 10월 17일 서울 아카이브 홀에서 결혼식을 올린다. 취재진이 “서로의 단점은 무엇이냐”고 묻자 7초간 웃은 뒤 “그런 건 아직 발견하지 못했다”고 답했다.</p>
@@ -133,7 +133,7 @@ export default function Home() {
             <Rule />
             <p className="article-label">오늘의 핵심</p>
             <div className="index-row"><span>결혼식</span><strong>2026.10.17</strong></div>
-            <div className="index-row"><span>신랑·신부</span><strong>박서준 &amp; 한지우</strong></div>
+            <div className="index-row"><span>신랑·신부</span><strong>한원영 &amp; 이나경</strong></div>
             <div className="index-row"><span>독자의 할 일</span><strong>축하하기</strong></div>
           </aside>
         </div>
@@ -216,18 +216,18 @@ export default function Home() {
             </div>
             <div className="fact-sheet">
               <p className="article-label">초안용 팩트 시트</p>
-              <div><strong>5년</strong><span>함께한 시간</span></div>
+              <div><strong>10년</strong><span>함께한 시간</span></div>
               <div><strong>1팀</strong><span>앞으로의 생활</span></div>
               <div><strong>∞</strong><span>이어질 이야기</span></div>
             </div>
           </aside>
         </div>
-        <div className="page-bottomline"><span>3면 끝</span><span>다음 면: 독자가 꼭 확인할 예식 정보</span></div>
+        <div className="page-bottomline"><span>3면 끝</span><span>다음 면: 가족이 꼭 확인할 예식 정보</span></div>
       </section>
 
       <section className="service-page section-pad" id="details">
-        <PageFolio page="4면" topics="CITY DESK / SERVICE / RSVP" />
-        <SectionHead className="service-section-head" label="SERVICE / CITY DESK" title={<>예식 정보는 <span>마지막 면</span>에</>} note={<>이 면만큼은 패러디 없이<br />사실만 정확히 전합니다.</>} />
+        <PageFolio page="4면" topics="CITY DESK / FAMILY CEREMONY / NOTE" />
+        <SectionHead className="service-section-head" label="SERVICE / CITY DESK" title={<>예식 정보는 <span>마지막 면</span>에</>} note={<>이 면만큼은 패러디 없이<br />가족식 안내만 전합니다.</>} />
         <Rule className="service-rule" />
         <div className="service-layout">
           <div className="venue-block">
@@ -256,12 +256,12 @@ export default function Home() {
             </div>
           </div>
 
-          <aside className="rsvp-panel" id="rsvp">
-            <div className="rsvp-stamp">PLEASE<br />JOIN US</div>
-            <p className="article-label">READER RESPONSE / 독자 엽서</p>
-            <h3>마지막 문장을<br /><em>함께 써주세요.</em></h3>
-            <p>참석 여부를 미리 알려주시면 두 사람을 위한 자리를 준비하겠습니다.</p>
-            <a className="rsvp-button" href="mailto:hello@example.com?subject=박서준%20한지우%20결혼일보%20독자%20엽서">축하 메시지와 참석 여부 보내기 <span>→</span></a>
+          <aside className="family-note-panel" id="family-note">
+            <div className="family-note-stamp">FAMILY<br />EDITION</div>
+            <p className="article-label">FAMILY NOTE / 가족식 안내</p>
+            <h3>작은 식사를<br /><em>함께 나눠요.</em></h3>
+            <p>50명 남짓한 가족식으로 조용히 진행합니다. 참석 여부를 따로 받지 않고, 오시는 가족에게 감사한 마음을 준비하겠습니다.</p>
+            <a className="family-note-button" href="mailto:hello@example.com?subject=한원영%20이나경%20결혼일보%20가족%20축하%20엽서">가족에게 축하 한마디 보내기 <span>→</span></a>
           </aside>
         </div>
       </section>

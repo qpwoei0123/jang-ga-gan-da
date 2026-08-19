@@ -6,7 +6,7 @@
 
 **OWN-WORLD:** 오래된 지역 일간지와 황색 주간지의 다단 규칙선, 기사 제목, 작은 데이터 캡션, 긴급 속보 띠를 모바일 폭에 맞게 압축한다. 종이 주름과 잉크 번짐은 모든 면을 연결하는 물성이다.
 
-**STORY:** 방문자는 ‘이 부부가 결혼한다’에서 시작해 ‘이 정도로 사랑받는 사람들이구나’로 웃으며 이동하고, 마지막에 실제 예식 정보와 RSVP를 확인한다. 실존 인물·기관을 언급하는 기사는 모두 가상 패러디로 표시한다.
+**STORY:** 방문자는 ‘이 부부가 결혼한다’에서 시작해 ‘이 정도로 사랑받는 사람들이구나’로 웃으며 이동하고, 마지막에 실제 가족식 정보와 가족 안내를 확인한다. 실존 인물·기관을 언급하는 기사는 모두 가상 패러디로 표시한다.
 
 **FIRST VIEWPORT:** 상단 발행 정보, 신문 제호 ‘결혼일보’, 긴급 속보, 신랑신부의 대형 톱기사, 사진, 트럼프 축복 패러디 기사, 결혼 지수를 한 화면 안에 밀도 있게 배치한다.
 
@@ -23,12 +23,12 @@
 
 ## Distillation decisions
 
-The page keeps one reading path: headline, specific friend reports, a compact parody celebrity list, photo, relationship archive, venue facts, and RSVP. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, and duplicate praise blocks were removed because they added volume without making the invitation more personal. Celebrity names remain only as clearly labeled one-line parody placeholders for future real messages.
+The page keeps one reading path: headline, specific friend reports, a compact parody celebrity list, photo, relationship archive, venue facts, and a family note. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, and duplicate praise blocks were removed because they added volume without making the invitation more personal. Celebrity names remain only as clearly labeled one-line parody placeholders for future real messages.
 
 ## Editorial topology
 
-The long scroll is edited as four newspaper pages rather than a stack of equal sections. The front page carries the dominant lead, photo, wire column, and contents line. Page 2 groups the friend report with the parody celebrity file as a people spread. Page 3 combines the photo essay and relationship archive as one feature. The final page groups venue facts and RSVP as the service desk. Page folios, running topics, continuation lines, and bottom-of-page handoffs create the rhythm of a real issue.
+The long scroll is edited as four newspaper pages rather than a stack of equal sections. The front page carries the dominant lead, photo, wire column, and contents line. Page 2 groups the friend report with the parody celebrity file as a people spread. Page 3 combines the photo essay and relationship archive as one feature. The final page groups venue facts and a family note as the service desk; it does not collect attendance responses because this is a small family ceremony for roughly 50 people. Page folios, running topics, continuation lines, and bottom-of-page handoffs create the rhythm of a real issue.
 
 ## Pattern variation
 
-The page uses a shared editorial grid but changes the dominant composition per page: people is a report-plus-sidebar spread, feature is an archive rail beside a photo-led article, and service is a full-width venue bulletin followed by a horizontal RSVP strip. Rules are treated as translucent warm ink rather than pure black, with red and blue lines reserved for section changes and factual/service moments.
+The page uses a shared editorial grid but changes the dominant composition per page: people is a report-plus-sidebar spread, feature is an archive rail beside a photo-led article, and service is a full-width venue bulletin followed by a horizontal family-note strip. Rules are treated as translucent warm ink rather than pure black, with red and blue lines reserved for section changes and factual/service moments.
