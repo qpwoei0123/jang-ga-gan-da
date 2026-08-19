@@ -23,6 +23,40 @@ const celebrityDesk = [
   ["유재석", "두 분 행복하세요"],
 ];
 
+const extraDesk = [
+  ["사설 / EDITORIAL", "이 결혼은 너무 오래 기다렸다", "결혼일보 편집국은 두 사람이 10년 동안 보여준 성실한 동행을 높이 평가한다. 이제는 같은 식탁의 의자를 공식적으로 배정할 때다."],
+  ["속보 / CITY DESK", "한원영 씨, 이나경 씨의 표정만으로 하루를 판단", "현장 취재 결과 한 사람이 웃으면 다른 한 사람의 표정도 3초 안에 풀리는 것으로 확인됐다. 주변인들은 이를 ‘가장 믿을 만한 날씨’라고 부른다."],
+  ["생활 / HOME FILE", "냉장고 안쪽에서 공동생활의 증거 발견", "서로의 취향을 고려한 간식과 상대방이 좋아하는 음료가 나란히 놓여 있었다. 냉장고는 이미 오래전부터 두 사람 편이었다."],
+  ["검증 / FACT CHECK", "‘드디어’라는 반응, 사실인가", "친구와 가족에게 확인한 결과 결혼 소식을 들은 뒤 가장 먼저 나온 단어가 모두 같았다. 취재진은 이 반응을 충분히 납득할 수 있다고 판단했다."],
+];
+
+const celebrityPhotos = [
+  {
+    name: "도널드 트럼프",
+    angle: "가장 위대한 결혼",
+    image: "/celebs/trump.jpg",
+    caption: "공식 초상 사진을 빌린 패러디 지면",
+    credit: "White House / Shealah Craighead · Public domain",
+    source: "https://commons.wikimedia.org/wiki/File:Official_Presidential_Portrait_of_President_Donald_J._Trump_(2025).jpg",
+  },
+  {
+    name: "테일러 스위프트",
+    angle: "Love Story 현실화",
+    image: "/celebs/taylor-swift.jpg",
+    caption: "콘서트 현장 사진을 빌린 패러디 지면",
+    credit: "Emazasm · CC BY 4.0",
+    source: "https://commons.wikimedia.org/wiki/File:Taylor_swift.jpg",
+  },
+  {
+    name: "손흥민",
+    angle: "연장전 없는 승리",
+    image: "/celebs/son.jpg",
+    caption: "경기장 사진을 빌린 패러디 지면",
+    credit: "Crofab · CC BY-SA 3.0",
+    source: "https://commons.wikimedia.org/wiki/File:Son_Heung-Min.jpg",
+  },
+];
+
 const timeline = [
   ["2016. 04", "첫 만남", "친구들의 기억 속 두 사람이 처음 같은 장면에 등장한 달."],
   ["2022. 08", "여름 휴가", "사진 842장 중 서로를 찍은 사진이 811장으로 확인됨."],
@@ -107,6 +141,7 @@ export default function Home() {
         <nav className="front-index" aria-label="신문 섹션 바로가기">
           <span>이번 호 목차</span>
           <a href="#people">2면 사람들</a>
+          <a href="#extra">중간면 EXTRA</a>
           <a href="#feature">3면 기록</a>
           <a href="#details">4면 예식 정보</a>
           <a href="#family-note">가족 안내</a>
@@ -183,7 +218,83 @@ export default function Home() {
             </div>
           </aside>
         </div>
-        <div className="page-bottomline"><span>2면 끝</span><span>다음 면: 사진과 연애 연표</span></div>
+        <div className="page-bottomline"><span>2면 끝</span><span>다음 면: 사설·속보·유명인 포토 와이어</span></div>
+      </section>
+
+      <section className="extra-page section-pad" id="extra" data-reveal="page">
+        <PageFolio page="2면 하단" topics="EDITORIAL / EXTRA / PHOTO WIRE" />
+        <div className="extra-masthead">
+          <div>
+            <p className="article-label">EXTRA EDITION / 결혼일보 편집국</p>
+            <h2>오늘도 두 사람을<br /><em>과하게 보도합니다</em></h2>
+          </div>
+          <p className="extra-deck">중요한 소식은 반복해서 읽어야 합니다.<br />특히 한원영·이나경에 관한 소식이라면.</p>
+        </div>
+        <Rule className="extra-rule" />
+
+        <div className="extra-layout">
+          <article className="editorial-column" data-reveal="column">
+            <p className="article-label">EDITORIAL / 오늘의 사설</p>
+            <h3>{extraDesk[0][1]}</h3>
+            <p className="editorial-quote">“이제는 두 사람의 다음 장면을 독자들이 직접 목격해야 한다.”</p>
+            <p className="editorial-copy">{extraDesk[0][2]}</p>
+            <div className="article-byline">결혼일보 편집국 만장일치 · 패러디 사설</div>
+          </article>
+
+          <div className="extra-briefs" data-reveal="column">
+            {extraDesk.slice(1, 3).map(([label, title, copy], index) => (
+              <article className={`extra-brief extra-brief-${index + 1}`} key={label}>
+                <p className="article-label">{label}</p>
+                <h3>{title}</h3>
+                <p>{copy}</p>
+              </article>
+            ))}
+          </div>
+
+          <aside className="editorial-note" data-reveal="column">
+            <p className="article-label">편집국 메모</p>
+            <p>이 지면에서 가장 객관적인 사실은 단 하나입니다.</p>
+            <strong>둘이 함께 있으면<br />주변이 좋아진다.</strong>
+            <span>— 현장 목격자 일동</span>
+          </aside>
+        </div>
+
+        <section className="celebrity-photo-wire" data-reveal="column">
+          <div className="photo-wire-heading">
+            <div>
+              <p className="article-label">PHOTO WIRE / WORLD DESK</p>
+              <h3>축복의 표정들,<br /><em>사진으로 먼저 도착</em></h3>
+            </div>
+            <p>실제 축하·지지·연락이 아닙니다.<br />사진과 이름을 빌린 허구의 패러디입니다.</p>
+          </div>
+          <div className="photo-wire-grid">
+            {celebrityPhotos.map((person, index) => (
+              <figure className={`photo-wire-item photo-wire-item-${index + 1}`} key={person.name}>
+                <div className="photo-wire-image"><img src={person.image} alt={`${person.name} 사진`} /></div>
+                <figcaption>
+                  <strong>{person.name} / {person.angle}</strong>
+                  <span>{person.caption}</span>
+                  <a href={person.source} target="_blank" rel="noreferrer">출처: {person.credit} ↗</a>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
+        <div className="extra-bottom-grid">
+          <article className="extra-brief extra-brief-standalone" data-reveal="column">
+            <p className="article-label">{extraDesk[3][0]}</p>
+            <h3>{extraDesk[3][1]}</h3>
+            <p>{extraDesk[3][2]}</p>
+          </article>
+          <aside className="classified-strip" data-reveal="column">
+            <p className="article-label">구인·구혼·구독 / CLASSIFIED</p>
+            <h3>한원영·이나경<br /><em>평생 이용권</em></h3>
+            <p>조건: 서로를 계속 좋아할 것.<br />혜택: 매일의 편, 평생의 동료, 가족식 초대.</p>
+            <span>문의: 두 사람에게 직접</span>
+          </aside>
+        </div>
+        <div className="page-bottomline"><span>중간면 끝</span><span>다음 면: 사진과 연애 연표</span></div>
       </section>
 
       <section className="feature-page section-pad" id="feature" data-reveal="page">
