@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "The Wedding Edition",
-  description: "신문의 한 호처럼 기록한 박서준과 한지우의 모바일 청첩장.",
+  title: "결혼일보 | 한원영·이나경 특집호",
+  description: "10년 만나고 결혼하는 한원영·이나경의 소식을 신문 한 호에 실었습니다.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

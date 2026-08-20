@@ -3,31 +3,31 @@ import type { ReactNode } from "react";
 import ScrollEffects from "./scroll-effects";
 
 export const metadata: Metadata = {
-  title: "결혼일보 — 한원영·이나경 특집호",
-  description: "두 사람의 결혼을 한 부의 신문으로 기록한 모바일 청첩장.",
+  title: "결혼일보 | 한원영·이나경 특집호",
+  description: "10년 만나고 결혼하는 한원영·이나경의 소식을 신문 한 호에 실었습니다.",
 };
 
 const friendNotes = [
-  ["친구 제보 01", "결혼 발표, 뒤늦은 행정 처리", "제보에 따르면 둘은 이미 상대방 주문을 대신하고, 메뉴판을 한 장만 본다. 달라진 건 혼인 여부뿐이라는 증언이다."],
-  ["친구 제보 02", "동시 웃음 현상 또 포착", "원영이 먼저 웃든 나경이 먼저 웃든 결과는 같다. 잠시 뒤 둘 다 웃고 있고, 주변 사람은 영문을 모른다."],
-  ["친구 제보 03", "질문은 달라도 답은 ‘드디어’", "결혼 소식을 들은 지인들의 첫 반응은 대체로 비슷했다. 축하보다 먼저 나온 말이라 그대로 싣는다."],
+  ["친구 제보 01", "결혼 발표, 사실상 뒤늦은 신고", "둘은 이미 서로의 주문을 대신하고 메뉴판도 한 장만 본다. 결혼은 새 소식이다. 생활은 오래전부터 그랬다."],
+  ["친구 제보 02", "한 명 웃으면 다른 한 명도 웃음", "원영이 먼저 웃어도 나경이 먼저 웃어도 잠시 뒤엔 둘 다 웃고 있다. 옆 사람만 영문을 모른다."],
+  ["친구 제보 03", "축하보다 먼저 나온 말, ‘드디어’", "결혼 소식을 들은 지인들은 한 박자 쉬고 ‘드디어’라고 했다. 본지도 그대로 적는다."],
 ];
 
 const celebrityDesk = [
   ["도널드 트럼프", "“아주 큰 결혼” 주장(가상)"],
-  ["테일러 스위프트", "10년짜리 Love Story, 결말 확인"],
-  ["데이비드 베컴", "원팀 계약·이적 조항 없음"],
-  ["BTS RM", "축사는 길게, 결론은 둘이 잘 살 것"],
-  ["아이유", "10월 17일을 ‘좋은 날’로 지정"],
-  ["손흥민", "전반 5년·후반 5년, 이제 본 경기"],
-  ["유재석", "사회 봐야 할 것 같은 이름만 등장"],
+  ["테일러 스위프트", "10년짜리 Love Story, 다음 편은 부부편"],
+  ["데이비드 베컴", "원팀 10년, 이적설 끝"],
+  ["BTS RM", "축사는 길어질 조짐, 결론은 축하"],
+  ["아이유", "10월 17일, 오늘만큼은 ‘좋은 날’"],
+  ["손흥민", "전반 5년, 후반 5년. 연장전 없이 결혼"],
+  ["유재석", "사회는 안 보지만 이름은 실림"],
 ];
 
 const extraDesk = [
-  ["사설 / EDITORIAL", "10년이면 승인 도장 찍을 때도 됐다", "본지는 2016년부터 두 사람을 장기 취재해 왔다. 표본은 충분하고 반대 의견은 접수되지 않았다. 이에 편집국은 결혼을 만장일치로 승인한다."],
-  ["속보 / CITY DESK", "저녁 메뉴 결정권, 여전히 공동 소유", "‘아무거나’와 ‘진짜 아무거나’의 차이를 두고 협상이 이어졌으나 관계에는 이상이 없었다. 양측은 내일 다시 논의하기로 했다."],
-  ["생활 / HOME FILE", "각자의 물건, 국경 없이 왕래 중", "충전기와 겉옷, 먹다 남긴 간식의 소유권이 흐려진 지 오래다. 관계자는 정리할 생각이 없어 보인다고 전했다."],
-  ["검증 / FACT CHECK", "‘드디어’는 과장된 표현인가", "가족과 친구의 반응을 교차 확인했다. 놀랐다는 사람보다 ‘이제 하네’라고 말한 사람이 많았다. 판정은 사실에 가깝다."],
+  ["사설 / EDITORIAL", "10년이면 승인 도장 찍을 때도 됐다", "본지는 2016년부터 두 사람을 지켜봤다. 10년이면 기사는 충분하다. 편집국의 결론도 길지 않았다. 결혼 승인."],
+  ["속보 / CITY DESK", "저녁 메뉴 결정권, 여전히 공동 소유", "‘아무거나’와 ‘진짜 아무거나’가 같은 말인지를 두고 협상은 계속됐다. 결론은 못 냈다. 관계에는 별문제 없다."],
+  ["생활 / HOME FILE", "각자의 물건, 국경 없이 왕래 중", "충전기, 겉옷, 먹다 남긴 간식. 누구 것인지 따지기 시작하면 대화가 길어진다. 둘은 대체로 그냥 쓴다."],
+  ["검증 / FACT CHECK", "‘드디어’는 과장된 표현인가", "가족과 친구에게 확인했다. 놀랐다는 사람보다 ‘이제 하네’라고 말한 사람이 많았다. ‘드디어’는 과장이 아니었다."],
 ];
 
 const celebrityPhotos = [
@@ -58,10 +58,10 @@ const celebrityPhotos = [
 ];
 
 const timeline = [
-  ["2016. 04", "장기취재 시작", "두 사람이 같은 사진에 자주 등장하기 시작했다. 당시엔 아무도 10년짜리 기사인 줄 몰랐다."],
-  ["2022. 08", "사진첩 과밀", "여행 사진 대부분에 둘 중 한 명이 찍혀 있다. 풍경 사진은 상대적으로 귀하다."],
-  ["2024. 12", "물건의 국경 소멸", "각자의 집이라는 표현이 무색해졌다. 충전기는 공동 재산에 가까워졌다."],
-  ["2026. 06", "특종 확정", "결혼 소식이 전해졌다. 가족과 친구는 놀라기보다 고개를 끄덕였다."],
+  ["2016. 04", "장기취재 시작", "같은 사진에 둘이 자주 찍히기 시작했다. 그때는 이 기사가 10년짜리일 줄 아무도 몰랐다."],
+  ["2022. 08", "사진첩 과밀", "여행 사진을 넘기면 둘 중 한 명은 꼭 나온다. 정작 풍경만 찍힌 사진은 드물다."],
+  ["2024. 12", "물건의 국경 소멸", "‘각자의 집’이라는 말이 슬슬 어색해졌다. 충전기는 사실상 공용이다."],
+  ["2026. 06", "특종 확정", "결혼 소식을 전했다. 가족과 친구는 놀라는 대신 고개부터 끄덕였다."],
 ];
 
 const schedule = [
@@ -150,23 +150,23 @@ export default function Home() {
         <div className="front-page-grid">
           <article className="lead-story">
             <p className="article-label">1면 톱기사 / EXCLUSIVE</p>
-            <h2>한원영·이나경,<br /><em>결혼을 선언하다</em></h2>
-            <p className="lead-summary">연애 10년. 더 미룰 명분이 사라졌다. 두 사람은 올가을 가족들 앞에서 결혼한다.</p>
+            <h2>한원영·이나경,<br /><em>진짜 결혼한다</em></h2>
+            <p className="lead-summary">연애 10년. 더 미룰 명분은 없다. 두 사람은 올가을 가족 앞에서 결혼한다.</p>
             <Rule className="short-rule" />
-            <p className="dense-copy">본지가 장기 취재해 온 한원영·이나경 커플이 오는 10월 17일 결혼식을 올린다. 가족들은 “축하한다”와 “이제야”를 거의 동시에 말했다. 두 사람은 별다른 해명 없이 웃었다.</p>
+            <p className="dense-copy">본지가 10년 동안 쫓던 한원영·이나경 소식이 드디어 마감됐다. 두 사람은 오는 10월 17일 결혼식을 올린다. 가족들은 “축하한다”와 “이제야”를 거의 동시에 말했다. 당사자들은 웃기만 했다.</p>
             <div className="article-byline">취재: 결혼일보 장기취재팀 · 사진: 초안용 샘플</div>
           </article>
 
           <figure className="front-page-photo">
             <img data-scroll-parallax="photo" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
-            <figcaption>▲ 보도용 샘플 사진. 주인공 사진 입수 즉시 교체한다.</figcaption>
+            <figcaption>▲ 보도용 샘플 사진. 주인공 사진이 들어오는 대로 바꾼다.</figcaption>
           </figure>
 
           <aside className="wire-column">
             <p className="article-label">가상 축복 / WORLD WIRE</p>
-            <h3>해외 축하 전문<br />잇따랐다는 설정</h3>
+            <h3>해외 축하 전문<br />왔다는 셈 치고 보도</h3>
             <p className="wire-quote">“아주 크고 훌륭한 결혼이다.”</p>
-            <p className="tiny-note">트럼프가 했을 법한 문장. 실제 발언은 아닙니다.</p>
+            <p className="tiny-note">트럼프가 했을 법한 문장. 실제로 한 말은 아니다.</p>
             <Rule />
             <p className="article-label">오늘의 핵심</p>
             <div className="index-row"><span>결혼식</span><strong>2026.10.17</strong></div>
@@ -178,7 +178,7 @@ export default function Home() {
 
       <section className="people-page section-pad" id="people">
         <PageFolio page="2면" topics="PEOPLE / SOCIAL / CELEBRITY" />
-        <SectionHead className="people-section-head" label="PEOPLE DESK / FIELD REPORT" title={<>제보는 쌓였고<br /><span>결론은 하나였다</span></>} note={<>친구들 증언을 종합했다.<br />반론은 받지 않았다.</>} />
+        <SectionHead className="people-section-head" label="PEOPLE DESK / FIELD REPORT" title={<>제보는 많았고<br /><span>새로울 건 없었다</span></>} note={<>친구들 말을 모아봤다.<br />대체로 같은 얘기였다.</>} />
         <Rule className="people-rule" />
         <div className="people-layout">
           <div className="friend-report">
@@ -203,11 +203,11 @@ export default function Home() {
             <div className="file-heading">
               <div>
                 <p className="article-label">WORLD WIRE / PARODY FILE</p>
-                <h3>유명인들의<br /><em>축복 릴레이</em></h3>
+                <h3>유명인들의<br /><em>축하 전문(가상)</em></h3>
               </div>
               <span>별책<br />A-01</span>
             </div>
-            <p className="tiny-note">전부 가상이다. 본인들은 이 지면의 존재도 모를 가능성이 높다.</p>
+            <p className="tiny-note">전부 가상이다. 본인들은 이 신문이 나온 줄도 모른다.</p>
             <div className="celebrity-list">
               {celebrityDesk.map(([name, angle], index) => (
                 <article className="celebrity-entry" key={name}>
@@ -228,7 +228,7 @@ export default function Home() {
             <p className="article-label">EXTRA EDITION / 결혼일보 편집국</p>
             <h2>본지, 오늘도<br /><em>두 사람만 보도</em></h2>
           </div>
-          <p className="extra-deck">국제·사회·생활면을 모두 동원했다.<br />다른 뉴스는 다음 호에 싣는다.</p>
+          <p className="extra-deck">국제·사회·생활면을 모두 동원했다.<br />다른 뉴스는 지면 사정으로 뺐다.</p>
         </div>
         <Rule className="extra-rule" />
 
@@ -253,9 +253,9 @@ export default function Home() {
 
           <aside className="editorial-note">
             <p className="article-label">편집국 메모</p>
-            <p>긴 취재 끝에 팩트 하나만 남긴다.</p>
+            <p>10년을 봤더니 이건 확실했다.</p>
             <strong>둘이 같이 있으면<br />둘 다 더 웃긴다.</strong>
-            <span>— 현장 목격자 일동</span>
+            <span>현장 목격자 일동</span>
           </aside>
         </div>
 
@@ -263,7 +263,7 @@ export default function Home() {
           <div className="photo-wire-heading">
             <div>
               <p className="article-label">PHOTO WIRE / WORLD DESK</p>
-              <h3>세계적 축하설,<br /><em>사진부터 확보</em></h3>
+              <h3>세계적 축하설,<br /><em>일단 사진은 확보</em></h3>
             </div>
             <p>사진은 진짜, 축하는 가짜.<br />본인들의 지지나 연락을 뜻하지 않는다.</p>
           </div>
@@ -305,14 +305,14 @@ export default function Home() {
           <article className="photo-story">
             <figure className="photo-feature">
               <img data-scroll-parallax="photo" src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
-              <figcaption>▲ 의자는 두 자리. 당일에도 대체로 붙어 앉을 예정이다.</figcaption>
+              <figcaption>▲ 의자는 두 자리. 당일에도 둘은 붙어 앉는다.</figcaption>
             </figure>
             <div className="photo-story-copy">
               <div>
                 <p className="article-label">PHOTO NOTE / FILE NO. 1017</p>
                 <h3>꽃은 바뀌어도<br />주인공은 확정</h3>
               </div>
-              <p>꽃 배치는 바뀔 수 있다. 좌석도 조정될 수 있다. 신랑 한원영과 신부 이나경은 바뀌지 않는다. 이 지면에서 제일 확실한 정보다.</p>
+              <p>꽃과 좌석은 아직 바뀔 수 있다. 신랑 한원영과 신부 이나경은 확정이다. 지금 이 신문에서 가장 믿을 만한 정보다.</p>
             </div>
           </article>
 
@@ -372,8 +372,8 @@ export default function Home() {
           <aside className="family-note-panel" id="family-note">
             <div className="family-note-stamp">FAMILY<br />EDITION</div>
             <p className="article-label">FAMILY NOTE / 가족식 안내</p>
-            <h3>가족끼리 모여<br /><em>밥 먹고 인사드려요.</em></h3>
-            <p>예식은 50명 남짓한 가족식입니다. 참석 여부는 따로 받지 않을게요. 오시는 가족과 천천히 밥 먹고 인사드리겠습니다.</p>
+            <h3>가족끼리 모여<br /><em>밥 먹고 인사드릴게요.</em></h3>
+            <p>예식은 50명 남짓한 가족식입니다. 참석 여부는 따로 받지 않습니다. 오시는 가족과 천천히 밥 먹고 인사 나누겠습니다.</p>
             <a className="family-note-button" href="mailto:hello@example.com?subject=한원영%20이나경%20결혼일보%20가족%20축하%20엽서">축하 엽서 보내기 <span>→</span></a>
           </aside>
         </div>
