@@ -8,32 +8,32 @@ export const metadata: Metadata = {
 };
 
 const friendNotes = [
-  ["친구 제보 01", "이미 부부였다는 증거", "서로의 커피 주문을 외우고, 메뉴를 고를 때 늘 상대방 몫까지 생각한다. 결혼 발표만 오늘이었다."],
-  ["친구 제보 02", "가장 자주 목격된 장면", "한 사람이 먼저 웃으면 다른 한 사람도 결국 웃는다. 이 장면은 장소와 시간에 관계없이 반복됐다."],
-  ["친구 제보 03", "주변인의 최종 의견", "둘이 함께 있으면 각자일 때보다 더 편안해 보인다. 그러므로 계속 함께 있어야 한다."],
+  ["친구 제보 01", "결혼 발표, 뒤늦은 행정 처리", "제보에 따르면 둘은 이미 상대방 주문을 대신하고, 메뉴판을 한 장만 본다. 달라진 건 혼인 여부뿐이라는 증언이다."],
+  ["친구 제보 02", "동시 웃음 현상 또 포착", "원영이 먼저 웃든 나경이 먼저 웃든 결과는 같다. 잠시 뒤 둘 다 웃고 있고, 주변 사람은 영문을 모른다."],
+  ["친구 제보 03", "질문은 달라도 답은 ‘드디어’", "결혼 소식을 들은 지인들의 첫 반응은 대체로 비슷했다. 축하보다 먼저 나온 말이라 그대로 싣는다."],
 ];
 
 const celebrityDesk = [
-  ["도널드 트럼프", "가장 위대한 결혼"],
-  ["테일러 스위프트", "Love Story 현실화"],
-  ["데이비드 베컴", "평생 원팀 선언"],
-  ["BTS RM", "서로의 문장이 되길"],
-  ["아이유", "좋은 날, 좋은 사람"],
-  ["손흥민", "연장전 없는 승리"],
-  ["유재석", "두 분 행복하세요"],
+  ["도널드 트럼프", "“아주 큰 결혼” 주장(가상)"],
+  ["테일러 스위프트", "10년짜리 Love Story, 결말 확인"],
+  ["데이비드 베컴", "원팀 계약·이적 조항 없음"],
+  ["BTS RM", "축사는 길게, 결론은 둘이 잘 살 것"],
+  ["아이유", "10월 17일을 ‘좋은 날’로 지정"],
+  ["손흥민", "전반 5년·후반 5년, 이제 본 경기"],
+  ["유재석", "사회 봐야 할 것 같은 이름만 등장"],
 ];
 
 const extraDesk = [
-  ["사설 / EDITORIAL", "이 결혼은 너무 오래 기다렸다", "결혼일보 편집국은 두 사람이 10년 동안 보여준 성실한 동행을 높이 평가한다. 이제는 같은 식탁의 의자를 공식적으로 배정할 때다."],
-  ["속보 / CITY DESK", "한원영 씨, 이나경 씨의 표정만으로 하루를 판단", "현장 취재 결과 한 사람이 웃으면 다른 한 사람의 표정도 3초 안에 풀리는 것으로 확인됐다. 주변인들은 이를 ‘가장 믿을 만한 날씨’라고 부른다."],
-  ["생활 / HOME FILE", "냉장고 안쪽에서 공동생활의 증거 발견", "서로의 취향을 고려한 간식과 상대방이 좋아하는 음료가 나란히 놓여 있었다. 냉장고는 이미 오래전부터 두 사람 편이었다."],
-  ["검증 / FACT CHECK", "‘드디어’라는 반응, 사실인가", "친구와 가족에게 확인한 결과 결혼 소식을 들은 뒤 가장 먼저 나온 단어가 모두 같았다. 취재진은 이 반응을 충분히 납득할 수 있다고 판단했다."],
+  ["사설 / EDITORIAL", "10년이면 승인 도장 찍을 때도 됐다", "본지는 2016년부터 두 사람을 장기 취재해 왔다. 표본은 충분하고 반대 의견은 접수되지 않았다. 이에 편집국은 결혼을 만장일치로 승인한다."],
+  ["속보 / CITY DESK", "저녁 메뉴 결정권, 여전히 공동 소유", "‘아무거나’와 ‘진짜 아무거나’의 차이를 두고 협상이 이어졌으나 관계에는 이상이 없었다. 양측은 내일 다시 논의하기로 했다."],
+  ["생활 / HOME FILE", "각자의 물건, 국경 없이 왕래 중", "충전기와 겉옷, 먹다 남긴 간식의 소유권이 흐려진 지 오래다. 관계자는 정리할 생각이 없어 보인다고 전했다."],
+  ["검증 / FACT CHECK", "‘드디어’는 과장된 표현인가", "가족과 친구의 반응을 교차 확인했다. 놀랐다는 사람보다 ‘이제 하네’라고 말한 사람이 많았다. 판정은 사실에 가깝다."],
 ];
 
 const celebrityPhotos = [
   {
     name: "도널드 트럼프",
-    angle: "가장 위대한 결혼",
+    angle: "‘아주 큰 결혼’ 주장(가상)",
     image: "/celebs/trump.jpg",
     caption: "공식 초상 사진을 빌린 패러디 지면",
     credit: "White House / Shealah Craighead · Public domain",
@@ -41,7 +41,7 @@ const celebrityPhotos = [
   },
   {
     name: "테일러 스위프트",
-    angle: "Love Story 현실화",
+    angle: "10년짜리 Love Story, 결말 확인",
     image: "/celebs/taylor-swift.jpg",
     caption: "콘서트 현장 사진을 빌린 패러디 지면",
     credit: "Emazasm · CC BY 4.0",
@@ -49,7 +49,7 @@ const celebrityPhotos = [
   },
   {
     name: "손흥민",
-    angle: "연장전 없는 승리",
+    angle: "전반 5년·후반 5년, 이제 본 경기",
     image: "/celebs/son.jpg",
     caption: "경기장 사진을 빌린 패러디 지면",
     credit: "Crofab · CC BY-SA 3.0",
@@ -58,10 +58,10 @@ const celebrityPhotos = [
 ];
 
 const timeline = [
-  ["2016. 04", "첫 만남", "친구들의 기억 속 두 사람이 처음 같은 장면에 등장한 달."],
-  ["2022. 08", "여름 휴가", "사진 842장 중 서로를 찍은 사진이 811장으로 확인됨."],
-  ["2024. 12", "다음 장 논의", "각자의 냉장고에서 상대방의 물건이 발견되기 시작함."],
-  ["2026. 06", "결혼 발표", "주변 지인 전원 ‘드디어’라는 반응을 보임."],
+  ["2016. 04", "장기취재 시작", "두 사람이 같은 사진에 자주 등장하기 시작했다. 당시엔 아무도 10년짜리 기사인 줄 몰랐다."],
+  ["2022. 08", "사진첩 과밀", "여행 사진 대부분에 둘 중 한 명이 찍혀 있다. 풍경 사진은 상대적으로 귀하다."],
+  ["2024. 12", "물건의 국경 소멸", "각자의 집이라는 표현이 무색해졌다. 충전기는 공동 재산에 가까워졌다."],
+  ["2026. 06", "특종 확정", "결혼 소식이 전해졌다. 가족과 친구는 놀라기보다 고개를 끄덕였다."],
 ];
 
 const schedule = [
@@ -130,7 +130,7 @@ export default function Home() {
           <span className="masthead-side masthead-right">SPECIAL<br />WEDDING ISSUE</span>
         </div>
         <div className="paper-deck">
-          <strong>두 사람이 만났고, 모두가 기다렸으며, 오늘의 1면이 완성됐다.</strong>
+          <strong>2016년 첫 만남, 2026년 결혼. 속보치고는 취재가 길었다.</strong>
           <span>한원영 &amp; 이나경의 결혼 소식</span>
         </div>
         <div className="breaking-strip">
@@ -151,34 +151,34 @@ export default function Home() {
           <article className="lead-story">
             <p className="article-label">1면 톱기사 / EXCLUSIVE</p>
             <h2>한원영·이나경,<br /><em>결혼을 선언하다</em></h2>
-            <p className="lead-summary">서로의 하루를 가장 먼저 묻던 두 사람이 이제 서로의 내일을 가장 먼저 책임지기로 했다.</p>
+            <p className="lead-summary">연애 10년. 더 미룰 명분이 사라졌다. 두 사람은 올가을 가족들 앞에서 결혼한다.</p>
             <Rule className="short-rule" />
-            <p className="dense-copy">두 사람은 오는 10월 17일 서울 아카이브 홀에서 결혼식을 올린다. 취재진이 “서로의 단점은 무엇이냐”고 묻자 7초간 웃은 뒤 “그런 건 아직 발견하지 못했다”고 답했다.</p>
-            <div className="article-byline">취재: 결혼일보 공동취재단 · 사진: 샘플 이미지</div>
+            <p className="dense-copy">본지가 장기 취재해 온 한원영·이나경 커플이 오는 10월 17일 결혼식을 올린다. 가족들은 “축하한다”와 “이제야”를 거의 동시에 말했다. 두 사람은 별다른 해명 없이 웃었다.</p>
+            <div className="article-byline">취재: 결혼일보 장기취재팀 · 사진: 초안용 샘플</div>
           </article>
 
           <figure className="front-page-photo">
             <img data-scroll-parallax="photo" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
-            <figcaption>▲ 결혼을 앞둔 두 사람. 실제 사진으로 교체할 자리입니다.</figcaption>
+            <figcaption>▲ 보도용 샘플 사진. 주인공 사진 입수 즉시 교체한다.</figcaption>
           </figure>
 
           <aside className="wire-column">
             <p className="article-label">가상 축복 / WORLD WIRE</p>
-            <h3>유명인 축복 명단<br />곧 공개 예정</h3>
-            <p className="wire-quote">“이 결혼은 아주 훌륭하다.”</p>
-            <p className="tiny-note">실제 발언이 아닌 초안용 패러디 문구입니다.</p>
+            <h3>해외 축하 전문<br />잇따랐다는 설정</h3>
+            <p className="wire-quote">“아주 크고 훌륭한 결혼이다.”</p>
+            <p className="tiny-note">트럼프가 했을 법한 문장. 실제 발언은 아닙니다.</p>
             <Rule />
             <p className="article-label">오늘의 핵심</p>
             <div className="index-row"><span>결혼식</span><strong>2026.10.17</strong></div>
             <div className="index-row"><span>신랑·신부</span><strong>한원영 &amp; 이나경</strong></div>
-            <div className="index-row"><span>독자의 할 일</span><strong>축하하기</strong></div>
+            <div className="index-row"><span>독자 행동요령</span><strong>웃고 축하하기</strong></div>
           </aside>
         </div>
       </section>
 
       <section className="people-page section-pad" id="people">
         <PageFolio page="2면" topics="PEOPLE / SOCIAL / CELEBRITY" />
-        <SectionHead className="people-section-head" label="PEOPLE DESK / FIELD REPORT" title={<>사랑은 <span>제보로 확인된다</span></>} note={<>친구들의 관찰과<br />가상 축복을 한 면에 묶었습니다.</>} />
+        <SectionHead className="people-section-head" label="PEOPLE DESK / FIELD REPORT" title={<>제보는 쌓였고<br /><span>결론은 하나였다</span></>} note={<>친구들 증언을 종합했다.<br />반론은 받지 않았다.</>} />
         <Rule className="people-rule" />
         <div className="people-layout">
           <div className="friend-report">
@@ -207,7 +207,7 @@ export default function Home() {
               </div>
               <span>별책<br />A-01</span>
             </div>
-            <p className="tiny-note">실제 축하 메시지가 아닙니다. 이름만 빌린 한 줄 패러디입니다.</p>
+            <p className="tiny-note">전부 가상이다. 본인들은 이 지면의 존재도 모를 가능성이 높다.</p>
             <div className="celebrity-list">
               {celebrityDesk.map(([name, angle], index) => (
                 <article className="celebrity-entry" key={name}>
@@ -218,7 +218,7 @@ export default function Home() {
             </div>
           </aside>
         </div>
-        <div className="page-bottomline"><span>2면 끝</span><span>다음 면: 사설·속보·유명인 포토 와이어</span></div>
+        <div className="page-bottomline"><span>2면 끝</span><span>다음 면: 편집국의 과도한 편파보도</span></div>
       </section>
 
       <section className="extra-page section-pad" id="extra">
@@ -226,9 +226,9 @@ export default function Home() {
         <div className="extra-masthead">
           <div>
             <p className="article-label">EXTRA EDITION / 결혼일보 편집국</p>
-            <h2>오늘도 두 사람을<br /><em>과하게 보도합니다</em></h2>
+            <h2>본지, 오늘도<br /><em>두 사람만 보도</em></h2>
           </div>
-          <p className="extra-deck">중요한 소식은 반복해서 읽어야 합니다.<br />특히 한원영·이나경에 관한 소식이라면.</p>
+          <p className="extra-deck">국제·사회·생활면을 모두 동원했다.<br />다른 뉴스는 다음 호에 싣는다.</p>
         </div>
         <Rule className="extra-rule" />
 
@@ -236,7 +236,7 @@ export default function Home() {
           <article className="editorial-column">
             <p className="article-label">EDITORIAL / 오늘의 사설</p>
             <h3>{extraDesk[0][1]}</h3>
-            <p className="editorial-quote">“이제는 두 사람의 다음 장면을 독자들이 직접 목격해야 한다.”</p>
+            <p className="editorial-quote">“연애 10년이면 표본도 충분하다.”</p>
             <p className="editorial-copy">{extraDesk[0][2]}</p>
             <div className="article-byline">결혼일보 편집국 만장일치 · 패러디 사설</div>
           </article>
@@ -253,8 +253,8 @@ export default function Home() {
 
           <aside className="editorial-note">
             <p className="article-label">편집국 메모</p>
-            <p>이 지면에서 가장 객관적인 사실은 단 하나입니다.</p>
-            <strong>둘이 함께 있으면<br />주변이 좋아진다.</strong>
+            <p>긴 취재 끝에 팩트 하나만 남긴다.</p>
+            <strong>둘이 같이 있으면<br />둘 다 더 웃긴다.</strong>
             <span>— 현장 목격자 일동</span>
           </aside>
         </div>
@@ -263,9 +263,9 @@ export default function Home() {
           <div className="photo-wire-heading">
             <div>
               <p className="article-label">PHOTO WIRE / WORLD DESK</p>
-              <h3>축복의 표정들,<br /><em>사진으로 먼저 도착</em></h3>
+              <h3>세계적 축하설,<br /><em>사진부터 확보</em></h3>
             </div>
-            <p>실제 축하·지지·연락이 아닙니다.<br />사진과 이름을 빌린 허구의 패러디입니다.</p>
+            <p>사진은 진짜, 축하는 가짜.<br />본인들의 지지나 연락을 뜻하지 않는다.</p>
           </div>
           <div className="photo-wire-grid">
             {celebrityPhotos.map((person, index) => (
@@ -289,9 +289,9 @@ export default function Home() {
           </article>
           <aside className="classified-strip">
             <p className="article-label">구인·구혼·구독 / CLASSIFIED</p>
-            <h3>한원영·이나경<br /><em>평생 이용권</em></h3>
-            <p>조건: 서로를 계속 좋아할 것.<br />혜택: 매일의 편, 평생의 동료, 가족식 초대.</p>
-            <span>문의: 두 사람에게 직접</span>
+            <h3>평생 동거인<br /><em>모집 마감</em></h3>
+            <p>지원자: 한원영·이나경.<br />심사 기간: 10년. 결과: 둘 다 합격.</p>
+            <span>재공고 예정 없음</span>
           </aside>
         </div>
         <div className="page-bottomline"><span>중간면 끝</span><span>다음 면: 사진과 연애 연표</span></div>
@@ -299,26 +299,26 @@ export default function Home() {
 
       <section className="feature-page section-pad" id="feature">
         <PageFolio page="3면" topics="PHOTO / ARCHIVE / LONG READ" />
-        <SectionHead className="feature-section-head" label="FEATURE / PHOTO JOURNAL" title={<>다음 장면은 <span>기록된다</span></>} note={<>사진 한 장과 연애 연표를<br />하나의 특집 기사로 엮었습니다.</>} />
+        <SectionHead className="feature-section-head" label="FEATURE / PHOTO JOURNAL" title={<>10년치 기록,<br /><span>아직 끝 안 남</span></>} note={<>사진첩과 기억을 뒤졌다.<br />삭제할 장면은 별로 없었다.</>} />
         <Rule className="feature-rule" />
         <div className="feature-layout">
           <article className="photo-story">
             <figure className="photo-feature">
               <img data-scroll-parallax="photo" src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
-              <figcaption>▲ 두 사람이 함께 앉을 자리. 이날의 가장 중요한 배경이 됩니다.</figcaption>
+              <figcaption>▲ 의자는 두 자리. 당일에도 대체로 붙어 앉을 예정이다.</figcaption>
             </figure>
             <div className="photo-story-copy">
               <div>
                 <p className="article-label">PHOTO NOTE / FILE NO. 1017</p>
-                <h3>좋은 소식은<br />자꾸 읽고 싶어진다</h3>
+                <h3>꽃은 바뀌어도<br />주인공은 확정</h3>
               </div>
-              <p>꽃이 놓이고, 의자가 준비되고, 하객의 메시지가 쌓인다. 두 사람의 다음 장은 거창한 선언보다 이런 작은 장면들로 시작된다.</p>
+              <p>꽃 배치는 바뀔 수 있다. 좌석도 조정될 수 있다. 신랑 한원영과 신부 이나경은 바뀌지 않는다. 이 지면에서 제일 확실한 정보다.</p>
             </div>
           </article>
 
           <aside className="archive-column">
             <p className="article-label">ARCHIVE / SAMPLE DATA</p>
-            <h3>두 사람의<br /><em>연애 연표</em></h3>
+            <h3>10년 장기취재<br /><em>요약 일지</em></h3>
             <div className="timeline-list">
               {timeline.map(([date, title, copy]) => (
                 <div className="timeline-row" key={date}>
@@ -329,9 +329,9 @@ export default function Home() {
             </div>
             <div className="fact-sheet">
               <p className="article-label">초안용 팩트 시트</p>
-              <div><strong>10년</strong><span>함께한 시간</span></div>
-              <div><strong>1팀</strong><span>앞으로의 생활</span></div>
-              <div><strong>∞</strong><span>이어질 이야기</span></div>
+              <div><strong>10년</strong><span>연애 취재 기간</span></div>
+              <div><strong>1팀</strong><span>양측 최종 합의</span></div>
+              <div><strong>50명</strong><span>가족식 예상 규모</span></div>
             </div>
           </aside>
         </div>
@@ -340,7 +340,7 @@ export default function Home() {
 
       <section className="service-page section-pad" id="details">
         <PageFolio page="4면" topics="CITY DESK / FAMILY CEREMONY / NOTE" />
-        <SectionHead className="service-section-head" label="SERVICE / CITY DESK" title={<>예식 정보는 <span>마지막 면</span>에</>} note={<>이 면만큼은 패러디 없이<br />가족식 안내만 전합니다.</>} />
+        <SectionHead className="service-section-head" label="SERVICE / CITY DESK" title={<>날짜·장소는<br /><span>여기서 확인</span></>} note={<>이 면부터는 농담을 줄였다.<br />길 잃으면 안 되니까.</>} />
         <Rule className="service-rule" />
         <div className="service-layout">
           <div className="venue-block">
@@ -372,9 +372,9 @@ export default function Home() {
           <aside className="family-note-panel" id="family-note">
             <div className="family-note-stamp">FAMILY<br />EDITION</div>
             <p className="article-label">FAMILY NOTE / 가족식 안내</p>
-            <h3>작은 식사를<br /><em>함께 나눠요.</em></h3>
-            <p>50명 남짓한 가족식으로 조용히 진행합니다. 참석 여부를 따로 받지 않고, 오시는 가족에게 감사한 마음을 준비하겠습니다.</p>
-            <a className="family-note-button" href="mailto:hello@example.com?subject=한원영%20이나경%20결혼일보%20가족%20축하%20엽서">가족에게 축하 한마디 보내기 <span>→</span></a>
+            <h3>가족끼리 모여<br /><em>밥 먹고 인사드려요.</em></h3>
+            <p>예식은 50명 남짓한 가족식입니다. 참석 여부는 따로 받지 않을게요. 오시는 가족과 천천히 밥 먹고 인사드리겠습니다.</p>
+            <a className="family-note-button" href="mailto:hello@example.com?subject=한원영%20이나경%20결혼일보%20가족%20축하%20엽서">축하 엽서 보내기 <span>→</span></a>
           </aside>
         </div>
       </section>
@@ -383,7 +383,7 @@ export default function Home() {
         <Rule />
         <div className="footer-columns">
           <span>결혼일보 · THE COUPLE TIMES</span>
-          <span>본 신문은 두 사람 자랑으로 구성됩니다.</span>
+          <span>본지는 두 사람 편파보도를 원칙으로 합니다.</span>
           <span>MADE WITH LOVE / 2026</span>
         </div>
         <p className="footer-note">실존 인물의 축하 문구는 모두 가상 패러디이며, 실제 발언이나 지지를 의미하지 않습니다.</p>
