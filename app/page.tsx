@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import NewspaperDelivery from "./newspaper-delivery";
 
 export const metadata: Metadata = {
   title: "결혼일보 | 한원영·이나경 특집호",
@@ -148,10 +149,12 @@ function SectionHead({
 
 export default function Home() {
   return (
-    <main className="invitation-shell">
-      <div className="paper-grain" aria-hidden="true" />
+    <>
+      <NewspaperDelivery />
+      <main className="invitation-shell">
+        <div className="paper-grain" aria-hidden="true" />
 
-      <header className="utility-bar">
+        <header className="utility-bar">
         <span>초안용 가상 패러디 · 실제 보도 아님</span>
         <span>2026년 10월 17일 토요일</span>
         <a href="#family-note">가족식 안내 보기 ↘</a>
@@ -441,7 +444,8 @@ export default function Home() {
           <span>MADE WITH LOVE / 2026</span>
         </div>
         <p className="footer-note">실존 인물의 축하 문구는 모두 가상 패러디이며, 실제 발언이나 지지를 의미하지 않습니다.</p>
-      </footer>
-    </main>
+        </footer>
+      </main>
+    </>
   );
 }

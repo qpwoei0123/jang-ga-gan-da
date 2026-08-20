@@ -35,4 +35,4 @@ The page uses a shared editorial grid but changes the dominant composition per p
 
 ## Motion direction
 
-Scroll motion should feel like a newspaper page being revealed, not a generic landing-page cascade. Page groups use a clipped editorial reveal, photos receive a restrained seven-pixel viewport-relative drift, and the family note gets one stamped arrival. The default HTML remains visible without script, and reduced-motion preferences disable all transforms and transitions.
+Motion is concentrated in one opening delivery scene rather than spread across the long scroll. A small dog carrying a folded newspaper runs toward the reader, settles into a light pant, and turns the whole mobile viewport into a touch target. On touch, the folded paper expands from its center seam and resolves into the real front page. The sequence uses transform, bounded blur, paper texture, and a short fold reveal; it adds no scroll-linked motion or sound. The newspaper stays visible when scripts fail, and reduced-motion preferences skip the run and fold choreography.
