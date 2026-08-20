@@ -35,9 +35,9 @@ img { display: block; max-width: 100%; }
 .delivery-heading small { display: block; margin-bottom: 7px; color: var(--red); font-size: 9px; font-weight: 900; letter-spacing: .12em; }
 .delivery-heading strong { display: block; font-family: var(--serif); font-size: clamp(34px, 10.5vw, 43px); line-height: 1.02; letter-spacing: -.035em; }
 .delivery-dog-stage { position: absolute; z-index: 3; top: 20%; right: 3%; bottom: 14%; left: 3%; display: grid; place-items: center; transform-origin: 50% 72%; animation: dog-approach 2.05s cubic-bezier(.16, 1, .3, 1) both; will-change: transform, filter; }
-.delivery-dog { width: min(88vw, 344px); max-height: 66vh; object-fit: contain; filter: saturate(.74) sepia(.08) contrast(1.02); transform-origin: 50% 70%; animation: dog-stride .22s ease-in-out infinite alternate; user-select: none; }
+.delivery-dog-sprite { display: block; width: min(88vw, 344px); aspect-ratio: 3 / 4; background-image: url("/dog-run-sprite.png"); background-repeat: no-repeat; background-position: 0 0; background-size: 400% 100%; filter: saturate(.58) sepia(.14) contrast(1.06); mix-blend-mode: multiply; transform-origin: 50% 70%; animation: dog-run-sprite .48s steps(1, end) infinite; }
 .phase-arrived .delivery-dog-stage { animation: none; transform: translate3d(0, 0, 0) scale(1); }
-.phase-arrived .delivery-dog { animation: dog-pant .64s ease-in-out infinite alternate; }
+.phase-arrived .delivery-dog-sprite { background-position: 0 0; animation: dog-cutout-breathe .64s ease-in-out infinite alternate; }
 .pant-mark { position: absolute; top: 47%; opacity: 0; color: var(--red); font-family: var(--serif); font-size: 21px; font-weight: 900; font-style: italic; }
 .pant-left { left: 5%; transform: rotate(-9deg); }
 .pant-right { right: 5%; transform: rotate(9deg); }
@@ -79,8 +79,13 @@ img { display: block; max-width: 100%; }
   72% { filter: blur(.25px); transform: translate3d(0, 2vh, 0) scale(.72); }
   100% { opacity: 1; filter: none; transform: translate3d(0, 0, 0) scale(1); }
 }
-@keyframes dog-stride { from { transform: translate3d(-1px, -4px, 0) rotate(-.7deg); } to { transform: translate3d(1px, 4px, 0) rotate(.7deg); } }
-@keyframes dog-pant { from { transform: translate3d(0, -2px, 0) scale(1); } to { transform: translate3d(0, 2px, 0) scale(1.012); } }
+@keyframes dog-run-sprite {
+  0%, 24.99% { background-position: 0 0; }
+  25%, 49.99% { background-position: 33.333% 0; }
+  50%, 74.99% { background-position: 66.666% 0; }
+  75%, 100% { background-position: 100% 0; }
+}
+@keyframes dog-cutout-breathe { from { transform: translate3d(0, -2px, 0) scale(1); } to { transform: translate3d(0, 2px, 0) scale(1.012); } }
 @keyframes pant-pulse { from { opacity: .35; transform: translateY(4px) rotate(-8deg); } to { opacity: 1; transform: translateY(-4px) rotate(-8deg); } }
 @keyframes route-rush { from { transform: scaleX(.42); } to { transform: scaleX(1); } }
 @keyframes paper-unfold { 0% { filter: brightness(.74); transform: scaleX(.02); } 70% { filter: brightness(.98); transform: scaleX(1.025); } 100% { filter: none; transform: scaleX(1); } }
@@ -400,8 +405,9 @@ figcaption { margin-top: 7px; color: var(--muted); font-size: 9px; line-height: 
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .delivery-dog-stage, .delivery-dog, .pant-mark, .delivery-speed-lines i { animation: none !important; }
+  .delivery-dog-stage, .delivery-dog-sprite, .pant-mark, .delivery-speed-lines i { animation: none !important; }
   .delivery-dog-stage { opacity: 1; filter: none; transform: none; }
+  .delivery-dog-sprite { background-position: 0 0; }
   .pant-mark { opacity: .7; }
   .phase-opening { animation: none; opacity: 0; }
   .phase-opening .delivery-half { animation: none; transform: scaleX(1); }

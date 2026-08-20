@@ -52,7 +52,7 @@ export default function NewspaperDelivery() {
         </span>
 
         <span className="delivery-dog-stage" aria-hidden="true">
-          <img className="delivery-dog" src="/dog-newspaper.png" width="768" height="1152" alt="" draggable="false" />
+          <span className="delivery-dog-sprite" />
           <span className="pant-mark pant-left">헥</span>
           <span className="pant-mark pant-right">헥</span>
         </span>
