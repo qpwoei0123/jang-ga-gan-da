@@ -14,13 +14,13 @@ const friendNotes = [
 ];
 
 const celebrityDesk = [
-  ["도널드 트럼프", "“아주 큰 결혼” 주장(가상)"],
-  ["테일러 스위프트", "10년짜리 Love Story, 다음 편은 부부편"],
-  ["데이비드 베컴", "원팀 10년, 이적설 끝"],
-  ["BTS RM", "축사는 길어질 조짐, 결론은 축하"],
-  ["아이유", "10월 17일, 오늘만큼은 ‘좋은 날’"],
-  ["손흥민", "전반 5년, 후반 5년. 연장전 없이 결혼"],
-  ["유재석", "사회는 안 보지만 이름은 실림"],
+  ["도널드 트럼프", "“10년은 아주 긴 시간이다. 믿기 힘들 만큼 길다. 둘의 결혼은 크게, 정말 크게 축하할 일이다.”"],
+  ["테일러 스위프트", "“10년짜리 Love Story라면 마지막 장은 결혼식이어야 한다. 다음 앨범은 부부 편으로 가자.”"],
+  ["데이비드 베컴", "“같은 팀으로 10년을 뛰었다. 이제 서로 어디로 뛸지 눈빛만 봐도 안다. 유니폼만 부부로 바꾸면 된다.”"],
+  ["BTS RM", "“사랑은 시간을 견디는 일보다 둘만의 시간을 계속 만드는 일에 가깝다고 생각한다. 두 사람은 이미 10년치 답을 써왔다.”"],
+  ["아이유", "“오래 만난 두 사람이 같은 날짜를 기다렸다는 게 참 좋다. 10월 17일은 분명 좋은 날이다.”"],
+  ["손흥민", "“전반 5년, 후반 5년 잘 뛰었다. 이제부터가 진짜 경기다. 두 분 모두 오래, 행복하게 가셨으면 좋겠다.”"],
+  ["유재석", "“아니, 10년을 만나고 이제 결혼한다고요? 이건 제가 진행할 일이 아니고 가족분들이 박수부터 치셔야 합니다.”"],
 ];
 
 const extraDesk = [
@@ -33,7 +33,7 @@ const extraDesk = [
 const celebrityPhotos = [
   {
     name: "도널드 트럼프",
-    angle: "‘아주 큰 결혼’ 주장(가상)",
+    angle: "“10년은 길다. 아주 길다. 크게 축하한다.”",
     image: "/celebs/trump.jpg",
     caption: "공식 초상 사진을 빌린 패러디 지면",
     credit: "White House / Shealah Craighead · Public domain",
@@ -41,7 +41,7 @@ const celebrityPhotos = [
   },
   {
     name: "테일러 스위프트",
-    angle: "10년짜리 Love Story, 결말 확인",
+    angle: "“10년짜리 Love Story, 다음 장은 결혼식.”",
     image: "/celebs/taylor-swift.jpg",
     caption: "콘서트 현장 사진을 빌린 패러디 지면",
     credit: "Emazasm · CC BY 4.0",
@@ -49,7 +49,7 @@ const celebrityPhotos = [
   },
   {
     name: "손흥민",
-    angle: "전반 5년·후반 5년, 이제 본 경기",
+    angle: "“전반 5년, 후반 5년. 이제 진짜 경기.”",
     image: "/celebs/son.jpg",
     caption: "경기장 사진을 빌린 패러디 지면",
     credit: "Crofab · CC BY-SA 3.0",
@@ -207,7 +207,7 @@ export default function Home() {
               </div>
               <span>별책<br />A-01</span>
             </div>
-            <p className="tiny-note">전부 가상이다. 본인들은 이 신문이 나온 줄도 모른다.</p>
+            <p className="tiny-note">각자의 말투와 활동 분야를 빌린 가상 축사다. 실제 발언은 아니다.</p>
             <div className="celebrity-list">
               {celebrityDesk.map(([name, angle], index) => (
                 <article className="celebrity-entry" key={name}>
@@ -265,7 +265,7 @@ export default function Home() {
               <p className="article-label">PHOTO WIRE / WORLD DESK</p>
               <h3>세계적 축하설,<br /><em>일단 사진은 확보</em></h3>
             </div>
-            <p>사진은 진짜, 축하는 가짜.<br />본인들의 지지나 연락을 뜻하지 않는다.</p>
+            <p>사진은 진짜, 아래 문장은 패러디.<br />실제 지지나 연락을 뜻하지 않는다.</p>
           </div>
           <div className="photo-wire-grid">
             {celebrityPhotos.map((person, index) => (
