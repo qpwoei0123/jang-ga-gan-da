@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import ScrollEffects from "./scroll-effects";
 
 export const metadata: Metadata = {
   title: "결혼일보 | 한원영·이나경 특집호",
@@ -151,7 +150,6 @@ export default function Home() {
   return (
     <main className="invitation-shell">
       <div className="paper-grain" aria-hidden="true" />
-      <ScrollEffects />
 
       <header className="utility-bar">
         <span>초안용 가상 패러디 · 실제 보도 아님</span>
@@ -175,9 +173,19 @@ export default function Home() {
           <span>한원영 &amp; 이나경의 결혼 소식</span>
         </div>
         <div className="breaking-strip">
-          <span>긴급속보</span>
-          <strong>한원영·이나경, 10년 연애 끝 결혼 발표… 가족들 “이제야?”</strong>
-          <span className="breaking-time">14:00 UPDATED</span>
+          <span className="breaking-label">긴급속보</span>
+          <div className="breaking-marquee">
+            <div className="breaking-track">
+              <span className="breaking-item">
+                한원영·이나경, 10년 연애 끝 결혼 발표… 가족들 “이제야?”
+                <small>14:00 UPDATED</small>
+              </span>
+              <span className="breaking-item" aria-hidden="true">
+                한원영·이나경, 10년 연애 끝 결혼 발표… 가족들 “이제야?”
+                <small>14:00 UPDATED</small>
+              </span>
+            </div>
+          </div>
         </div>
         <nav className="front-index" aria-label="신문 섹션 바로가기">
           <span>이번 호 목차</span>
@@ -199,7 +207,7 @@ export default function Home() {
           </article>
 
           <figure className="front-page-photo">
-            <img data-scroll-parallax="photo" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
             <figcaption>▲ 보도용 샘플 사진. 주인공 사진이 들어오는 대로 바꾼다.</figcaption>
           </figure>
 
@@ -350,7 +358,7 @@ export default function Home() {
         <div className="feature-layout">
           <article className="photo-story">
             <figure className="photo-feature">
-              <img data-scroll-parallax="photo" src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
+              <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
               <figcaption>▲ 의자는 두 자리. 당일에도 둘은 붙어 앉는다.</figcaption>
             </figure>
             <div className="photo-story-copy">
