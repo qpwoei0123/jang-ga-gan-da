@@ -14,13 +14,48 @@ const friendNotes = [
 ];
 
 const celebrityDesk = [
-  ["도널드 트럼프", "“10년은 아주 긴 시간이다. 믿기 힘들 만큼 길다. 둘의 결혼은 크게, 정말 크게 축하할 일이다.”"],
-  ["테일러 스위프트", "“10년짜리 Love Story라면 마지막 장은 결혼식이어야 한다. 다음 앨범은 부부 편으로 가자.”"],
-  ["데이비드 베컴", "“같은 팀으로 10년을 뛰었다. 이제 서로 어디로 뛸지 눈빛만 봐도 안다. 유니폼만 부부로 바꾸면 된다.”"],
-  ["BTS RM", "“사랑은 시간을 견디는 일보다 둘만의 시간을 계속 만드는 일에 가깝다고 생각한다. 두 사람은 이미 10년치 답을 써왔다.”"],
-  ["아이유", "“오래 만난 두 사람이 같은 날짜를 기다렸다는 게 참 좋다. 10월 17일은 분명 좋은 날이다.”"],
-  ["손흥민", "“전반 5년, 후반 5년 잘 뛰었다. 이제부터가 진짜 경기다. 두 분 모두 오래, 행복하게 가셨으면 좋겠다.”"],
-  ["유재석", "“아니, 10년을 만나고 이제 결혼한다고요? 이건 제가 진행할 일이 아니고 가족분들이 박수부터 치셔야 합니다.”"],
+  {
+    name: "도널드 트럼프",
+    quote: "“대단한 동지애가 있다. 10년이다. 아주 긴 시간이다. 보기 좋다. 정말 보기 좋다.”",
+    sourceLabel: "백악관 인터뷰 발언",
+    source: "https://www.whitehouse.gov/releases/2026/04/president-trump-on-60-minutes-there-was-tremendous-camaraderie/",
+  },
+  {
+    name: "테일러 스위프트",
+    quote: "“인생에 무엇을 위한 시간과 자리를 둘지는 스스로 고른다. 두 사람은 10년째 서로를 고르고 있다.”",
+    sourceLabel: "NYU 졸업 연설",
+    source: "https://meet.nyu.edu/advice/application-tips/advice-to-college-applicants-from-taylor-swifts-nyu-commencement/",
+  },
+  {
+    name: "데이비드 베컴",
+    quote: "“곁에 있어 주는 것, 서로에게 온전히 마음을 주는 것. 그게 가장 큰 선물이다. 두 사람은 그걸 10년 동안 해왔다.”",
+    sourceLabel: "UNICEF 인터뷰",
+    source: "https://www.unicef.org/parenting/inspiration/david-beckham-shares-his-journey-dad",
+  },
+  {
+    name: "BTS RM",
+    quote: "“두 사람의 이름은 한원영, 이나경이다. 무엇이 두 사람의 마음을 뛰게 하나. 이제 다음 이야기를 들려달라.”",
+    sourceLabel: "UN 총회 연설",
+    source: "https://www.unicef.org/press-releases/we-have-learned-love-ourselves-so-now-i-urge-you-speak-yourself",
+  },
+  {
+    name: "아이유",
+    quote: "“네가 잠이 안 오면 같이 밤새 줄게. 그런 마음이 사랑 아닐까요.”",
+    sourceLabel: "ELLE 인터뷰",
+    source: "https://www.elle.co.kr/article/1900284",
+  },
+  {
+    name: "손흥민",
+    quote: "“10년 동안 늘 함께했고 끝까지 붙어 있었다. 그래서 오늘 여기까지 왔다. 두 사람에게도 아주 특별한 날이다.”",
+    sourceLabel: "토트넘 인터뷰",
+    source: "https://www.tottenhamhotspur.com/news/983550/presser-points-uefa-europa-league-final-heung-min-son",
+  },
+  {
+    name: "유재석",
+    quote: "“꽃길은 몇 사람만 걷는 게 아닙니다. 오늘은 한원영, 이나경 두 분이 같이 걸으시면 됩니다.”",
+    sourceLabel: "MBC 수상 소감",
+    source: "https://enews.imbc.com/Tpl/View/196216?theme=050135000",
+  },
 ];
 
 const extraDesk = [
@@ -33,7 +68,9 @@ const extraDesk = [
 const celebrityPhotos = [
   {
     name: "도널드 트럼프",
-    angle: "“10년은 길다. 아주 길다. 크게 축하한다.”",
+    angle: "“10년이다. 아주 긴 시간이다. 정말 보기 좋다.”",
+    voiceSource: celebrityDesk[0].source,
+    voiceSourceLabel: celebrityDesk[0].sourceLabel,
     image: "/celebs/trump.jpg",
     caption: "공식 초상 사진을 빌린 패러디 지면",
     credit: "White House / Shealah Craighead · Public domain",
@@ -41,7 +78,9 @@ const celebrityPhotos = [
   },
   {
     name: "테일러 스위프트",
-    angle: "“10년짜리 Love Story, 다음 장은 결혼식.”",
+    angle: "“두 사람은 10년째 서로를 고르고 있다.”",
+    voiceSource: celebrityDesk[1].source,
+    voiceSourceLabel: celebrityDesk[1].sourceLabel,
     image: "/celebs/taylor-swift.jpg",
     caption: "콘서트 현장 사진을 빌린 패러디 지면",
     credit: "Emazasm · CC BY 4.0",
@@ -49,7 +88,9 @@ const celebrityPhotos = [
   },
   {
     name: "손흥민",
-    angle: "“전반 5년, 후반 5년. 이제 진짜 경기.”",
+    angle: "“10년 동안 함께했고 그래서 여기까지 왔다.”",
+    voiceSource: celebrityDesk[5].source,
+    voiceSourceLabel: celebrityDesk[5].sourceLabel,
     image: "/celebs/son.jpg",
     caption: "경기장 사진을 빌린 패러디 지면",
     credit: "Crofab · CC BY-SA 3.0",
@@ -207,12 +248,16 @@ export default function Home() {
               </div>
               <span>별책<br />A-01</span>
             </div>
-            <p className="tiny-note">각자의 말투와 활동 분야를 빌린 가상 축사다. 실제 발언은 아니다.</p>
+            <p className="tiny-note">실제 공개 발언의 어휘와 문장 구조를 결혼식에 맞게 각색했다. 축하 자체는 가상이다.</p>
             <div className="celebrity-list">
-              {celebrityDesk.map(([name, angle], index) => (
-                <article className="celebrity-entry" key={name}>
+              {celebrityDesk.map((person, index) => (
+                <article className="celebrity-entry" key={person.name}>
                   <span className="celebrity-number">{String(index + 1).padStart(2, "0")}</span>
-                  <div><h4>{name}</h4><p>{angle}</p></div>
+                  <div>
+                    <h4>{person.name}</h4>
+                    <p>{person.quote}</p>
+                    <a className="voice-source" href={person.source} target="_blank" rel="noreferrer">발언 참고: {person.sourceLabel} ↗</a>
+                  </div>
                 </article>
               ))}
             </div>
@@ -265,7 +310,7 @@ export default function Home() {
               <p className="article-label">PHOTO WIRE / WORLD DESK</p>
               <h3>세계적 축하설,<br /><em>일단 사진은 확보</em></h3>
             </div>
-            <p>사진은 진짜, 아래 문장은 패러디.<br />실제 지지나 연락을 뜻하지 않는다.</p>
+            <p>사진과 발언 출처는 실제 자료.<br />축하 문장은 결혼식용 각색이다.</p>
           </div>
           <div className="photo-wire-grid">
             {celebrityPhotos.map((person, index) => (
@@ -274,6 +319,7 @@ export default function Home() {
                 <figcaption>
                   <strong>{person.name} / {person.angle}</strong>
                   <span>{person.caption}</span>
+                  <a href={person.voiceSource} target="_blank" rel="noreferrer">발언 참고: {person.voiceSourceLabel} ↗</a>
                   <a href={person.source} target="_blank" rel="noreferrer">출처: {person.credit} ↗</a>
                 </figcaption>
               </figure>
