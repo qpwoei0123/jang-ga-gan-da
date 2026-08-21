@@ -64,8 +64,11 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(delivery, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.match(delivery, /playDecodedSound\(NO_DAMAGE_SOUND, \.72\)/);
   assert.match(delivery, /playDecodedSound\(YES_TADA_SOUND, \.82\)/);
-  assert.match(delivery, /playDecodedLoop\(INTRO_BATTLE_SOUND, INTRO_MUSIC_VOLUME\)/);
+  assert.match(delivery, /playDecodedLoop\(INTRO_BATTLE_SOUND, INTRO_MUSIC_VOLUME, INTRO_MUSIC_LOOP\)/);
+  assert.match(delivery, /INTRO_MUSIC_LOOP = \{ start: 4\.185, end: 14\.631 \}/);
   assert.match(delivery, /introMusicRef\.current\?\.stop\(\)/);
+  assert.match(delivery, /NO_ATTEMPT_LIMIT - visibleNoAttempts/);
+  assert.match(delivery, /<NoLives count=\{noLives\} \/>/);
   assert.match(delivery, /from "canvas-confetti"/);
   assert.match(delivery, /confetti\.create\(confettiCanvasRef\.current/);
   assert.match(delivery, /disableForReducedMotion: true/);

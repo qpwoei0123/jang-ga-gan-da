@@ -113,7 +113,12 @@ export type LoopingSound = {
   stop: () => void;
 };
 
-export function playDecodedLoop(source: string, volume = .4): LoopingSound | null {
+type LoopRegion = {
+  start: number;
+  end?: number;
+};
+
+export function playDecodedLoop(source: string, volume = .4, region?: LoopRegion): LoopingSound | null {
   const context = getAudioContext();
   const buffer = decodedBuffers.get(source);
 
@@ -124,6 +129,10 @@ export function playDecodedLoop(source: string, volume = .4): LoopingSound | nul
 
     player.buffer = buffer;
     player.loop = true;
+    player.loopStart = Math.max(0, region?.start ?? 0);
+    if (region?.end && region.end > player.loopStart) {
+      player.loopEnd = Math.min(region.end, buffer.duration);
+    }
     gain.gain.value = volume;
     player.connect(gain).connect(context.destination);
     player.start(context.currentTime);
@@ -148,13 +157,28 @@ export function playDecodedLoop(source: string, volume = .4): LoopingSound | nul
   const audio = fallbackAudio.get(source);
   if (!audio) return null;
   const player = audio.cloneNode(true) as HTMLAudioElement;
+  const loopStart = Math.max(0, region?.start ?? 0);
+  const loopEnd = region?.end;
   let stopped = false;
 
-  player.loop = true;
+  player.loop = !region;
   player.volume = volume;
   const resume = () => {
     if (!stopped) void player.play();
   };
+  const restartLoop = () => {
+    if (stopped) return;
+    player.currentTime = loopStart;
+    void player.play();
+  };
+  const enforceLoopEnd = () => {
+    if (loopEnd && player.currentTime >= loopEnd) restartLoop();
+  };
+
+  if (region) {
+    player.addEventListener("ended", restartLoop);
+    if (loopEnd) player.addEventListener("timeupdate", enforceLoopEnd);
+  }
   resume();
 
   return {
@@ -164,6 +188,8 @@ export function playDecodedLoop(source: string, volume = .4): LoopingSound | nul
       stopped = true;
       player.pause();
       player.currentTime = 0;
+      player.removeEventListener("ended", restartLoop);
+      player.removeEventListener("timeupdate", enforceLoopEnd);
     },
   };
 }

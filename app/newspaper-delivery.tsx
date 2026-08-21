@@ -30,8 +30,19 @@ const DAMAGE_FEEDBACK_MS = 200;
 const NO_HAPTIC_MS = 35;
 const TYPE_INTERVAL_MS = 55;
 const INTRO_MUSIC_VOLUME = .34;
+const INTRO_MUSIC_LOOP = { start: 4.185, end: 14.631 } as const;
 const NARRATION = "어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까?";
 const NEWSPAPER_CONFETTI_COLORS = ["#b84435", "#275c78", "#e1bd63", "#60704b", "#f5eddb", "#2b241b"];
+
+function NoLives({ count }: { count: number }) {
+  if (count <= 0 || count >= NO_ATTEMPT_LIMIT) return null;
+
+  return (
+    <span className="no-lives" aria-hidden="true">
+      {Array.from({ length: count }, (_, index) => <i key={index}>♥</i>)}
+    </span>
+  );
+}
 
 export default function NewspaperDelivery() {
   const [phase, setPhase] = useState<DeliveryPhase>("approaching");
@@ -69,7 +80,7 @@ export default function NewspaperDelivery() {
 
     timerRef.current = window.setTimeout(() => setPhase("arrived"), 2100);
 
-    introMusicRef.current = playDecodedLoop(INTRO_BATTLE_SOUND, INTRO_MUSIC_VOLUME);
+    introMusicRef.current = playDecodedLoop(INTRO_BATTLE_SOUND, INTRO_MUSIC_VOLUME, INTRO_MUSIC_LOOP);
     const resumeIntroMusic = () => introMusicRef.current?.resume();
     window.addEventListener("pointerdown", resumeIntroMusic, { capture: true });
     window.addEventListener("keydown", resumeIntroMusic, { capture: true });
@@ -119,6 +130,11 @@ export default function NewspaperDelivery() {
   }, [phase, typingComplete, willActive]);
 
   const noScale = Math.max(.46, 1 - noAttempts * .12);
+  const visibleNoAttempts = noAttempts + (noHit ? 1 : 0);
+  const noLives = Math.max(0, NO_ATTEMPT_LIMIT - visibleNoAttempts);
+  const noButtonLabel = visibleNoAttempts > 0
+    ? `아니요. ${noLives}번 남았습니다.`
+    : "아니요. 다가가면 도망갑니다";
 
   useEffect(() => {
     if (!willActive) return;
@@ -262,7 +278,7 @@ export default function NewspaperDelivery() {
   if (phase === "complete") return null;
 
   const noButtonStyle = noPosition
-    ? ({ left: noPosition.x, top: noPosition.y, "--no-scale": noScale } as CSSProperties)
+    ? ({ left: noPosition.x, top: noPosition.y, "--no-scale": noScale, "--no-lives-scale": 1 / noScale } as CSSProperties)
     : undefined;
   const noButtonEvents = {
     onPointerDown: handleNoPointerDown,
@@ -313,9 +329,10 @@ export default function NewspaperDelivery() {
                   className={`choice-button choice-no${noHit ? " is-hit" : ""}`}
                   type="button"
                   ref={noButtonRef}
-                  aria-label="아니요. 다가가면 도망갑니다"
+                  aria-label={noButtonLabel}
                   {...noButtonEvents}
                 >
+                  <NoLives count={noLives} />
                   아니요
                 </button>
               )}
@@ -329,9 +346,10 @@ export default function NewspaperDelivery() {
             type="button"
             ref={noButtonRef}
             style={noButtonStyle}
-            aria-label="아니요. 다가가면 도망갑니다"
+            aria-label={noButtonLabel}
             {...noButtonEvents}
           >
+            <NoLives count={noLives} />
             아니요
           </button>
         )}
