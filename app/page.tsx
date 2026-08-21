@@ -259,6 +259,14 @@ function WeddingNewspaper() {
                 </article>
               ))}
             </div>
+            <article className="gd-dream-story">
+              <div>
+                <p className="article-label">연예 / 단독 / 가상 패러디</p>
+                <h3>이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해</h3>
+              </div>
+              <p>이나경의 목표는 GD와 결혼하는 것이었다. 하지만 한원영과 결혼을 앞둔 지금, 이 목표는 접게 됐다. 나경은 못내 아쉬워하고 있다. 그렇다고 예식이 취소되는 건 아니다.</p>
+              <div className="article-byline">결혼일보 연예부 확인 / 실제 보도 아님</div>
+            </article>
           </div>
 
           <aside className="celebrity-file">

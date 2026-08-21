@@ -55,6 +55,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /^"use client";/);
   assert.match(page, /<AssetGate assets=\{INVITATION_ASSETS\}>/);
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
+  assert.match(page, /이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해/);
+  assert.match(page, /결혼일보 연예부 확인 \/ 실제 보도 아님/);
   assert.doesNotMatch(page, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.doesNotMatch(delivery, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.match(delivery, /playDecodedSound\(NO_DAMAGE_SOUND, \.72\)/);

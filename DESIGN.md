@@ -23,7 +23,7 @@
 
 ## Distillation decisions
 
-The page keeps one reading path: headline, specific friend reports, a compact parody celebrity list, photo, relationship archive, venue facts, and a family note. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, and duplicate praise blocks were removed because they added volume without making the invitation more personal. Celebrity names remain only as clearly labeled one-line parody placeholders for future real messages.
+The page keeps one reading path: headline, specific friend reports, a compact parody celebrity list, photo, relationship archive, venue facts, and a family note. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, and duplicate praise blocks were removed because they added volume without making the invitation more personal. The people spread includes a clearly labeled fictional entertainment brief about Na-kyung giving up her goal of marrying GD. Other celebrity names remain one-line parody placeholders for future real messages.
 
 ## Editorial topology
 
