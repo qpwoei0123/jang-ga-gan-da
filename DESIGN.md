@@ -36,3 +36,11 @@ The page uses a shared editorial grid but changes the dominant composition per p
 ## Motion direction
 
 Motion is concentrated in one opening delivery scene rather than spread across the long scroll. A four-frame newspaper-cutout sprite uses the actual dog 뚜이’s large black eyes, broad nose, tousled curls, soft low ears, and long slim legs across a landing, left step, airborne beat, and right step while the outer layer brings it toward the reader. Slightly widened eyes, lowered ears, and tucked shoulders give every frame 뚜이’s timid but earnest delivery expression. When it arrives, a visual-novel narration box asks whether to accept the newspaper. “예” opens the folded paper; “아니요” evades the pointer, gets smaller with each attempt, and is collected after the fifth attempt by a halftone celebrity cutout entering and leaving from the left. The joke preserves one clear exit—the “예” button—without adding scroll-linked motion or sound. Reduced-motion preferences show one still dog frame, move the evasive button without interpolation, and shorten the collection and fold reveals.
+
+## Asset delivery
+
+The invitation is a client-rendered experience. Every image used at runtime is stored with the site and decoded through one shared asset gate before the delivery scene mounts, so the dog run and Will Smith capture never begin with a missing cutout. A failed file keeps the newspaper closed and offers a retry instead of revealing a broken or half-loaded page. Remote URLs may remain as source credits, but no visible image depends on a third-party host.
+
+## Asset integration scale
+
+The default treatment is level 2, “intentionally rough”: slightly crooked placement, modest ink mismatch, multiply blending, and a visible paper-cut edge while scale and gaze direction remain precise. Level 1 is only for placement drafts. Level 3 interlocks the cutout with a headline, rule, or annotation and is limited to one important beat per newspaper page. Level 4 adds scene choreography, perspective, and motion and is reserved for a single climax such as the refusal-button capture. Higher levels are not inherently better; the joke decides the level.

@@ -1,11 +1,19 @@
-import type { Metadata } from "next";
+"use client";
+
 import type { ReactNode } from "react";
+import AssetGate from "./asset-loader";
 import NewspaperDelivery from "./newspaper-delivery";
 
-export const metadata: Metadata = {
-  title: "결혼일보 | 한원영·이나경 특집호",
-  description: "10년 만나고 결혼하는 한원영·이나경의 소식을 신문 한 호에 실었습니다.",
-};
+const INVITATION_ASSETS = [
+  "/paper-crumple.png",
+  "/dog-run-sprite-ddui-timid.webp",
+  "/will-smith-cutout.webp",
+  "/couple-sample.webp",
+  "/venue-sample.webp",
+  "/celebs/trump.jpg",
+  "/celebs/taylor-swift.jpg",
+  "/celebs/son.jpg",
+] as const;
 
 const friendNotes = [
   ["친구 제보 01", "결혼 발표, 사실상 뒤늦은 신고", "둘은 이미 서로의 주문을 대신하고 메뉴판도 한 장만 본다. 결혼은 새 소식이다. 생활은 오래전부터 그랬다."],
@@ -147,7 +155,7 @@ function SectionHead({
   );
 }
 
-export default function Home() {
+function WeddingNewspaper() {
   return (
     <>
       <NewspaperDelivery />
@@ -210,7 +218,7 @@ export default function Home() {
           </article>
 
           <figure className="front-page-photo">
-            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85" alt="서로 마주 보고 웃는 신랑 신부" />
+            <img src="/couple-sample.webp" alt="서로 마주 보고 웃는 신랑 신부" width="1000" height="667" />
             <figcaption>▲ 보도용 샘플 사진. 주인공 사진이 들어오는 대로 바꾼다.</figcaption>
           </figure>
 
@@ -361,7 +369,7 @@ export default function Home() {
         <div className="feature-layout">
           <article className="photo-story">
             <figure className="photo-feature">
-              <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1100&q=85" alt="결혼식장에 놓인 꽃과 의자" />
+              <img src="/venue-sample.webp" alt="결혼식장에 놓인 꽃과 의자" width="1100" height="733" />
               <figcaption>▲ 의자는 두 자리. 당일에도 둘은 붙어 앉는다.</figcaption>
             </figure>
             <div className="photo-story-copy">
@@ -447,5 +455,13 @@ export default function Home() {
         </footer>
       </main>
     </>
+  );
+}
+
+export default function Home() {
+  return (
+    <AssetGate assets={INVITATION_ASSETS}>
+      <WeddingNewspaper />
+    </AssetGate>
   );
 }

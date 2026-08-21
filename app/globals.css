@@ -24,6 +24,17 @@ body.delivery-locked { overflow: hidden; overscroll-behavior: none; touch-action
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
+.asset-loader { display: grid; place-items: center; width: min(100%, 390px); min-height: 100vh; min-height: 100dvh; margin: 0 auto; padding: 30px; color: var(--ink); background-color: var(--paper); background-image: url("/paper-crumple.png"); background-size: 500px 500px; box-shadow: 0 0 60px rgb(37 30 20 / 24%); }
+.asset-loader-inner { width: 100%; padding: 22px 0; border-top: 3px double var(--line-strong); border-bottom: 1px solid var(--line-strong); }
+.asset-loader-kicker { display: block; margin-bottom: 26px; color: var(--red); font-size: 8px; font-weight: 900; letter-spacing: .1em; }
+.asset-loader h1 { max-width: 300px; margin: 0 0 12px; font-family: var(--serif); font-size: 42px; line-height: 1.06; letter-spacing: -.03em; }
+.asset-loader p { max-width: 290px; margin: 0; color: var(--muted); font-family: var(--serif); font-size: 12px; line-height: 1.55; }
+.asset-loader-track { height: 3px; margin: 28px 0 10px; overflow: hidden; background: var(--line-soft); }
+.asset-loader-track span { display: block; height: 100%; background: var(--red); transform-origin: left center; transition: transform .18s ease-out; }
+.asset-loader small { color: var(--muted); font-size: 8px; letter-spacing: .04em; }
+.asset-loader button { margin-top: 24px; padding: 10px 14px; border: 1px solid var(--ink); color: var(--paper); background: var(--ink); font: 900 10px/1 var(--sans); letter-spacing: .04em; cursor: pointer; }
+.asset-loader button:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
 .delivery-intro { display: none; position: fixed; inset: 0 auto 0 50%; z-index: 100; width: min(100%, 390px); min-height: 100vh; min-height: 100dvh; color: var(--ink); background: var(--paper); box-shadow: 0 0 60px rgb(37 30 20 / 24%); transform: translateX(-50%); }
 [data-delivery="ready"] .delivery-intro { display: block; }
 .delivery-stage { position: absolute; inset: 0; display: block; overflow: hidden; box-sizing: border-box; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
