@@ -29,6 +29,7 @@ test("renders the CSR asset gate before the invitation", async () => {
   const html = await response.text();
   assert.match(html, /<title>결혼일보 \| 한원영·이나경 특집호<\/title>/);
   assert.match(html, /신문 인쇄 준비 중/);
+  assert.match(html, /로딩중\.\.\./);
   assert.doesNotMatch(html, /사진, 종이 질감, 효과음을 먼저 준비하고 있습니다/);
   assert.doesNotMatch(html, /class="delivery-intro/);
 });
@@ -44,10 +45,11 @@ test("renders the four-level guide behind its own asset gate", async () => {
 });
 
 test("keeps every runtime asset local and predecoded", async () => {
-  const [page, delivery, audioBank] = await Promise.all([
+  const [page, delivery, audioBank, styles] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/newspaper-delivery.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/audio-bank.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /^"use client";/);
@@ -59,6 +61,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(delivery, /NO_ATTEMPT_EXTRA_SOUNDS\[nextAttempt - 1\]\.forEach/);
   assert.match(delivery, /DAMAGE_FEEDBACK_MS = 200/);
   assert.match(delivery, /TYPE_INTERVAL_MS = 55/);
+  assert.match(delivery, /useLayoutEffect/);
+  assert.match(delivery, /dataset\.delivery = "opening"/);
   assert.match(delivery, /playDecodedSound\(SANS_VOICE_SOUND, \.22\)/);
   assert.match(delivery, /어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까\?/);
   assert.match(delivery, /is-hit/);
@@ -66,6 +70,9 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(delivery, /onPointerEnter/);
   assert.doesNotMatch(delivery, /THE COUPLE TIMES|오늘의 특종|나레이션|누군가 거절을 회수|선택지는 하나뿐/);
   assert.match(audioBank, /decodeAudioData/);
+  assert.match(styles, /html\[data-delivery="ready"\], html\[data-delivery="ready"\] body \{ background: #000; \}/);
+  assert.match(styles, /html\[data-delivery="opening"\], html\[data-delivery="opening"\] body/);
+  assert.match(styles, /html\[data-delivery="complete"\], html\[data-delivery="complete"\] body \{ background: #c9c0b1; \}/);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);
 
   const assets = [

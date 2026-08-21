@@ -2,6 +2,7 @@
 
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -43,7 +44,7 @@ export default function NewspaperDelivery() {
   const noButtonRef = useRef<HTMLButtonElement | null>(null);
   const yesButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement;
     root.dataset.delivery = "ready";
     document.body.classList.add("delivery-locked");
@@ -146,6 +147,7 @@ export default function NewspaperDelivery() {
     if (phase === "opening" || phase === "complete" || willActive) return;
     if (timerRef.current) window.clearTimeout(timerRef.current);
 
+    document.documentElement.dataset.delivery = "opening";
     setPhase("opening");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     timerRef.current = window.setTimeout(() => {

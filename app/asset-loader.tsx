@@ -76,7 +76,13 @@ export default function AssetGate({
   }, [assets, attempt]);
 
   if (state.status === "ready") return children;
-  if (state.status === "loading") return <main className="asset-loader" aria-label={label} />;
+  if (state.status === "loading") {
+    return (
+      <main className="asset-loader" aria-label={label} aria-live="polite">
+        <span className="asset-loader-status">로딩중...</span>
+      </main>
+    );
+  }
 
   return (
     <main className="asset-loader is-error" aria-live="polite">
