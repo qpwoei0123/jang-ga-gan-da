@@ -55,10 +55,14 @@ test("keeps every runtime asset local, decoded, and gesture-triggered", async ()
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.doesNotMatch(page, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.doesNotMatch(delivery, /<img[^>]+src=["'{`]https?:\/\//i);
-  assert.match(delivery, /playDecodedSound\(NO_ATTEMPT_SOUNDS\[nextAttempt - 1\]/);
+  assert.match(delivery, /playDecodedSound\(NO_DAMAGE_SOUND, \.72\)/);
+  assert.match(delivery, /NO_ATTEMPT_EXTRA_SOUNDS\[nextAttempt - 1\]\.forEach/);
+  assert.match(delivery, /DAMAGE_FEEDBACK_MS = 200/);
+  assert.match(delivery, /is-hit/);
   assert.match(delivery, /playDecodedSound\(WILL_EXIT_SOUND/);
   assert.doesNotMatch(delivery, /onPointerEnter/);
   assert.match(audioBank, /decodeAudioData/);
+  assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);
 
   const assets = [
     "paper-crumple.png",
@@ -71,9 +75,8 @@ test("keeps every runtime asset local, decoded, and gesture-triggered", async ()
     "celebs/son.jpg",
     "sounds/no-1-classic-hurt.mp3",
     "sounds/no-2-fahhhh.mp3",
-    "sounds/no-3-gunshot-fahhhh.mp3",
     "sounds/no-4-minecraft-hit.mp3",
-    "sounds/no-5-yoshi-tongue.mp3",
+    "sounds/no-extra-gunshot-jbudden.mp3",
     "sounds/will-exit-get-out.mp3",
   ];
 

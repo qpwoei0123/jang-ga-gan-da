@@ -1,15 +1,26 @@
 "use client";
 
-export const NO_ATTEMPT_SOUNDS = [
-  "/sounds/no-1-classic-hurt.mp3",
-  "/sounds/no-2-fahhhh.mp3",
-  "/sounds/no-3-gunshot-fahhhh.mp3",
-  "/sounds/no-4-minecraft-hit.mp3",
-  "/sounds/no-5-yoshi-tongue.mp3",
+export const NO_DAMAGE_SOUND = "/sounds/no-4-minecraft-hit.mp3";
+export const CLASSIC_HURT_SOUND = "/sounds/no-1-classic-hurt.mp3";
+export const GUNSHOT_SOUND = "/sounds/no-extra-gunshot-jbudden.mp3";
+export const FAHHHH_SOUND = "/sounds/no-2-fahhhh.mp3";
+
+export const NO_ATTEMPT_EXTRA_SOUNDS = [
+  [],
+  [[CLASSIC_HURT_SOUND, .9]],
+  [[GUNSHOT_SOUND, .7]],
+  [[FAHHHH_SOUND, .78]],
+  [[GUNSHOT_SOUND, .63], [FAHHHH_SOUND, .72]],
 ] as const;
 
 export const WILL_EXIT_SOUND = "/sounds/will-exit-get-out.mp3";
-export const INTERACTION_SOUNDS = [...NO_ATTEMPT_SOUNDS, WILL_EXIT_SOUND] as const;
+export const INTERACTION_SOUNDS = [
+  NO_DAMAGE_SOUND,
+  CLASSIC_HURT_SOUND,
+  GUNSHOT_SOUND,
+  FAHHHH_SOUND,
+  WILL_EXIT_SOUND,
+] as const;
 
 type AudioWindow = Window & {
   webkitAudioContext?: typeof AudioContext;

@@ -8,24 +8,31 @@ import {
   type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
 } from "react";
-import { NO_ATTEMPT_SOUNDS, WILL_EXIT_SOUND, playDecodedSound } from "./audio-bank";
+import {
+  NO_ATTEMPT_EXTRA_SOUNDS,
+  NO_DAMAGE_SOUND,
+  WILL_EXIT_SOUND,
+  playDecodedSound,
+} from "./audio-bank";
 
 type DeliveryPhase = "approaching" | "arrived" | "opening" | "complete";
 type Point = { x: number; y: number };
 
 const NO_ATTEMPT_LIMIT = 5;
-const NO_SOUND_VOLUMES = [.95, .68, .55, .75, .9] as const;
+const DAMAGE_FEEDBACK_MS = 200;
 
 export default function NewspaperDelivery() {
   const [phase, setPhase] = useState<DeliveryPhase>("approaching");
   const [noAttempts, setNoAttempts] = useState(0);
   const [noPosition, setNoPosition] = useState<Point | null>(null);
+  const [noHit, setNoHit] = useState(false);
   const [willActive, setWillActive] = useState(false);
   const [willDone, setWillDone] = useState(false);
   const timerRef = useRef<number | null>(null);
   const willTimerRef = useRef<number | null>(null);
   const willExitSoundTimerRef = useRef<number | null>(null);
-  const lastEvadeRef = useRef(0);
+  const noHitTimerRef = useRef<number | null>(null);
+  const noHitLockedRef = useRef(false);
   const noAnimationRef = useRef<Animation | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const noButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -43,6 +50,7 @@ export default function NewspaperDelivery() {
       if (timerRef.current) window.clearTimeout(timerRef.current);
       if (willTimerRef.current) window.clearTimeout(willTimerRef.current);
       if (willExitSoundTimerRef.current) window.clearTimeout(willExitSoundTimerRef.current);
+      if (noHitTimerRef.current) window.clearTimeout(noHitTimerRef.current);
       noAnimationRef.current?.cancel();
       delete root.dataset.delivery;
       document.body.classList.remove("delivery-locked");
@@ -121,41 +129,52 @@ export default function NewspaperDelivery() {
   };
 
   const evadeNo = () => {
-    if (phase !== "arrived" || willActive || willDone) return;
-
-    const now = performance.now();
-    if (now - lastEvadeRef.current < 120) return;
-    lastEvadeRef.current = now;
+    if (phase !== "arrived" || willActive || willDone || noHitLockedRef.current) return;
 
     const nextAttempt = noAttempts + 1;
-    playDecodedSound(NO_ATTEMPT_SOUNDS[nextAttempt - 1], NO_SOUND_VOLUMES[nextAttempt - 1]);
-    setNoAttempts(nextAttempt);
-    if (nextAttempt >= NO_ATTEMPT_LIMIT) {
-      setWillActive(true);
-      return;
-    }
+    noHitLockedRef.current = true;
+    setNoHit(true);
+    playDecodedSound(NO_DAMAGE_SOUND, .72);
+    NO_ATTEMPT_EXTRA_SOUNDS[nextAttempt - 1].forEach(([source, volume]) => {
+      playDecodedSound(source, volume);
+    });
 
-    const stage = stageRef.current;
-    if (!stage) return;
+    noHitTimerRef.current = window.setTimeout(() => {
+      setNoHit(false);
+      setNoAttempts(nextAttempt);
 
-    const { width, height } = stage.getBoundingClientRect();
-    const nextScale = Math.max(.46, 1 - nextAttempt * .12);
-    const buttonWidth = 84 * nextScale;
-    const minX = 16;
-    const maxX = Math.max(minX, width - buttonWidth - 16);
-    const minY = Math.min(118, Math.max(24, height * .15));
-    const maxY = Math.max(minY, height - 220);
-    let nextPoint = { x: minX, y: minY };
+      if (nextAttempt >= NO_ATTEMPT_LIMIT) {
+        noHitLockedRef.current = false;
+        setWillActive(true);
+        return;
+      }
 
-    for (let index = 0; index < 6; index += 1) {
-      nextPoint = {
-        x: minX + Math.random() * (maxX - minX),
-        y: minY + Math.random() * (maxY - minY),
-      };
-      if (!noPosition || Math.hypot(nextPoint.x - noPosition.x, nextPoint.y - noPosition.y) > 86) break;
-    }
+      const stage = stageRef.current;
+      if (!stage) {
+        noHitLockedRef.current = false;
+        return;
+      }
 
-    setNoPosition(nextPoint);
+      const { width, height } = stage.getBoundingClientRect();
+      const nextScale = Math.max(.46, 1 - nextAttempt * .12);
+      const buttonWidth = 84 * nextScale;
+      const minX = 16;
+      const maxX = Math.max(minX, width - buttonWidth - 16);
+      const minY = Math.min(118, Math.max(24, height * .15));
+      const maxY = Math.max(minY, height - 220);
+      let nextPoint = { x: minX, y: minY };
+
+      for (let index = 0; index < 6; index += 1) {
+        nextPoint = {
+          x: minX + Math.random() * (maxX - minX),
+          y: minY + Math.random() * (maxY - minY),
+        };
+        if (!noPosition || Math.hypot(nextPoint.x - noPosition.x, nextPoint.y - noPosition.y) > 86) break;
+      }
+
+      setNoPosition(nextPoint);
+      noHitLockedRef.current = false;
+    }, DAMAGE_FEEDBACK_MS);
   };
 
   const handleNoPointerDown = (event: ReactPointerEvent<HTMLButtonElement>) => {
@@ -232,7 +251,7 @@ export default function NewspaperDelivery() {
             </button>
             {!willDone && !noPosition && (
               <button
-                className="choice-button choice-no"
+                className={`choice-button choice-no${noHit ? " is-hit" : ""}`}
                 type="button"
                 ref={noButtonRef}
                 aria-label="아니요. 다가가면 도망갑니다"
@@ -249,7 +268,7 @@ export default function NewspaperDelivery() {
 
         {!willDone && noPosition && (
           <button
-            className={`choice-button choice-no is-fleeing${willActive ? " is-captured" : ""}`}
+            className={`choice-button choice-no is-fleeing${noHit ? " is-hit" : ""}${willActive ? " is-captured" : ""}`}
             type="button"
             ref={noButtonRef}
             style={noButtonStyle}
