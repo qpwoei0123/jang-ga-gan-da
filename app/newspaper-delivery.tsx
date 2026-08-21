@@ -14,6 +14,7 @@ import {
   NO_DAMAGE_SOUND,
   SANS_VOICE_SOUND,
   WILL_EXIT_SOUND,
+  YES_TADA_SOUND,
   playDecodedSound,
 } from "./audio-bank";
 
@@ -148,6 +149,7 @@ export default function NewspaperDelivery() {
     if (phase === "opening" || phase === "complete" || willActive) return;
     if (timerRef.current) window.clearTimeout(timerRef.current);
 
+    playDecodedSound(YES_TADA_SOUND, .82);
     document.documentElement.dataset.delivery = "opening";
     setPhase("opening");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

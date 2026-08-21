@@ -58,6 +58,7 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(page, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.doesNotMatch(delivery, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.match(delivery, /playDecodedSound\(NO_DAMAGE_SOUND, \.72\)/);
+  assert.match(delivery, /playDecodedSound\(YES_TADA_SOUND, \.82\)/);
   assert.match(delivery, /NO_ATTEMPT_EXTRA_SOUNDS\[nextAttempt - 1\]\.forEach/);
   assert.match(delivery, /DAMAGE_FEEDBACK_MS = 200/);
   assert.match(delivery, /NO_HAPTIC_MS = 35/);
@@ -92,6 +93,7 @@ test("keeps every runtime asset local and predecoded", async () => {
     "sounds/no-extra-gunshot-jbudden.mp3",
     "sounds/voice-sans.mp3",
     "sounds/will-exit-get-out.mp3",
+    "sounds/yes-ta-da.mp3",
   ];
 
   await Promise.all(assets.map((asset) => access(new URL(`../public/${asset}`, import.meta.url))));

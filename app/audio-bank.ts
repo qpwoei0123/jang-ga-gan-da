@@ -5,6 +5,7 @@ export const CLASSIC_HURT_SOUND = "/sounds/no-1-classic-hurt.mp3";
 export const GUNSHOT_SOUND = "/sounds/no-extra-gunshot-jbudden.mp3";
 export const FAHHHH_SOUND = "/sounds/no-2-fahhhh.mp3";
 export const SANS_VOICE_SOUND = "/sounds/voice-sans.mp3";
+export const YES_TADA_SOUND = "/sounds/yes-ta-da.mp3";
 
 export const NO_ATTEMPT_EXTRA_SOUNDS = [
   [],
@@ -21,6 +22,7 @@ export const INTERACTION_SOUNDS = [
   GUNSHOT_SOUND,
   FAHHHH_SOUND,
   SANS_VOICE_SOUND,
+  YES_TADA_SOUND,
   WILL_EXIT_SOUND,
 ] as const;
 
