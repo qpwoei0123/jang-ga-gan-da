@@ -119,6 +119,68 @@ function WeddingNewspaper() {
             </div>
           </div>
         </div>
+
+        <header className="front-splash-headline">
+          <p className="article-label">1면 톱기사 / EXCLUSIVE</p>
+          <h2>한원영·이나경, <em>10년 연애 끝 결혼</em></h2>
+          <p>속보치고는 취재가 길었다. 가족들은 놀라지 않았고, 본지는 이제야 호외를 냈다.</p>
+        </header>
+
+        <div className="front-page-grid">
+          <aside className="front-rail front-left-rail">
+            <time className="date-tower" dateTime="2026-10-17" aria-label="2026년 10월 17일">
+              <strong>2026</strong>
+              <span>10</span>
+              <span>17</span>
+            </time>
+            <article className="rail-story rail-gd">
+              <p className="article-label">연예 / 단독</p>
+              <h3>이나경,<br />‘GD와 결혼’<br />목표 무산</h3>
+              <p>못내 아쉬워하고 있다. 그렇다고 예식이 취소되는 건 아니다.</p>
+              <a href="#people">2면에서 계속 ↘</a>
+            </article>
+          </aside>
+
+          <figure className="front-page-photo">
+            <img src="/couple-sample.webp" alt="서로 마주 보고 웃는 신랑 신부" width="1000" height="667" />
+            <figcaption>▲ 보도용 샘플 사진. 주인공 사진이 들어오는 대로 바꾼다.</figcaption>
+          </figure>
+
+          <aside className="front-rail front-right-rail">
+            <section className="relationship-log">
+              <p className="article-label">10년 취재기록</p>
+              <div><time>2016.04</time><span>장기취재 시작</span></div>
+              <div><time>2022.08</time><span>사진첩 과밀</span></div>
+              <div><time>2024.12</time><span>충전기 공용화</span></div>
+              <div><time>2026.10</time><span>예식 확정</span></div>
+            </section>
+            <section className="dog-brief">
+              <span className="dog-brief-photo" role="img" aria-label="신문을 문 뚜이" />
+              <h3>뚜이의 의견</h3>
+              <p>“됐고,<br />간식이나 줘.”</p>
+            </section>
+          </aside>
+        </div>
+
+        <div className="front-followup">
+          <article className="lead-story">
+            <p className="article-label">장기취재 / LOCAL WIRE</p>
+            <h2>진짜<br /><em>결혼한다</em></h2>
+            <p className="lead-summary">연애 10년. 더 미룰 명분은 없다. 두 사람은 올가을 가족 앞에서 결혼한다.</p>
+            <Rule className="short-rule" />
+            <p className="dense-copy">본지가 10년 동안 쫓던 한원영·이나경 소식이 드디어 마감됐다. 두 사람은 오는 10월 17일 결혼식을 올린다. 가족들은 “축하한다”와 “이제야”를 거의 동시에 말했다. 당사자들은 웃기만 했다.</p>
+            <div className="article-byline">취재: 결혼일보 장기취재팀 · 사진: 초안용 샘플</div>
+          </article>
+
+          <aside className="front-facts">
+            <p className="article-label">오늘의 핵심</p>
+            <div className="index-row"><span>결혼식</span><strong>2026.10.17</strong></div>
+            <div className="index-row"><span>신랑·신부</span><strong>한원영<br />이나경</strong></div>
+            <div className="index-row"><span>가족들 반응</span><strong>“이제야”</strong></div>
+            <div className="index-row"><span>행동요령</span><strong>웃고 축하하기</strong></div>
+          </aside>
+        </div>
+
         <nav className="front-index" aria-label="신문 섹션 바로가기">
           <span>이번 호 목차</span>
           <a href="#people">2면 사람들</a>
@@ -127,34 +189,6 @@ function WeddingNewspaper() {
           <a href="#details">4면 예식 정보</a>
           <a href="#family-note">가족 안내</a>
         </nav>
-
-        <div className="front-page-grid">
-          <article className="lead-story">
-            <p className="article-label">1면 톱기사 / EXCLUSIVE</p>
-            <h2>한원영·이나경,<br /><em>진짜 결혼한다</em></h2>
-            <p className="lead-summary">연애 10년. 더 미룰 명분은 없다. 두 사람은 올가을 가족 앞에서 결혼한다.</p>
-            <Rule className="short-rule" />
-            <p className="dense-copy">본지가 10년 동안 쫓던 한원영·이나경 소식이 드디어 마감됐다. 두 사람은 오는 10월 17일 결혼식을 올린다. 가족들은 “축하한다”와 “이제야”를 거의 동시에 말했다. 당사자들은 웃기만 했다.</p>
-            <div className="article-byline">취재: 결혼일보 장기취재팀 · 사진: 초안용 샘플</div>
-          </article>
-
-          <figure className="front-page-photo">
-            <img src="/couple-sample.webp" alt="서로 마주 보고 웃는 신랑 신부" width="1000" height="667" />
-            <figcaption>▲ 보도용 샘플 사진. 주인공 사진이 들어오는 대로 바꾼다.</figcaption>
-          </figure>
-
-          <aside className="wire-column">
-            <p className="article-label">장기취재 / LOCAL WIRE</p>
-            <h3>가족들 첫 반응<br />축하보다 “이제야”</h3>
-            <p className="wire-quote">“놀랍지는 않고 반갑다.”</p>
-            <p className="tiny-note">가족과 주변인의 반응을 종합한 가상 패러디 기사.</p>
-            <Rule />
-            <p className="article-label">오늘의 핵심</p>
-            <div className="index-row"><span>결혼식</span><strong>2026.10.17</strong></div>
-            <div className="index-row"><span>신랑·신부</span><strong>한원영 &amp; 이나경</strong></div>
-            <div className="index-row"><span>독자 행동요령</span><strong>웃고 축하하기</strong></div>
-          </aside>
-        </div>
       </section>
 
       <section className="people-page section-pad" id="people">

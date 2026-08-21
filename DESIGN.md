@@ -8,7 +8,7 @@
 
 **STORY:** 방문자는 ‘이 부부가 결혼한다’에서 시작해 ‘이 정도로 사랑받는 사람들이구나’로 웃으며 이동하고, 마지막에 실제 가족식 정보와 가족 안내를 확인한다. 실존 인물·기관을 언급하는 기사는 모두 가상 패러디로 표시한다.
 
-**FIRST VIEWPORT:** 상단 발행 정보, 신문 제호 ‘결혼일보’, 긴급 속보, 신랑신부의 대형 톱기사, 사진, 가족 반응 기사, 결혼 지수를 한 화면 안에 밀도 있게 배치한다.
+**FIRST VIEWPORT:** 상단 발행 정보와 제호 ‘결혼일보’, 긴급 속보 아래에 결혼 발표 헤드라인을 놓고, 중앙의 세로형 커플 사진을 날짜·연애 기록·GD 단신·뚜이 코멘트가 든 두 개의 좁은 정보 레일로 감싼다.
 
 **FORM:** 모바일 브로드시트 콜라주. 불규칙한 기사 높이와 사진 각도는 허용하되, 1px 규칙선·반복 캡션·2~3열 그리드가 질서를 만든다.
 
@@ -27,7 +27,7 @@ The page keeps one reading path: headline, specific friend reports, a fictional 
 
 ## Editorial topology
 
-The long scroll is edited as four newspaper pages rather than a stack of equal sections. The front page carries the dominant lead, photo, family-reaction wire column, and contents line. Page 2 moves from friend reports into a dense fictional critic column instead of a celebrity congratulations file. Page 3 combines the photo essay and relationship archive as one feature. The final page groups venue facts and a family note as the service desk; it does not collect attendance responses because this is a small family ceremony for roughly 50 people. Page folios, running topics, continuation lines, and bottom-of-page handoffs create the rhythm of a real issue.
+The long scroll is edited as four newspaper pages rather than a stack of equal sections. The front page leads with a centered announcement, then uses a narrow–wide–narrow newspaper grid: a date tower and entertainment teaser on the left, a dominant portrait crop in the center, and a relationship log plus dog brief on the right. The main report and factual digest continue immediately below before the contents line. Page 2 moves from friend reports into a dense fictional critic column instead of a celebrity congratulations file. Page 3 combines the photo essay and relationship archive as one feature. The final page groups venue facts and a family note as the service desk; it does not collect attendance responses because this is a small family ceremony for roughly 50 people. Page folios, running topics, continuation lines, and bottom-of-page handoffs create the rhythm of a real issue.
 
 ## Pattern variation
 
