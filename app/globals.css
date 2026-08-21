@@ -58,10 +58,7 @@ img { display: block; max-width: 100%; }
 .will-catcher { position: absolute; z-index: 9; bottom: 17%; left: -45px; display: block; width: min(88vw, 340px); pointer-events: none; animation: will-visit 2.65s cubic-bezier(.16, 1, .3, 1) both; will-change: transform; }
 .will-catcher img { width: 100%; height: auto; }
 .has-will .delivery-dog-stage { opacity: .18; transition: opacity 180ms ease-out; }
-.confetti-burst { position: absolute; inset: 0; z-index: 30; overflow: hidden; pointer-events: none; }
-.confetti-piece { position: absolute; top: 46%; left: 50%; width: 8px; height: 15px; background: var(--confetti-color); border: 1px solid rgb(35 28 20 / 22%); box-shadow: 1px 2px 3px rgb(12 10 8 / 24%); opacity: 0; animation: confetti-pop 820ms cubic-bezier(.16, 1, .3, 1) var(--confetti-delay) both; will-change: transform, opacity; }
-.confetti-piece:nth-child(3n) { width: 6px; height: 6px; border-radius: 50%; }
-.confetti-piece:nth-child(4n) { width: 12px; height: 5px; }
+.delivery-confetti { position: absolute; inset: 0; z-index: 30; width: 100%; height: 100%; pointer-events: none; }
 .delivery-unfold { visibility: hidden; position: absolute; inset: 0; z-index: 20; pointer-events: none; }
 .delivery-half { position: absolute; top: 0; bottom: 0; display: flex; align-items: flex-start; width: 50%; padding-top: 24vh; overflow: hidden; background-color: var(--paper); background-image: url("/paper-crumple.png"); background-size: 470px 470px; box-shadow: 0 0 22px rgb(57 47 32 / 18%); }
 .delivery-half::after { content: ""; position: absolute; top: calc(24vh + 78px); right: 20px; left: 20px; height: 58px; border-top: 4px double var(--line-strong); border-bottom: 1px solid var(--line-strong); }
@@ -105,12 +102,6 @@ img { display: block; max-width: 100%; }
 @keyframes paper-unfold { 0% { filter: brightness(.74); transform: scaleX(.02); } 70% { filter: brightness(.98); transform: scaleX(1.025); } 100% { filter: none; transform: scaleX(1); } }
 @keyframes fold-arrive { 0%, 70% { opacity: 0; } 100% { opacity: .7; } }
 @keyframes delivery-release { 0%, 72% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
-@keyframes confetti-pop {
-  0% { opacity: 0; transform: translate3d(-50%, -50%, 0) scale(.25) rotate(0deg); }
-  8% { opacity: 1; }
-  52% { opacity: 1; transform: translate3d(calc(-50% + var(--confetti-x)), calc(-50% + var(--confetti-y)), 0) scale(1) rotate(var(--confetti-r)); }
-  100% { opacity: 0; transform: translate3d(calc(-50% + var(--confetti-x)), calc(-50% + var(--confetti-drop)), 0) scale(.88) rotate(var(--confetti-r2)); }
-}
 
 .invitation-shell { position: relative; isolation: isolate; width: min(100%, 390px); margin: 0 auto; overflow: hidden; background: var(--paper); box-shadow: 0 0 60px rgb(37 30 20 / 18%); overflow-wrap: anywhere; word-break: keep-all; }
 .paper-grain { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: .29; mix-blend-mode: multiply; background-image: url("/paper-crumple.png"), url("/paper-crumple.png"), radial-gradient(circle at 20% 30%, rgb(57 47 32 / 22%) 0 .7px, transparent 1px), radial-gradient(circle at 70% 60%, rgb(57 47 32 / 17%) 0 .6px, transparent 1px), repeating-linear-gradient(0deg, transparent 0 5px, rgb(66 52 33 / 4%) 5px 6px); background-position: 0 0, 140px 220px, 0 0, 0 0, 0 0; background-size: 520px 520px, 330px 330px, 7px 8px, 11px 10px, auto; background-blend-mode: multiply, soft-light, multiply, multiply, multiply; }
@@ -432,7 +423,6 @@ figcaption { margin-top: 7px; color: var(--muted); font-size: 9px; line-height: 
 @media (prefers-reduced-motion: reduce) {
   html, body { transition: none; }
   .delivery-dog-stage, .delivery-dog-sprite, .stream-cursor, .will-catcher { animation: none !important; }
-  .confetti-burst { display: none; }
   .delivery-dog-stage { opacity: 1; filter: none; transform: none; }
   .delivery-dog-sprite { background-position: 0 0; }
   .choice-no.is-fleeing { transition: none; }

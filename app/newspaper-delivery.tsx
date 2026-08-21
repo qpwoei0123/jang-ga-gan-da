@@ -1,5 +1,6 @@
 "use client";
 
+import confetti from "canvas-confetti";
 import {
   useEffect,
   useLayoutEffect,
@@ -26,21 +27,7 @@ const DAMAGE_FEEDBACK_MS = 200;
 const NO_HAPTIC_MS = 35;
 const TYPE_INTERVAL_MS = 55;
 const NARRATION = "어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까?";
-const CONFETTI_COLORS = ["#b84435", "#275c78", "#e1bd63", "#60704b", "#f5eddb", "#2b241b"];
-const CONFETTI_PIECES = Array.from({ length: 28 }, (_, index) => {
-  const angle = (index / 28) * Math.PI * 2 - Math.PI / 2;
-  const distance = 92 + (index % 5) * 18;
-  const y = Math.sin(angle) * distance;
-
-  return {
-    color: CONFETTI_COLORS[index % CONFETTI_COLORS.length],
-    delay: (index % 4) * 12,
-    drop: Math.round(y * .32 + 170 + (index % 3) * 18),
-    rotate: 180 + (index % 7) * 74,
-    x: Math.round(Math.cos(angle) * distance),
-    y: Math.round(y),
-  };
-});
+const NEWSPAPER_CONFETTI_COLORS = ["#b84435", "#275c78", "#e1bd63", "#60704b", "#f5eddb", "#2b241b"];
 
 export default function NewspaperDelivery() {
   const [phase, setPhase] = useState<DeliveryPhase>("approaching");
@@ -57,6 +44,8 @@ export default function NewspaperDelivery() {
   const typingTimerRef = useRef<number | null>(null);
   const noHitLockedRef = useRef(false);
   const noAnimationRef = useRef<Animation | null>(null);
+  const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const confettiRef = useRef<ReturnType<typeof confetti.create> | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const noButtonRef = useRef<HTMLButtonElement | null>(null);
   const yesButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -66,6 +55,12 @@ export default function NewspaperDelivery() {
     root.dataset.delivery = "ready";
     document.body.classList.add("delivery-locked");
     window.scrollTo(0, 0);
+    if (confettiCanvasRef.current) {
+      confettiRef.current = confetti.create(confettiCanvasRef.current, {
+        resize: true,
+        disableForReducedMotion: true,
+      });
+    }
 
     timerRef.current = window.setTimeout(() => setPhase("arrived"), 2100);
 
@@ -76,6 +71,7 @@ export default function NewspaperDelivery() {
       if (noHitTimerRef.current) window.clearTimeout(noHitTimerRef.current);
       if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
       noAnimationRef.current?.cancel();
+      confettiRef.current?.reset();
       delete root.dataset.delivery;
       document.body.classList.remove("delivery-locked");
     };
@@ -165,6 +161,18 @@ export default function NewspaperDelivery() {
     if (timerRef.current) window.clearTimeout(timerRef.current);
 
     playDecodedSound(YES_TADA_SOUND, .82);
+    void confettiRef.current?.({
+      particleCount: 86,
+      spread: 96,
+      startVelocity: 34,
+      decay: .91,
+      gravity: 1,
+      ticks: 52,
+      scalar: .84,
+      origin: { x: .5, y: .46 },
+      colors: NEWSPAPER_CONFETTI_COLORS,
+      shapes: ["square", "square", "circle"],
+    });
     document.documentElement.dataset.delivery = "opening";
     setPhase("opening");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -254,6 +262,8 @@ export default function NewspaperDelivery() {
       aria-describedby="delivery-narration"
     >
       <div className="delivery-stage" ref={stageRef}>
+        <canvas className="delivery-confetti" ref={confettiCanvasRef} aria-hidden="true" />
+
         <span className="delivery-dog-stage" aria-hidden="true">
           <span className="delivery-dog-sprite" />
         </span>
@@ -261,26 +271,6 @@ export default function NewspaperDelivery() {
         {willActive && (
           <span className="will-catcher" aria-hidden="true">
             <img src="/will-smith-original.png" alt="" width="348" height="542" draggable="false" />
-          </span>
-        )}
-
-        {phase === "opening" && (
-          <span className="confetti-burst" aria-hidden="true">
-            {CONFETTI_PIECES.map((piece, index) => (
-              <i
-                className="confetti-piece"
-                key={index}
-                style={{
-                  "--confetti-color": piece.color,
-                  "--confetti-delay": `${piece.delay}ms`,
-                  "--confetti-drop": `${piece.drop}px`,
-                  "--confetti-r": `${piece.rotate}deg`,
-                  "--confetti-r2": `${piece.rotate + 210}deg`,
-                  "--confetti-x": `${piece.x}px`,
-                  "--confetti-y": `${piece.y}px`,
-                } as CSSProperties}
-              />
-            ))}
           </span>
         )}
 
