@@ -26,6 +26,21 @@ const DAMAGE_FEEDBACK_MS = 200;
 const NO_HAPTIC_MS = 35;
 const TYPE_INTERVAL_MS = 55;
 const NARRATION = "어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까?";
+const CONFETTI_COLORS = ["#b84435", "#275c78", "#e1bd63", "#60704b", "#f5eddb", "#2b241b"];
+const CONFETTI_PIECES = Array.from({ length: 28 }, (_, index) => {
+  const angle = (index / 28) * Math.PI * 2 - Math.PI / 2;
+  const distance = 92 + (index % 5) * 18;
+  const y = Math.sin(angle) * distance;
+
+  return {
+    color: CONFETTI_COLORS[index % CONFETTI_COLORS.length],
+    delay: (index % 4) * 12,
+    drop: Math.round(y * .32 + 170 + (index % 3) * 18),
+    rotate: 180 + (index % 7) * 74,
+    x: Math.round(Math.cos(angle) * distance),
+    y: Math.round(y),
+  };
+});
 
 export default function NewspaperDelivery() {
   const [phase, setPhase] = useState<DeliveryPhase>("approaching");
@@ -246,6 +261,26 @@ export default function NewspaperDelivery() {
         {willActive && (
           <span className="will-catcher" aria-hidden="true">
             <img src="/will-smith-original.png" alt="" width="348" height="542" draggable="false" />
+          </span>
+        )}
+
+        {phase === "opening" && (
+          <span className="confetti-burst" aria-hidden="true">
+            {CONFETTI_PIECES.map((piece, index) => (
+              <i
+                className="confetti-piece"
+                key={index}
+                style={{
+                  "--confetti-color": piece.color,
+                  "--confetti-delay": `${piece.delay}ms`,
+                  "--confetti-drop": `${piece.drop}px`,
+                  "--confetti-r": `${piece.rotate}deg`,
+                  "--confetti-r2": `${piece.rotate + 210}deg`,
+                  "--confetti-x": `${piece.x}px`,
+                  "--confetti-y": `${piece.y}px`,
+                } as CSSProperties}
+              />
+            ))}
           </span>
         )}
 
