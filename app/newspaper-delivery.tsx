@@ -11,6 +11,7 @@ import {
 import {
   NO_ATTEMPT_EXTRA_SOUNDS,
   NO_DAMAGE_SOUND,
+  SANS_VOICE_SOUND,
   WILL_EXIT_SOUND,
   playDecodedSound,
 } from "./audio-bank";
@@ -20,18 +21,22 @@ type Point = { x: number; y: number };
 
 const NO_ATTEMPT_LIMIT = 5;
 const DAMAGE_FEEDBACK_MS = 200;
+const TYPE_INTERVAL_MS = 55;
+const NARRATION = "어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까?";
 
 export default function NewspaperDelivery() {
   const [phase, setPhase] = useState<DeliveryPhase>("approaching");
   const [noAttempts, setNoAttempts] = useState(0);
   const [noPosition, setNoPosition] = useState<Point | null>(null);
   const [noHit, setNoHit] = useState(false);
+  const [typedLength, setTypedLength] = useState(0);
   const [willActive, setWillActive] = useState(false);
   const [willDone, setWillDone] = useState(false);
   const timerRef = useRef<number | null>(null);
   const willTimerRef = useRef<number | null>(null);
   const willExitSoundTimerRef = useRef<number | null>(null);
   const noHitTimerRef = useRef<number | null>(null);
+  const typingTimerRef = useRef<number | null>(null);
   const noHitLockedRef = useRef(false);
   const noAnimationRef = useRef<Animation | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -51,17 +56,39 @@ export default function NewspaperDelivery() {
       if (willTimerRef.current) window.clearTimeout(willTimerRef.current);
       if (willExitSoundTimerRef.current) window.clearTimeout(willExitSoundTimerRef.current);
       if (noHitTimerRef.current) window.clearTimeout(noHitTimerRef.current);
+      if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
       noAnimationRef.current?.cancel();
       delete root.dataset.delivery;
       document.body.classList.remove("delivery-locked");
     };
   }, []);
 
+  const typingComplete = typedLength >= NARRATION.length;
+
   useEffect(() => {
-    if (phase === "arrived" && !willActive) {
+    if (phase !== "arrived" || typingComplete) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTypedLength(NARRATION.length);
+      return;
+    }
+
+    typingTimerRef.current = window.setTimeout(() => {
+      const character = NARRATION[typedLength];
+      setTypedLength((length) => length + 1);
+      if (!/\s/.test(character)) playDecodedSound(SANS_VOICE_SOUND, .22);
+    }, TYPE_INTERVAL_MS);
+
+    return () => {
+      if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
+    };
+  }, [phase, typedLength, typingComplete]);
+
+  useEffect(() => {
+    if (phase === "arrived" && typingComplete && !willActive) {
       yesButtonRef.current?.focus({ preventScroll: true });
     }
-  }, [phase, willActive]);
+  }, [phase, typingComplete, willActive]);
 
   const noScale = Math.max(.46, 1 - noAttempts * .12);
 
@@ -189,11 +216,6 @@ export default function NewspaperDelivery() {
 
   if (phase === "complete") return null;
 
-  const narration = willActive
-    ? "잠깐. 누군가 거절을 회수하러 왔다."
-    : willDone
-      ? "…이제 선택지는 하나뿐이다."
-      : "어디선가 하얀 말티푸가 신문을 물고 나에게 왔다. 신문을 받아볼까?";
   const noButtonStyle = noPosition
     ? ({ left: noPosition.x, top: noPosition.y, "--no-scale": noScale } as CSSProperties)
     : undefined;
@@ -207,27 +229,12 @@ export default function NewspaperDelivery() {
       className={`delivery-intro phase-${phase}${willActive ? " has-will" : ""}`}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="delivery-title"
+      aria-label="신문 배달"
+      aria-describedby="delivery-narration"
     >
       <div className="delivery-stage" ref={stageRef}>
-        <span className="delivery-dispatch">
-          <span>THE COUPLE TIMES</span>
-          <span>2026.10.17 · SEOUL</span>
-        </span>
-
-        <span className="delivery-heading" id="delivery-title">
-          <small>오늘의 특종</small>
-          <strong>결혼 소식<br />배달 왔습니다</strong>
-        </span>
-
         <span className="delivery-dog-stage" aria-hidden="true">
           <span className="delivery-dog-sprite" />
-          <span className="pant-mark pant-left">헥</span>
-          <span className="pant-mark pant-right">헥</span>
-        </span>
-
-        <span className="delivery-speed-lines" aria-hidden="true">
-          <i /><i /><i />
         </span>
 
         {willActive && (
@@ -236,34 +243,37 @@ export default function NewspaperDelivery() {
           </span>
         )}
 
-        <div className="visual-novel-box" aria-live="polite">
-          <span className="novel-nameplate">나레이션</span>
-          <p>{narration}</p>
-          <div className="delivery-choices">
-            <button
-              className="choice-button choice-yes"
-              type="button"
-              ref={yesButtonRef}
-              onClick={openNewspaper}
-              disabled={willActive}
-            >
-              예
-            </button>
-            {!willDone && !noPosition && (
+        <div className="visual-novel-box">
+          <p id="delivery-narration" aria-label={NARRATION}>
+            <span aria-hidden="true">
+              {NARRATION.slice(0, typedLength)}
+              {!typingComplete && <i className="stream-cursor" />}
+            </span>
+          </p>
+          {typingComplete && (
+            <div className="delivery-choices">
               <button
-                className={`choice-button choice-no${noHit ? " is-hit" : ""}`}
+                className="choice-button choice-yes"
                 type="button"
-                ref={noButtonRef}
-                aria-label="아니요. 다가가면 도망갑니다"
-                {...noButtonEvents}
+                ref={yesButtonRef}
+                onClick={openNewspaper}
+                disabled={willActive}
               >
-                아니요
+                예
               </button>
-            )}
-          </div>
-          <span className="novel-progress" aria-hidden="true">
-            {phase === "approaching" ? "…" : willDone ? "▶" : "▼"}
-          </span>
+              {!willDone && !noPosition && (
+                <button
+                  className={`choice-button choice-no${noHit ? " is-hit" : ""}`}
+                  type="button"
+                  ref={noButtonRef}
+                  aria-label="아니요. 다가가면 도망갑니다"
+                  {...noButtonEvents}
+                >
+                  아니요
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {!willDone && noPosition && (

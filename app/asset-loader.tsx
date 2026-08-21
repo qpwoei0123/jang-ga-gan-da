@@ -5,7 +5,6 @@ import { preloadSound } from "./audio-bank";
 
 type AssetLoadState = {
   status: "loading" | "ready" | "error";
-  loaded: number;
   failed: string[];
 };
 
@@ -49,32 +48,26 @@ export default function AssetGate({
   label?: string;
 }) {
   const [attempt, setAttempt] = useState(0);
-  const [state, setState] = useState<AssetLoadState>({ status: "loading", loaded: 0, failed: [] });
+  const [state, setState] = useState<AssetLoadState>({ status: "loading", failed: [] });
 
   useEffect(() => {
     let active = true;
-    let loaded = 0;
 
     document.documentElement.dataset.assets = "loading";
-    setState({ status: "loading", loaded: 0, failed: [] });
+    setState({ status: "loading", failed: [] });
 
-    Promise.allSettled(assets.map(async (source) => {
-      await preloadAsset(source);
-      loaded += 1;
-      if (active) setState((current) => ({ ...current, loaded }));
-      return source;
-    })).then((results) => {
+    Promise.allSettled(assets.map(preloadAsset)).then((results) => {
       if (!active) return;
 
       const failed = results.flatMap((result, index) => result.status === "rejected" ? [assets[index]] : []);
       if (failed.length > 0) {
         document.documentElement.dataset.assets = "error";
-        setState({ status: "error", loaded, failed });
+        setState({ status: "error", failed });
         return;
       }
 
       document.documentElement.dataset.assets = "ready";
-      setState({ status: "ready", loaded: assets.length, failed: [] });
+      setState({ status: "ready", failed: [] });
     });
 
     return () => {
@@ -83,27 +76,14 @@ export default function AssetGate({
   }, [assets, attempt]);
 
   if (state.status === "ready") return children;
-
-  const progress = assets.length === 0 ? 100 : Math.round((state.loaded / assets.length) * 100);
+  if (state.status === "loading") return <main className="asset-loader" aria-label={label} />;
 
   return (
-    <main className="asset-loader" aria-live="polite">
+    <main className="asset-loader is-error" aria-live="polite">
       <div className="asset-loader-inner">
-        <span className="asset-loader-kicker">THE COUPLE TIMES · PRESS ROOM</span>
-        <h1>{state.status === "error" ? "인쇄가 잠시 멈췄습니다" : label}</h1>
-        <p>
-          {state.status === "error"
-            ? `필수 파일 ${state.failed.length}개를 불러오지 못했습니다.`
-            : `사진, 종이 질감, 효과음을 먼저 준비하고 있습니다. ${state.loaded}/${assets.length}`}
-        </p>
-        <div className="asset-loader-track" aria-hidden="true">
-          <span style={{ transform: `scaleX(${progress / 100})` }} />
-        </div>
-        {state.status === "error" ? (
-          <button type="button" onClick={() => setAttempt((current) => current + 1)}>다시 불러오기</button>
-        ) : (
-          <small>{progress}% · 준비가 끝나면 자동으로 신문이 열립니다.</small>
-        )}
+        <h1>필수 파일을 불러오지 못했습니다</h1>
+        <p>{state.failed.length}개 파일을 다시 준비해야 합니다.</p>
+        <button type="button" onClick={() => setAttempt((current) => current + 1)}>다시 불러오기</button>
       </div>
     </main>
   );
