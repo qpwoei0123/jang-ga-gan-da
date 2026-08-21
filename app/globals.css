@@ -55,6 +55,10 @@ img { display: block; max-width: 100%; }
 .choice-no { position: relative; overflow: visible; }
 .no-lives { position: absolute; bottom: calc(100% + 7px); left: 50%; display: flex; gap: 3px; color: #e85549; font: 900 13px/1 var(--sans); letter-spacing: 0; pointer-events: none; text-shadow: 1px 1px 0 #000, -1px -1px 0 #fff2d6; transform: translateX(-50%) scale(var(--no-lives-scale, 1)); transform-origin: center bottom; white-space: nowrap; }
 .no-lives i { display: block; font-style: normal; animation: no-life-arrive .18s steps(2, end) both; }
+.no-lives i.is-breaking { position: relative; width: 13px; color: transparent; text-shadow: none; animation: none; }
+.no-lives i.is-breaking::before, .no-lives i.is-breaking::after { content: "♥"; position: absolute; inset: 0; overflow: hidden; color: #e85549; text-shadow: 1px 1px 0 #000, -1px -1px 0 #fff2d6; }
+.no-lives i.is-breaking::before { clip-path: inset(0 50% 0 0); animation: no-life-break-left .2s cubic-bezier(.3, .8, .4, 1) both; }
+.no-lives i.is-breaking::after { clip-path: inset(0 0 0 50%); animation: no-life-break-right .2s cubic-bezier(.3, .8, .4, 1) both; }
 .choice-no.is-fleeing { --no-scale: 1; position: absolute; z-index: 16; min-width: 84px; color: var(--paper); background: var(--ink); border-color: var(--paper); box-shadow: 3px 3px 0 var(--red); transform: scale(var(--no-scale)); transform-origin: center; transition: left 150ms cubic-bezier(.16, 1, .3, 1), top 150ms cubic-bezier(.16, 1, .3, 1), transform 150ms cubic-bezier(.16, 1, .3, 1); will-change: left, top, transform; }
 .choice-no.is-hit { color: #fff8e8; background: #c93c31; border-color: #f2d5af; box-shadow: 4px 4px 0 var(--ink); pointer-events: none; animation: no-damage-hit .2s steps(2, end) both; }
 .choice-no.is-captured { z-index: 18; box-shadow: 0 0 0 3px #e1bd63, 3px 3px 0 var(--ink); transition: none; }
@@ -102,7 +106,9 @@ img { display: block; max-width: 100%; }
   80% { transform: translate3d(3px, 0, 0) scale(var(--no-scale, 1)); }
 }
 @keyframes no-life-arrive { from { opacity: 0; transform: translateY(3px) scale(.7); } to { opacity: 1; transform: none; } }
-@keyframes will-visit { 0% { transform: translate3d(-118%, 0, 0); } 18%, 72% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-122%, 0, 0); } }
+@keyframes no-life-break-left { from { opacity: 1; transform: none; } to { opacity: 0; transform: translate3d(-8px, -7px, 0) rotate(-22deg); } }
+@keyframes no-life-break-right { from { opacity: 1; transform: none; } to { opacity: 0; transform: translate3d(8px, -5px, 0) rotate(19deg); } }
+@keyframes will-visit { 0% { transform: translate3d(-118%, 0, 0); } 18%, 78% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-122%, 0, 0); } }
 @keyframes paper-unfold { 0% { filter: brightness(.74); transform: scaleX(.02); } 70% { filter: brightness(.98); transform: scaleX(1.025); } 100% { filter: none; transform: scaleX(1); } }
 @keyframes fold-arrive { 0%, 70% { opacity: 0; } 100% { opacity: .7; } }
 @keyframes delivery-release { 0%, 72% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
@@ -409,6 +415,7 @@ figcaption { margin-top: 7px; color: var(--muted); font-size: 9px; line-height: 
   .choice-no.is-fleeing { transition: none; }
   .choice-no.is-hit { animation: none; }
   .no-lives i { animation: none; }
+  .no-lives i.is-breaking::before, .no-lives i.is-breaking::after { display: none; }
   .will-catcher { transform: none; }
   .phase-opening { animation: none; opacity: 0; }
   .phase-opening .delivery-half { animation: none; transform: scaleX(1); }

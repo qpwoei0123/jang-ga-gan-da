@@ -7,6 +7,7 @@ export const FAHHHH_SOUND = "/sounds/no-2-fahhhh.mp3";
 export const SANS_VOICE_SOUND = "/sounds/voice-sans.mp3";
 export const YES_TADA_SOUND = "/sounds/yes-ta-da.mp3";
 export const INTRO_BATTLE_SOUND = "/sounds/intro-pokemon-battle.mp3";
+export const YOSHI_TONGUE_SOUND = "/sounds/no-5-yoshi-tongue.mp3";
 
 export const NO_ATTEMPT_EXTRA_SOUNDS = [
   [],
@@ -24,6 +25,7 @@ export const INTERACTION_SOUNDS = [
   FAHHHH_SOUND,
   SANS_VOICE_SOUND,
   YES_TADA_SOUND,
+  YOSHI_TONGUE_SOUND,
   WILL_EXIT_SOUND,
   INTRO_BATTLE_SOUND,
 ] as const;
@@ -109,6 +111,8 @@ export function playDecodedSound(source: string, volume = .8) {
 }
 
 export type LoopingSound = {
+  duck: (factor?: number, holdMs?: number, releaseMs?: number) => void;
+  pause: () => void;
   resume: () => void;
   stop: () => void;
 };
@@ -143,6 +147,23 @@ export function playDecodedLoop(source: string, volume = .4, region?: LoopRegion
     resume();
 
     return {
+      duck: (factor = .3, holdMs = 260, releaseMs = 180) => {
+        if (stopped) return;
+        const now = context.currentTime;
+        const duckedVolume = volume * Math.max(0, Math.min(1, factor));
+        if (typeof gain.gain.cancelAndHoldAtTime === "function") {
+          gain.gain.cancelAndHoldAtTime(now);
+        } else {
+          gain.gain.cancelScheduledValues(now);
+          gain.gain.setValueAtTime(gain.gain.value, now);
+        }
+        gain.gain.linearRampToValueAtTime(duckedVolume, now + .02);
+        gain.gain.setValueAtTime(duckedVolume, now + holdMs / 1000);
+        gain.gain.linearRampToValueAtTime(volume, now + (holdMs + releaseMs) / 1000);
+      },
+      pause: () => {
+        if (!stopped && context.state === "running") void context.suspend();
+      },
       resume,
       stop: () => {
         if (stopped) return;
@@ -160,6 +181,7 @@ export function playDecodedLoop(source: string, volume = .4, region?: LoopRegion
   const loopStart = Math.max(0, region?.start ?? 0);
   const loopEnd = region?.end;
   let stopped = false;
+  let duckTimer: number | null = null;
 
   player.loop = !region;
   player.volume = volume;
@@ -182,10 +204,23 @@ export function playDecodedLoop(source: string, volume = .4, region?: LoopRegion
   resume();
 
   return {
+    duck: (factor = .3, holdMs = 260, releaseMs = 180) => {
+      if (stopped) return;
+      player.volume = volume * Math.max(0, Math.min(1, factor));
+      if (duckTimer) window.clearTimeout(duckTimer);
+      duckTimer = window.setTimeout(() => {
+        player.volume = volume;
+        duckTimer = null;
+      }, holdMs + releaseMs);
+    },
+    pause: () => {
+      if (!stopped) player.pause();
+    },
     resume,
     stop: () => {
       if (stopped) return;
       stopped = true;
+      if (duckTimer) window.clearTimeout(duckTimer);
       player.pause();
       player.currentTime = 0;
       player.removeEventListener("ended", restartLoop);

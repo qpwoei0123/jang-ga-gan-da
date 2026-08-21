@@ -17,6 +17,7 @@ import {
   SANS_VOICE_SOUND,
   WILL_EXIT_SOUND,
   YES_TADA_SOUND,
+  YOSHI_TONGUE_SOUND,
   playDecodedLoop,
   playDecodedSound,
   type LoopingSound,
@@ -27,6 +28,7 @@ type Point = { x: number; y: number };
 
 const NO_ATTEMPT_LIMIT = 5;
 const DAMAGE_FEEDBACK_MS = 200;
+const WILL_REVEAL_PAUSE_MS = 150;
 const NO_HAPTIC_MS = 35;
 const TYPE_INTERVAL_MS = 55;
 const INTRO_MUSIC_VOLUME = .34;
@@ -34,12 +36,13 @@ const INTRO_MUSIC_LOOP = { start: 4.185, end: 14.631 } as const;
 const NARRATION = "어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까?";
 const NEWSPAPER_CONFETTI_COLORS = ["#b84435", "#275c78", "#e1bd63", "#60704b", "#f5eddb", "#2b241b"];
 
-function NoLives({ count }: { count: number }) {
-  if (count <= 0 || count >= NO_ATTEMPT_LIMIT) return null;
+function NoLives({ count, breaking }: { count: number; breaking: boolean }) {
+  if ((!breaking && count <= 0) || count >= NO_ATTEMPT_LIMIT) return null;
 
   return (
     <span className="no-lives" aria-hidden="true">
       {Array.from({ length: count }, (_, index) => <i key={index}>♥</i>)}
+      {breaking && <i className="is-breaking">♥</i>}
     </span>
   );
 }
@@ -54,6 +57,8 @@ export default function NewspaperDelivery() {
   const [willDone, setWillDone] = useState(false);
   const timerRef = useRef<number | null>(null);
   const willTimerRef = useRef<number | null>(null);
+  const willRevealTimerRef = useRef<number | null>(null);
+  const willCaptureSoundTimerRef = useRef<number | null>(null);
   const willExitSoundTimerRef = useRef<number | null>(null);
   const noHitTimerRef = useRef<number | null>(null);
   const typingTimerRef = useRef<number | null>(null);
@@ -82,12 +87,19 @@ export default function NewspaperDelivery() {
 
     introMusicRef.current = playDecodedLoop(INTRO_BATTLE_SOUND, INTRO_MUSIC_VOLUME, INTRO_MUSIC_LOOP);
     const resumeIntroMusic = () => introMusicRef.current?.resume();
+    const syncIntroMusicVisibility = () => {
+      if (document.hidden) introMusicRef.current?.pause();
+      else introMusicRef.current?.resume();
+    };
     window.addEventListener("pointerdown", resumeIntroMusic, { capture: true });
     window.addEventListener("keydown", resumeIntroMusic, { capture: true });
+    document.addEventListener("visibilitychange", syncIntroMusicVisibility);
 
     return () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
       if (willTimerRef.current) window.clearTimeout(willTimerRef.current);
+      if (willRevealTimerRef.current) window.clearTimeout(willRevealTimerRef.current);
+      if (willCaptureSoundTimerRef.current) window.clearTimeout(willCaptureSoundTimerRef.current);
       if (willExitSoundTimerRef.current) window.clearTimeout(willExitSoundTimerRef.current);
       if (noHitTimerRef.current) window.clearTimeout(noHitTimerRef.current);
       if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
@@ -97,6 +109,7 @@ export default function NewspaperDelivery() {
       introMusicRef.current = null;
       window.removeEventListener("pointerdown", resumeIntroMusic, { capture: true });
       window.removeEventListener("keydown", resumeIntroMusic, { capture: true });
+      document.removeEventListener("visibilitychange", syncIntroMusicVisibility);
       delete root.dataset.delivery;
       document.body.classList.remove("delivery-locked");
     };
@@ -115,7 +128,10 @@ export default function NewspaperDelivery() {
     typingTimerRef.current = window.setTimeout(() => {
       const character = NARRATION[typedLength];
       setTypedLength((length) => length + 1);
-      if (!/\s/.test(character)) playDecodedSound(SANS_VOICE_SOUND, .22);
+      if (!/\s/.test(character)) {
+        introMusicRef.current?.duck(.52, 70, 100);
+        playDecodedSound(SANS_VOICE_SOUND, .22);
+      }
     }, TYPE_INTERVAL_MS);
 
     return () => {
@@ -169,9 +185,15 @@ export default function NewspaperDelivery() {
       });
     }
 
+    willCaptureSoundTimerRef.current = window.setTimeout(() => {
+      introMusicRef.current?.duck(.16, 360, 160);
+      playDecodedSound(YOSHI_TONGUE_SOUND, .84);
+    }, reducedMotion ? 0 : 2015);
+
     willExitSoundTimerRef.current = window.setTimeout(() => {
+      introMusicRef.current?.duck(.12, 520, 180);
       playDecodedSound(WILL_EXIT_SOUND, .82);
-    }, reducedMotion ? 0 : 1900);
+    }, reducedMotion ? 90 : 2120);
 
     willTimerRef.current = window.setTimeout(() => {
       setWillActive(false);
@@ -181,6 +203,7 @@ export default function NewspaperDelivery() {
 
     return () => {
       if (willTimerRef.current) window.clearTimeout(willTimerRef.current);
+      if (willCaptureSoundTimerRef.current) window.clearTimeout(willCaptureSoundTimerRef.current);
       if (willExitSoundTimerRef.current) window.clearTimeout(willExitSoundTimerRef.current);
       noAnimationRef.current?.cancel();
     };
@@ -222,6 +245,7 @@ export default function NewspaperDelivery() {
     noHitLockedRef.current = true;
     setNoHit(true);
     if (typeof navigator.vibrate === "function") navigator.vibrate(NO_HAPTIC_MS);
+    introMusicRef.current?.duck(.18, 420, 220);
     playDecodedSound(NO_DAMAGE_SOUND, .72);
     NO_ATTEMPT_EXTRA_SOUNDS[nextAttempt - 1].forEach(([source, volume]) => {
       playDecodedSound(source, volume);
@@ -232,8 +256,9 @@ export default function NewspaperDelivery() {
       setNoAttempts(nextAttempt);
 
       if (nextAttempt >= NO_ATTEMPT_LIMIT) {
-        noHitLockedRef.current = false;
-        setWillActive(true);
+        willRevealTimerRef.current = window.setTimeout(() => {
+          setWillActive(true);
+        }, WILL_REVEAL_PAUSE_MS);
         return;
       }
 
@@ -332,7 +357,7 @@ export default function NewspaperDelivery() {
                   aria-label={noButtonLabel}
                   {...noButtonEvents}
                 >
-                  <NoLives count={noLives} />
+                  <NoLives count={noLives} breaking={noHit} />
                   아니요
                 </button>
               )}
@@ -349,7 +374,7 @@ export default function NewspaperDelivery() {
             aria-label={noButtonLabel}
             {...noButtonEvents}
           >
-            <NoLives count={noLives} />
+            <NoLives count={noLives} breaking={noHit} />
             아니요
           </button>
         )}

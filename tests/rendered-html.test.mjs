@@ -68,7 +68,7 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(delivery, /INTRO_MUSIC_LOOP = \{ start: 4\.185, end: 14\.631 \}/);
   assert.match(delivery, /introMusicRef\.current\?\.stop\(\)/);
   assert.match(delivery, /NO_ATTEMPT_LIMIT - visibleNoAttempts/);
-  assert.match(delivery, /<NoLives count=\{noLives\} \/>/);
+  assert.match(delivery, /<NoLives count=\{noLives\} breaking=\{noHit\} \/>/);
   assert.match(delivery, /from "canvas-confetti"/);
   assert.match(delivery, /confetti\.create\(confettiCanvasRef\.current/);
   assert.match(delivery, /disableForReducedMotion: true/);
@@ -84,6 +84,10 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(delivery, /어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까\?/);
   assert.match(delivery, /is-hit/);
   assert.match(delivery, /playDecodedSound\(WILL_EXIT_SOUND/);
+  assert.match(delivery, /playDecodedSound\(YOSHI_TONGUE_SOUND, \.84\)/);
+  assert.match(delivery, /WILL_REVEAL_PAUSE_MS = 150/);
+  assert.match(delivery, /introMusicRef\.current\?\.duck/);
+  assert.match(delivery, /className="is-breaking"/);
   assert.doesNotMatch(delivery, /onPointerEnter/);
   assert.doesNotMatch(delivery, /THE COUPLE TIMES|오늘의 특종|나레이션|누군가 거절을 회수|선택지는 하나뿐/);
   assert.match(audioBank, /decodeAudioData/);
@@ -101,6 +105,7 @@ test("keeps every runtime asset local and predecoded", async () => {
     "sounds/no-1-classic-hurt.mp3",
     "sounds/no-2-fahhhh.mp3",
     "sounds/no-4-minecraft-hit.mp3",
+    "sounds/no-5-yoshi-tongue.mp3",
     "sounds/no-extra-gunshot-jbudden.mp3",
     "sounds/voice-sans.mp3",
     "sounds/will-exit-get-out.mp3",
