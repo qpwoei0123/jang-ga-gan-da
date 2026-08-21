@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { preloadSound } from "./audio-bank";
 
 type AssetLoadState = {
   status: "loading" | "ready" | "error";
@@ -34,6 +35,10 @@ function preloadImage(source: string) {
   });
 }
 
+function preloadAsset(source: string) {
+  return /\.(?:mp3|m4a|aac|wav|ogg)$/i.test(source) ? preloadSound(source) : preloadImage(source);
+}
+
 export default function AssetGate({
   assets,
   children,
@@ -54,7 +59,7 @@ export default function AssetGate({
     setState({ status: "loading", loaded: 0, failed: [] });
 
     Promise.allSettled(assets.map(async (source) => {
-      await preloadImage(source);
+      await preloadAsset(source);
       loaded += 1;
       if (active) setState((current) => ({ ...current, loaded }));
       return source;
@@ -88,8 +93,8 @@ export default function AssetGate({
         <h1>{state.status === "error" ? "인쇄가 잠시 멈췄습니다" : label}</h1>
         <p>
           {state.status === "error"
-            ? `필수 이미지 ${state.failed.length}개를 불러오지 못했습니다.`
-            : `사진과 종이 질감을 먼저 확인하고 있습니다. ${state.loaded}/${assets.length}`}
+            ? `필수 파일 ${state.failed.length}개를 불러오지 못했습니다.`
+            : `사진, 종이 질감, 효과음을 먼저 준비하고 있습니다. ${state.loaded}/${assets.length}`}
         </p>
         <div className="asset-loader-track" aria-hidden="true">
           <span style={{ transform: `scaleX(${progress / 100})` }} />

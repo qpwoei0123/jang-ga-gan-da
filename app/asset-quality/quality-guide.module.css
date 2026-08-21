@@ -188,7 +188,7 @@
   color: var(--blue);
 }
 
-.level2 .levelLine strong {
+.level1 .levelLine strong {
   color: var(--red);
 }
 

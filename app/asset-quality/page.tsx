@@ -6,23 +6,23 @@ import styles from "./quality-guide.module.css";
 const GUIDE_ASSETS = [
   "/paper-crumple.png",
   "/dog-run-sprite-ddui-timid.webp",
-  "/will-smith-cutout.webp",
+  "/will-smith-original.png",
 ] as const;
 
 const levels = [
   {
     id: 1,
     name: "원본 얹기",
-    verdict: "초안 확인용",
-    description: "크기만 맞춰 올린 상태. 에셋은 보이지만 같은 지면에 있다는 느낌은 없다.",
-    rule: "배치와 크기만 확인할 때 여기까지.",
+    verdict: "기본값 · 선택됨",
+    description: "색과 질감을 손대지 않고 크기만 맞춰 올린다. 합성보다 밈 원본의 낯선 존재감이 먼저 보인다.",
+    rule: "뚜이와 윌 스미스는 평소 이 수준으로.",
   },
   {
     id: 2,
     name: "일부러 대충",
-    verdict: "기본값 · 추천",
+    verdict: "필요할 때만",
     description: "약간 비뚤고, 잉크가 덜 맞고, 종이와 어설프게 붙는다. 지금 원하는 최신 콜라주 감각.",
-    rule: "뚜이와 윌 스미스는 평소 이 수준으로.",
+    rule: "신문 지면에 꼭 섞여야 할 때만 사용.",
   },
   {
     id: 3,
@@ -53,7 +53,7 @@ function QualityGuide() {
         <p className={styles.deck}>같은 뚜이와 윌 스미스를 얼마나 지면에 섞을지 비교한다. 완성도가 높을수록 좋은 게 아니라, 농담의 크기에 맞는 단계가 맞다.</p>
         <div className={styles.defaultRule}>
           <strong>앞으로의 기본값</strong>
-          <span>2단계 ‘일부러 대충’. 중요한 한 장면만 3단계, 클라이맥스 하나만 4단계.</span>
+          <span>1단계 ‘원본 얹기’. 윌 스미스는 종이 질감과 흑백 필터 없이 컬러 원본 그대로 사용한다.</span>
         </div>
       </header>
 
@@ -63,7 +63,7 @@ function QualityGuide() {
             <div className={styles.scene} aria-label={`${level.name} 예시`}>
               <span className={styles.sceneHeadline}>거절 버튼<br />현장서 도주</span>
               <span className={styles.dog} role="img" aria-label="신문을 물고 온 뚜이" />
-              <img className={styles.will} src="/will-smith-cutout.webp" alt="거절 버튼을 잡으러 온 윌 스미스 패러디 컷아웃" width="800" height="1200" />
+              <img className={styles.will} src="/will-smith-original.png" alt="거절 버튼을 잡으러 온 윌 스미스 패러디 컷아웃" width="348" height="542" />
               <span className={styles.noButton}>아니요</span>
               <span className={styles.pressMark}>THE COUPLE TIMES</span>
             </div>
@@ -82,7 +82,7 @@ function QualityGuide() {
 
       <footer className={styles.footer}>
         <strong>편집 원칙</strong>
-        <p>에셋의 선명함보다 지면 안에서의 태도가 중요하다. 잘라낸 흔적, 약간 어긋난 잉크, 비뚤어진 각도는 남기되 크기와 시선 방향은 정확히 맞춘다.</p>
+        <p>원본의 색과 해상도는 먼저 보존한다. 종이 질감과 잉크 처리는 장면에 꼭 필요한 경우에만 한 단계씩 올리고, 크기와 시선 방향은 항상 정확히 맞춘다.</p>
       </footer>
     </main>
   );

@@ -8,11 +8,13 @@ import {
   type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import { NO_ATTEMPT_SOUNDS, WILL_EXIT_SOUND, playDecodedSound } from "./audio-bank";
 
 type DeliveryPhase = "approaching" | "arrived" | "opening" | "complete";
 type Point = { x: number; y: number };
 
 const NO_ATTEMPT_LIMIT = 5;
+const NO_SOUND_VOLUMES = [.95, .68, .55, .75, .9] as const;
 
 export default function NewspaperDelivery() {
   const [phase, setPhase] = useState<DeliveryPhase>("approaching");
@@ -22,6 +24,7 @@ export default function NewspaperDelivery() {
   const [willDone, setWillDone] = useState(false);
   const timerRef = useRef<number | null>(null);
   const willTimerRef = useRef<number | null>(null);
+  const willExitSoundTimerRef = useRef<number | null>(null);
   const lastEvadeRef = useRef(0);
   const noAnimationRef = useRef<Animation | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -39,6 +42,7 @@ export default function NewspaperDelivery() {
     return () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
       if (willTimerRef.current) window.clearTimeout(willTimerRef.current);
+      if (willExitSoundTimerRef.current) window.clearTimeout(willExitSoundTimerRef.current);
       noAnimationRef.current?.cancel();
       delete root.dataset.delivery;
       document.body.classList.remove("delivery-locked");
@@ -86,6 +90,10 @@ export default function NewspaperDelivery() {
       });
     }
 
+    willExitSoundTimerRef.current = window.setTimeout(() => {
+      playDecodedSound(WILL_EXIT_SOUND, .82);
+    }, reducedMotion ? 0 : 1900);
+
     willTimerRef.current = window.setTimeout(() => {
       setWillActive(false);
       setWillDone(true);
@@ -94,6 +102,7 @@ export default function NewspaperDelivery() {
 
     return () => {
       if (willTimerRef.current) window.clearTimeout(willTimerRef.current);
+      if (willExitSoundTimerRef.current) window.clearTimeout(willExitSoundTimerRef.current);
       noAnimationRef.current?.cancel();
     };
   }, [willActive, noScale]);
@@ -119,6 +128,7 @@ export default function NewspaperDelivery() {
     lastEvadeRef.current = now;
 
     const nextAttempt = noAttempts + 1;
+    playDecodedSound(NO_ATTEMPT_SOUNDS[nextAttempt - 1], NO_SOUND_VOLUMES[nextAttempt - 1]);
     setNoAttempts(nextAttempt);
     if (nextAttempt >= NO_ATTEMPT_LIMIT) {
       setWillActive(true);
@@ -148,19 +158,14 @@ export default function NewspaperDelivery() {
     setNoPosition(nextPoint);
   };
 
-  const handleNoPointerEnter = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    if (event.pointerType === "mouse") evadeNo();
-  };
-
   const handleNoPointerDown = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    if (event.pointerType === "mouse") return;
     event.preventDefault();
     evadeNo();
   };
 
   const handleNoClick = (event: ReactMouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    if (performance.now() - lastEvadeRef.current > 250) evadeNo();
+    if (event.detail === 0) evadeNo();
   };
 
   if (phase === "complete") return null;
@@ -174,7 +179,6 @@ export default function NewspaperDelivery() {
     ? ({ left: noPosition.x, top: noPosition.y, "--no-scale": noScale } as CSSProperties)
     : undefined;
   const noButtonEvents = {
-    onPointerEnter: handleNoPointerEnter,
     onPointerDown: handleNoPointerDown,
     onClick: handleNoClick,
   };
@@ -209,7 +213,7 @@ export default function NewspaperDelivery() {
 
         {willActive && (
           <span className="will-catcher" aria-hidden="true">
-            <img src="/will-smith-cutout.webp" alt="" width="800" height="1200" draggable="false" />
+            <img src="/will-smith-original.png" alt="" width="348" height="542" draggable="false" />
           </span>
         )}
 

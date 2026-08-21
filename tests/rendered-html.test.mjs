@@ -29,7 +29,7 @@ test("renders the CSR asset gate before the invitation", async () => {
   const html = await response.text();
   assert.match(html, /<title>결혼일보 \| 한원영·이나경 특집호<\/title>/);
   assert.match(html, /신문 인쇄 준비 중/);
-  assert.match(html, /사진과 종이 질감을 먼저 확인하고 있습니다/);
+  assert.match(html, /사진, 종이 질감, 효과음을 먼저 준비하고 있습니다/);
   assert.doesNotMatch(html, /class="delivery-intro/);
 });
 
@@ -43,26 +43,38 @@ test("renders the four-level guide behind its own asset gate", async () => {
   assert.doesNotMatch(html, /class="[^\"]*scene/);
 });
 
-test("keeps every visible invitation image local and preloaded", async () => {
-  const [page, delivery] = await Promise.all([
+test("keeps every runtime asset local, decoded, and gesture-triggered", async () => {
+  const [page, delivery, audioBank] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/newspaper-delivery.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/audio-bank.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /^"use client";/);
   assert.match(page, /<AssetGate assets=\{INVITATION_ASSETS\}>/);
+  assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.doesNotMatch(page, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.doesNotMatch(delivery, /<img[^>]+src=["'{`]https?:\/\//i);
+  assert.match(delivery, /playDecodedSound\(NO_ATTEMPT_SOUNDS\[nextAttempt - 1\]/);
+  assert.match(delivery, /playDecodedSound\(WILL_EXIT_SOUND/);
+  assert.doesNotMatch(delivery, /onPointerEnter/);
+  assert.match(audioBank, /decodeAudioData/);
 
   const assets = [
     "paper-crumple.png",
     "dog-run-sprite-ddui-timid.webp",
-    "will-smith-cutout.webp",
+    "will-smith-original.png",
     "couple-sample.webp",
     "venue-sample.webp",
     "celebs/trump.jpg",
     "celebs/taylor-swift.jpg",
     "celebs/son.jpg",
+    "sounds/no-1-classic-hurt.mp3",
+    "sounds/no-2-fahhhh.mp3",
+    "sounds/no-3-gunshot-fahhhh.mp3",
+    "sounds/no-4-minecraft-hit.mp3",
+    "sounds/no-5-yoshi-tongue.mp3",
+    "sounds/will-exit-get-out.mp3",
   ];
 
   await Promise.all(assets.map((asset) => access(new URL(`../public/${asset}`, import.meta.url))));

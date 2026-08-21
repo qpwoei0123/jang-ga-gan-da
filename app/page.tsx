@@ -2,17 +2,19 @@
 
 import type { ReactNode } from "react";
 import AssetGate from "./asset-loader";
+import { INTERACTION_SOUNDS } from "./audio-bank";
 import NewspaperDelivery from "./newspaper-delivery";
 
 const INVITATION_ASSETS = [
   "/paper-crumple.png",
   "/dog-run-sprite-ddui-timid.webp",
-  "/will-smith-cutout.webp",
+  "/will-smith-original.png",
   "/couple-sample.webp",
   "/venue-sample.webp",
   "/celebs/trump.jpg",
   "/celebs/taylor-swift.jpg",
   "/celebs/son.jpg",
+  ...INTERACTION_SOUNDS,
 ] as const;
 
 const friendNotes = [
