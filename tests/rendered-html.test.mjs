@@ -64,6 +64,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(delivery, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.match(delivery, /playDecodedSound\(NO_DAMAGE_SOUND, \.72\)/);
   assert.match(delivery, /playDecodedSound\(YES_TADA_SOUND, \.82\)/);
+  assert.match(delivery, /playDecodedLoop\(INTRO_BATTLE_SOUND, INTRO_MUSIC_VOLUME\)/);
+  assert.match(delivery, /introMusicRef\.current\?\.stop\(\)/);
   assert.match(delivery, /from "canvas-confetti"/);
   assert.match(delivery, /confetti\.create\(confettiCanvasRef\.current/);
   assert.match(delivery, /disableForReducedMotion: true/);
@@ -100,6 +102,7 @@ test("keeps every runtime asset local and predecoded", async () => {
     "sounds/voice-sans.mp3",
     "sounds/will-exit-get-out.mp3",
     "sounds/yes-ta-da.mp3",
+    "sounds/intro-pokemon-battle.mp3",
   ];
 
   await Promise.all(assets.map((asset) => access(new URL(`../public/${asset}`, import.meta.url))));

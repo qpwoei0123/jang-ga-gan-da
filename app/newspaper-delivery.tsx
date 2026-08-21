@@ -11,12 +11,15 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import {
+  INTRO_BATTLE_SOUND,
   NO_ATTEMPT_EXTRA_SOUNDS,
   NO_DAMAGE_SOUND,
   SANS_VOICE_SOUND,
   WILL_EXIT_SOUND,
   YES_TADA_SOUND,
+  playDecodedLoop,
   playDecodedSound,
+  type LoopingSound,
 } from "./audio-bank";
 
 type DeliveryPhase = "approaching" | "arrived" | "opening" | "complete";
@@ -26,6 +29,7 @@ const NO_ATTEMPT_LIMIT = 5;
 const DAMAGE_FEEDBACK_MS = 200;
 const NO_HAPTIC_MS = 35;
 const TYPE_INTERVAL_MS = 55;
+const INTRO_MUSIC_VOLUME = .34;
 const NARRATION = "어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까?";
 const NEWSPAPER_CONFETTI_COLORS = ["#b84435", "#275c78", "#e1bd63", "#60704b", "#f5eddb", "#2b241b"];
 
@@ -42,6 +46,7 @@ export default function NewspaperDelivery() {
   const willExitSoundTimerRef = useRef<number | null>(null);
   const noHitTimerRef = useRef<number | null>(null);
   const typingTimerRef = useRef<number | null>(null);
+  const introMusicRef = useRef<LoopingSound | null>(null);
   const noHitLockedRef = useRef(false);
   const noAnimationRef = useRef<Animation | null>(null);
   const confettiCanvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -64,6 +69,11 @@ export default function NewspaperDelivery() {
 
     timerRef.current = window.setTimeout(() => setPhase("arrived"), 2100);
 
+    introMusicRef.current = playDecodedLoop(INTRO_BATTLE_SOUND, INTRO_MUSIC_VOLUME);
+    const resumeIntroMusic = () => introMusicRef.current?.resume();
+    window.addEventListener("pointerdown", resumeIntroMusic, { capture: true });
+    window.addEventListener("keydown", resumeIntroMusic, { capture: true });
+
     return () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
       if (willTimerRef.current) window.clearTimeout(willTimerRef.current);
@@ -72,6 +82,10 @@ export default function NewspaperDelivery() {
       if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
       noAnimationRef.current?.cancel();
       confettiRef.current?.reset();
+      introMusicRef.current?.stop();
+      introMusicRef.current = null;
+      window.removeEventListener("pointerdown", resumeIntroMusic, { capture: true });
+      window.removeEventListener("keydown", resumeIntroMusic, { capture: true });
       delete root.dataset.delivery;
       document.body.classList.remove("delivery-locked");
     };
@@ -160,6 +174,8 @@ export default function NewspaperDelivery() {
     if (phase === "opening" || phase === "complete" || willActive) return;
     if (timerRef.current) window.clearTimeout(timerRef.current);
 
+    introMusicRef.current?.stop();
+    introMusicRef.current = null;
     playDecodedSound(YES_TADA_SOUND, .82);
     void confettiRef.current?.({
       particleCount: 86,

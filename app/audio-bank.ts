@@ -6,6 +6,7 @@ export const GUNSHOT_SOUND = "/sounds/no-extra-gunshot-jbudden.mp3";
 export const FAHHHH_SOUND = "/sounds/no-2-fahhhh.mp3";
 export const SANS_VOICE_SOUND = "/sounds/voice-sans.mp3";
 export const YES_TADA_SOUND = "/sounds/yes-ta-da.mp3";
+export const INTRO_BATTLE_SOUND = "/sounds/intro-pokemon-battle.mp3";
 
 export const NO_ATTEMPT_EXTRA_SOUNDS = [
   [],
@@ -24,6 +25,7 @@ export const INTERACTION_SOUNDS = [
   SANS_VOICE_SOUND,
   YES_TADA_SOUND,
   WILL_EXIT_SOUND,
+  INTRO_BATTLE_SOUND,
 ] as const;
 
 type AudioWindow = Window & {
@@ -104,4 +106,64 @@ export function playDecodedSound(source: string, volume = .8) {
   const player = audio.cloneNode(true) as HTMLAudioElement;
   player.volume = volume;
   void player.play();
+}
+
+export type LoopingSound = {
+  resume: () => void;
+  stop: () => void;
+};
+
+export function playDecodedLoop(source: string, volume = .4): LoopingSound | null {
+  const context = getAudioContext();
+  const buffer = decodedBuffers.get(source);
+
+  if (context && buffer) {
+    const player = context.createBufferSource();
+    const gain = context.createGain();
+    let stopped = false;
+
+    player.buffer = buffer;
+    player.loop = true;
+    gain.gain.value = volume;
+    player.connect(gain).connect(context.destination);
+    player.start(context.currentTime);
+
+    const resume = () => {
+      if (!stopped && context.state !== "running") void context.resume();
+    };
+    resume();
+
+    return {
+      resume,
+      stop: () => {
+        if (stopped) return;
+        stopped = true;
+        player.stop();
+        player.disconnect();
+        gain.disconnect();
+      },
+    };
+  }
+
+  const audio = fallbackAudio.get(source);
+  if (!audio) return null;
+  const player = audio.cloneNode(true) as HTMLAudioElement;
+  let stopped = false;
+
+  player.loop = true;
+  player.volume = volume;
+  const resume = () => {
+    if (!stopped) void player.play();
+  };
+  resume();
+
+  return {
+    resume,
+    stop: () => {
+      if (stopped) return;
+      stopped = true;
+      player.pause();
+      player.currentTime = 0;
+    },
+  };
 }
