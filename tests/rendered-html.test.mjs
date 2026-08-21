@@ -57,6 +57,9 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.match(page, /이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해/);
   assert.match(page, /결혼일보 연예부 확인 \/ 실제 보도 아님/);
+  assert.match(page, /사랑은 완결이 아니라,/);
+  assert.match(page, /이동진 평론가의 실제 원고 및 발언과 무관/);
+  assert.doesNotMatch(page, /celebrityDesk|celebrityPhotos|유명인들의|celebs\//);
   assert.doesNotMatch(page, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.doesNotMatch(delivery, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.match(delivery, /playDecodedSound\(NO_DAMAGE_SOUND, \.72\)/);
@@ -90,9 +93,6 @@ test("keeps every runtime asset local and predecoded", async () => {
     "will-smith-original.png",
     "couple-sample.webp",
     "venue-sample.webp",
-    "celebs/trump.jpg",
-    "celebs/taylor-swift.jpg",
-    "celebs/son.jpg",
     "sounds/no-1-classic-hurt.mp3",
     "sounds/no-2-fahhhh.mp3",
     "sounds/no-4-minecraft-hit.mp3",

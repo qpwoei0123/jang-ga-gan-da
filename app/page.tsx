@@ -11,9 +11,6 @@ const INVITATION_ASSETS = [
   "/will-smith-original.png",
   "/couple-sample.webp",
   "/venue-sample.webp",
-  "/celebs/trump.jpg",
-  "/celebs/taylor-swift.jpg",
-  "/celebs/son.jpg",
   ...INTERACTION_SOUNDS,
 ] as const;
 
@@ -23,89 +20,11 @@ const friendNotes = [
   ["친구 제보 03", "축하보다 먼저 나온 말, ‘드디어’", "결혼 소식을 들은 지인들은 한 박자 쉬고 ‘드디어’라고 했다. 본지도 그대로 적는다."],
 ];
 
-const celebrityDesk = [
-  {
-    name: "도널드 트럼프",
-    quote: "“대단한 동지애가 있다. 10년이다. 아주 긴 시간이다. 보기 좋다. 정말 보기 좋다.”",
-    sourceLabel: "백악관 인터뷰 발언",
-    source: "https://www.whitehouse.gov/releases/2026/04/president-trump-on-60-minutes-there-was-tremendous-camaraderie/",
-  },
-  {
-    name: "테일러 스위프트",
-    quote: "“인생에 무엇을 위한 시간과 자리를 둘지는 스스로 고른다. 두 사람은 10년째 서로를 고르고 있다.”",
-    sourceLabel: "NYU 졸업 연설",
-    source: "https://meet.nyu.edu/advice/application-tips/advice-to-college-applicants-from-taylor-swifts-nyu-commencement/",
-  },
-  {
-    name: "데이비드 베컴",
-    quote: "“곁에 있어 주는 것, 서로에게 온전히 마음을 주는 것. 그게 가장 큰 선물이다. 두 사람은 그걸 10년 동안 해왔다.”",
-    sourceLabel: "UNICEF 인터뷰",
-    source: "https://www.unicef.org/parenting/inspiration/david-beckham-shares-his-journey-dad",
-  },
-  {
-    name: "BTS RM",
-    quote: "“두 사람의 이름은 한원영, 이나경이다. 무엇이 두 사람의 마음을 뛰게 하나. 이제 다음 이야기를 들려달라.”",
-    sourceLabel: "UN 총회 연설",
-    source: "https://www.unicef.org/press-releases/we-have-learned-love-ourselves-so-now-i-urge-you-speak-yourself",
-  },
-  {
-    name: "아이유",
-    quote: "“네가 잠이 안 오면 같이 밤새 줄게. 그런 마음이 사랑 아닐까요.”",
-    sourceLabel: "ELLE 인터뷰",
-    source: "https://www.elle.co.kr/article/1900284",
-  },
-  {
-    name: "손흥민",
-    quote: "“10년 동안 늘 함께했고 끝까지 붙어 있었다. 그래서 오늘 여기까지 왔다. 두 사람에게도 아주 특별한 날이다.”",
-    sourceLabel: "토트넘 인터뷰",
-    source: "https://www.tottenhamhotspur.com/news/983550/presser-points-uefa-europa-league-final-heung-min-son",
-  },
-  {
-    name: "유재석",
-    quote: "“꽃길은 몇 사람만 걷는 게 아닙니다. 오늘은 한원영, 이나경 두 분이 같이 걸으시면 됩니다.”",
-    sourceLabel: "MBC 수상 소감",
-    source: "https://enews.imbc.com/Tpl/View/196216?theme=050135000",
-  },
-];
-
 const extraDesk = [
   ["사설 / EDITORIAL", "10년이면 승인 도장 찍을 때도 됐다", "본지는 2016년부터 두 사람을 지켜봤다. 10년이면 기사는 충분하다. 편집국의 결론도 길지 않았다. 결혼 승인."],
   ["속보 / CITY DESK", "저녁 메뉴 결정권, 여전히 공동 소유", "‘아무거나’와 ‘진짜 아무거나’가 같은 말인지를 두고 협상은 계속됐다. 결론은 못 냈다. 관계에는 별문제 없다."],
   ["생활 / HOME FILE", "각자의 물건, 국경 없이 왕래 중", "충전기, 겉옷, 먹다 남긴 간식. 누구 것인지 따지기 시작하면 대화가 길어진다. 둘은 대체로 그냥 쓴다."],
   ["검증 / FACT CHECK", "‘드디어’는 과장된 표현인가", "가족과 친구에게 확인했다. 놀랐다는 사람보다 ‘이제 하네’라고 말한 사람이 많았다. ‘드디어’는 과장이 아니었다."],
-];
-
-const celebrityPhotos = [
-  {
-    name: "도널드 트럼프",
-    angle: "“10년이다. 아주 긴 시간이다. 정말 보기 좋다.”",
-    voiceSource: celebrityDesk[0].source,
-    voiceSourceLabel: celebrityDesk[0].sourceLabel,
-    image: "/celebs/trump.jpg",
-    caption: "공식 초상 사진을 빌린 패러디 지면",
-    credit: "White House / Shealah Craighead · Public domain",
-    source: "https://commons.wikimedia.org/wiki/File:Official_Presidential_Portrait_of_President_Donald_J._Trump_(2025).jpg",
-  },
-  {
-    name: "테일러 스위프트",
-    angle: "“두 사람은 10년째 서로를 고르고 있다.”",
-    voiceSource: celebrityDesk[1].source,
-    voiceSourceLabel: celebrityDesk[1].sourceLabel,
-    image: "/celebs/taylor-swift.jpg",
-    caption: "콘서트 현장 사진을 빌린 패러디 지면",
-    credit: "Emazasm · CC BY 4.0",
-    source: "https://commons.wikimedia.org/wiki/File:Taylor_swift.jpg",
-  },
-  {
-    name: "손흥민",
-    angle: "“10년 동안 함께했고 그래서 여기까지 왔다.”",
-    voiceSource: celebrityDesk[5].source,
-    voiceSourceLabel: celebrityDesk[5].sourceLabel,
-    image: "/celebs/son.jpg",
-    caption: "경기장 사진을 빌린 패러디 지면",
-    credit: "Crofab · CC BY-SA 3.0",
-    source: "https://commons.wikimedia.org/wiki/File:Son_Heung-Min.jpg",
-  },
 ];
 
 const timeline = [
@@ -225,10 +144,10 @@ function WeddingNewspaper() {
           </figure>
 
           <aside className="wire-column">
-            <p className="article-label">가상 축복 / WORLD WIRE</p>
-            <h3>해외 축하 전문<br />왔다는 셈 치고 보도</h3>
-            <p className="wire-quote">“아주 크고 훌륭한 결혼이다.”</p>
-            <p className="tiny-note">트럼프가 했을 법한 문장. 실제로 한 말은 아니다.</p>
+            <p className="article-label">장기취재 / LOCAL WIRE</p>
+            <h3>가족들 첫 반응<br />축하보다 “이제야”</h3>
+            <p className="wire-quote">“놀랍지는 않고 반갑다.”</p>
+            <p className="tiny-note">가족과 주변인의 반응을 종합한 가상 패러디 기사.</p>
             <Rule />
             <p className="article-label">오늘의 핵심</p>
             <div className="index-row"><span>결혼식</span><strong>2026.10.17</strong></div>
@@ -239,7 +158,7 @@ function WeddingNewspaper() {
       </section>
 
       <section className="people-page section-pad" id="people">
-        <PageFolio page="2면" topics="PEOPLE / SOCIAL / CELEBRITY" />
+        <PageFolio page="2면" topics="PEOPLE / SOCIAL / PRIVATE FILE" />
         <SectionHead className="people-section-head" label="PEOPLE DESK / FIELD REPORT" title={<>제보는 많았고<br /><span>새로울 건 없었다</span></>} note={<>친구들 말을 모아봤다.<br />대체로 같은 얘기였다.</>} />
         <Rule className="people-rule" />
         <div className="people-layout">
@@ -269,40 +188,18 @@ function WeddingNewspaper() {
             </article>
           </div>
 
-          <aside className="celebrity-file">
-            <div className="file-heading">
-              <div>
-                <p className="article-label">WORLD WIRE / PARODY FILE</p>
-                <h3>유명인들의<br /><em>축하 전문(가상)</em></h3>
-              </div>
-              <span>별책<br />A-01</span>
-            </div>
-            <p className="tiny-note">실제 공개 발언의 어휘와 문장 구조를 결혼식에 맞게 각색했다. 축하 자체는 가상이다.</p>
-            <div className="celebrity-list">
-              {celebrityDesk.map((person, index) => (
-                <article className="celebrity-entry" key={person.name}>
-                  <span className="celebrity-number">{String(index + 1).padStart(2, "0")}</span>
-                  <div>
-                    <h4>{person.name}</h4>
-                    <p>{person.quote}</p>
-                    <a className="voice-source" href={person.source} target="_blank" rel="noreferrer">발언 참고: {person.sourceLabel} ↗</a>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </aside>
         </div>
         <div className="page-bottomline"><span>2면 끝</span><span>다음 면: 편집국의 과도한 편파보도</span></div>
       </section>
 
       <section className="extra-page section-pad" id="extra">
-        <PageFolio page="2면 하단" topics="EDITORIAL / EXTRA / PHOTO WIRE" />
+        <PageFolio page="2면 하단" topics="EDITORIAL / EXTRA / CRITIC" />
         <div className="extra-masthead">
           <div>
             <p className="article-label">EXTRA EDITION / 결혼일보 편집국</p>
             <h2>본지, 오늘도<br /><em>두 사람만 보도</em></h2>
           </div>
-          <p className="extra-deck">국제·사회·생활면을 모두 동원했다.<br />다른 뉴스는 지면 사정으로 뺐다.</p>
+          <p className="extra-deck">사회·생활·평론면을 모두 동원했다.<br />다른 뉴스는 지면 사정으로 뺐다.</p>
         </div>
         <Rule className="extra-rule" />
 
@@ -333,27 +230,23 @@ function WeddingNewspaper() {
           </aside>
         </div>
 
-        <section className="celebrity-photo-wire">
-          <div className="photo-wire-heading">
+        <section className="critic-column">
+          <div className="critic-heading">
             <div>
-              <p className="article-label">PHOTO WIRE / WORLD DESK</p>
-              <h3>세계적 축하설,<br /><em>일단 사진은 확보</em></h3>
+              <p className="article-label">CRITIC'S NOTE / 가상 패러디</p>
+              <h3>사랑은 완결이 아니라,<br /><em>반복을 견디는 형식에 가깝다</em></h3>
             </div>
-            <p>사진과 발언 출처는 실제 자료.<br />축하 문장은 결혼식용 각색이다.</p>
+            <p>이동진 칼럼을 요청받아 만든 가상 패러디다. 특정 문장이나 실제 원고를 흉내 내지 않았다.</p>
           </div>
-          <div className="photo-wire-grid">
-            {celebrityPhotos.map((person, index) => (
-              <figure className={`photo-wire-item photo-wire-item-${index + 1}`} key={person.name}>
-                <div className="photo-wire-image"><img src={person.image} alt={`${person.name} 사진`} /></div>
-                <figcaption>
-                  <strong>{person.name} / {person.angle}</strong>
-                  <span>{person.caption}</span>
-                  <a href={person.voiceSource} target="_blank" rel="noreferrer">발언 참고: {person.voiceSourceLabel} ↗</a>
-                  <a href={person.source} target="_blank" rel="noreferrer">출처: {person.credit} ↗</a>
-                </figcaption>
-              </figure>
-            ))}
+          <div className="critic-body">
+            <p className="critic-lede">십 년이라는 시간은 관계의 견고함을 입증하는 계량적 근거라기보다, 서로의 결핍을 더는 해명해야 할 사건으로 취급하지 않게 되는 완만한 이행에 가깝다. 한원영과 이나경은 서로를 완전히 이해해서 여기까지 온 것이 아니다. 이해되지 않는 부분을 성급히 오독하지 않는 법을 익혔고, 그 유예의 시간이 십 년이었다.</p>
+            <blockquote>“사랑은 이해의 완성이 아니라, 오독을 유예하는 기술인지도 모른다.”</blockquote>
+            <div className="critic-copy">
+              <p>결혼은 연애의 종결점으로 오해되기 쉽다. 두 사람에게는 이미 반복되어 온 선택이 뒤늦게 제도적 문장을 얻는 장면에 더 가깝다. 일상의 사소한 불일치가 사라진 것은 아니다. 사라지지 않은 채 공존할 수 있다는 확신이 생겼다. 사랑의 지속은 합치보다 병치에 의존한다.</p>
+              <p>식장에 들어선 뒤에도 달라지는 건 많지 않다. 호칭 하나와 날짜 하나가 생긴다. 완성이라 부르기엔 여전히 진행 중이고, 시작이라 부르기엔 이미 너무 오래 함께했다. 이 결혼은 그 모순을 없애지 않는다. 다만 둘이 같은 방향으로 들고 갈 수 있게 반듯이 접어 둔다.</p>
+            </div>
           </div>
+          <div className="article-byline critic-byline">글: 결혼일보 비평팀 / 이동진 평론가의 실제 원고 및 발언과 무관</div>
         </section>
 
         <div className="extra-bottom-grid">
@@ -461,7 +354,7 @@ function WeddingNewspaper() {
           <span>본지는 두 사람 편파보도를 원칙으로 합니다.</span>
           <span>MADE WITH LOVE / 2026</span>
         </div>
-        <p className="footer-note">실존 인물의 축하 문구는 모두 가상 패러디이며, 실제 발언이나 지지를 의미하지 않습니다.</p>
+        <p className="footer-note">실존 인물을 언급한 지면은 모두 가상 패러디이며, 실제 원고나 발언 또는 지지를 의미하지 않습니다.</p>
         </footer>
       </main>
     </>
