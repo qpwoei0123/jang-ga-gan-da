@@ -60,6 +60,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(delivery, /playDecodedSound\(NO_DAMAGE_SOUND, \.72\)/);
   assert.match(delivery, /NO_ATTEMPT_EXTRA_SOUNDS\[nextAttempt - 1\]\.forEach/);
   assert.match(delivery, /DAMAGE_FEEDBACK_MS = 200/);
+  assert.match(delivery, /NO_HAPTIC_MS = 35/);
+  assert.match(delivery, /navigator\.vibrate\(NO_HAPTIC_MS\)/);
   assert.match(delivery, /TYPE_INTERVAL_MS = 55/);
   assert.match(delivery, /useLayoutEffect/);
   assert.match(delivery, /dataset\.delivery = "opening"/);

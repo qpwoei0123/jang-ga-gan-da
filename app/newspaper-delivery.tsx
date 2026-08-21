@@ -22,6 +22,7 @@ type Point = { x: number; y: number };
 
 const NO_ATTEMPT_LIMIT = 5;
 const DAMAGE_FEEDBACK_MS = 200;
+const NO_HAPTIC_MS = 35;
 const TYPE_INTERVAL_MS = 55;
 const NARRATION = "어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까?";
 
@@ -163,6 +164,7 @@ export default function NewspaperDelivery() {
     const nextAttempt = noAttempts + 1;
     noHitLockedRef.current = true;
     setNoHit(true);
+    if (typeof navigator.vibrate === "function") navigator.vibrate(NO_HAPTIC_MS);
     playDecodedSound(NO_DAMAGE_SOUND, .72);
     NO_ATTEMPT_EXTRA_SOUNDS[nextAttempt - 1].forEach(([source, volume]) => {
       playDecodedSound(source, volume);
