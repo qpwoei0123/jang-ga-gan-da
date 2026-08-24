@@ -91,9 +91,9 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(delivery, /onPointerEnter/);
   assert.doesNotMatch(delivery, /THE COUPLE TIMES|오늘의 특종|나레이션|누군가 거절을 회수|선택지는 하나뿐/);
   assert.match(audioBank, /decodeAudioData/);
-  assert.match(styles, /html\[data-delivery="ready"\], html\[data-delivery="ready"\] body \{ background: #000; \}/);
-  assert.match(styles, /html\[data-delivery="opening"\], html\[data-delivery="opening"\] body/);
-  assert.match(styles, /html\[data-delivery="complete"\], html\[data-delivery="complete"\] body \{ background: #c9c0b1; \}/);
+  assert.match(styles, /--paper: #e9e5e6;/);
+  assert.match(styles, /html, body \{ background: var\(--canvas\)/);
+  assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);
 
   const assets = [

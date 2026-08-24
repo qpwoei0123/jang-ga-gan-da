@@ -1,46 +1,98 @@
-# Design Direction
+# Design Direction — SUPER WEDDING ISSUE
 
 ## Direction contract
 
-**THESIS:** 결혼식 초대장을 부부 특집의 한 호로 바꾼다. 평범한 히어로-소개-장소 순서를 거부하고, 첫 화면부터 속보·특집·가상 국제면이 쏟아지는 과밀한 신문을 연다.
+**THESIS:** ‘결혼일보’의 패러디 기사와 장난은 유지하되, 물성은 낡은 일간지가 아니라 오사카의 작은 독립 문화잡지로 전환한다. 누런 종이, 과한 구김, 원색 섹션띠를 버리고 웜그레이 한 장 위에서 크기와 밀도의 대비로 웃긴다.
 
-**OWN-WORLD:** 오래된 지역 일간지와 황색 주간지의 다단 규칙선, 기사 제목, 작은 데이터 캡션, 긴급 속보 띠를 모바일 폭에 맞게 압축한다. 종이 주름과 잉크 번짐은 모든 면을 연결하는 물성이다.
+**OWN-WORLD:** 아주 옅은 회보랏빛 무광지, 먹색 잉크, 거대한 네오 그로테스크 제호, 초소형 목차, 가는 규칙선, 생활 기록 사진으로 한 호를 만든다. 장식은 추가하지 않는다. 종이색·활자 크기·사진 크롭 자체가 장식이다.
 
-**STORY:** 방문자는 ‘이 부부가 결혼한다’에서 시작해 ‘이 정도로 사랑받는 사람들이구나’로 웃으며 이동하고, 마지막에 실제 가족식 정보와 가족 안내를 확인한다. 실존 인물·기관을 언급하는 기사는 모두 가상 패러디로 표시한다.
+**STORY:** 001 표지에서 결혼 소식을 선포하고, 002–009에서 10년의 연애와 두 사람을 둘러싼 주접 기사를 읽힌다. 010–011에서 가족식의 날짜·장소·안내를 정확히 전달하고, 012에서 뚜이의 짧은 마감 멘트로 호를 닫는다.
 
-**FIRST VIEWPORT:** 상단 발행 정보와 제호 ‘결혼일보’, 긴급 속보 아래에 결혼 발표 헤드라인을 놓고, 중앙의 세로형 커플 사진을 날짜·연애 기록·GD 단신·뚜이 코멘트가 든 두 개의 좁은 정보 레일로 감싼다.
+**FIRST VIEWPORT:** 우측 상단의 `001`, 화면 폭을 거의 다 쓰는 `WEDDING:` 제호, 한 줄 설명, 6칸 목차, 한 장의 큰 커플 사진 순서다. 방문자는 첫 3초 안에 ‘잡지 한 호’와 ‘결혼 소식’을 동시에 알아차려야 한다.
 
-**FORM:** 모바일 브로드시트 콜라주. 불규칙한 기사 높이와 사진 각도는 허용하되, 1px 규칙선·반복 캡션·2~3열 그리드가 질서를 만든다.
+**FORM:** 모바일 폭 390px로 제본된 12면짜리 세로 잡지. 데스크톱에서도 폭을 늘리지 않는다. 매 면은 같은 기준선과 여백을 공유하지만, 사진 중심면·대화면·아카이브면·서비스면이 서로 다른 편집 리듬을 가진다.
 
-## System rules
+## Reference reading
 
-- Surface: warm newsprint with generated crumple texture and low-opacity ink grain.
-- Palette: paper ivory, ink black, signal red, wire-service blue, faded mustard, moss green.
-- Type: condensed sans for metadata and labels; expressive serif for headlines; narrow body copy for article density.
-- Layout: one continuous newspaper sheet, dense columns, hard edges, no floating dashboard cards.
-- Content: every article, statistic, ad, quote, and alert is a love letter disguised as news.
-- Responsive: retain two-column newspaper rhythm on small screens where possible; stack only the lead, map, and primary action when readability requires it.
+### Surface and color
 
-## Distillation decisions
+- 바깥 캔버스: `#F5F3F3` — 흰 웹페이지와 잡지 물체를 조용히 분리한다.
+- 잡지 용지: `#E9E5E6` — 노란 크림색이 아닌, 회색에 아주 약한 분홍기가 섞인 무광지다.
+- 접힘·보조면: `#D9D3D5` — 그림자가 아니라 종이 한 겹의 차이를 표현한다.
+- 주 잉크: `#211A19` — 순수 검정보다 부드러운 적갈 먹색이다.
+- 보조 잉크: `#6E6668` — 캡션, 크레딧, 이어지는 기사에만 쓴다.
+- 규칙선: `rgba(33, 26, 25, 0.24)` / 강조선 `0.42` — 면을 가르되 사진보다 먼저 보이지 않는다.
+- 게임 타격·콘페티 같은 순간 효과만 기존 색을 허용한다. 편집면의 상시 색상으로는 사용하지 않는다.
 
-The page keeps one reading path: headline, specific friend reports, a fictional entertainment brief about Na-kyung giving up her goal of marrying GD, an original critic-style column, photo, relationship archive, venue facts, and a family note. Generic weather reports, invented percentages, fictional institutions, filler lifestyle articles, duplicate praise blocks, and celebrity congratulations were removed because they added volume without making the invitation more personal. The critic column is labeled as an invented parody and does not imitate or attribute real writing to Lee Dong-jin.
+### Texture
 
-## Editorial topology
+참고물의 질감은 구겨진 신문지가 아니라 잔잔한 무광 인쇄지다. 큰 주름, 얼룩, 반복 줄무늬, 뚜렷한 점망은 금지한다. 1px보다 작은 불규칙 입자를 6–9% 농도로 한 겹만 올리고, 사진 위에는 덮지 않는다. 질감이 먼저 보이면 실패다.
 
-The long scroll is edited as four newspaper pages rather than a stack of equal sections. The front page leads with a centered announcement, then uses a narrow–wide–narrow newspaper grid: a date tower and entertainment teaser on the left, a dominant portrait crop in the center, and a relationship log plus dog brief on the right. The main report and factual digest continue immediately below before the contents line. Page 2 moves from friend reports into a dense fictional critic column instead of a celebrity congratulations file. Page 3 combines the photo essay and relationship archive as one feature. The final page groups venue facts and a family note as the service desk; it does not collect attendance responses because this is a small family ceremony for roughly 50 people. Page folios, running topics, continuation lines, and bottom-of-page handoffs create the rhythm of a real issue.
+### Type
 
-## Pattern variation
+- 제호·면 제목: 굵은 산세리프, 낮은 줄높이, 최대 `-0.035em` 자간. 한 단어가 면의 건축물이 된다.
+- 기사 제목: 중간 굵기 산세리프. 2줄이 되면 충분한 줄높이를 확보해 겹침을 막는다.
+- 본문: 가독성 좋은 한글 산세리프를 기본으로 한다. 긴 칼럼이나 인용에만 세리프를 제한적으로 쓴다.
+- 메타데이터: 8–10px, 촘촘한 행간, 명확한 숫자와 페이지 범위. 대문자 장식은 영문 제호와 섹션명에만 쓴다.
+- 제호와 본문 사이에 뚜렷한 크기 절벽을 둔다. 비슷한 크기의 제목을 여러 개 나열하지 않는다.
 
-The page uses a shared editorial grid but changes the dominant composition per page: people is a full-width report followed by a two-column critic essay, feature is an archive rail beside a photo-led article, and service is a full-width venue bulletin followed by a horizontal family-note strip. Rules are treated as translucent warm ink rather than pure black, with red and blue lines reserved for section changes and factual/service moments.
+## Information architecture
 
-## Motion direction
+### 001 — Cover
 
-Motion is concentrated in one opening delivery scene rather than spread across the long scroll. The browser canvas, loading state, and opening stage remain pure black edge to edge; loading is marked only by a small white “로딩중...”. The warm beige outer ground begins to appear only when the newspaper starts opening. The stage contains only 뚜이 and one white-lined dialogue box; masthead copy, dispatch metadata, speed lines, panting labels, nameplates, and changing reaction text are deliberately absent. A four-frame sprite uses the actual dog 뚜이’s large black eyes, broad nose, tousled curls, soft low ears, and long slim legs while the outer layer brings it toward the reader. After arrival, the single fixed sentence types one character at a time with the short predecoded Sans voice sample, then reveals “예” and “아니요”. The battle track plays its 0–4.185 second entry once, then loops only the 4.185–14.631 second battle body. Sans syllables and foreground effects briefly duck that loop instead of competing with it, and a hidden browser tab pauses it until the invitation is visible again. Pressing “예” stops the loop and starts a predecoded ta-da while a canvas-confetti burst of red, blue, mustard, moss, ivory, and ink paper pieces crosses in front of the opening newspaper. Every real press of “아니요” gives supported devices one sharp 35ms haptic pulse, plays the Minecraft damage cue, and gives the button a 0.2-second red, stepped shake before it moves and shrinks. After the first hit, a four-heart life row appears above the button; each lost heart splits into two pieces and flies apart. The layered extras escalate as none, classic hurt, gunshot, fahhhh, then gunshot and fahhhh together. After the fifth heart breaks, a 0.15-second empty beat precedes the full-color original Will Smith cutout. A Yoshi tongue cue marks the instant the button is pulled between his hands, followed by the final “get out” cue as he exits left; the narration never changes. Reduced-motion preferences show the full sentence immediately, let the library omit the decorative confetti, retain the red damage state without the shake, show one still dog frame, move the evasive button without interpolation, hide the split-heart flight, and shorten the collection and fold reveals.
+1. 우측 상단 폴리오 `001`
+2. 대형 제호 `WEDDING:`
+3. `A MAGAZINE ON TEN YEARS OF US / SEOUL` 같은 한 줄 디스크립터
+4. 발행인·날짜·가족식 성격을 담은 마이크로 메타
+5. `2–4 / 5 / 6–7 / 8–9 / 10–11 / 12` 여섯 칸 목차
+6. 커플의 생활 기록 사진 한 장
+7. 사진 하단의 짧은 흰색 기사 덱과 크레딧
+
+### 002–003 — Opening feature
+
+한 장의 사진이 양면의 60–70%를 차지한다. 한쪽에는 “10 YEARS” 같은 거대한 단어를 두고, 다른 쪽에는 결혼 발표와 두 사람 소개를 한 개의 좁은 본문 열로 붙인다. 표지와 같은 구성을 반복하지 않는다.
+
+### 004–005 — Dialogue
+
+친구·가족·뚜이의 증언을 인터뷰 편집으로 묶는다. 한 면은 큰 인물 사진과 짧은 Q&A, 다른 면은 텍스트 중심의 비대칭 2열이다. 같은 크기의 카드 목록을 만들지 않는다.
+
+### 006–007 — Ten-year archive
+
+연도와 사건이 뼈대가 되는 아카이브 면이다. 큰 연도 숫자, 짧은 기록, 서로 다른 크기의 사진을 수직 기준선에 맞춘다. 항목 수가 많아도 날짜의 반복이 질서를 만든다.
+
+### 008–009 — Views
+
+GD 단신과 가상의 평론 칼럼을 한 묶음으로 편집한다. 한 면은 짧고 소란스러운 문화면, 다음 면은 긴 글·큰 인용문·작은 사진 하나로 조용히 전환한다. 실제 발언처럼 보이는 문구는 쓰지 않고 패러디 표기를 유지한다.
+
+### 010–011 — Service desk
+
+예식 날짜, 시간, 장소, 지도, 교통, 가족 안내를 가장 빠르게 찾을 수 있는 사실표 면이다. 큰 날짜 숫자와 지도 한 장을 축으로 삼고, 정보는 얇은 선으로만 구획한다. 참석 여부 수집은 넣지 않는다.
+
+### 012 — Back cover
+
+뚜이 또는 두 사람의 조용한 사진 한 장, 날짜·장소, 짧은 마감 문장만 남긴다. 일반 웹사이트식 푸터, 메뉴 반복, 추가 홍보는 두지 않는다.
+
+## Page grammar
+
+- 모든 면은 좌우 28–38px의 공통 여백과 같은 규칙선 농도를 공유한다.
+- 면 번호는 장식 번호가 아니라 실제 읽기 순서와 목차 연결에만 쓴다.
+- 한 면에는 하나의 지배 요소만 둔다: 큰 제목, 큰 사진, 긴 글, 지도 중 하나다.
+- 다음 면에서는 이전 면의 지배 요소를 반복하지 않는다. 사진 중심 다음에는 텍스트 중심, 대칭 다음에는 비대칭을 둔다.
+- 사진은 생활 사진처럼 정면으로 배치하고 둥근 카드, 스티커, 장식 테두리를 씌우지 않는다.
+- 기사 구획은 배경 박스보다 여백과 1px 선으로 해결한다.
+
+## Intro and motion
+
+로딩 화면, 뚜이 미연시, 신문이 열리는 중간 장면, 본문까지 모두 같은 `#E9E5E6` 용지색을 유지한다. 검은 화면으로 시작하지 않는다. 대화창만 먹색 패널로 남겨 게임 장면과 잡지 표지를 연결한다. 뚜이의 달리기, 스트리밍 문장, 예/아니요 장난, 하트, 햅틱, 사운드, 윌 스미스 회수, 콘페티의 기능은 그대로 보존한다. 이후 본문 스크롤에는 등장 애니메이션을 추가하지 않는다.
+
+## Content and truth
+
+- 주인공은 한원영과 이나경, 연애 기간은 10년이다.
+- 약 50명이 함께하는 가족식이며 RSVP는 받지 않는다.
+- GD 이야기와 실존 인물 언급은 사실 보도가 아닌 가상 패러디임을 해당 면에서 밝힌다.
+- 평론 칼럼은 특정 인물의 실제 발언이나 문장을 흉내 내지 않는 독자적 패러디로 쓴다.
+- 모든 기사와 캡션은 두 사람의 실제 기억, 가족식 정보, 뚜이의 캐릭터 중 하나와 연결한다. 정보량을 채우기 위한 일반 문장은 넣지 않는다.
 
 ## Asset delivery
 
-The invitation is a client-rendered experience. Every image and interaction sound used at runtime is stored with the site and decoded through one shared asset gate before the delivery scene mounts, so the dog run, Will Smith capture, and tap feedback never begin with a missing file. A failed file keeps the newspaper closed and offers a retry instead of revealing a broken or half-loaded page. Remote URLs may remain as source credits, but no visible image or sound depends on a third-party host.
-
-## Asset integration scale
-
-The default treatment is level 1, “original placement”: preserve the supplied asset’s color and texture, remove only a baked checkerboard when transparency is required, and control just its scale, position, and timing. Will Smith therefore keeps the full-color original rather than a newsprint conversion. Level 2 adds intentional crookedness and ink mismatch only when requested. Level 3 interlocks the cutout with a headline, rule, or annotation. Level 4 adds scene choreography and is reserved for a single climax. Higher levels are not inherently better; the joke decides the level.
+웹은 완전한 클라이언트 렌더링으로 실행한다. 런타임 이미지와 소리는 사이트 내부 파일로 보관하고, 인트로를 마운트하기 전에 한 번에 로드·디코딩한다. 실패 시 깨진 잡지를 보여주지 않고 같은 용지색 화면에서 재시도를 제공한다. 사진 원본의 색과 질감은 보존하며, 잡지 질감은 사진이 아닌 종이 면에만 적용한다.
