@@ -27,7 +27,7 @@ test("renders the CSR asset gate before the invitation", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>결혼일보 \| 한원영·이나경 특집호<\/title>/);
+  assert.match(html, /<title>The Wedding News \| 한원영·이나경<\/title>/);
   assert.match(html, /신문 인쇄 준비 중/);
   assert.match(html, /로딩중\.\.\./);
   assert.doesNotMatch(html, /사진, 종이 질감, 효과음을 먼저 준비하고 있습니다/);
@@ -91,8 +91,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(delivery, /onPointerEnter/);
   assert.doesNotMatch(delivery, /THE COUPLE TIMES|오늘의 특종|나레이션|누군가 거절을 회수|선택지는 하나뿐/);
   assert.match(audioBank, /decodeAudioData/);
-  assert.match(styles, /--paper: #e9e5e6;/);
-  assert.match(styles, /html, body \{ background: var\(--canvas\)/);
+  assert.match(styles, /--paper: #f5f4f1;/);
+  assert.match(styles, /html, body \{[^}]*background: var\(--canvas\)/s);
   assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);
 

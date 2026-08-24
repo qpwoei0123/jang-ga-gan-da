@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "결혼일보 | 한원영·이나경 특집호",
-  description: "10년 만나고 결혼하는 한원영·이나경의 소식을 신문 한 호에 실었습니다.",
+  title: "The Wedding News | 한원영·이나경",
+  description: "10년을 함께한 한원영·이나경의 결혼 소식과 가족식 안내를 담은 8면 웨딩 신문입니다.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
