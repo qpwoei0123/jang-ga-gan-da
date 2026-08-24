@@ -120,6 +120,10 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(styles, /\.journey-copy \{[^}]*column-count: 3/s);
   assert.match(styles, /\.milestone-rail \{[^}]*grid-template-columns: repeat\(4, 1fr\)/s);
   assert.match(styles, /\.schedule-photo-pair \.photo-slot \{[^}]*grid-template-rows: 205px auto/s);
+  assert.doesNotMatch(styles, /text-align:\s*justify/);
+  assert.match(styles, /\.journey-copy \{[^}]*text-align: start/s);
+  assert.match(styles, /\.lead-report p \{[^}]*text-align: start/s);
+  assert.match(styles, /\.views-copy \{[^}]*text-align: start/s);
   assert.doesNotMatch(styles, /outdoor-sunlight|canvas-desktop/);
   assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);

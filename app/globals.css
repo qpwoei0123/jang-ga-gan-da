@@ -149,7 +149,7 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .journey-heading i { position: absolute; top: 23px; left: 50%; padding: 0 3px; background: var(--paper); font: italic 15px/1 var(--display); transform: translateX(-50%); }
 .journey-heading p { margin: 0 0 3px; font: 6.5px/1.35 var(--sans); text-align: right; }
 .journey-layout { padding-top: 12px; }
-.journey-copy { column-count: 3; column-gap: 12px; font: 8.5px/1.47 var(--text); text-align: justify; }
+.journey-copy { column-count: 3; column-gap: 12px; font: 8.5px/1.47 var(--text); text-align: start; }
 .journey-copy p { margin: 0 0 8px; break-inside: avoid; }
 .milestone-rail { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 12px; padding-top: 9px; border-top: 3px double var(--line-strong); }
 .milestone-rail h3 { grid-column: 1 / -1; margin: 0 0 7px; font: 13px/.95 var(--display); }
@@ -177,7 +177,7 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .people-lead-grid { display: grid; grid-template-columns: 1fr .82fr; gap: 13px; padding-top: 13px; border-top: 1px solid var(--line-strong); }
 .lead-report > span, .brief-columns span, .culture-brief > span, .search-lower article > span, .views-heading > span, .schedule-feature article > span, .date-address-grid > div > span, .travel-notes span, .back-copy > span { font: 800 6.5px/1 var(--sans); letter-spacing: .04em; }
 .lead-report h3 { margin: 6px 0 8px; font: 20px/1.03 var(--display); }
-.lead-report p { margin: 0 0 8px; font: 8px/1.45 var(--text); text-align: justify; }
+.lead-report p { margin: 0 0 8px; font: 8px/1.45 var(--text); text-align: start; }
 .lead-report small, .culture-brief small { display: block; padding-top: 5px; border-top: 1px solid var(--line); color: var(--muted); font: 6px/1.3 var(--sans); }
 .people-photo { margin: 0; }
 .people-photo .photo-slot-frame { height: 185px; }
@@ -235,7 +235,7 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .views-heading h2 i { font-weight: 400; }
 .views-quote { margin: 16px 0; padding: 14px 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font: italic 20px/1.15 var(--display); text-align: center; }
 .views-grid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 14px; }
-.views-copy { column-count: 2; column-gap: 13px; font: 8.2px/1.5 var(--text); text-align: justify; }
+.views-copy { column-count: 2; column-gap: 13px; font: 8.2px/1.5 var(--text); text-align: start; }
 .views-copy p { margin: 0 0 8px; break-inside: avoid; }
 .views-side { padding-left: 12px; border-left: 1px solid var(--line); }
 .views-side figure { margin: 0; }
