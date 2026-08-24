@@ -9,8 +9,6 @@ const INVITATION_ASSETS = [
   "/dog-run-sprite-ddui-timid.webp",
   "/will-smith-original.png",
   "/couple-main.webp",
-  "/couple-sample.webp",
-  "/venue-sample.webp",
   ...INTERACTION_SOUNDS,
 ] as const;
 
@@ -57,6 +55,19 @@ const ceremony = [
   ["04", "14:30", "식사", "복잡한 순서 없이 함께 밥을 먹습니다."],
   ["05", "15:30", "사진", "마지막 단체 사진까지 남기고 마칩니다."],
 ];
+
+function PhotoSlot({ code, marker, caption, className = "" }: { code: string; marker: string; caption: string; className?: string }) {
+  return (
+    <figure className={`photo-slot ${className}`.trim()}>
+      <div className="photo-slot-frame" aria-hidden="true">
+        <span>{code}</span>
+        <strong>{marker}</strong>
+        <small>PHOTO TO COME</small>
+      </div>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
 
 function PageTop({ page, section }: { page: string; section: string }) {
   return (
@@ -319,10 +330,12 @@ function WeddingNewspaper() {
 
         <section className="paper-page journey-page" id="journey">
           <PageTop page="02" section="THE JOURNEY OF US" />
-          <figure className="journey-photo">
-            <img src="/couple-sample.webp" alt="부케를 함께 든 신랑 신부" width="1000" height="667" />
-            <figcaption>2016—2026 / 취재 기간 10년, 결론은 한 팀.</figcaption>
-          </figure>
+          <PhotoSlot
+            className="archive-lead-photo"
+            code="ARCHIVE 01"
+            marker="2016"
+            caption="장기 취재의 시작 / 둘이 같은 프레임에 자주 등장하기 시작한 해."
+          />
           <div className="journey-heading">
             <div>
               <span>THE</span>
@@ -349,6 +362,13 @@ function WeddingNewspaper() {
               ))}
             </aside>
           </div>
+          <div className="archive-mosaic" aria-label="한원영과 이나경의 10년 사진 연대기 자리">
+            <PhotoSlot className="archive-tall" code="ARCHIVE 02" marker="2018" caption="평범한 주말도 둘이 찍으면 기록이 됐다." />
+            <PhotoSlot code="ARCHIVE 03" marker="2020" caption="둘만 아는 표정이 늘기 시작했다." />
+            <PhotoSlot code="ARCHIVE 04" marker="2022" caption="여행 사진첩의 공동 지분이 확정됐다." />
+            <PhotoSlot code="ARCHIVE 05" marker="2024" caption="같이 사는 사람처럼 서로를 챙기던 때." />
+            <PhotoSlot code="ARCHIVE 06" marker="2026" caption="오래 해오던 선택에 날짜를 붙였다." />
+          </div>
           <PageBottom next="PEOPLE & PRIVATE FILE →" />
         </section>
 
@@ -371,10 +391,12 @@ function WeddingNewspaper() {
               <p>가족과 친구들은 두 사람의 결혼을 새로운 사건이라기보다 늦게 도착한 공식 발표로 받아들였다. 편집국은 이 반응을 “예상 범위 안”으로 분류했다.</p>
               <small>사회부 입수 자료 · 주변인 익명 제보</small>
             </article>
-            <figure className="people-photo">
-              <img src="/venue-sample.webp" alt="서로 포개진 두 개의 결혼반지" width="1100" height="733" />
-              <figcaption>둘이 고른 반지. 소유권은 각자 하나씩이다.</figcaption>
-            </figure>
+            <PhotoSlot
+              className="people-photo"
+              code="SNAP 01"
+              marker="CANDID"
+              caption="예식 당일의 두 사람. 사진은 추후 편집국 입수 예정."
+            />
           </div>
           <div className="brief-columns">
             {reports.slice(1).map(([label, title, copy]) => (
@@ -384,6 +406,10 @@ function WeddingNewspaper() {
                 <p>{copy}</p>
               </article>
             ))}
+          </div>
+          <div className="evidence-strip" aria-label="주변인 제보와 함께 싣는 과거 사진 자리">
+            <PhotoSlot code="ARCHIVE 07" marker="2019" caption="친구 제보 / 둘의 거리가 늘 비슷했다." />
+            <PhotoSlot code="ARCHIVE 08" marker="2023" caption="가족 제보 / 명절 사진에도 자연스럽게 한 팀." />
           </div>
           <article className="culture-brief">
             <span>문화 / 단독 / 가상 패러디</span>
@@ -421,10 +447,7 @@ function WeddingNewspaper() {
               <p>완성이라 부르기엔 여전히 진행 중이고, 시작이라 부르기엔 이미 너무 오래 함께했다. 이 결혼은 그 모순을 없애지 않는다. 다만 둘이 같은 방향으로 들고 갈 수 있게 반듯이 접어 둔다.</p>
             </article>
             <aside className="views-side">
-              <figure>
-                <img src="/couple-sample.webp" alt="햇살 속의 신랑 신부" width="1000" height="667" />
-                <figcaption>FILE 1017 / 결혼일보 사진부</figcaption>
-              </figure>
+              <PhotoSlot code="SNAP 02" marker="PORTRAIT" caption="FILE 1017 / 결혼일보 사진부" />
               <h3>평생 동거인<br /><i>모집 마감</i></h3>
               <p>지원자: 한원영·이나경<br />심사 기간: 10년<br />결과: 둘 다 합격</p>
             </aside>
@@ -455,10 +478,10 @@ function WeddingNewspaper() {
               <h3>가족끼리 모여<br />밥 먹고 인사드릴게요.</h3>
               <p>거창한 순서보다 서로 얼굴을 오래 보고 이야기하는 시간을 준비했습니다. 참석 여부는 따로 받지 않습니다.</p>
             </article>
-            <figure>
-              <img src="/couple-sample.webp" alt="예식을 앞둔 신랑 신부" width="1000" height="667" />
-              <figcaption>Saturday · October 17 · 2026</figcaption>
-            </figure>
+            <div className="schedule-photo-pair">
+              <PhotoSlot className="schedule-photo-main" code="SNAP 03" marker="CEREMONY" caption="예식의 큰 장면 / 두 사람이 함께 있는 사진." />
+              <PhotoSlot code="SNAP 04" marker="DETAIL" caption="꽃, 손, 신발처럼 가까이 찍은 작은 장면." />
+            </div>
           </div>
           <div className="number-strip" aria-label="예식 핵심 숫자">
             <div><strong>10</strong><span>YEARS<br />TOGETHER</span></div>

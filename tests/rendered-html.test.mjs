@@ -58,6 +58,12 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.match(page, /\/couple-main\.webp/);
   assert.match(page, /창가에 나란히 앉아 꽃다발을 든 한원영과 이나경/);
+  assert.match(page, /function PhotoSlot/);
+  assert.match(page, /PHOTO TO COME/);
+  assert.match(page, /archive-mosaic/);
+  assert.match(page, /evidence-strip/);
+  assert.match(page, /schedule-photo-pair/);
+  assert.doesNotMatch(page, /couple-sample|venue-sample/);
   assert.match(page, /이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해/);
   assert.match(page, /결혼일보 연예부 확인 \/ 실제 보도 아님/);
   assert.match(page, /function WeddingSearchPuzzle/);
@@ -104,9 +110,13 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(audioBank, /decodeAudioData/);
   assert.match(styles, /--paper: #f5f4f1;/);
   assert.match(styles, /scrollbar-gutter: stable both-edges/);
+  assert.match(styles, /@media \(min-width: 640px\) \{\s*html \{ scrollbar-gutter: stable both-edges; \}/s);
+  assert.doesNotMatch(styles, /^html \{[^}]*scrollbar-gutter/m);
   assert.match(styles, /html \{[^}]*background: var\(--paper\)/s);
   assert.match(styles, /\.edition \{[^}]*background: var\(--paper\)/s);
   assert.match(styles, /\.paper-page \{[^}]*box-shadow: 0 9px 26px rgb\(23 23 22 \/ 18%\)/s);
+  assert.match(styles, /\.photo-slot-frame \{[^}]*border: 1px solid var\(--line-strong\)[^}]*background: var\(--paper-soft\)/s);
+  assert.doesNotMatch(styles, /\.photo-slot[^}]*box-shadow/s);
   assert.doesNotMatch(styles, /outdoor-sunlight|canvas-desktop/);
   assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);
@@ -116,8 +126,6 @@ test("keeps every runtime asset local and predecoded", async () => {
     "dog-run-sprite-ddui-timid.webp",
     "will-smith-original.png",
     "couple-main.webp",
-    "couple-sample.webp",
-    "venue-sample.webp",
     "sounds/no-1-classic-hurt.mp3",
     "sounds/no-2-fahhhh.mp3",
     "sounds/no-4-minecraft-hit.mp3",
