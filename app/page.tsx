@@ -8,6 +8,7 @@ import NewspaperDelivery from "./newspaper-delivery";
 const INVITATION_ASSETS = [
   "/dog-run-sprite-ddui-timid.webp",
   "/will-smith-original.png",
+  "/couple-main.webp",
   "/couple-sample.webp",
   "/venue-sample.webp",
   ...INTERACTION_SOUNDS,
@@ -289,8 +290,11 @@ function WeddingNewspaper() {
             </div>
           </div>
           <figure className="cover-photo">
-            <img src="/couple-sample.webp" alt="햇살 아래 부케를 든 신랑 신부" width="1000" height="667" />
-            <figcaption><b>EXCLUSIVE</b> 10년을 함께한 두 사람이 2026년 가을 가족 앞에서 결혼한다. 사진은 초안용 샘플.</figcaption>
+            <div className="cover-photo-print">
+              <img src="/couple-main.webp" alt="창가에 나란히 앉아 꽃다발을 든 한원영과 이나경" width="1200" height="1800" />
+              <span className="cover-photo-mark" aria-hidden="true">FRONT PAGE <b>W × N</b></span>
+            </div>
+            <figcaption><b>EXCLUSIVE</b> 10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.</figcaption>
           </figure>
           <PageBottom next="CONTINUED ON PAGE 02" />
         </article>

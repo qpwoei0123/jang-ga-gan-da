@@ -55,6 +55,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /^"use client";/);
   assert.match(page, /<AssetGate assets=\{INVITATION_ASSETS\}>/);
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
+  assert.match(page, /\/couple-main\.webp/);
+  assert.match(page, /창가에 나란히 앉아 꽃다발을 든 한원영과 이나경/);
   assert.match(page, /이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해/);
   assert.match(page, /결혼일보 연예부 확인 \/ 실제 보도 아님/);
   assert.match(page, /function WeddingSearchPuzzle/);
@@ -105,6 +107,7 @@ test("keeps every runtime asset local and predecoded", async () => {
     "paper-crumple.png",
     "dog-run-sprite-ddui-timid.webp",
     "will-smith-original.png",
+    "couple-main.webp",
     "couple-sample.webp",
     "venue-sample.webp",
     "sounds/no-1-classic-hurt.mp3",
