@@ -45,15 +45,17 @@ test("renders the four-level guide behind its own asset gate", async () => {
 });
 
 test("keeps every runtime asset local and predecoded", async () => {
-  const [page, delivery, audioBank, styles] = await Promise.all([
+  const [page, delivery, audioBank, styles, sunlight] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/newspaper-delivery.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/audio-bank.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/outdoor-sunlight.tsx", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /^"use client";/);
   assert.match(page, /<AssetGate assets=\{INVITATION_ASSETS\}>/);
+  assert.match(page, /<OutdoorSunlight \/>/);
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.match(page, /\/couple-main\.webp/);
   assert.match(page, /창가에 나란히 앉아 꽃다발을 든 한원영과 이나경/);
@@ -104,6 +106,11 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(styles, /--paper: #f5f4f1;/);
   assert.match(styles, /--canvas: #dededb;/);
   assert.match(styles, /--canvas-desktop: linear-gradient/);
+  assert.match(styles, /\.outdoor-sunlight/);
+  assert.match(sunlight, /requestAnimationFrame/);
+  assert.match(sunlight, /prefers-reduced-motion: reduce/);
+  assert.match(sunlight, /document\.visibilityState === "hidden"/);
+  assert.match(sunlight, /FRAME_INTERVAL_MS = 1000 \/ 24/);
   assert.match(styles, /html, body \{[^}]*background: var\(--canvas\)/s);
   assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);

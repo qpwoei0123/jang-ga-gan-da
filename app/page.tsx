@@ -4,6 +4,7 @@ import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import AssetGate from "./asset-loader";
 import { INTERACTION_SOUNDS } from "./audio-bank";
 import NewspaperDelivery from "./newspaper-delivery";
+import OutdoorSunlight from "./outdoor-sunlight";
 
 const INVITATION_ASSETS = [
   "/dog-run-sprite-ddui-timid.webp",
@@ -269,6 +270,7 @@ function WeddingNewspaper() {
   return (
     <>
       <NewspaperDelivery />
+      <OutdoorSunlight />
       <main className="edition" aria-label="한원영과 이나경의 웨딩 신문">
         <article className="paper-page cover-page" id="top">
           <div className="cover-utility">
