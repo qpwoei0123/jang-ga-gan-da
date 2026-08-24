@@ -95,8 +95,12 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(delivery, /NO_HAPTIC_MS = 35/);
   assert.match(delivery, /navigator\.vibrate\(NO_HAPTIC_MS\)/);
   assert.match(delivery, /TYPE_INTERVAL_MS = 55/);
+  assert.match(delivery, /OPENING_DURATION_MS = 760/);
   assert.match(delivery, /useLayoutEffect/);
   assert.match(delivery, /dataset\.delivery = "opening"/);
+  assert.match(delivery, /className="delivery-brand-reveal"/);
+  assert.match(delivery, /src="\/favicon\.svg"/);
+  assert.doesNotMatch(delivery, /delivery-unfold|delivery-half|delivery-fold|<b>결혼<\/b>|<b>일보<\/b>/);
   assert.match(delivery, /playDecodedSound\(SANS_VOICE_SOUND, \.22\)/);
   assert.match(delivery, /어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까\?/);
   assert.match(delivery, /is-hit/);
@@ -126,9 +130,12 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(styles, /\.views-copy \{[^}]*text-align: start/s);
   assert.doesNotMatch(styles, /outdoor-sunlight|canvas-desktop/);
   assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
+  assert.match(styles, /@keyframes favicon-reveal/);
+  assert.doesNotMatch(styles, /paper-unfold|fold-arrive|delivery-unfold|delivery-half|delivery-fold/);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);
 
   const assets = [
+    "favicon.svg",
     "paper-crumple.png",
     "dog-run-sprite-ddui-timid.webp",
     "will-smith-original.png",

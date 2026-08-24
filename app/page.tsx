@@ -6,6 +6,7 @@ import { INTERACTION_SOUNDS } from "./audio-bank";
 import NewspaperDelivery from "./newspaper-delivery";
 
 const INVITATION_ASSETS = [
+  "/favicon.svg",
   "/dog-run-sprite-ddui-timid.webp",
   "/will-smith-original.png",
   "/couple-main.webp",

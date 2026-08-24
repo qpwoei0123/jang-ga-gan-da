@@ -31,6 +31,7 @@ const DAMAGE_FEEDBACK_MS = 200;
 const WILL_REVEAL_PAUSE_MS = 150;
 const NO_HAPTIC_MS = 35;
 const TYPE_INTERVAL_MS = 55;
+const OPENING_DURATION_MS = 760;
 const INTRO_MUSIC_VOLUME = .34;
 const INTRO_MUSIC_LOOP = { start: 4.185, end: 14.631 } as const;
 const NARRATION = "어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까?";
@@ -235,7 +236,7 @@ export default function NewspaperDelivery() {
       document.documentElement.dataset.delivery = "complete";
       document.body.classList.remove("delivery-locked");
       setPhase("complete");
-    }, reducedMotion ? 120 : 900);
+    }, reducedMotion ? 120 : OPENING_DURATION_MS);
   };
 
   const evadeNo = () => {
@@ -379,10 +380,8 @@ export default function NewspaperDelivery() {
           </button>
         )}
 
-        <span className="delivery-unfold" aria-hidden="true">
-          <span className="delivery-half delivery-half-left"><b>결혼</b></span>
-          <span className="delivery-half delivery-half-right"><b>일보</b></span>
-          <span className="delivery-fold" />
+        <span className="delivery-brand-reveal" aria-hidden="true">
+          <img src="/favicon.svg" alt="" width="48" height="48" draggable="false" />
         </span>
       </div>
     </div>
