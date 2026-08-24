@@ -45,17 +45,16 @@ test("renders the four-level guide behind its own asset gate", async () => {
 });
 
 test("keeps every runtime asset local and predecoded", async () => {
-  const [page, delivery, audioBank, styles, sunlight] = await Promise.all([
+  const [page, delivery, audioBank, styles] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/newspaper-delivery.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/audio-bank.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
-    readFile(new URL("../app/outdoor-sunlight.tsx", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /^"use client";/);
   assert.match(page, /<AssetGate assets=\{INVITATION_ASSETS\}>/);
-  assert.match(page, /<OutdoorSunlight \/>/);
+  assert.doesNotMatch(page, /OutdoorSunlight/);
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.match(page, /\/couple-main\.webp/);
   assert.match(page, /창가에 나란히 앉아 꽃다발을 든 한원영과 이나경/);
@@ -104,14 +103,11 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(delivery, /THE COUPLE TIMES|오늘의 특종|나레이션|누군가 거절을 회수|선택지는 하나뿐/);
   assert.match(audioBank, /decodeAudioData/);
   assert.match(styles, /--paper: #f5f4f1;/);
-  assert.match(styles, /--canvas: #dededb;/);
-  assert.match(styles, /--canvas-desktop: linear-gradient/);
-  assert.match(styles, /\.outdoor-sunlight/);
-  assert.match(sunlight, /requestAnimationFrame/);
-  assert.match(sunlight, /prefers-reduced-motion: reduce/);
-  assert.match(sunlight, /document\.visibilityState === "hidden"/);
-  assert.match(sunlight, /FRAME_INTERVAL_MS = 1000 \/ 24/);
-  assert.match(styles, /html, body \{[^}]*background: var\(--canvas\)/s);
+  assert.match(styles, /scrollbar-gutter: stable both-edges/);
+  assert.match(styles, /html \{[^}]*background: var\(--paper\)/s);
+  assert.match(styles, /\.edition \{[^}]*background: var\(--paper\)/s);
+  assert.match(styles, /\.paper-page \{[^}]*box-shadow: 0 9px 26px rgb\(23 23 22 \/ 18%\)/s);
+  assert.doesNotMatch(styles, /outdoor-sunlight|canvas-desktop/);
   assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);
 
