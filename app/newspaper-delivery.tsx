@@ -75,7 +75,7 @@ export default function NewspaperDelivery() {
   useLayoutEffect(() => {
     const root = document.documentElement;
     root.dataset.delivery = "ready";
-    document.body.classList.add("delivery-locked");
+    root.classList.add("delivery-locked");
     window.scrollTo(0, 0);
     if (confettiCanvasRef.current) {
       confettiRef.current = confetti.create(confettiCanvasRef.current, {
@@ -112,7 +112,7 @@ export default function NewspaperDelivery() {
       window.removeEventListener("keydown", resumeIntroMusic, { capture: true });
       document.removeEventListener("visibilitychange", syncIntroMusicVisibility);
       delete root.dataset.delivery;
-      document.body.classList.remove("delivery-locked");
+      root.classList.remove("delivery-locked");
     };
   }, []);
 
@@ -233,8 +233,9 @@ export default function NewspaperDelivery() {
     setPhase("opening");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     timerRef.current = window.setTimeout(() => {
-      document.documentElement.dataset.delivery = "complete";
-      document.body.classList.remove("delivery-locked");
+      const root = document.documentElement;
+      root.dataset.delivery = "complete";
+      root.classList.remove("delivery-locked");
       setPhase("complete");
     }, reducedMotion ? 120 : OPENING_DURATION_MS);
   };

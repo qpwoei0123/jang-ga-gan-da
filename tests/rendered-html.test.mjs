@@ -97,6 +97,9 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(delivery, /TYPE_INTERVAL_MS = 55/);
   assert.match(delivery, /OPENING_DURATION_MS = 760/);
   assert.match(delivery, /useLayoutEffect/);
+  assert.match(delivery, /root\.classList\.add\("delivery-locked"\)/);
+  assert.match(delivery, /root\.classList\.remove\("delivery-locked"\)/);
+  assert.doesNotMatch(delivery, /document\.body\.classList\.(?:add|remove)\("delivery-locked"\)/);
   assert.match(delivery, /dataset\.delivery = "opening"/);
   assert.match(delivery, /className="delivery-brand-reveal"/);
   assert.match(delivery, /src="\/favicon\.svg"/);
@@ -113,9 +116,10 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(delivery, /THE COUPLE TIMES|오늘의 특종|나레이션|누군가 거절을 회수|선택지는 하나뿐/);
   assert.match(audioBank, /decodeAudioData/);
   assert.match(styles, /--paper: #f5f4f1;/);
-  assert.match(styles, /scrollbar-gutter: stable both-edges/);
-  assert.match(styles, /@media \(min-width: 640px\) \{\s*html \{ scrollbar-gutter: stable both-edges; \}/s);
-  assert.doesNotMatch(styles, /^html \{[^}]*scrollbar-gutter/m);
+  assert.match(styles, /^html \{[^}]*overflow-y: auto[^}]*scrollbar-gutter: stable both-edges/m);
+  assert.match(styles, /html\.delivery-locked \{[^}]*overflow-y: hidden[^}]*overscroll-behavior: none/s);
+  assert.match(styles, /html\.delivery-locked body \{[^}]*touch-action: none/s);
+  assert.doesNotMatch(styles, /body\.delivery-locked/);
   assert.match(styles, /html \{[^}]*background: var\(--paper\)/s);
   assert.match(styles, /\.edition \{[^}]*background: var\(--paper\)/s);
   assert.match(styles, /\.paper-page \{[^}]*box-shadow: 0 9px 26px rgb\(23 23 22 \/ 18%\)/s);
