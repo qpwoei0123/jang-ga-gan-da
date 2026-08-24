@@ -231,18 +231,36 @@ function WeddingSearchPuzzle() {
           <p>가로·세로·대각선, 거꾸로도 숨어 있습니다.</p>
         </aside>
       </div>
-      {isComplete && (
-        <section className="puzzle-easter-egg" aria-live="polite">
-          <div className="correction-stamp">정정 보도<small>6/6 취재 완료</small></div>
-          <div className="egg-dog" role="img" aria-label="신문을 물고 등장한 뚜이 편집장" />
-          <article>
-            <span>SECRET EDITION / 편집국 단독</span>
-            <h3>평생 동거인 모집,<br />10년 심사 끝에 두 명 모두 합격</h3>
-            <p>지원자 한원영과 이나경은 장기 심사를 무사히 통과했다. 재공고는 없으며 계약 기간은 평생이다.</p>
-            <blockquote>뚜이 편집장 “다 찾았으면 이제 간식 찾아.”</blockquote>
-          </article>
-        </section>
-      )}
+      <div className={`search-lower${isComplete ? " search-lower-correction" : ""}`} aria-live="polite">
+        {isComplete ? (
+          <>
+            <div className="correction-stamp">정정 보도<small>6/6 취재 완료</small></div>
+            <figure className="dog-editorial-photo">
+              <span role="img" aria-label="신문을 물고 있는 뚜이 편집장" />
+              <figcaption>편집장 뚜이. 직접 정답을 확인하고 정정 보도를 승인했다.</figcaption>
+            </figure>
+            <article>
+              <span>CORRECTION / 편집국 정정 보도</span>
+              <h3>평생 동거인 모집,<br />10년 심사 끝에 둘 다 합격</h3>
+              <p>지원자 한원영과 이나경은 장기 심사를 무사히 통과했다. 재공고는 없으며 계약 기간은 평생이다.</p>
+              <blockquote>뚜이 편집장 “다 찾았으면 이제 간식 찾아.”</blockquote>
+            </article>
+          </>
+        ) : (
+          <>
+            <figure className="dog-editorial-photo">
+              <span role="img" aria-label="신문을 물고 있는 뚜이" />
+              <figcaption>편집 보조견 뚜이. 원고료는 간식으로 받는다.</figcaption>
+            </figure>
+            <article>
+              <span>EDITORIAL / 오늘의 사설</span>
+              <h3>10년이면 승인 도장 찍을 때도 됐다</h3>
+              <p className="dropcap">본지는 2016년부터 두 사람을 지켜봤다. 십 년이면 표본도 충분하다. 저녁 메뉴는 아직 합의하지 못하지만 함께 먹겠다는 결론은 늘 같았다.</p>
+              <blockquote>“연애 10년이면 기사도 충분하다. 편집국의 결론은 결혼 승인.”</blockquote>
+            </article>
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -384,18 +402,6 @@ function WeddingNewspaper() {
             <p>아래 글자판에서 한원영, 이나경, 뚜이, 결혼, 가족, 십년을 찾아보세요.</p>
           </header>
           <WeddingSearchPuzzle />
-          <div className="search-lower">
-            <figure className="dog-editorial-photo">
-              <span role="img" aria-label="신문을 물고 있는 뚜이" />
-              <figcaption>편집 보조견 뚜이. 원고료는 간식으로 받는다.</figcaption>
-            </figure>
-            <article>
-              <span>EDITORIAL / 오늘의 사설</span>
-              <h3>10년이면 승인 도장 찍을 때도 됐다</h3>
-              <p className="dropcap">본지는 2016년부터 두 사람을 지켜봤다. 십 년이면 표본도 충분하다. 저녁 메뉴는 아직 합의하지 못하지만 함께 먹겠다는 결론은 늘 같았다.</p>
-              <blockquote>“연애 10년이면 기사도 충분하다. 편집국의 결론은 결혼 승인.”</blockquote>
-            </article>
-          </div>
           <PageBottom next="VIEWS / LONG READ →" />
         </section>
 

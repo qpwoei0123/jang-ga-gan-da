@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --canvas: #c9c9c7;
+  --canvas: #dededb;
+  --canvas-desktop: linear-gradient(118deg, #dcdcd8 0%, #e9e6e1 52%, #d9ddda 100%);
   --paper: #f5f4f1;
   --paper-soft: #ecebe7;
   --ink: #171716;
@@ -183,10 +184,9 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .search-heading span { font: 700 7px/1 var(--sans); }
 .search-heading h2 { margin: 5px 0 4px; font: 27px/.95 var(--display); letter-spacing: -.035em; }
 .search-heading p { margin: 0; color: var(--muted); font: 7px/1.35 var(--sans); }
-.wedding-search-puzzle { border-bottom: 1px solid var(--line-strong); }
 .puzzle-progress { display: flex; align-items: center; justify-content: space-between; padding: 8px 0 0; color: var(--muted); font: 700 6.5px/1 var(--sans); letter-spacing: .03em; }
 .puzzle-progress i { color: var(--ink); font: 400 5.5px/1 var(--sans); letter-spacing: .08em; }
-.puzzle-layout { display: grid; grid-template-columns: 1fr 70px; gap: 13px; padding: 10px 0 15px; }
+.puzzle-layout { display: grid; grid-template-columns: 1fr 70px; gap: 13px; padding: 10px 0 15px; border-bottom: 1px solid var(--line-strong); }
 .letter-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: 3px 2px; align-content: start; outline: none; cursor: crosshair; touch-action: none; user-select: none; -webkit-user-select: none; font: 10px/1 var(--text); text-align: center; }
 .letter-grid:focus-visible { outline: 1px dashed var(--line-strong); outline-offset: 4px; }
 .letter-grid span { position: relative; isolation: isolate; display: grid; place-items: center; aspect-ratio: 1; }
@@ -202,15 +202,8 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .answer-bank span.is-found { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
 .answer-bank span b { min-width: 8px; color: var(--ink); font: 700 8px/1 var(--sans); text-decoration: none; }
 .answer-bank p { margin: 10px 0 0; color: var(--muted); font: 6.5px/1.35 var(--sans); }
-.puzzle-easter-egg { position: relative; display: grid; grid-template-columns: 63px 1fr; gap: 12px; margin-bottom: 15px; padding: 18px 0 13px; overflow: hidden; border-top: 3px double var(--line-strong); animation: puzzle-reveal .55s cubic-bezier(.16, 1, .3, 1) both; }
 .correction-stamp { position: absolute; z-index: 2; top: 9px; right: 3px; padding: 5px 7px 4px; border: 2px solid var(--ink); transform: rotate(-7deg); background: var(--paper); font: 900 10px/.9 var(--sans); letter-spacing: -.04em; text-align: center; animation: stamp-in .42s .28s cubic-bezier(.16, 1, .3, 1) both; }
 .correction-stamp small { display: block; margin-top: 3px; font: 700 4.8px/1 var(--sans); letter-spacing: .02em; }
-.egg-dog { align-self: end; width: 63px; aspect-ratio: .72; background: url("/dog-run-sprite-ddui-timid.webp") 0 0 / 400% 100% no-repeat; filter: grayscale(.82) contrast(1.08); transform: rotate(-2deg); }
-.puzzle-easter-egg article { min-width: 0; padding: 24px 0 0 11px; border-left: 1px solid var(--line); }
-.puzzle-easter-egg article > span { font: 800 5.6px/1 var(--sans); letter-spacing: .04em; }
-.puzzle-easter-egg h3 { margin: 5px 0 6px; font: 15px/1.04 var(--display); letter-spacing: -.025em; }
-.puzzle-easter-egg p { margin: 0; font: 6.8px/1.4 var(--text); }
-.puzzle-easter-egg blockquote { margin: 8px 0 0; padding-top: 6px; border-top: 1px solid var(--line); font: italic 8px/1.3 var(--display); }
 @keyframes puzzle-reveal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes stamp-in { from { opacity: 0; transform: scale(1.65) rotate(-12deg); } to { opacity: 1; transform: scale(1) rotate(-7deg); } }
 .search-lower { display: grid; grid-template-columns: .75fr 1.25fr; gap: 14px; padding-top: 15px; }
@@ -220,6 +213,10 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .search-lower h3 { margin: 5px 0 8px; font: 18px/1.04 var(--display); }
 .search-lower p { margin: 0; font: 8px/1.47 var(--text); }
 .search-lower blockquote { margin: 10px 0 0; padding: 8px 0; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); font: italic 11px/1.3 var(--display); }
+.search-lower-correction { position: relative; animation: puzzle-reveal .55s cubic-bezier(.16, 1, .3, 1) both; }
+.search-lower-correction article { padding-top: 25px; }
+.search-lower-correction h3 { font-size: 16px; line-height: 1.06; }
+.search-lower-correction p { font-size: 7.4px; line-height: 1.43; }
 
 /* 05 — views */
 .views-heading { padding: 18px 0 14px; border-bottom: 3px double var(--line-strong); }
@@ -301,6 +298,11 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .back-colophon span:nth-child(2) { text-align: right; }
 .back-colophon p { grid-column: 1 / -1; margin: 5px 0 0; padding-top: 7px; border-top: 1px solid var(--line); color: var(--muted); font-weight: 400; }
 
+@media (min-width: 640px) {
+  html, body { background-color: var(--canvas); background-image: var(--canvas-desktop); background-attachment: fixed; }
+  .edition { background: transparent; }
+}
+
 @media (max-width: 360px) {
   .paper-page { padding-right: 18px; padding-left: 18px; }
   .cover-masthead h1 { font-size: 35px; }
@@ -317,7 +319,7 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .delivery-dog-stage, .delivery-dog-sprite, .stream-cursor, .will-catcher, .puzzle-easter-egg, .correction-stamp { animation: none !important; }
+  .delivery-dog-stage, .delivery-dog-sprite, .stream-cursor, .will-catcher, .search-lower-correction, .correction-stamp { animation: none !important; }
   .delivery-dog-stage { opacity: 1; filter: none; transform: none; }
   .delivery-dog-sprite { background-position: 0 0; }
   .choice-no.is-fleeing { transition: none; }

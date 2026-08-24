@@ -62,8 +62,11 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /function WeddingSearchPuzzle/);
   assert.match(page, /tracePuzzleLine/);
   assert.match(page, /6\/6 취재 완료/);
+  assert.match(page, /search-lower-correction/);
+  assert.match(page, /CORRECTION \/ 편집국 정정 보도/);
   assert.match(page, /평생 동거인 모집,/);
   assert.match(page, /다 찾았으면 이제 간식 찾아/);
+  assert.doesNotMatch(page, /puzzle-easter-egg/);
   assert.match(page, /사랑은 완결이 아니라,/);
   assert.match(page, /이동진 평론가의 실제 원고 및 발언과 무관/);
   assert.doesNotMatch(page, /celebrityDesk|celebrityPhotos|유명인들의|celebs\//);
@@ -99,6 +102,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(delivery, /THE COUPLE TIMES|오늘의 특종|나레이션|누군가 거절을 회수|선택지는 하나뿐/);
   assert.match(audioBank, /decodeAudioData/);
   assert.match(styles, /--paper: #f5f4f1;/);
+  assert.match(styles, /--canvas: #dededb;/);
+  assert.match(styles, /--canvas-desktop: linear-gradient/);
   assert.match(styles, /html, body \{[^}]*background: var\(--canvas\)/s);
   assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);
