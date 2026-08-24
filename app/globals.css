@@ -148,17 +148,19 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .journey-heading h2 { margin: 0; font: 34px/.8 var(--display); letter-spacing: -.04em; }
 .journey-heading i { position: absolute; top: 23px; left: 50%; padding: 0 3px; background: var(--paper); font: italic 15px/1 var(--display); transform: translateX(-50%); }
 .journey-heading p { margin: 0 0 3px; font: 6.5px/1.35 var(--sans); text-align: right; }
-.journey-layout { display: grid; grid-template-columns: 1.55fr .68fr; gap: 14px; padding-top: 14px; }
-.journey-copy { column-count: 2; column-gap: 13px; font: 8.5px/1.47 var(--text); text-align: justify; }
+.journey-layout { padding-top: 12px; }
+.journey-copy { column-count: 3; column-gap: 12px; font: 8.5px/1.47 var(--text); text-align: justify; }
 .journey-copy p { margin: 0 0 8px; break-inside: avoid; }
-.milestone-rail { padding-left: 11px; border-left: 1px solid var(--line); }
-.milestone-rail h3 { margin: 0 0 9px; font: 15px/.95 var(--display); }
-.milestone { padding: 7px 0; border-top: 1px solid var(--line); }
+.milestone-rail { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 12px; padding-top: 9px; border-top: 3px double var(--line-strong); }
+.milestone-rail h3 { grid-column: 1 / -1; margin: 0 0 7px; font: 13px/.95 var(--display); }
+.milestone { min-width: 0; padding: 7px 7px 0; border-top: 1px solid var(--line); }
+.milestone:first-of-type { padding-left: 0; }
+.milestone + .milestone { border-left: 1px solid var(--line); }
 .milestone time, .milestone strong { display: block; }
 .milestone time { font: 800 7px/1 var(--sans); }
 .milestone strong { margin-top: 3px; font: 10px/1.08 var(--text); }
 .milestone p { margin: 3px 0 0; color: var(--muted); font: 6.8px/1.35 var(--sans); }
-.archive-mosaic { display: grid; grid-template-columns: 1.08fr .92fr; grid-auto-flow: row; gap: 11px 9px; margin-top: 15px; padding-top: 15px; border-top: 3px double var(--line-strong); }
+.archive-mosaic { display: grid; grid-template-columns: 1.08fr .92fr; grid-auto-flow: row; gap: 11px 9px; margin-top: 12px; padding-top: 12px; border-top: 3px double var(--line-strong); }
 .archive-mosaic .photo-slot { display: flex; flex-direction: column; }
 .archive-mosaic .photo-slot-frame { flex: 1; min-height: 84px; }
 .archive-mosaic .archive-tall { grid-row: span 2; }
@@ -184,8 +186,6 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .brief-columns article + article { padding-right: 0; padding-left: 12px; border-left: 1px solid var(--line); }
 .brief-columns h3 { margin: 5px 0 6px; font: 15px/1.05 var(--display); }
 .brief-columns p { margin: 0; font: 7.5px/1.42 var(--text); }
-.evidence-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-top: 14px; }
-.evidence-strip .photo-slot-frame { min-height: 95px; }
 .culture-brief { margin-top: 14px; padding: 11px 0 10px; border-top: 1px solid var(--line-strong); border-bottom: 3px double var(--line-strong); }
 .culture-brief h3 { margin: 5px 0 6px; font: 19px/1.05 var(--display); }
 .culture-brief p { margin: 0 0 8px; font: 8px/1.45 var(--text); }
@@ -261,10 +261,9 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .schedule-feature article { padding: 11px 10px; background: var(--paper-soft); }
 .schedule-feature h3 { margin: 6px 0 7px; font: 18px/1.03 var(--display); }
 .schedule-feature p { margin: 0; font: 7px/1.43 var(--text); }
-.schedule-photo-pair { display: grid; grid-template-columns: 1.3fr .7fr; gap: 9px; }
-.schedule-photo-pair .photo-slot { display: flex; min-width: 0; flex-direction: column; }
-.schedule-photo-pair .photo-slot-frame { flex: 1; min-height: 150px; }
-.schedule-photo-pair .schedule-photo-main .photo-slot-frame { min-height: 205px; }
+.schedule-photo-pair { display: grid; grid-template-columns: 1.3fr .7fr; align-items: start; gap: 9px; }
+.schedule-photo-pair .photo-slot { display: grid; grid-template-rows: 205px auto; align-content: start; min-width: 0; }
+.schedule-photo-pair .photo-slot-frame { width: 100%; height: 205px; min-height: 0; }
 .number-strip { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 14px; padding: 10px 0 8px; border-top: 3px double var(--line-strong); border-bottom: 1px solid var(--line-strong); }
 .number-strip div { display: flex; align-items: center; justify-content: center; gap: 5px; border-left: 1px solid var(--line); }
 .number-strip div:first-child { border-left: 0; }

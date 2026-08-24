@@ -61,8 +61,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /function PhotoSlot/);
   assert.match(page, /PHOTO TO COME/);
   assert.match(page, /archive-mosaic/);
-  assert.match(page, /evidence-strip/);
   assert.match(page, /schedule-photo-pair/);
+  assert.doesNotMatch(page, /evidence-strip|ARCHIVE 07|ARCHIVE 08/);
   assert.doesNotMatch(page, /couple-sample|venue-sample/);
   assert.match(page, /이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해/);
   assert.match(page, /결혼일보 연예부 확인 \/ 실제 보도 아님/);
@@ -117,6 +117,9 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(styles, /\.paper-page \{[^}]*box-shadow: 0 9px 26px rgb\(23 23 22 \/ 18%\)/s);
   assert.match(styles, /\.photo-slot-frame \{[^}]*border: 1px solid var\(--line-strong\)[^}]*background: var\(--paper-soft\)/s);
   assert.doesNotMatch(styles, /\.photo-slot[^}]*box-shadow/s);
+  assert.match(styles, /\.journey-copy \{[^}]*column-count: 3/s);
+  assert.match(styles, /\.milestone-rail \{[^}]*grid-template-columns: repeat\(4, 1fr\)/s);
+  assert.match(styles, /\.schedule-photo-pair \.photo-slot \{[^}]*grid-template-rows: 205px auto/s);
   assert.doesNotMatch(styles, /outdoor-sunlight|canvas-desktop/);
   assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
   assert.match(audioBank, /\[\],\s*\[\[CLASSIC_HURT_SOUND, \.9\]\],\s*\[\[GUNSHOT_SOUND, \.7\]\],\s*\[\[FAHHHH_SOUND, \.78\]\],\s*\[\[GUNSHOT_SOUND, \.63\], \[FAHHHH_SOUND, \.72\]\]/s);

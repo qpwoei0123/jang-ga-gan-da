@@ -407,10 +407,6 @@ function WeddingNewspaper() {
               </article>
             ))}
           </div>
-          <div className="evidence-strip" aria-label="주변인 제보와 함께 싣는 과거 사진 자리">
-            <PhotoSlot code="ARCHIVE 07" marker="2019" caption="친구 제보 / 둘의 거리가 늘 비슷했다." />
-            <PhotoSlot code="ARCHIVE 08" marker="2023" caption="가족 제보 / 명절 사진에도 자연스럽게 한 팀." />
-          </div>
           <article className="culture-brief">
             <span>문화 / 단독 / 가상 패러디</span>
             <h3>이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해</h3>
@@ -479,7 +475,7 @@ function WeddingNewspaper() {
               <p>거창한 순서보다 서로 얼굴을 오래 보고 이야기하는 시간을 준비했습니다. 참석 여부는 따로 받지 않습니다.</p>
             </article>
             <div className="schedule-photo-pair">
-              <PhotoSlot className="schedule-photo-main" code="SNAP 03" marker="CEREMONY" caption="예식의 큰 장면 / 두 사람이 함께 있는 사진." />
+              <PhotoSlot code="SNAP 03" marker="CEREMONY" caption="예식의 큰 장면 / 두 사람이 함께 있는 사진." />
               <PhotoSlot code="SNAP 04" marker="DETAIL" caption="꽃, 손, 신발처럼 가까이 찍은 작은 장면." />
             </div>
           </div>
