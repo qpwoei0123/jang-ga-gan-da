@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import AssetGate from "./asset-loader";
 import { INTERACTION_SOUNDS } from "./audio-bank";
 import NewspaperDelivery from "./newspaper-delivery";
@@ -25,18 +26,28 @@ const reports = [
   ["친구 제보 03", "축하보다 먼저 나온 말, ‘드디어’", "소식을 들은 지인들은 한 박자 쉬고 ‘드디어’라고 했다. 편집국도 그대로 적었다."],
 ];
 
-const puzzleRows = [
-  "한원영사랑가족십년",
-  "결혼뚜이나경웃음집",
-  "서울사진신문약속꽃",
-  "가족식간식여행반지",
-  "원영이나경드디어밥",
-  "십년추억축하예식장",
-  "뚜이신문사랑가족식",
-  "약속웃음사진결혼꽃",
-  "반지여행서울간식집",
-  "드디어한원영이나경",
-];
+const PUZZLE_ROWS = [
+  "한원영사랑함께웃음",
+  "오늘도꽃십약속밥집",
+  "여행사진년경나이봄",
+  "서로사진마음축하봄",
+  "뚜추억함께오늘도꽃",
+  "봄이반지사진약속밥",
+  "서울예식마음함께혼",
+  "오늘밥족축하사진결",
+  "웃음가약속봄날집꽃",
+] as const;
+
+const PUZZLE_SIZE = 9;
+const PUZZLE_LETTERS = PUZZLE_ROWS.flatMap((row) => [...row]);
+const PUZZLE_WORDS = [
+  { word: "한원영", cells: [0, 1, 2] },
+  { word: "이나경", cells: [25, 24, 23] },
+  { word: "뚜이", cells: [36, 46] },
+  { word: "결혼", cells: [71, 62] },
+  { word: "가족", cells: [74, 66] },
+  { word: "십년", cells: [13, 22] },
+] as const;
 
 const ceremony = [
   ["01", "13:20", "도착", "가족들과 먼저 사진을 찍습니다."],
@@ -62,6 +73,176 @@ function PageBottom({ next }: { next: string }) {
       <span>HAN WON-YOUNG · LEE NA-KYUNG</span>
       <span>{next}</span>
     </footer>
+  );
+}
+
+function tracePuzzleLine(start: number, end: number) {
+  const startRow = Math.floor(start / PUZZLE_SIZE);
+  const startColumn = start % PUZZLE_SIZE;
+  const endRow = Math.floor(end / PUZZLE_SIZE);
+  const endColumn = end % PUZZLE_SIZE;
+  const rowDistance = endRow - startRow;
+  const columnDistance = endColumn - startColumn;
+  const isStraight = rowDistance === 0 || columnDistance === 0 || Math.abs(rowDistance) === Math.abs(columnDistance);
+
+  if (!isStraight) return [start];
+
+  const rowStep = Math.sign(rowDistance);
+  const columnStep = Math.sign(columnDistance);
+  const steps = Math.max(Math.abs(rowDistance), Math.abs(columnDistance));
+
+  return Array.from({ length: steps + 1 }, (_, index) => (
+    (startRow + rowStep * index) * PUZZLE_SIZE + startColumn + columnStep * index
+  ));
+}
+
+function WeddingSearchPuzzle() {
+  const gridRef = useRef<HTMLDivElement>(null);
+  const selectionRef = useRef<number[]>([]);
+  const [dragStart, setDragStart] = useState<number | null>(null);
+  const [selection, setSelection] = useState<number[]>([]);
+  const [foundWords, setFoundWords] = useState<string[]>([]);
+  const [activeCell, setActiveCell] = useState(0);
+  const [keyboardStart, setKeyboardStart] = useState<number | null>(null);
+
+  const foundCells = new Set(
+    PUZZLE_WORDS.filter(({ word }) => foundWords.includes(word)).flatMap(({ cells }) => cells),
+  );
+  const isComplete = foundWords.length === PUZZLE_WORDS.length;
+
+  function updateSelection(nextSelection: number[]) {
+    selectionRef.current = nextSelection;
+    setSelection(nextSelection);
+  }
+
+  function finishSelection(path = selectionRef.current) {
+    const selectedWord = path.map((index) => PUZZLE_LETTERS[index]).join("");
+    const reversedWord = [...selectedWord].reverse().join("");
+    const match = PUZZLE_WORDS.find(({ word }) => word === selectedWord || word === reversedWord);
+
+    if (match && !foundWords.includes(match.word)) {
+      setFoundWords((current) => [...current, match.word]);
+      if ("vibrate" in navigator) navigator.vibrate(18);
+    }
+
+    setDragStart(null);
+    setKeyboardStart(null);
+    updateSelection([]);
+  }
+
+  function handlePointerDown(event: PointerEvent<HTMLSpanElement>, index: number) {
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setDragStart(index);
+    setKeyboardStart(null);
+    setActiveCell(index);
+    updateSelection([index]);
+  }
+
+  function handlePointerMove(event: PointerEvent<HTMLDivElement>) {
+    if (dragStart === null) return;
+
+    const element = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-cell-index]");
+    if (!element || !gridRef.current?.contains(element)) return;
+
+    const end = Number(element.dataset.cellIndex);
+    if (Number.isNaN(end)) return;
+    updateSelection(tracePuzzleLine(dragStart, end));
+  }
+
+  function handleGridKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const row = Math.floor(activeCell / PUZZLE_SIZE);
+    const column = activeCell % PUZZLE_SIZE;
+    let nextCell = activeCell;
+
+    if (event.key === "ArrowUp") nextCell = Math.max(0, row - 1) * PUZZLE_SIZE + column;
+    else if (event.key === "ArrowDown") nextCell = Math.min(PUZZLE_SIZE - 1, row + 1) * PUZZLE_SIZE + column;
+    else if (event.key === "ArrowLeft") nextCell = row * PUZZLE_SIZE + Math.max(0, column - 1);
+    else if (event.key === "ArrowRight") nextCell = row * PUZZLE_SIZE + Math.min(PUZZLE_SIZE - 1, column + 1);
+    else if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (keyboardStart === null) {
+        setKeyboardStart(activeCell);
+        updateSelection([activeCell]);
+      } else {
+        finishSelection(tracePuzzleLine(keyboardStart, activeCell));
+      }
+      return;
+    } else if (event.key === "Escape") {
+      setKeyboardStart(null);
+      updateSelection([]);
+      return;
+    } else return;
+
+    event.preventDefault();
+    setActiveCell(nextCell);
+    if (keyboardStart !== null) updateSelection(tracePuzzleLine(keyboardStart, nextCell));
+  }
+
+  return (
+    <div className={`wedding-search-puzzle${isComplete ? " is-complete" : ""}`}>
+      <div className="puzzle-progress" aria-live="polite">
+        <span>{foundWords.length === 0 ? "드래그해서 취재 시작" : `${foundWords.length}/6 취재 완료`}</span>
+        <i aria-hidden="true">{Array.from({ length: 6 }, (_, index) => index < foundWords.length ? "●" : "○").join(" ")}</i>
+      </div>
+      <div className="puzzle-layout">
+        <div
+          ref={gridRef}
+          className="letter-grid"
+          role="grid"
+          tabIndex={0}
+          aria-label="결혼 낱말찾기. 터치나 마우스로 글자를 드래그하세요. 키보드는 방향키로 이동하고 엔터로 시작점과 끝점을 선택합니다."
+          aria-activedescendant={`puzzle-cell-${activeCell}`}
+          onPointerMove={handlePointerMove}
+          onPointerUp={() => finishSelection()}
+          onPointerCancel={() => finishSelection([])}
+          onKeyDown={handleGridKeyDown}
+        >
+          {PUZZLE_LETTERS.map((letter, index) => {
+            const classNames = [
+              selection.includes(index) ? "is-selected" : "",
+              foundCells.has(index) ? "is-found" : "",
+              activeCell === index ? "is-active" : "",
+            ].filter(Boolean).join(" ");
+
+            return (
+              <span
+                id={`puzzle-cell-${index}`}
+                key={index}
+                role="gridcell"
+                className={classNames}
+                data-cell-index={index}
+                aria-selected={foundCells.has(index) || selection.includes(index)}
+                onPointerDown={(event) => handlePointerDown(event, index)}
+              >
+                {letter}
+              </span>
+            );
+          })}
+        </div>
+        <aside className="answer-bank">
+          <h3>FIND</h3>
+          {PUZZLE_WORDS.map(({ word }) => (
+            <span className={foundWords.includes(word) ? "is-found" : ""} key={word}>
+              {word}<b aria-hidden="true">{foundWords.includes(word) ? "✓" : ""}</b>
+            </span>
+          ))}
+          <p>가로·세로·대각선, 거꾸로도 숨어 있습니다.</p>
+        </aside>
+      </div>
+      {isComplete && (
+        <section className="puzzle-easter-egg" aria-live="polite">
+          <div className="correction-stamp">정정 보도<small>6/6 취재 완료</small></div>
+          <div className="egg-dog" role="img" aria-label="신문을 물고 등장한 뚜이 편집장" />
+          <article>
+            <span>SECRET EDITION / 편집국 단독</span>
+            <h3>평생 동거인 모집,<br />10년 심사 끝에 두 명 모두 합격</h3>
+            <p>지원자 한원영과 이나경은 장기 심사를 무사히 통과했다. 재공고는 없으며 계약 기간은 평생이다.</p>
+            <blockquote>뚜이 편집장 “다 찾았으면 이제 간식 찾아.”</blockquote>
+          </article>
+        </section>
+      )}
+    </div>
   );
 }
 
@@ -198,19 +379,7 @@ function WeddingNewspaper() {
             <h2>THE WEDDING SEARCH</h2>
             <p>아래 글자판에서 한원영, 이나경, 뚜이, 결혼, 가족, 십년을 찾아보세요.</p>
           </header>
-          <div className="puzzle-layout">
-            <div className="letter-grid" aria-label="결혼 낱말찾기">
-              {puzzleRows.flatMap((row, rowIndex) => [...row].map((letter, columnIndex) => (
-                <span key={`${rowIndex}-${columnIndex}`}>{letter}</span>
-              )))}
-            </div>
-            <aside className="answer-bank">
-              <h3>FIND</h3>
-              <span>한원영</span><span>이나경</span><span>뚜이</span>
-              <span>결혼</span><span>가족</span><span>십년</span>
-              <p>정답은 두 사람의 사진첩 어딘가에 있습니다.</p>
-            </aside>
-          </div>
+          <WeddingSearchPuzzle />
           <div className="search-lower">
             <figure className="dog-editorial-photo">
               <span role="img" aria-label="신문을 물고 있는 뚜이" />

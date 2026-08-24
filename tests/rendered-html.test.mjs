@@ -57,6 +57,11 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.match(page, /이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해/);
   assert.match(page, /결혼일보 연예부 확인 \/ 실제 보도 아님/);
+  assert.match(page, /function WeddingSearchPuzzle/);
+  assert.match(page, /tracePuzzleLine/);
+  assert.match(page, /6\/6 취재 완료/);
+  assert.match(page, /평생 동거인 모집,/);
+  assert.match(page, /다 찾았으면 이제 간식 찾아/);
   assert.match(page, /사랑은 완결이 아니라,/);
   assert.match(page, /이동진 평론가의 실제 원고 및 발언과 무관/);
   assert.doesNotMatch(page, /celebrityDesk|celebrityPhotos|유명인들의|celebs\//);
