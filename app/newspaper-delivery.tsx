@@ -34,7 +34,7 @@ const TYPE_INTERVAL_MS = 55;
 const OPENING_DURATION_MS = 760;
 const INTRO_MUSIC_VOLUME = .34;
 const INTRO_MUSIC_LOOP = { start: 4.185, end: 14.631 } as const;
-const NARRATION = "어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까?";
+const NARRATION = "강아지가 신문을 물고 죽어라 달려왔다. 정작 도착하고 나니 왜 왔는지 모르는 눈치다. 받아볼까?";
 const NEWSPAPER_CONFETTI_COLORS = ["#b84435", "#275c78", "#e1bd63", "#60704b", "#f5eddb", "#2b241b"];
 
 function NoLives({ count, breaking }: { count: number; breaking: boolean }) {

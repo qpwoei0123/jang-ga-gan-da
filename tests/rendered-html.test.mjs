@@ -105,7 +105,7 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(delivery, /src="\/favicon\.svg"/);
   assert.doesNotMatch(delivery, /delivery-unfold|delivery-half|delivery-fold|<b>결혼<\/b>|<b>일보<\/b>/);
   assert.match(delivery, /playDecodedSound\(SANS_VOICE_SOUND, \.22\)/);
-  assert.match(delivery, /어디선가 강아지가 수상할정도로 수상한 물건을 물고 나에게 왔다, 받아볼까\?/);
+  assert.match(delivery, /강아지가 신문을 물고 죽어라 달려왔다\. 정작 도착하고 나니 왜 왔는지 모르는 눈치다\. 받아볼까\?/);
   assert.match(delivery, /is-hit/);
   assert.match(delivery, /playDecodedSound\(WILL_EXIT_SOUND/);
   assert.match(delivery, /playDecodedSound\(YOSHI_TONGUE_SOUND, \.84\)/);
