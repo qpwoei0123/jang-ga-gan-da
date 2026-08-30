@@ -71,6 +71,9 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /aria-label="다음 사진"/);
   assert.match(page, /onPointerDown=\{handleDragStart\}/);
   assert.match(page, /onPointerMove=\{handleDragMove\}/);
+  assert.match(page, /key: "clone-last"/);
+  assert.match(page, /key: "clone-first"/);
+  assert.match(page, /settledIndex === COVER_SLIDES\.length \+ 1/);
   assert.match(page, /GD와 결혼하지 못한 신부의 한탄/);
   assert.match(page, /그 얘기를 왜 청첩장에까지 쓰는지 모르겠다/);
   assert.doesNotMatch(page, /<section className="paper-page people-page"|<section className="paper-page search-page"/);

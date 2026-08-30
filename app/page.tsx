@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import AssetGate from "./asset-loader";
 import { INTERACTION_SOUNDS } from "./audio-bank";
 import NewspaperDelivery from "./newspaper-delivery";
@@ -104,38 +104,88 @@ function PageBottom({ next }: { next: string }) {
 function CoverCarousel() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef({ pointerId: -1, startX: 0, startLeft: 0, moved: false });
+  const settleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const slide = COVER_SLIDES[activeSlide];
+  const loopedSlides = [
+    { item: COVER_SLIDES[COVER_SLIDES.length - 1], logicalIndex: COVER_SLIDES.length - 1, clone: true, key: "clone-last" },
+    ...COVER_SLIDES.map((item, logicalIndex) => ({ item, logicalIndex, clone: false, key: item.src })),
+    { item: COVER_SLIDES[0], logicalIndex: 0, clone: true, key: "clone-first" },
+  ];
 
-  function scrollToSlide(index: number, behavior: ScrollBehavior = "smooth") {
+  function getPhysicalSlides() {
+    return [...(viewportRef.current?.querySelectorAll<HTMLElement>(".cover-photo-slide") ?? [])];
+  }
+
+  function getClosestPhysicalIndex() {
     const viewport = viewportRef.current;
-    const target = viewport?.querySelectorAll<HTMLElement>(".cover-photo-slide")[index];
+    if (!viewport) return 1;
+
+    const viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
+    return getPhysicalSlides().reduce((best, item, index) => {
+      const distance = Math.abs(item.offsetLeft + item.clientWidth / 2 - viewportCenter);
+      return distance < best.distance ? { index, distance } : best;
+    }, { index: 1, distance: Number.POSITIVE_INFINITY }).index;
+  }
+
+  function scrollToPhysicalSlide(index: number, behavior: ScrollBehavior = "smooth") {
+    const viewport = viewportRef.current;
+    const target = getPhysicalSlides()[index];
     if (!viewport || !target) return;
 
     viewport.scrollTo({
       left: target.offsetLeft - (viewport.clientWidth - target.clientWidth) / 2,
       behavior,
     });
+  }
+
+  function scrollToSlide(index: number, behavior: ScrollBehavior = "smooth") {
+    scrollToPhysicalSlide(index + 1, behavior);
     setActiveSlide(index);
   }
 
   function moveSlide(direction: -1 | 1) {
-    scrollToSlide((activeSlide + direction + COVER_SLIDES.length) % COVER_SLIDES.length);
+    const nextPhysicalIndex = Math.min(COVER_SLIDES.length + 1, Math.max(0, getClosestPhysicalIndex() + direction));
+    scrollToPhysicalSlide(nextPhysicalIndex);
   }
 
   function syncActiveSlide() {
     const viewport = viewportRef.current;
     if (!viewport) return;
 
-    const viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
-    const slides = [...viewport.querySelectorAll<HTMLElement>(".cover-photo-slide")];
-    const closest = slides.reduce((best, item, index) => {
-      const distance = Math.abs(item.offsetLeft + item.clientWidth / 2 - viewportCenter);
-      return distance < best.distance ? { index, distance } : best;
-    }, { index: 0, distance: Number.POSITIVE_INFINITY });
-    setActiveSlide(closest.index);
+    const physicalIndex = getClosestPhysicalIndex();
+    setActiveSlide((physicalIndex - 1 + COVER_SLIDES.length) % COVER_SLIDES.length);
+
+    if (settleTimerRef.current) clearTimeout(settleTimerRef.current);
+    if (dragRef.current.pointerId !== -1) return;
+
+    settleTimerRef.current = setTimeout(() => {
+      const settledIndex = getClosestPhysicalIndex();
+      const loopTarget = settledIndex === 0
+        ? COVER_SLIDES.length
+        : settledIndex === COVER_SLIDES.length + 1
+          ? 1
+          : null;
+      if (loopTarget === null || !viewportRef.current) return;
+
+      viewportRef.current.style.scrollBehavior = "auto";
+      scrollToPhysicalSlide(loopTarget, "auto");
+      requestAnimationFrame(() => viewportRef.current?.style.removeProperty("scroll-behavior"));
+    }, 120);
   }
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    viewport.style.scrollBehavior = "auto";
+    scrollToPhysicalSlide(1, "auto");
+    requestAnimationFrame(() => viewport.style.removeProperty("scroll-behavior"));
+
+    return () => {
+      if (settleTimerRef.current) clearTimeout(settleTimerRef.current);
+    };
+  }, []);
 
   function handleDragStart(event: PointerEvent<HTMLDivElement>) {
     if (event.pointerType === "mouse" && event.button !== 0) return;
@@ -177,9 +227,9 @@ function CoverCarousel() {
           onPointerCancel={handleDragEnd}
         >
           <div className="cover-photo-track">
-            {COVER_SLIDES.map((item, index) => (
-              <div className="cover-photo-slide" key={item.src} aria-hidden={index !== activeSlide}>
-                <img src={item.src} alt={index === activeSlide ? item.alt : ""} draggable="false" style={{ objectPosition: item.position }} width="1200" height="1500" />
+            {loopedSlides.map(({ item, logicalIndex, clone, key }) => (
+              <div className="cover-photo-slide" key={key} aria-hidden={clone || logicalIndex !== activeSlide} data-clone={clone || undefined}>
+                <img src={item.src} alt={!clone && logicalIndex === activeSlide ? item.alt : ""} draggable="false" style={{ objectPosition: item.position }} width="1200" height="1500" />
               </div>
             ))}
           </div>
