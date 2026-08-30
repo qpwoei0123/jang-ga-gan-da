@@ -11,7 +11,33 @@ const INVITATION_ASSETS = [
   "/dog-run-sprite-ddui-timid.webp",
   "/will-smith-original.png",
   "/couple-main.webp",
+  "/couple-sample.webp",
+  "/venue-sample.webp",
   ...INTERACTION_SOUNDS,
+] as const;
+
+const COVER_SLIDES = [
+  {
+    src: "/couple-main.webp",
+    alt: "창가에 나란히 앉아 꽃다발을 든 한원영과 이나경",
+    label: "EXCLUSIVE",
+    caption: "10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.",
+    position: "50% 53%",
+  },
+  {
+    src: "/couple-sample.webp",
+    alt: "햇살 아래 부케를 든 신랑과 신부",
+    label: "MOMENT 02",
+    caption: "빛이 번진 오후, 두 사람의 결혼을 기억할 한 장면.",
+    position: "54% 50%",
+  },
+  {
+    src: "/venue-sample.webp",
+    alt: "웨딩 장식 위에 놓인 두 개의 금색 반지",
+    label: "DETAIL 03",
+    caption: "오래 함께한 두 사람이 나눠 낄 약속의 반지.",
+    position: "50% 50%",
+  },
 ] as const;
 
 const reports = [
@@ -72,6 +98,48 @@ function PageBottom({ next }: { next: string }) {
       <span>HAN WON-YOUNG · LEE NA-KYUNG</span>
       <span>{next}</span>
     </footer>
+  );
+}
+
+function CoverCarousel() {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const slide = COVER_SLIDES[activeSlide];
+
+  function moveSlide(direction: -1 | 1) {
+    setActiveSlide((current) => (current + direction + COVER_SLIDES.length) % COVER_SLIDES.length);
+  }
+
+  return (
+    <figure className="cover-photo" aria-roledescription="carousel" aria-label="웨딩 사진 모음">
+      <div className="cover-photo-print">
+        <div className="cover-photo-track" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
+          {COVER_SLIDES.map((item, index) => (
+            <div className="cover-photo-slide" key={item.src} aria-hidden={index !== activeSlide}>
+              <img src={item.src} alt={index === activeSlide ? item.alt : ""} style={{ objectPosition: item.position }} width="1200" height="1500" />
+            </div>
+          ))}
+        </div>
+        <span className="cover-photo-mark" aria-hidden="true">FRONT PAGE <b>W × N</b></span>
+        <button type="button" className="cover-photo-arrow cover-photo-prev" onClick={() => moveSlide(-1)} aria-label="이전 사진">‹</button>
+        <button type="button" className="cover-photo-arrow cover-photo-next" onClick={() => moveSlide(1)} aria-label="다음 사진">›</button>
+        <span className="cover-photo-count" aria-hidden="true">{String(activeSlide + 1).padStart(2, "0")} / {String(COVER_SLIDES.length).padStart(2, "0")}</span>
+      </div>
+      <div className="cover-photo-meta">
+        <figcaption aria-live="polite"><b>{slide.label}</b> {slide.caption}</figcaption>
+        <div className="cover-photo-dots" aria-label="사진 선택">
+          {COVER_SLIDES.map((item, index) => (
+            <button
+              type="button"
+              key={item.src}
+              className={index === activeSlide ? "is-active" : ""}
+              aria-label={`${index + 1}번 사진 보기`}
+              aria-current={index === activeSlide ? "true" : undefined}
+              onClick={() => setActiveSlide(index)}
+            />
+          ))}
+        </div>
+      </div>
+    </figure>
   );
 }
 
@@ -288,13 +356,7 @@ function WeddingNewspaper() {
             <h2>한원영 <i>&amp;</i> 이나경</h2>
             <span>10년의 연애 끝, 가족 앞에서 결혼합니다.</span>
           </div>
-          <figure className="cover-photo">
-            <div className="cover-photo-print">
-              <img src="/couple-main.webp" alt="창가에 나란히 앉아 꽃다발을 든 한원영과 이나경" width="1200" height="1800" />
-              <span className="cover-photo-mark" aria-hidden="true">FRONT PAGE <b>W × N</b></span>
-            </div>
-            <figcaption><b>EXCLUSIVE</b> 10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.</figcaption>
-          </figure>
+          <CoverCarousel />
           <article className="cover-reaction">
             <span>BRIDE &amp; GROOM / 단독 소감</span>
             <h3>GD와 결혼하지 못한 신부의 한탄,<br />어이없어하는 남편의 소감</h3>

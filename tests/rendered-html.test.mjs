@@ -57,13 +57,18 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(page, /OutdoorSunlight/);
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.match(page, /\/couple-main\.webp/);
+  assert.match(page, /\/couple-sample\.webp/);
+  assert.match(page, /\/venue-sample\.webp/);
   assert.match(page, /\/paper-crumple\.png/);
   assert.match(page, /창가에 나란히 앉아 꽃다발을 든 한원영과 이나경/);
   assert.match(page, /function PhotoSlot/);
   assert.match(page, /PHOTO TO COME/);
   assert.doesNotMatch(page, /journey-page|archive-mosaic|milestone-rail|ARCHIVE 0[1-6]|views-page|schedule-page|back-page/);
   assert.doesNotMatch(page, /evidence-strip|ARCHIVE 07|ARCHIVE 08/);
-  assert.doesNotMatch(page, /couple-sample|venue-sample/);
+  assert.match(page, /function CoverCarousel/);
+  assert.match(page, /aria-roledescription="carousel"/);
+  assert.match(page, /aria-label="이전 사진"/);
+  assert.match(page, /aria-label="다음 사진"/);
   assert.match(page, /GD와 결혼하지 못한 신부의 한탄/);
   assert.match(page, /그 얘기를 왜 청첩장에까지 쓰는지 모르겠다/);
   assert.doesNotMatch(page, /<section className="paper-page people-page"|<section className="paper-page search-page"/);
@@ -128,7 +133,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(styles, /\.photo-slot[^}]*box-shadow/s);
   assert.match(styles, /\.cover-page \{[^}]*display: flex[^}]*min-height: 770px/s);
   assert.match(styles, /\.cover-page > \.page-bottomline \{[^}]*margin-top: auto/s);
-  assert.match(styles, /\.cover-photo-print \{[^}]*width: 55%/s);
+  assert.match(styles, /\.cover-photo-print \{[^}]*width: 68%/s);
+  assert.match(styles, /\.cover-photo-track \{[^}]*transition: transform/s);
   assert.match(styles, /\.cover-reaction-copy \{[^}]*column-count: 3/s);
   assert.match(styles, /\.people-photo \.photo-slot-frame \{[^}]*height: 370px/s);
   assert.doesNotMatch(styles, /text-align:\s*justify/);
@@ -146,6 +152,8 @@ test("keeps every runtime asset local and predecoded", async () => {
     "dog-run-sprite-ddui-timid.webp",
     "will-smith-original.png",
     "couple-main.webp",
+    "couple-sample.webp",
+    "venue-sample.webp",
     "sounds/no-1-classic-hurt.mp3",
     "sounds/no-2-fahhhh.mp3",
     "sounds/no-4-minecraft-hit.mp3",
