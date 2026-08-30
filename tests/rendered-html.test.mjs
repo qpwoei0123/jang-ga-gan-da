@@ -57,6 +57,7 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(page, /OutdoorSunlight/);
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.match(page, /\/couple-main\.webp/);
+  assert.match(page, /\/paper-crumple\.png/);
   assert.match(page, /창가에 나란히 앉아 꽃다발을 든 한원영과 이나경/);
   assert.match(page, /function PhotoSlot/);
   assert.match(page, /PHOTO TO COME/);
@@ -121,6 +122,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(styles, /html \{[^}]*background: var\(--paper\)/s);
   assert.match(styles, /\.edition \{[^}]*background: var\(--paper\)/s);
   assert.match(styles, /\.paper-page \{[^}]*box-shadow: 0 9px 26px rgb\(23 23 22 \/ 18%\)/s);
+  assert.match(styles, /\.paper-page::before \{[^}]*opacity: \.16[^}]*url\("\/paper-crumple\.png"\)/s);
+  assert.match(styles, /\.paper-page::after \{[^}]*linear-gradient/s);
   assert.match(styles, /\.photo-slot-frame \{[^}]*border: 1px solid var\(--line-strong\)[^}]*background: var\(--paper-soft\)/s);
   assert.doesNotMatch(styles, /\.photo-slot[^}]*box-shadow/s);
   assert.match(styles, /\.cover-page \{[^}]*display: flex[^}]*min-height: 770px/s);

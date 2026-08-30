@@ -7,6 +7,7 @@ import NewspaperDelivery from "./newspaper-delivery";
 
 const INVITATION_ASSETS = [
   "/favicon.svg",
+  "/paper-crumple.png",
   "/dog-run-sprite-ddui-timid.webp",
   "/will-smith-original.png",
   "/couple-main.webp",
