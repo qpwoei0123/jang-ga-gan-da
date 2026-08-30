@@ -61,7 +61,7 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /function PhotoSlot/);
   assert.match(page, /PHOTO TO COME/);
   assert.match(page, /archive-mosaic/);
-  assert.match(page, /schedule-photo-pair/);
+  assert.doesNotMatch(page, /ARCHIVE 01|views-page|schedule-page/);
   assert.doesNotMatch(page, /evidence-strip|ARCHIVE 07|ARCHIVE 08/);
   assert.doesNotMatch(page, /couple-sample|venue-sample/);
   assert.match(page, /이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해/);
@@ -74,8 +74,6 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /평생 동거인 모집,/);
   assert.match(page, /다 찾았으면 이제 간식 찾아/);
   assert.doesNotMatch(page, /puzzle-easter-egg/);
-  assert.match(page, /사랑은 완결이 아니라,/);
-  assert.match(page, /이동진 평론가의 실제 원고 및 발언과 무관/);
   assert.doesNotMatch(page, /celebrityDesk|celebrityPhotos|유명인들의|celebs\//);
   assert.doesNotMatch(page, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.doesNotMatch(delivery, /<img[^>]+src=["'{`]https?:\/\//i);
@@ -127,11 +125,11 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(styles, /\.photo-slot[^}]*box-shadow/s);
   assert.match(styles, /\.journey-copy \{[^}]*column-count: 3/s);
   assert.match(styles, /\.milestone-rail \{[^}]*grid-template-columns: repeat\(4, 1fr\)/s);
-  assert.match(styles, /\.schedule-photo-pair \.photo-slot \{[^}]*grid-template-rows: 205px auto/s);
+  assert.match(styles, /\.journey-page \{[^}]*min-height: 770px/s);
+  assert.match(styles, /\.people-photo \.photo-slot-frame \{[^}]*height: 370px/s);
   assert.doesNotMatch(styles, /text-align:\s*justify/);
   assert.match(styles, /\.journey-copy \{[^}]*text-align: start/s);
   assert.match(styles, /\.lead-report p \{[^}]*text-align: start/s);
-  assert.match(styles, /\.views-copy \{[^}]*text-align: start/s);
   assert.doesNotMatch(styles, /outdoor-sunlight|canvas-desktop/);
   assert.match(styles, /\.delivery-intro \{[^}]*background-color: var\(--paper\)/s);
   assert.match(styles, /@keyframes favicon-reveal/);

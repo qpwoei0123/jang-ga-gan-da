@@ -124,8 +124,7 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .cover-photo figcaption b { margin-right: 4px; color: var(--ink); }
 
 /* 02 — journey */
-.archive-lead-photo { margin-top: 14px; }
-.archive-lead-photo .photo-slot-frame { aspect-ratio: 1.72; min-height: 0; }
+.journey-page { min-height: 770px; }
 .journey-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; padding: 15px 0 12px; border-bottom: 1px solid var(--line-strong); }
 .journey-heading > div { position: relative; min-width: 174px; text-align: center; }
 .journey-heading span { display: block; font: 8px/1 var(--display); }
@@ -159,12 +158,12 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .people-title h2 { margin: 5px 0; font: 27px/1.02 var(--display); letter-spacing: -.03em; }
 .people-title span { color: var(--muted); }
 .people-lead-grid { display: grid; grid-template-columns: 1fr .82fr; gap: 13px; padding-top: 13px; border-top: 1px solid var(--line-strong); }
-.lead-report > span, .brief-columns span, .culture-brief > span, .search-lower article > span, .views-heading > span, .schedule-feature article > span, .date-address-grid > div > span, .travel-notes span, .back-copy > span { font: 800 6.5px/1 var(--sans); letter-spacing: .04em; }
+.lead-report > span, .brief-columns span, .culture-brief > span, .search-lower article > span, .date-address-grid > div > span, .travel-notes span, .back-copy > span { font: 800 6.5px/1 var(--sans); letter-spacing: .04em; }
 .lead-report h3 { margin: 6px 0 8px; font: 20px/1.03 var(--display); }
 .lead-report p { margin: 0 0 8px; font: 8px/1.45 var(--text); text-align: start; }
 .lead-report small, .culture-brief small { display: block; padding-top: 5px; border-top: 1px solid var(--line); color: var(--muted); font: 6px/1.3 var(--sans); }
 .people-photo { margin: 0; }
-.people-photo .photo-slot-frame { height: 185px; }
+.people-photo .photo-slot-frame { height: 370px; }
 .brief-columns { display: grid; grid-template-columns: 1fr 1fr; margin-top: 14px; border-top: 3px double var(--line-strong); border-bottom: 1px solid var(--line-strong); }
 .brief-columns article { padding: 11px 12px 11px 0; }
 .brief-columns article + article { padding-right: 0; padding-left: 12px; border-left: 1px solid var(--line); }
@@ -213,48 +212,7 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .search-lower-correction h3 { font-size: 16px; line-height: 1.06; }
 .search-lower-correction p { font-size: 7.4px; line-height: 1.43; }
 
-/* 05 — views */
-.views-heading { padding: 18px 0 14px; border-bottom: 3px double var(--line-strong); }
-.views-heading h2 { margin: 6px 0 0; font: 26px/1.02 var(--display); letter-spacing: -.03em; }
-.views-heading h2 i { font-weight: 400; }
-.views-quote { margin: 16px 0; padding: 14px 8px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font: italic 20px/1.15 var(--display); text-align: center; }
-.views-grid { display: grid; grid-template-columns: 1.35fr .65fr; gap: 14px; }
-.views-copy { column-count: 2; column-gap: 13px; font: 8.2px/1.5 var(--text); text-align: start; }
-.views-copy p { margin: 0 0 8px; break-inside: avoid; }
-.views-side { padding-left: 12px; border-left: 1px solid var(--line); }
-.views-side figure { margin: 0; }
-.views-side .photo-slot-frame { aspect-ratio: .8; min-height: 0; }
-.views-side h3 { margin: 14px 0 6px; font: 17px/1.05 var(--display); }
-.views-side h3 i { font-weight: 400; }
-.views-side p { margin: 0; font: 7px/1.45 var(--sans); }
-.views-disclaimer { margin: 15px 0 0; padding-top: 6px; border-top: 1px solid var(--line-strong); color: var(--muted); font: 6.5px/1.35 var(--sans); }
-
-/* 06 — schedule */
-.schedule-heading { padding: 18px 0 13px; border-bottom: 3px double var(--line-strong); text-align: center; }
-.schedule-heading h2 { margin: 0; font: 28px/.95 var(--display); letter-spacing: -.03em; }
-.schedule-heading p { margin: 5px 0 0; font: 6.5px/1 var(--sans); }
-.ceremony-flow { display: grid; grid-template-columns: repeat(5, 1fr); margin: 15px 0 0; padding: 0 0 15px; border-bottom: 1px solid var(--line-strong); list-style: none; }
-.ceremony-flow li { min-width: 0; padding: 0 7px; border-left: 1px solid var(--line); text-align: center; }
-.ceremony-flow li:first-child { border-left: 0; }
-.ceremony-number, .ceremony-flow time, .ceremony-flow strong { display: block; }
-.ceremony-number { width: 19px; height: 19px; margin: 0 auto 6px; border: 1px solid var(--line-strong); border-radius: 50%; font: 7px/18px var(--sans); }
-.ceremony-flow time { color: var(--muted); font: 6px/1 var(--sans); }
-.ceremony-flow strong { margin-top: 4px; font: 11px/1 var(--display); }
-.ceremony-flow p { margin: 4px 0 0; font: 5.8px/1.35 var(--sans); }
-.schedule-feature { display: grid; grid-template-columns: .75fr 1.25fr; gap: 12px; padding-top: 15px; }
-.schedule-feature article { padding: 11px 10px; background: var(--paper-soft); }
-.schedule-feature h3 { margin: 6px 0 7px; font: 18px/1.03 var(--display); }
-.schedule-feature p { margin: 0; font: 7px/1.43 var(--text); }
-.schedule-photo-pair { display: grid; grid-template-columns: 1.3fr .7fr; align-items: start; gap: 9px; }
-.schedule-photo-pair .photo-slot { display: grid; grid-template-rows: 205px auto; align-content: start; min-width: 0; }
-.schedule-photo-pair .photo-slot-frame { width: 100%; height: 205px; min-height: 0; }
-.number-strip { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 14px; padding: 10px 0 8px; border-top: 3px double var(--line-strong); border-bottom: 1px solid var(--line-strong); }
-.number-strip div { display: flex; align-items: center; justify-content: center; gap: 5px; border-left: 1px solid var(--line); }
-.number-strip div:first-child { border-left: 0; }
-.number-strip strong { font: 27px/.8 var(--display); }
-.number-strip span { font: 5.5px/1.2 var(--sans); }
-
-/* 07 — service */
+/* 05 — service */
 .details-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 13px; padding: 17px 0 13px; border-bottom: 3px double var(--line-strong); }
 .details-heading span { max-width: 85px; color: var(--muted); font: 7px/1.4 var(--sans); }
 .details-heading h2 { margin: 0; font: 31px/.86 var(--display); text-align: right; }
@@ -283,7 +241,7 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .travel-notes h3 { margin: 5px 0; font: 14px/1.05 var(--display); }
 .travel-notes p { margin: 0; color: var(--muted); font: 7px/1.4 var(--sans); }
 
-/* 08 — back */
+/* 06 — back */
 .back-page { min-height: 760px; display: flex; flex-direction: column; }
 .back-dog { width: 72%; aspect-ratio: .75; margin: 27px auto 10px; background: url("/dog-run-sprite-ddui-timid.webp") 0 0 / 400% 100% no-repeat; filter: grayscale(.75) contrast(1.06); }
 .back-copy { padding: 18px 0 15px; border-top: 3px double var(--line-strong); border-bottom: 1px solid var(--line-strong); text-align: center; }
@@ -300,8 +258,6 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
   .cover-sections { gap: 5px; font-size: 5px; }
   .journey-heading h2 { font-size: 31px; }
   .journey-heading > div { min-width: 158px; }
-  .ceremony-flow li { padding-right: 4px; padding-left: 4px; }
-  .ceremony-flow p { display: none; }
 }
 
 @media (max-height: 720px) {
@@ -320,7 +276,4 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
   .will-catcher { transform: none; }
   .phase-opening { animation: none; opacity: 0; }
   .phase-opening .delivery-brand-reveal img { animation: none; }
-  .breaking-track { width: auto; animation: none; }
-  .breaking-track span { padding: 6px 0 6px 12px; white-space: normal; }
-  .breaking-track span[aria-hidden="true"] { display: none; }
 }

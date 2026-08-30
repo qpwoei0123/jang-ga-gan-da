@@ -49,14 +49,6 @@ const PUZZLE_WORDS = [
   { word: "십년", cells: [13, 22] },
 ] as const;
 
-const ceremony = [
-  ["01", "13:20", "도착", "가족들과 먼저 사진을 찍습니다."],
-  ["02", "13:40", "인사", "오랜만에 만난 얼굴들과 천천히 인사합니다."],
-  ["03", "14:00", "예식", "한원영과 이나경이 가족 앞에서 약속합니다."],
-  ["04", "14:30", "식사", "복잡한 순서 없이 함께 밥을 먹습니다."],
-  ["05", "15:30", "사진", "마지막 단체 사진까지 남기고 마칩니다."],
-];
-
 function PhotoSlot({ code, marker, caption, className = "" }: { code: string; marker: string; caption: string; className?: string }) {
   return (
     <figure className={`photo-slot ${className}`.trim()}>
@@ -292,8 +284,6 @@ function WeddingNewspaper() {
             <a href="#journey">CELEBRATION</a>
             <a href="#people">LOVE</a>
             <a href="#search">TOGETHERNESS</a>
-            <a href="#views">FRIENDS</a>
-            <a href="#schedule">HAPPINESS</a>
           </nav>
           <div className="double-rule" aria-hidden="true" />
           <header className="cover-masthead">
@@ -322,12 +312,6 @@ function WeddingNewspaper() {
 
         <section className="paper-page journey-page" id="journey">
           <PageTop page="02" section="THE JOURNEY OF US" />
-          <PhotoSlot
-            className="archive-lead-photo"
-            code="ARCHIVE 01"
-            marker="2016"
-            caption="장기 취재의 시작 / 둘이 같은 프레임에 자주 등장하기 시작한 해."
-          />
           <div className="journey-heading">
             <div>
               <span>THE</span>
@@ -416,72 +400,11 @@ function WeddingNewspaper() {
             <p>아래 글자판에서 한원영, 이나경, 뚜이, 결혼, 가족, 십년을 찾아보세요.</p>
           </header>
           <WeddingSearchPuzzle />
-          <PageBottom next="VIEWS / LONG READ →" />
-        </section>
-
-        <section className="paper-page views-page" id="views">
-          <PageTop page="05" section="VIEWS · LONG READ" />
-          <header className="views-heading">
-            <span>CRITIC&apos;S NOTE / 가상 패러디</span>
-            <h2>사랑은 완결이 아니라,<br /><i>반복을 견디는 형식에 가깝다</i></h2>
-          </header>
-          <blockquote className="views-quote">“사랑은 이해의 완성이 아니라,<br />오독을 유예하는 기술인지도 모른다.”</blockquote>
-          <div className="views-grid">
-            <article className="views-copy">
-              <p className="dropcap">십 년이라는 시간은 관계의 견고함을 입증하는 계량적 근거라기보다, 서로의 결핍을 더는 해명해야 할 사건으로 취급하지 않게 되는 완만한 이행에 가깝다.</p>
-              <p>한원영과 이나경은 서로를 완전히 이해해서 여기까지 온 것이 아니다. 이해되지 않는 부분을 성급히 오독하지 않는 법을 익혔고, 그 유예의 시간이 십 년이었다.</p>
-              <p>결혼은 연애의 종결점으로 오해되기 쉽다. 두 사람에게는 이미 반복되어 온 선택이 뒤늦게 제도적 문장을 얻는 장면에 더 가깝다.</p>
-              <p>일상의 사소한 불일치가 사라진 것은 아니다. 사라지지 않은 채 공존할 수 있다는 확신이 생겼다. 사랑의 지속은 합치보다 병치에 의존한다.</p>
-              <p>완성이라 부르기엔 여전히 진행 중이고, 시작이라 부르기엔 이미 너무 오래 함께했다. 이 결혼은 그 모순을 없애지 않는다. 다만 둘이 같은 방향으로 들고 갈 수 있게 반듯이 접어 둔다.</p>
-            </article>
-            <aside className="views-side">
-              <PhotoSlot code="SNAP 02" marker="PORTRAIT" caption="FILE 1017 / 결혼일보 사진부" />
-              <h3>평생 동거인<br /><i>모집 마감</i></h3>
-              <p>지원자: 한원영·이나경<br />심사 기간: 10년<br />결과: 둘 다 합격</p>
-            </aside>
-          </div>
-          <p className="views-disclaimer">이동진 평론가의 실제 원고 및 발언과 무관한 독자적 가상 패러디입니다.</p>
-          <PageBottom next="WEDDING SCHEDULE →" />
-        </section>
-
-        <section className="paper-page schedule-page" id="schedule">
-          <PageTop page="06" section="WEDDING SCHEDULE" />
-          <header className="schedule-heading">
-            <h2>WEDDING SCHEDULE</h2>
-            <p>A FAMILY CEREMONY FOR HAN WON-YOUNG &amp; LEE NA-KYUNG</p>
-          </header>
-          <ol className="ceremony-flow">
-            {ceremony.map(([number, time, title, copy]) => (
-              <li key={number}>
-                <span className="ceremony-number">{number}</span>
-                <time>{time}</time>
-                <strong>{title}</strong>
-                <p>{copy}</p>
-              </li>
-            ))}
-          </ol>
-          <div className="schedule-feature">
-            <article>
-              <span>TODAY WE CELEBRATE</span>
-              <h3>가족끼리 모여<br />밥 먹고 인사드릴게요.</h3>
-              <p>거창한 순서보다 서로 얼굴을 오래 보고 이야기하는 시간을 준비했습니다. 참석 여부는 따로 받지 않습니다.</p>
-            </article>
-            <div className="schedule-photo-pair">
-              <PhotoSlot code="SNAP 03" marker="CEREMONY" caption="예식의 큰 장면 / 두 사람이 함께 있는 사진." />
-              <PhotoSlot code="SNAP 04" marker="DETAIL" caption="꽃, 손, 신발처럼 가까이 찍은 작은 장면." />
-            </div>
-          </div>
-          <div className="number-strip" aria-label="예식 핵심 숫자">
-            <div><strong>10</strong><span>YEARS<br />TOGETHER</span></div>
-            <div><strong>50</strong><span>FAMILY<br />GUESTS</span></div>
-            <div><strong>1</strong><span>TEAM<br />FOREVER</span></div>
-            <div><strong>2</strong><span>PM<br />CEREMONY</span></div>
-          </div>
           <PageBottom next="SERVICE DESK →" />
         </section>
 
         <section className="paper-page details-page" id="details">
-          <PageTop page="07" section="SERVICE DESK · FAMILY CEREMONY" />
+          <PageTop page="05" section="SERVICE DESK · FAMILY CEREMONY" />
           <header className="details-heading">
             <span>날짜와 장소는 이 면에서 확인하세요.</span>
             <h2>THE DAY,<br />THE PLACE</h2>
@@ -519,7 +442,7 @@ function WeddingNewspaper() {
         </section>
 
         <section className="paper-page back-page" id="family-note">
-          <PageTop page="08" section="FAMILY NOTE · BACK PAGE" />
+          <PageTop page="06" section="FAMILY NOTE · BACK PAGE" />
           <div className="back-dog" role="img" aria-label="신문을 물고 온 뚜이" />
           <div className="back-copy">
             <span>FINAL EDITION / 뚜이 승인 완료</span>
