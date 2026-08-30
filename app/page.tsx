@@ -273,11 +273,6 @@ function WeddingNewspaper() {
             <a href="#details">가족식 안내 ↘</a>
           </div>
           <div className="double-rule" aria-hidden="true" />
-          <nav className="cover-sections" aria-label="이번 호 목차">
-            <a href="#people">LOVE</a>
-            <a href="#search">TOGETHERNESS</a>
-          </nav>
-          <div className="double-rule" aria-hidden="true" />
           <header className="cover-masthead">
             <span className="cover-the">The</span>
             <h1>Wedding News</h1>
@@ -311,57 +306,8 @@ function WeddingNewspaper() {
           <PageBottom next="CONTINUED ON PAGE 02" />
         </article>
 
-        <section className="paper-page people-page" id="people">
-          <PageTop page="02" section="PEOPLE · PRIVATE FILE" />
-          <header className="section-masthead compact-masthead">
-            <span>The</span>
-            <h2>Wedding News</h2>
-          </header>
-          <div className="people-title">
-            <p>FIELD REPORT / 주변인 전언</p>
-            <h2>제보는 많았고,<br />새로울 건 없었다</h2>
-            <span>친구들 말을 모아봤다. 대체로 같은 얘기였다.</span>
-          </div>
-          <div className="people-lead-grid">
-            <article className="lead-report">
-              <span>{reports[0][0]}</span>
-              <h3>{reports[0][1]}</h3>
-              <p className="dropcap">{reports[0][2]}</p>
-              <p>가족과 친구들은 두 사람의 결혼을 새로운 사건이라기보다 늦게 도착한 공식 발표로 받아들였다. 편집국은 이 반응을 “예상 범위 안”으로 분류했다.</p>
-              <small>사회부 입수 자료 · 주변인 익명 제보</small>
-            </article>
-            <PhotoSlot
-              className="people-photo"
-              code="SNAP 01"
-              marker="CANDID"
-              caption="예식 당일의 두 사람. 사진은 추후 편집국 입수 예정."
-            />
-          </div>
-          <div className="brief-columns">
-            {reports.slice(1).map(([label, title, copy]) => (
-              <article key={label}>
-                <span>{label}</span>
-                <h3>{title}</h3>
-                <p>{copy}</p>
-              </article>
-            ))}
-          </div>
-          <PageBottom next="THE WEDDING SEARCH →" />
-        </section>
-
-        <section className="paper-page search-page" id="search">
-          <PageTop page="03" section="GAMES · EDITORIAL" />
-          <header className="search-heading">
-            <span>특별 부록 / 두 사람을 찾습니다</span>
-            <h2>THE WEDDING SEARCH</h2>
-            <p>아래 글자판에서 한원영, 이나경, 뚜이, 결혼, 가족, 십년을 찾아보세요.</p>
-          </header>
-          <WeddingSearchPuzzle />
-          <PageBottom next="SERVICE DESK →" />
-        </section>
-
         <section className="paper-page details-page" id="details">
-          <PageTop page="04" section="SERVICE DESK · FAMILY CEREMONY" />
+          <PageTop page="02" section="SERVICE DESK · FAMILY CEREMONY" />
           <header className="details-heading">
             <span>날짜와 장소는 이 면에서 확인하세요.</span>
             <h2>THE DAY,<br />THE PLACE</h2>

@@ -65,6 +65,7 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(page, /couple-sample|venue-sample/);
   assert.match(page, /GD와 결혼하지 못한 신부의 한탄/);
   assert.match(page, /그 얘기를 왜 청첩장에까지 쓰는지 모르겠다/);
+  assert.doesNotMatch(page, /<section className="paper-page people-page"|<section className="paper-page search-page"/);
   assert.match(page, /function WeddingSearchPuzzle/);
   assert.match(page, /tracePuzzleLine/);
   assert.match(page, /6\/6 취재 완료/);
