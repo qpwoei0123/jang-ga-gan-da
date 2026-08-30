@@ -310,15 +310,6 @@ function WeddingNewspaper() {
             <h2>한원영 <i>&amp;</i> 이나경</h2>
             <span>10년의 연애 끝, 가족 앞에서 결혼합니다.</span>
           </div>
-          <div className="breaking-wire">
-            <strong>긴급속보</strong>
-            <div className="breaking-window">
-              <div className="breaking-track">
-                <span>한원영·이나경, 10년 연애 끝 결혼 발표… 가족들 “이제야?”</span>
-                <span aria-hidden="true">한원영·이나경, 10년 연애 끝 결혼 발표… 가족들 “이제야?”</span>
-              </div>
-            </div>
-          </div>
           <figure className="cover-photo">
             <div className="cover-photo-print">
               <img src="/couple-main.webp" alt="창가에 나란히 앉아 꽃다발을 든 한원영과 이나경" width="1200" height="1800" />
