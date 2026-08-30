@@ -102,7 +102,8 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .photo-slot-frame small { margin-top: 4px; color: var(--muted); font: 700 5.5px/1 var(--sans); letter-spacing: .08em; }
 
 /* 01 — front */
-.cover-page { min-height: 770px; }
+.cover-page { display: flex; flex-direction: column; min-height: 770px; }
+.cover-page > .page-bottomline { margin-top: auto; }
 .cover-utility { margin-bottom: 7px; color: var(--muted); }
 .cover-utility a { color: var(--ink); font-weight: 800; }
 .cover-sections { display: flex; justify-content: center; gap: 8px; padding: 6px 0 5px; font: 700 5.6px/1 var(--sans); letter-spacing: .04em; }
@@ -116,40 +117,19 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .cover-announcement h2 i { padding: 0 5px; font: italic 22px/1 var(--display); }
 .cover-announcement span { display: block; margin-top: 6px; color: var(--muted); font: 8px/1.3 var(--sans); }
 .cover-photo { margin: 0; }
-.cover-photo-print { position: relative; width: 50%; margin: 0 auto; }
+.cover-photo-print { position: relative; width: 55%; margin: 0 auto; }
 .cover-photo img { width: 100%; aspect-ratio: .76; object-fit: cover; object-position: 50% 53%; filter: saturate(.78) contrast(1.035); }
 .cover-photo-mark { position: absolute; top: 12px; left: 0; display: flex; align-items: baseline; gap: 8px; padding: 5px 7px 4px; color: var(--paper); background: var(--ink); font: 800 5.5px/1 var(--sans); letter-spacing: .04em; }
 .cover-photo-mark b { font: 700 10px/1 var(--display); letter-spacing: -.02em; }
 .cover-photo figcaption { padding-bottom: 3px; }
 .cover-photo figcaption b { margin-right: 4px; color: var(--ink); }
+.cover-reaction { margin-top: 9px; padding-top: 7px; border-top: 3px double var(--line-strong); }
+.cover-reaction > span { font: 800 6px/1 var(--sans); letter-spacing: .04em; }
+.cover-reaction h3 { margin: 4px 0 6px; font: 14px/1.05 var(--display); letter-spacing: -.02em; }
+.cover-reaction-copy { column-count: 3; column-gap: 12px; font: 7px/1.4 var(--text); text-align: start; }
+.cover-reaction-copy p { margin: 0 0 6px; break-inside: avoid; }
 
-/* 02 — journey */
-.journey-page { min-height: 770px; }
-.journey-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; padding: 15px 0 12px; border-bottom: 1px solid var(--line-strong); }
-.journey-heading > div { position: relative; min-width: 174px; text-align: center; }
-.journey-heading span { display: block; font: 8px/1 var(--display); }
-.journey-heading h2 { margin: 0; font: 34px/.8 var(--display); letter-spacing: -.04em; }
-.journey-heading i { position: absolute; top: 23px; left: 50%; padding: 0 3px; background: var(--paper); font: italic 15px/1 var(--display); transform: translateX(-50%); }
-.journey-heading p { margin: 0 0 3px; font: 6.5px/1.35 var(--sans); text-align: right; }
-.journey-layout { padding-top: 12px; }
-.journey-copy { column-count: 3; column-gap: 12px; font: 8.5px/1.47 var(--text); text-align: start; }
-.journey-copy p { margin: 0 0 8px; break-inside: avoid; }
-.milestone-rail { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 12px; padding-top: 9px; border-top: 3px double var(--line-strong); }
-.milestone-rail h3 { grid-column: 1 / -1; margin: 0 0 7px; font: 13px/.95 var(--display); }
-.milestone { min-width: 0; padding: 7px 7px 0; border-top: 1px solid var(--line); }
-.milestone:first-of-type { padding-left: 0; }
-.milestone + .milestone { border-left: 1px solid var(--line); }
-.milestone time, .milestone strong { display: block; }
-.milestone time { font: 800 7px/1 var(--sans); }
-.milestone strong { margin-top: 3px; font: 10px/1.08 var(--text); }
-.milestone p { margin: 3px 0 0; color: var(--muted); font: 6.8px/1.35 var(--sans); }
-.archive-mosaic { display: grid; grid-template-columns: 1.08fr .92fr; grid-auto-flow: row; gap: 11px 9px; margin-top: 12px; padding-top: 12px; border-top: 3px double var(--line-strong); }
-.archive-mosaic .photo-slot { display: flex; flex-direction: column; }
-.archive-mosaic .photo-slot-frame { flex: 1; min-height: 84px; }
-.archive-mosaic .archive-tall { grid-row: span 2; }
-.archive-mosaic .archive-tall .photo-slot-frame { min-height: 190px; }
-
-/* 03 — people */
+/* 02 — people */
 .section-masthead { display: flex; align-items: baseline; justify-content: center; margin-top: 10px; padding: 7px 0; border-top: 3px double var(--line-strong); border-bottom: 3px double var(--line-strong); }
 .section-masthead span { margin-right: 3px; font: 700 12px/1 var(--blackletter); }
 .section-masthead h2 { margin: 0; font: 700 27px/.9 var(--blackletter); letter-spacing: -.03em; }
@@ -158,10 +138,10 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .people-title h2 { margin: 5px 0; font: 27px/1.02 var(--display); letter-spacing: -.03em; }
 .people-title span { color: var(--muted); }
 .people-lead-grid { display: grid; grid-template-columns: 1fr .82fr; gap: 13px; padding-top: 13px; border-top: 1px solid var(--line-strong); }
-.lead-report > span, .brief-columns span, .culture-brief > span, .search-lower article > span, .date-address-grid > div > span, .travel-notes span, .back-copy > span { font: 800 6.5px/1 var(--sans); letter-spacing: .04em; }
+.lead-report > span, .brief-columns span, .search-lower article > span, .date-address-grid > div > span, .travel-notes span { font: 800 6.5px/1 var(--sans); letter-spacing: .04em; }
 .lead-report h3 { margin: 6px 0 8px; font: 20px/1.03 var(--display); }
 .lead-report p { margin: 0 0 8px; font: 8px/1.45 var(--text); text-align: start; }
-.lead-report small, .culture-brief small { display: block; padding-top: 5px; border-top: 1px solid var(--line); color: var(--muted); font: 6px/1.3 var(--sans); }
+.lead-report small { display: block; padding-top: 5px; border-top: 1px solid var(--line); color: var(--muted); font: 6px/1.3 var(--sans); }
 .people-photo { margin: 0; }
 .people-photo .photo-slot-frame { height: 370px; }
 .brief-columns { display: grid; grid-template-columns: 1fr 1fr; margin-top: 14px; border-top: 3px double var(--line-strong); border-bottom: 1px solid var(--line-strong); }
@@ -169,11 +149,7 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .brief-columns article + article { padding-right: 0; padding-left: 12px; border-left: 1px solid var(--line); }
 .brief-columns h3 { margin: 5px 0 6px; font: 15px/1.05 var(--display); }
 .brief-columns p { margin: 0; font: 7.5px/1.42 var(--text); }
-.culture-brief { margin-top: 14px; padding: 11px 0 10px; border-top: 1px solid var(--line-strong); border-bottom: 3px double var(--line-strong); }
-.culture-brief h3 { margin: 5px 0 6px; font: 19px/1.05 var(--display); }
-.culture-brief p { margin: 0 0 8px; font: 8px/1.45 var(--text); }
-
-/* 04 — search */
+/* 03 — search */
 .search-heading { padding: 17px 0 12px; border-bottom: 3px double var(--line-strong); text-align: center; }
 .search-heading span { font: 700 7px/1 var(--sans); }
 .search-heading h2 { margin: 5px 0 4px; font: 27px/.95 var(--display); letter-spacing: -.035em; }
@@ -212,7 +188,7 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .search-lower-correction h3 { font-size: 16px; line-height: 1.06; }
 .search-lower-correction p { font-size: 7.4px; line-height: 1.43; }
 
-/* 05 — service */
+/* 04 — service */
 .details-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 13px; padding: 17px 0 13px; border-bottom: 3px double var(--line-strong); }
 .details-heading span { max-width: 85px; color: var(--muted); font: 7px/1.4 var(--sans); }
 .details-heading h2 { margin: 0; font: 31px/.86 var(--display); text-align: right; }
@@ -241,23 +217,10 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .travel-notes h3 { margin: 5px 0; font: 14px/1.05 var(--display); }
 .travel-notes p { margin: 0; color: var(--muted); font: 7px/1.4 var(--sans); }
 
-/* 06 — back */
-.back-page { min-height: 760px; display: flex; flex-direction: column; }
-.back-dog { width: 72%; aspect-ratio: .75; margin: 27px auto 10px; background: url("/dog-run-sprite-ddui-timid.webp") 0 0 / 400% 100% no-repeat; filter: grayscale(.75) contrast(1.06); }
-.back-copy { padding: 18px 0 15px; border-top: 3px double var(--line-strong); border-bottom: 1px solid var(--line-strong); text-align: center; }
-.back-copy h2 { margin: 8px 0 10px; font: 37px/.95 var(--display); letter-spacing: -.035em; }
-.back-copy p { max-width: 275px; margin: 0 auto; font: 9px/1.5 var(--text); }
-.back-copy a { display: inline-block; margin-top: 14px; padding: 8px 12px; border: 1px solid var(--ink); font: 800 8px/1 var(--sans); }
-.back-colophon { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; padding-top: 12px; font: 700 7px/1.3 var(--sans); }
-.back-colophon span:nth-child(2) { text-align: right; }
-.back-colophon p { grid-column: 1 / -1; margin: 5px 0 0; padding-top: 7px; border-top: 1px solid var(--line); color: var(--muted); font-weight: 400; }
-
 @media (max-width: 360px) {
   .paper-page { padding-right: 18px; padding-left: 18px; }
   .cover-masthead h1 { font-size: 35px; }
   .cover-sections { gap: 5px; font-size: 5px; }
-  .journey-heading h2 { font-size: 31px; }
-  .journey-heading > div { min-width: 158px; }
 }
 
 @media (max-height: 720px) {

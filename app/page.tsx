@@ -13,13 +13,6 @@ const INVITATION_ASSETS = [
   ...INTERACTION_SOUNDS,
 ] as const;
 
-const journey = [
-  ["2016", "장기취재 시작", "같은 사진에 둘이 자주 등장하기 시작했다."],
-  ["2022", "사진첩 과밀", "여행 사진마다 둘 중 한 명은 꼭 나왔다."],
-  ["2024", "국경 소멸", "충전기와 겉옷의 소유권이 흐려졌다."],
-  ["2026", "결혼 확정", "가족들은 놀라는 대신 고개부터 끄덕였다."],
-];
-
 const reports = [
   ["친구 제보 01", "결혼 발표, 사실상 뒤늦은 신고", "둘은 이미 서로의 주문을 대신하고 메뉴판도 한 장만 본다. 결혼은 새 소식이지만 생활은 오래전부터 그랬다."],
   ["친구 제보 02", "한 명 웃으면 다른 한 명도 웃음", "원영이 먼저 웃어도 나경이 먼저 웃어도 잠시 뒤엔 둘 다 웃고 있다. 옆 사람만 영문을 모른다."],
@@ -277,11 +270,10 @@ function WeddingNewspaper() {
         <article className="paper-page cover-page" id="top">
           <div className="cover-utility">
             <span>The Grand Hall</span>
-            <a href="#family-note">가족식 안내 ↘</a>
+            <a href="#details">가족식 안내 ↘</a>
           </div>
           <div className="double-rule" aria-hidden="true" />
           <nav className="cover-sections" aria-label="이번 호 목차">
-            <a href="#journey">CELEBRATION</a>
             <a href="#people">LOVE</a>
             <a href="#search">TOGETHERNESS</a>
           </nav>
@@ -307,49 +299,20 @@ function WeddingNewspaper() {
             </div>
             <figcaption><b>EXCLUSIVE</b> 10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.</figcaption>
           </figure>
+          <article className="cover-reaction">
+            <span>BRIDE &amp; GROOM / 단독 소감</span>
+            <h3>GD와 결혼하지 못한 신부의 한탄,<br />어이없어하는 남편의 소감</h3>
+            <div className="cover-reaction-copy">
+              <p className="dropcap">신부 이나경은 오랫동안 꿈꿔 온 GD와의 결혼이 끝내 무산된 데 대해 “계획에 없던 결과라 유감스럽다”며 깊은 아쉬움을 표했다.</p>
+              <p>신부는 “어쩌다 보니 한원영과 식장까지 잡았다”고 한탄했지만, 취재진은 말끝마다 웃음을 참지 못한 점을 확인했다.</p>
+              <p>신랑 한원영은 “그 얘기를 왜 청첩장에까지 쓰는지 모르겠다”며 어이없어했다. 다만 결혼식은 예정대로 진행된다.</p>
+            </div>
+          </article>
           <PageBottom next="CONTINUED ON PAGE 02" />
         </article>
 
-        <section className="paper-page journey-page" id="journey">
-          <PageTop page="02" section="THE JOURNEY OF US" />
-          <div className="journey-heading">
-            <div>
-              <span>THE</span>
-              <h2>JOURNEY</h2>
-              <i>of</i>
-              <h2>US</h2>
-            </div>
-            <p>EVERY LOVE STORY IS BEAUTIFUL.<br />BUT OURS IS OUR FAVORITE.</p>
-          </div>
-          <div className="journey-layout">
-            <article className="journey-copy">
-              <p className="dropcap">본지가 한원영과 이나경을 처음 포착한 건 2016년이었다. 둘은 대단한 선언 대신 자주 만나고, 함께 먹고, 같은 장면에서 웃었다. 별일 없는 날이 쌓였고 어느새 십 년이 됐다.</p>
-              <p>사랑은 처음의 선명한 사건보다 반복되는 작은 선택에 오래 남았다. 서로의 주문을 외우고, 필요한 물건을 챙기고, 대답이 없어도 기다리는 일이 둘의 기록 대부분을 차지한다.</p>
-              <p>결혼은 갑작스러운 결론이 아니다. 이미 오래 해오던 선택에 날짜와 이름을 붙이는 일이다. 그래서 가족들의 첫 반응도 놀람보다 “드디어”에 가까웠다.</p>
-            </article>
-            <aside className="milestone-rail">
-              <h3>Milestones<br />Along the Way</h3>
-              {journey.map(([year, title, copy]) => (
-                <div className="milestone" key={year}>
-                  <time>{year}</time>
-                  <strong>{title}</strong>
-                  <p>{copy}</p>
-                </div>
-              ))}
-            </aside>
-          </div>
-          <div className="archive-mosaic" aria-label="한원영과 이나경의 10년 사진 연대기 자리">
-            <PhotoSlot className="archive-tall" code="ARCHIVE 02" marker="2018" caption="평범한 주말도 둘이 찍으면 기록이 됐다." />
-            <PhotoSlot code="ARCHIVE 03" marker="2020" caption="둘만 아는 표정이 늘기 시작했다." />
-            <PhotoSlot code="ARCHIVE 04" marker="2022" caption="여행 사진첩의 공동 지분이 확정됐다." />
-            <PhotoSlot code="ARCHIVE 05" marker="2024" caption="같이 사는 사람처럼 서로를 챙기던 때." />
-            <PhotoSlot code="ARCHIVE 06" marker="2026" caption="오래 해오던 선택에 날짜를 붙였다." />
-          </div>
-          <PageBottom next="PEOPLE & PRIVATE FILE →" />
-        </section>
-
         <section className="paper-page people-page" id="people">
-          <PageTop page="03" section="PEOPLE · PRIVATE FILE" />
+          <PageTop page="02" section="PEOPLE · PRIVATE FILE" />
           <header className="section-masthead compact-masthead">
             <span>The</span>
             <h2>Wedding News</h2>
@@ -383,17 +346,11 @@ function WeddingNewspaper() {
               </article>
             ))}
           </div>
-          <article className="culture-brief">
-            <span>문화 / 단독 / 가상 패러디</span>
-            <h3>이나경, ‘GD와 결혼’ 목표 무산… 아쉬움 감추지 못해</h3>
-            <p>이나경의 목표는 GD와 결혼하는 것이었다. 하지만 한원영과 결혼을 앞둔 지금 이 목표는 접게 됐다. 못내 아쉬워하고 있으나, 그렇다고 예식이 취소되는 건 아니다.</p>
-            <small>결혼일보 연예부 확인 / 실제 보도 아님</small>
-          </article>
           <PageBottom next="THE WEDDING SEARCH →" />
         </section>
 
         <section className="paper-page search-page" id="search">
-          <PageTop page="04" section="GAMES · EDITORIAL" />
+          <PageTop page="03" section="GAMES · EDITORIAL" />
           <header className="search-heading">
             <span>특별 부록 / 두 사람을 찾습니다</span>
             <h2>THE WEDDING SEARCH</h2>
@@ -404,7 +361,7 @@ function WeddingNewspaper() {
         </section>
 
         <section className="paper-page details-page" id="details">
-          <PageTop page="05" section="SERVICE DESK · FAMILY CEREMONY" />
+          <PageTop page="04" section="SERVICE DESK · FAMILY CEREMONY" />
           <header className="details-heading">
             <span>날짜와 장소는 이 면에서 확인하세요.</span>
             <h2>THE DAY,<br />THE PLACE</h2>
@@ -438,23 +395,7 @@ function WeddingNewspaper() {
             <article><span>SUBWAY</span><h3>성수역 3번 출구</h3><p>출구에서 연무장길 방향으로 약 7분 걸어오세요.</p></article>
             <article><span>PARKING</span><h3>주차 2시간 지원</h3><p>건물 주차장이 좁아 가능하면 대중교통을 권합니다.</p></article>
           </div>
-          <PageBottom next="FAMILY NOTE →" />
-        </section>
-
-        <section className="paper-page back-page" id="family-note">
-          <PageTop page="06" section="FAMILY NOTE · BACK PAGE" />
-          <div className="back-dog" role="img" aria-label="신문을 물고 온 뚜이" />
-          <div className="back-copy">
-            <span>FINAL EDITION / 뚜이 승인 완료</span>
-            <h2>끝.<br />이제 밥 먹으러<br />오세요.</h2>
-            <p>예식은 50명 남짓한 가족식입니다. 참석 여부는 따로 받지 않습니다. 오시는 가족과 천천히 밥 먹고 인사 나누겠습니다.</p>
-            <a href="mailto:hello@example.com?subject=한원영%20이나경%20결혼일보%20가족%20축하%20엽서">축하 엽서 보내기 →</a>
-          </div>
-          <div className="back-colophon">
-            <span>한원영 &amp; 이나경</span>
-            <span>2016—2026—FOREVER</span>
-            <p>실존 인물을 언급한 지면은 모두 가상 패러디이며 실제 원고·발언·보도와 무관합니다.</p>
-          </div>
+          <PageBottom next="END OF EDITION" />
         </section>
       </main>
     </>
