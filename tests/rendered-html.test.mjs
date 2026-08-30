@@ -69,6 +69,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(page, /aria-roledescription="carousel"/);
   assert.match(page, /aria-label="이전 사진"/);
   assert.match(page, /aria-label="다음 사진"/);
+  assert.match(page, /onPointerDown=\{handleDragStart\}/);
+  assert.match(page, /onPointerMove=\{handleDragMove\}/);
   assert.match(page, /GD와 결혼하지 못한 신부의 한탄/);
   assert.match(page, /그 얘기를 왜 청첩장에까지 쓰는지 모르겠다/);
   assert.doesNotMatch(page, /<section className="paper-page people-page"|<section className="paper-page search-page"/);
@@ -133,8 +135,9 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(styles, /\.photo-slot[^}]*box-shadow/s);
   assert.match(styles, /\.cover-page \{[^}]*display: flex[^}]*min-height: 770px/s);
   assert.match(styles, /\.cover-page > \.page-bottomline \{[^}]*margin-top: auto/s);
-  assert.match(styles, /\.cover-photo-print \{[^}]*width: 68%/s);
-  assert.match(styles, /\.cover-photo-track \{[^}]*transition: transform/s);
+  assert.match(styles, /\.cover-photo-print \{[^}]*width: 100%/s);
+  assert.match(styles, /\.cover-photo-viewport \{[^}]*padding: 0 16%[^}]*scroll-snap-type: x mandatory/s);
+  assert.match(styles, /\.cover-photo-track \{[^}]*gap: 8px/s);
   assert.match(styles, /\.cover-reaction-copy \{[^}]*column-count: 3/s);
   assert.match(styles, /\.people-photo \.photo-slot-frame \{[^}]*height: 370px/s);
   assert.doesNotMatch(styles, /text-align:\s*justify/);

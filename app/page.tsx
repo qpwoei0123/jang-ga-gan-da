@@ -102,22 +102,87 @@ function PageBottom({ next }: { next: string }) {
 }
 
 function CoverCarousel() {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef({ pointerId: -1, startX: 0, startLeft: 0, moved: false });
   const [activeSlide, setActiveSlide] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const slide = COVER_SLIDES[activeSlide];
 
+  function scrollToSlide(index: number, behavior: ScrollBehavior = "smooth") {
+    const viewport = viewportRef.current;
+    const target = viewport?.querySelectorAll<HTMLElement>(".cover-photo-slide")[index];
+    if (!viewport || !target) return;
+
+    viewport.scrollTo({
+      left: target.offsetLeft - (viewport.clientWidth - target.clientWidth) / 2,
+      behavior,
+    });
+    setActiveSlide(index);
+  }
+
   function moveSlide(direction: -1 | 1) {
-    setActiveSlide((current) => (current + direction + COVER_SLIDES.length) % COVER_SLIDES.length);
+    scrollToSlide((activeSlide + direction + COVER_SLIDES.length) % COVER_SLIDES.length);
+  }
+
+  function syncActiveSlide() {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
+    const slides = [...viewport.querySelectorAll<HTMLElement>(".cover-photo-slide")];
+    const closest = slides.reduce((best, item, index) => {
+      const distance = Math.abs(item.offsetLeft + item.clientWidth / 2 - viewportCenter);
+      return distance < best.distance ? { index, distance } : best;
+    }, { index: 0, distance: Number.POSITIVE_INFINITY });
+    setActiveSlide(closest.index);
+  }
+
+  function handleDragStart(event: PointerEvent<HTMLDivElement>) {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startLeft: event.currentTarget.scrollLeft,
+      moved: false,
+    };
+    setIsDragging(true);
+  }
+
+  function handleDragMove(event: PointerEvent<HTMLDivElement>) {
+    if (dragRef.current.pointerId !== event.pointerId) return;
+    const distance = event.clientX - dragRef.current.startX;
+    if (Math.abs(distance) > 3) dragRef.current.moved = true;
+    event.currentTarget.scrollLeft = dragRef.current.startLeft - distance;
+  }
+
+  function handleDragEnd(event: PointerEvent<HTMLDivElement>) {
+    if (dragRef.current.pointerId !== event.pointerId) return;
+    event.currentTarget.releasePointerCapture(event.pointerId);
+    dragRef.current.pointerId = -1;
+    setIsDragging(false);
+    syncActiveSlide();
   }
 
   return (
     <figure className="cover-photo" aria-roledescription="carousel" aria-label="웨딩 사진 모음">
       <div className="cover-photo-print">
-        <div className="cover-photo-track" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
-          {COVER_SLIDES.map((item, index) => (
-            <div className="cover-photo-slide" key={item.src} aria-hidden={index !== activeSlide}>
-              <img src={item.src} alt={index === activeSlide ? item.alt : ""} style={{ objectPosition: item.position }} width="1200" height="1500" />
-            </div>
-          ))}
+        <div
+          ref={viewportRef}
+          className={`cover-photo-viewport${isDragging ? " is-dragging" : ""}`}
+          onScroll={syncActiveSlide}
+          onPointerDown={handleDragStart}
+          onPointerMove={handleDragMove}
+          onPointerUp={handleDragEnd}
+          onPointerCancel={handleDragEnd}
+        >
+          <div className="cover-photo-track">
+            {COVER_SLIDES.map((item, index) => (
+              <div className="cover-photo-slide" key={item.src} aria-hidden={index !== activeSlide}>
+                <img src={item.src} alt={index === activeSlide ? item.alt : ""} draggable="false" style={{ objectPosition: item.position }} width="1200" height="1500" />
+              </div>
+            ))}
+          </div>
         </div>
         <span className="cover-photo-mark" aria-hidden="true">FRONT PAGE <b>W × N</b></span>
         <button type="button" className="cover-photo-arrow cover-photo-prev" onClick={() => moveSlide(-1)} aria-label="이전 사진">‹</button>
@@ -134,7 +199,7 @@ function CoverCarousel() {
               className={index === activeSlide ? "is-active" : ""}
               aria-label={`${index + 1}번 사진 보기`}
               aria-current={index === activeSlide ? "true" : undefined}
-              onClick={() => setActiveSlide(index)}
+              onClick={() => scrollToSlide(index)}
             />
           ))}
         </div>
