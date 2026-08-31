@@ -14,13 +14,16 @@
 }
 
 * { box-sizing: border-box; }
-html { min-height: 100%; overflow-y: auto; scrollbar-gutter: stable both-edges; background: var(--paper); }
+html { min-height: 100%; overflow-y: auto; scrollbar-width: none; background: var(--paper); }
+html::-webkit-scrollbar { display: none; }
 body { min-height: 100%; background: var(--paper); }
 html[data-delivery="ready"], html[data-delivery="ready"] body,
 html[data-delivery="opening"], html[data-delivery="opening"] body { background: var(--paper); }
 body { margin: 0; color: var(--ink); font-family: var(--text); }
 html.delivery-locked { overflow-y: hidden; overscroll-behavior: none; }
 html.delivery-locked body { touch-action: none; }
+html.centerfold-locked { overscroll-behavior: none; }
+html.centerfold-locked body { touch-action: none; }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
@@ -143,6 +146,93 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .cover-reaction h3 { margin: 5px 0 8px; font: 16px/1.05 var(--display); letter-spacing: -.02em; }
 .cover-reaction-copy { min-height: 120px; column-count: 3; column-gap: 13px; column-rule: 1px solid var(--line); font: 7.8px/1.46 var(--text); text-align: start; }
 .cover-reaction-copy p { margin: 0 0 6px; break-inside: avoid; }
+
+/* 02 — photo edition centerfold */
+.centerfold-stage { position: relative; z-index: 8; width: 100vw; height: 100vh; height: 100svh; margin: 0 0 22px calc(50% - 50vw); }
+.centerfold-stage[data-gallery-active="true"] .centerfold-shell { touch-action: pan-x pinch-zoom; }
+.centerfold-shell { position: relative; width: 100%; height: 100vh; height: 100svh; overflow: hidden; color: var(--ink); background: var(--paper-soft); isolation: isolate; }
+.centerfold-shell::before { content: ""; position: absolute; z-index: 1; inset: 0; opacity: .055; pointer-events: none; background-image: radial-gradient(circle at 22% 31%, rgb(23 23 22 / 28%) 0 .38px, transparent .68px), radial-gradient(circle at 73% 64%, rgb(23 23 22 / 21%) 0 .34px, transparent .64px); background-size: 23px 29px, 31px 37px; mix-blend-mode: multiply; }
+.centerfold-header { position: absolute; z-index: 50; top: 20px; right: clamp(16px, 3vw, 42px); left: clamp(16px, 3vw, 42px); display: flex; justify-content: space-between; gap: 16px; padding-bottom: 7px; border-bottom: 1px solid var(--line-strong); font: 800 7px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; pointer-events: none; }
+.centerfold-header b { font-variant-numeric: tabular-nums; }
+.centerfold-shadow { position: absolute; top: 51%; left: 50%; width: min(97vw, 1220px); height: 73vh; height: 73svh; background: rgb(23 23 22 / 16%); filter: blur(24px); transform: translate(-50%, -45%); }
+.centerfold-book { position: absolute; top: 51%; left: 50%; width: min(96vw, 1200px); height: min(74vh, 700px); height: min(74svh, 700px); transform: translate(-50%, -46%); transform-style: preserve-3d; }
+.centerfold-book::after { content: ""; position: absolute; z-index: 20; top: 0; bottom: 0; left: 50%; width: 10px; background: linear-gradient(90deg, transparent, rgb(23 23 22 / 16%), rgb(255 255 255 / 24%), transparent); transform: translateX(-50%); pointer-events: none; }
+.centerfold-spread { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; opacity: 0; visibility: hidden; transform-style: preserve-3d; }
+.centerfold-spread:first-child { opacity: 1; visibility: visible; }
+.centerfold-leaf { position: relative; overflow: hidden; background: var(--paper); box-shadow: inset 0 0 0 1px rgb(23 23 22 / 22%); transform-style: preserve-3d; }
+.centerfold-leaf:first-child { transform-origin: right center; }
+.centerfold-leaf:last-child { transform-origin: left center; }
+.centerfold-leaf::after { content: ""; position: absolute; z-index: 30; inset: 0; opacity: .055; pointer-events: none; background-image: radial-gradient(circle at 22% 31%, rgb(23 23 22 / 28%) 0 .38px, transparent .68px), radial-gradient(circle at 73% 64%, rgb(23 23 22 / 21%) 0 .34px, transparent .64px); background-size: 23px 29px, 31px 37px; mix-blend-mode: multiply; }
+.centerfold-grid { display: grid; height: 100%; padding: clamp(14px, 2.1vw, 27px); gap: clamp(6px, 1vw, 12px); overflow: hidden; }
+.centerfold-lead-grid { grid-template-rows: auto auto auto minmax(0, 1fr) auto; }
+.centerfold-hero-grid { grid-template-rows: auto minmax(0, 1fr) auto auto; }
+.centerfold-contact-grid { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+.centerfold-closing-grid { grid-template-rows: auto auto minmax(0, 1fr) auto auto; }
+.centerfold-section-bar, .centerfold-byline { display: flex; align-items: center; justify-content: space-between; gap: 8px; font: 800 clamp(5.5px, .62vw, 7px)/1.2 var(--sans); letter-spacing: .05em; text-transform: uppercase; }
+.centerfold-section-bar { padding: 5px 0 4px; border-top: 3px double var(--line-strong); border-bottom: 1px solid var(--line-strong); }
+.centerfold-byline { padding: 5px 34px 0 0; border-top: 1px solid var(--line-strong); color: var(--muted); }
+.centerfold-headline { margin: 0; padding-bottom: clamp(7px, 1vw, 12px); border-bottom: 1px solid var(--line-strong); font: 600 clamp(31px, 4.25vw, 60px)/1.08 var(--text); letter-spacing: -.035em; }
+.centerfold-deck { margin: 0; font: 700 clamp(8px, .9vw, 11px)/1.45 var(--text); }
+.centerfold-column-copy { min-height: 0; display: grid; grid-template-columns: .85fr 1.15fr; gap: 12px; overflow: hidden; font: clamp(7px, .75vw, 9px)/1.55 var(--text); text-align: start; }
+.centerfold-brief-copy { min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.centerfold-brief-copy p { margin: 0; }
+.centerfold-brief-copy p + p { padding-left: 12px; border-left: 1px solid var(--line); }
+.centerfold-story-line { display: grid; grid-template-columns: 1.15fr .85fr; gap: 12px; padding-top: 6px; border-top: 1px solid var(--line-strong); }
+.centerfold-story-line h3, .centerfold-section-title { margin: 0; font-weight: 600; letter-spacing: -.025em; }
+.centerfold-story-line h3 { font-size: clamp(16px, 2vw, 26px); line-height: 1.08; }
+.centerfold-story-line p { margin: 0; font: clamp(7px, .78vw, 9px)/1.45 var(--text); }
+.centerfold-section-title { font-size: clamp(20px, 2.8vw, 37px); line-height: 1.08; }
+.centerfold-photo-pair, .centerfold-photo-rail { min-height: 0; display: grid; gap: clamp(6px, .8vw, 10px); }
+.centerfold-photo-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.centerfold-photo-rail { grid-template: repeat(2, minmax(0, 1fr)) / 1.25fr .75fr; }
+.centerfold-photo-rail > :first-child { grid-row: 1 / -1; }
+.centerfold-news-note { margin: 0; padding: 6px 0; border-top: 1px solid var(--line-strong); border-bottom: 3px double var(--line-strong); font: 700 clamp(7px, .78vw, 9px)/1.4 var(--text); }
+.centerfold-photo { position: relative; min-height: 0; margin: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; overflow: hidden; background: var(--paper-soft); }
+.centerfold-photo img { width: 100%; height: 100%; min-height: 0; object-fit: cover; border: 1px solid var(--line-strong); filter: saturate(.8) contrast(1.035); }
+.centerfold-photo figcaption { position: static; margin: 0; padding-top: 4px; color: var(--muted); background: var(--paper); font: clamp(5px, .58vw, 7px)/1.35 var(--sans); letter-spacing: .02em; }
+.centerfold-lead-photo img { object-position: center 38%; }
+.centerfold-final-photo img { object-position: 68% 36%; }
+.centerfold-photo.crop-left img { object-position: 24% center; }
+.centerfold-photo.crop-right img { object-position: 75% center; }
+.centerfold-photo.crop-low img { object-position: center 68%; }
+.centerfold-page-no { position: absolute; z-index: 31; right: 14px; bottom: 9px; font: 800 6px/1 var(--sans); }
+.centerfold-cue { position: absolute; z-index: 60; bottom: 14px; left: 50%; min-width: 220px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 7px 10px; border: 1px solid var(--line-strong); color: var(--ink); background: var(--paper); font: 800 6px/1 var(--sans); letter-spacing: .06em; transform: translateX(-50%); pointer-events: none; }
+.centerfold-cue span::after { content: "↓"; display: inline-block; margin-left: 8px; animation: centerfold-cue 1.25s ease-in-out infinite; }
+.centerfold-cue b { font-variant-numeric: tabular-nums; }
+.centerfold-progress { position: absolute; z-index: 70; right: 0; bottom: 0; left: 0; height: 2px; background: var(--ink); transform: scaleX(0); transform-origin: left center; }
+@keyframes centerfold-cue { 0%, 100% { transform: translateY(-1px); } 50% { transform: translateY(3px); } }
+
+@media (max-width: 700px) {
+  .centerfold-header { top: 14px; right: 12px; left: 12px; font-size: 6px; }
+  .centerfold-header > span:first-child { max-width: 58%; }
+  .centerfold-book { top: 51%; width: 96vw; height: 68vh; height: 68svh; }
+  .centerfold-grid { padding: 10px; gap: 6px; }
+  .centerfold-section-bar span:last-child { display: none; }
+  .centerfold-headline { font-size: clamp(22px, 8vw, 34px); }
+  .centerfold-deck { font-size: 7px; }
+  .centerfold-column-copy { grid-template-columns: 1fr; font-size: 6px; line-height: 1.4; }
+  .centerfold-brief-copy { display: none; }
+  .centerfold-story-line { grid-template-columns: 1fr; gap: 4px; }
+  .centerfold-story-line h3 { font-size: 14px; }
+  .centerfold-story-line p { display: none; }
+  .centerfold-section-title { font-size: clamp(15px, 5vw, 21px); }
+  .centerfold-photo-pair, .centerfold-photo-rail { gap: 5px; }
+  .centerfold-photo-rail { grid-template-columns: 1.15fr .85fr; }
+  .centerfold-news-note { padding: 4px 0; font-size: 6px; }
+  .centerfold-photo figcaption { padding-top: 3px; font-size: 5px; }
+  .centerfold-byline { padding-right: 26px; }
+  .centerfold-cue { bottom: 11px; min-width: 210px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .centerfold-stage { width: 100%; height: auto; margin-left: 0; }
+  .centerfold-shell { height: auto; min-height: 0; padding: 58px 0 18px; overflow: visible; }
+  .centerfold-shadow, .centerfold-book::after, .centerfold-cue, .centerfold-progress { display: none; }
+  .centerfold-book { position: relative; top: auto; left: auto; width: min(100%, 390px); height: auto; margin: 0 auto; display: grid; gap: 14px; transform: none !important; }
+  .centerfold-spread { position: relative; inset: auto; min-height: 600px; opacity: 1 !important; visibility: visible !important; }
+  .centerfold-leaf { transform: none !important; }
+  .centerfold-cue span::after { animation: none; }
+}
 
 /* 02 — people */
 .section-masthead { display: flex; align-items: baseline; justify-content: center; margin-top: 10px; padding: 7px 0; border-top: 3px double var(--line-strong); border-bottom: 3px double var(--line-strong); }

@@ -45,8 +45,9 @@ test("renders the four-level guide behind its own asset gate", async () => {
 });
 
 test("keeps every runtime asset local and predecoded", async () => {
-  const [page, delivery, audioBank, styles] = await Promise.all([
+  const [page, centerfold, delivery, audioBank, styles] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/centerfold-gallery.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/newspaper-delivery.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/audio-bank.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
@@ -66,6 +67,7 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(page, /journey-page|archive-mosaic|milestone-rail|ARCHIVE 0[1-6]|views-page|schedule-page|back-page/);
   assert.doesNotMatch(page, /evidence-strip|ARCHIVE 07|ARCHIVE 08/);
   assert.match(page, /function CoverCarousel/);
+  assert.match(page, /<CenterfoldGallery \/>/);
   assert.match(page, /aria-roledescription="carousel"/);
   assert.match(page, /aria-label="이전 사진"/);
   assert.match(page, /aria-label="다음 사진"/);
@@ -87,6 +89,11 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(page, /puzzle-easter-egg/);
   assert.doesNotMatch(page, /celebrityDesk|celebrityPhotos|유명인들의|celebs\//);
   assert.doesNotMatch(page, /<img[^>]+src=["'{`]https?:\/\//i);
+  assert.doesNotMatch(centerfold, /<img[^>]+src=["'{`]https?:\/\//i);
+  assert.match(centerfold, /Observer\.create/);
+  assert.match(centerfold, /ScrollTrigger\.create/);
+  assert.match(centerfold, /onStopDelay/);
+  assert.match(centerfold, /centerfold-locked/);
   assert.doesNotMatch(delivery, /<img[^>]+src=["'{`]https?:\/\//i);
   assert.match(delivery, /playDecodedSound\(NO_DAMAGE_SOUND, \.72\)/);
   assert.match(delivery, /playDecodedSound\(YES_TADA_SOUND, \.82\)/);
@@ -125,7 +132,8 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.doesNotMatch(delivery, /THE COUPLE TIMES|오늘의 특종|나레이션|누군가 거절을 회수|선택지는 하나뿐/);
   assert.match(audioBank, /decodeAudioData/);
   assert.match(styles, /--paper: #f5f4f1;/);
-  assert.match(styles, /^html \{[^}]*overflow-y: auto[^}]*scrollbar-gutter: stable both-edges/m);
+  assert.match(styles, /^html \{[^}]*overflow-y: auto[^}]*scrollbar-width: none/m);
+  assert.match(styles, /html::-webkit-scrollbar \{[^}]*display: none/s);
   assert.match(styles, /html\.delivery-locked \{[^}]*overflow-y: hidden[^}]*overscroll-behavior: none/s);
   assert.match(styles, /html\.delivery-locked body \{[^}]*touch-action: none/s);
   assert.doesNotMatch(styles, /body\.delivery-locked/);

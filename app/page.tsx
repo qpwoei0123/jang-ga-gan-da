@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import AssetGate from "./asset-loader";
 import { INTERACTION_SOUNDS } from "./audio-bank";
+import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperDelivery from "./newspaper-delivery";
 
 const INVITATION_ASSETS = [
@@ -484,8 +485,10 @@ function WeddingNewspaper() {
           <PageBottom next="CONTINUED ON PAGE 02" />
         </article>
 
+        <CenterfoldGallery />
+
         <section className="paper-page details-page" id="details">
-          <PageTop page="02" section="SERVICE DESK · FAMILY CEREMONY" />
+          <PageTop page="03" section="SERVICE DESK · FAMILY CEREMONY" />
           <header className="details-heading">
             <span>날짜와 장소는 이 면에서 확인하세요.</span>
             <h2>THE DAY,<br />THE PLACE</h2>
