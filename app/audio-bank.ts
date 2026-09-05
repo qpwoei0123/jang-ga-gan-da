@@ -52,14 +52,22 @@ function getAudioContext() {
 function preloadFallback(source: string) {
   return new Promise<void>((resolve, reject) => {
     const audio = new Audio(source);
+    const timeout = window.setTimeout(() => fail(), 30000);
+    const cleanup = () => {
+      window.clearTimeout(timeout);
+      audio.removeEventListener("canplaythrough", finish);
+      audio.removeEventListener("error", fail);
+    };
     const finish = () => {
+      cleanup();
       fallbackAudio.set(source, audio);
       resolve();
     };
+    const fail = () => { cleanup(); reject(new Error(source)); };
 
     audio.preload = "auto";
     audio.addEventListener("canplaythrough", finish, { once: true });
-    audio.addEventListener("error", () => reject(new Error(source)), { once: true });
+    audio.addEventListener("error", fail, { once: true });
     audio.load();
   });
 }
@@ -77,11 +85,16 @@ export function preloadSound(source: string) {
       return;
     }
 
-    const response = await fetch(source, { cache: "force-cache" });
-    if (!response.ok) throw new Error(source);
-
-    const buffer = await context.decodeAudioData(await response.arrayBuffer());
-    decodedBuffers.set(source, buffer);
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 30000);
+    try {
+      const response = await fetch(source, { cache: "force-cache", signal: controller.signal });
+      if (!response.ok) throw new Error(source);
+      const buffer = await context.decodeAudioData(await response.arrayBuffer());
+      decodedBuffers.set(source, buffer);
+    } finally {
+      window.clearTimeout(timeout);
+    }
   })().finally(() => loadingSounds.delete(source));
 
   loadingSounds.set(source, promise);
@@ -93,13 +106,21 @@ export function playDecodedSound(source: string, volume = .8) {
   const buffer = decodedBuffers.get(source);
 
   if (context && buffer) {
+    // Autoplay can suspend the clock. Do not queue dozens of narration blips
+    // at the same timestamp while waiting for the first user gesture.
+    if (context.state !== "running") {
+      void context.resume().then(() => {
+        if (source !== SANS_VOICE_SOUND && context.state === "running") playDecodedSound(source, volume);
+      }).catch(() => {});
+      return;
+    }
     const player = context.createBufferSource();
     const gain = context.createGain();
     player.buffer = buffer;
     gain.gain.value = volume;
     player.connect(gain).connect(context.destination);
+    player.onended = () => { player.disconnect(); gain.disconnect(); };
     player.start(context.currentTime);
-    if (context.state !== "running") void context.resume();
     return;
   }
 
@@ -107,7 +128,7 @@ export function playDecodedSound(source: string, volume = .8) {
   if (!audio) return;
   const player = audio.cloneNode(true) as HTMLAudioElement;
   player.volume = volume;
-  void player.play();
+  void player.play().catch(() => {});
 }
 
 export type LoopingSound = {
@@ -142,7 +163,7 @@ export function playDecodedLoop(source: string, volume = .4, region?: LoopRegion
     player.start(context.currentTime);
 
     const resume = () => {
-      if (!stopped && context.state !== "running") void context.resume();
+      if (!stopped && context.state !== "running") void context.resume().catch(() => {});
     };
     resume();
 
@@ -162,7 +183,7 @@ export function playDecodedLoop(source: string, volume = .4, region?: LoopRegion
         gain.gain.linearRampToValueAtTime(volume, now + (holdMs + releaseMs) / 1000);
       },
       pause: () => {
-        if (!stopped && context.state === "running") void context.suspend();
+        if (!stopped && context.state === "running") void context.suspend().catch(() => {});
       },
       resume,
       stop: () => {
@@ -186,12 +207,12 @@ export function playDecodedLoop(source: string, volume = .4, region?: LoopRegion
   player.loop = !region;
   player.volume = volume;
   const resume = () => {
-    if (!stopped) void player.play();
+    if (!stopped) void player.play().catch(() => {});
   };
   const restartLoop = () => {
     if (stopped) return;
     player.currentTime = loopStart;
-    void player.play();
+    void player.play().catch(() => {});
   };
   const enforceLoopEnd = () => {
     if (loopEnd && player.currentTime >= loopEnd) restartLoop();

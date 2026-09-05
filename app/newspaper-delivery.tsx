@@ -1,6 +1,7 @@
 "use client";
 
 import confetti from "canvas-confetti";
+import { useAssetsReady } from "./asset-loader";
 import {
   useEffect,
   useLayoutEffect,
@@ -49,6 +50,7 @@ function NoLives({ count, breaking }: { count: number; breaking: boolean }) {
 }
 
 export default function NewspaperDelivery() {
+  const assetsReady = useAssetsReady();
   const [phase, setPhase] = useState<DeliveryPhase>("approaching");
   const [noAttempts, setNoAttempts] = useState(0);
   const [noPosition, setNoPosition] = useState<Point | null>(null);
@@ -73,7 +75,10 @@ export default function NewspaperDelivery() {
   const yesButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useLayoutEffect(() => {
+    if (!assetsReady) return;
     const root = document.documentElement;
+    const edition = document.querySelector<HTMLElement>("main.edition");
+    if (edition) edition.inert = true;
     root.dataset.delivery = "ready";
     root.classList.add("delivery-locked");
     window.scrollTo(0, 0);
@@ -113,8 +118,9 @@ export default function NewspaperDelivery() {
       document.removeEventListener("visibilitychange", syncIntroMusicVisibility);
       delete root.dataset.delivery;
       root.classList.remove("delivery-locked");
+      if (edition) edition.inert = false;
     };
-  }, []);
+  }, [assetsReady]);
 
   const typingComplete = typedLength >= NARRATION.length;
 
@@ -151,7 +157,7 @@ export default function NewspaperDelivery() {
   const noLives = Math.max(0, NO_ATTEMPT_LIMIT - visibleNoAttempts);
   const noButtonLabel = visibleNoAttempts > 0
     ? `아니요. ${noLives}번 남았습니다.`
-    : "아니요. 다가가면 도망갑니다";
+    : "아니요. 누르면 도망갑니다";
 
   useEffect(() => {
     if (!willActive) return;
@@ -213,6 +219,12 @@ export default function NewspaperDelivery() {
   const openNewspaper = () => {
     if (phase === "opening" || phase === "complete" || willActive) return;
     if (timerRef.current) window.clearTimeout(timerRef.current);
+    if (willRevealTimerRef.current) window.clearTimeout(willRevealTimerRef.current);
+    if (noHitTimerRef.current) window.clearTimeout(noHitTimerRef.current);
+    if (typingTimerRef.current) window.clearTimeout(typingTimerRef.current);
+    if (willTimerRef.current) window.clearTimeout(willTimerRef.current);
+    if (willCaptureSoundTimerRef.current) window.clearTimeout(willCaptureSoundTimerRef.current);
+    if (willExitSoundTimerRef.current) window.clearTimeout(willExitSoundTimerRef.current);
 
     introMusicRef.current?.stop();
     introMusicRef.current = null;
@@ -236,6 +248,8 @@ export default function NewspaperDelivery() {
       const root = document.documentElement;
       root.dataset.delivery = "complete";
       root.classList.remove("delivery-locked");
+      const edition = document.querySelector<HTMLElement>("main.edition");
+      if (edition) edition.inert = false;
       setPhase("complete");
     }, reducedMotion ? 120 : OPENING_DURATION_MS);
   };
@@ -293,6 +307,7 @@ export default function NewspaperDelivery() {
   };
 
   const handleNoPointerDown = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (!event.isPrimary) return;
     event.preventDefault();
     evadeNo();
   };
@@ -302,7 +317,7 @@ export default function NewspaperDelivery() {
     if (event.detail === 0) evadeNo();
   };
 
-  if (phase === "complete") return null;
+  if (!assetsReady || phase === "complete") return null;
 
   const noButtonStyle = noPosition
     ? ({ left: noPosition.x, top: noPosition.y, "--no-scale": noScale, "--no-lives-scale": 1 / noScale } as CSSProperties)
@@ -321,6 +336,7 @@ export default function NewspaperDelivery() {
       aria-describedby="delivery-narration"
     >
       <div className="delivery-stage" ref={stageRef}>
+        <button className="delivery-skip" type="button" onClick={openNewspaper} disabled={willActive || phase === "opening"}>신문 바로 보기 ↗</button>
         <canvas className="delivery-confetti" ref={confettiCanvasRef} aria-hidden="true" />
 
         <span className="delivery-dog-stage" aria-hidden="true">

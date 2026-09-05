@@ -189,6 +189,7 @@ function CoverCarousel() {
   }, []);
 
   function handleDragStart(event: PointerEvent<HTMLDivElement>) {
+    if (!event.isPrimary || dragRef.current.pointerId !== -1) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     event.currentTarget.setPointerCapture(event.pointerId);
     dragRef.current = {
@@ -209,7 +210,7 @@ function CoverCarousel() {
 
   function handleDragEnd(event: PointerEvent<HTMLDivElement>) {
     if (dragRef.current.pointerId !== event.pointerId) return;
-    event.currentTarget.releasePointerCapture(event.pointerId);
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
     dragRef.current.pointerId = -1;
     setIsDragging(false);
     syncActiveSlide();
@@ -448,6 +449,18 @@ function WeddingSearchPuzzle() {
 }
 
 function WeddingNewspaper() {
+  const [copyStatus, setCopyStatus] = useState("");
+  const address = "서울 성동구 연무장길 17";
+
+  async function copyAddress() {
+    try {
+      await navigator.clipboard.writeText(address);
+      setCopyStatus("주소를 복사했어요.");
+    } catch {
+      setCopyStatus("아래 주소를 길게 눌러 복사해 주세요.");
+    }
+  }
+
   return (
     <>
       <NewspaperDelivery />
@@ -522,6 +535,13 @@ function WeddingNewspaper() {
             <article><span>SUBWAY</span><h3>성수역 3번 출구</h3><p>출구에서 연무장길 방향으로 약 7분 걸어오세요.</p></article>
             <article><span>PARKING</span><h3>주차 2시간 지원</h3><p>건물 주차장이 좁아 가능하면 대중교통을 권합니다.</p></article>
           </div>
+          <div className="venue-actions">
+            <a href={`https://map.naver.com/p/search/${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer">네이버지도 ↗</a>
+            <a href={`https://map.kakao.com/link/search/${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer">카카오맵 ↗</a>
+            <button type="button" onClick={copyAddress}>주소 복사</button>
+          </div>
+          <p className="address-feedback">{copyStatus || "지도에서 위치를 확인해 주세요."}</p>
+          {copyStatus.startsWith("아래") && <p className="address-copy-fallback">{address}</p>}
           <PageBottom next="END OF EDITION" />
         </section>
       </main>

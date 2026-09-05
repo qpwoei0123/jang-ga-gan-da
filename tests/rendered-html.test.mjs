@@ -149,7 +149,7 @@ test("keeps every runtime asset local and predecoded", async () => {
   assert.match(styles, /\.cover-photo-print \{[^}]*width: 100%/s);
   assert.match(styles, /\.cover-photo-viewport \{[^}]*padding: 0 16%[^}]*scroll-snap-type: x mandatory/s);
   assert.match(styles, /\.cover-photo-track \{[^}]*gap: 8px/s);
-  assert.match(styles, /\.cover-reaction-copy \{[^}]*column-count: 3/s);
+  assert.match(styles, /\.cover-reaction-copy \{[^}]*column-count: 2/s);
   assert.match(styles, /\.people-photo \.photo-slot-frame \{[^}]*height: 370px/s);
   assert.doesNotMatch(styles, /text-align:\s*justify/);
   assert.match(styles, /\.cover-reaction-copy \{[^}]*text-align: start/s);

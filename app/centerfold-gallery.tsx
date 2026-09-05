@@ -240,10 +240,11 @@ export default function CenterfoldGallery() {
 
     const handleKeydown = (event: KeyboardEvent) => {
       if (!gateTrigger?.isActive) return;
-      if (["ArrowDown", "PageDown", " "].includes(event.key)) {
+      if (event.target instanceof Element && event.target.closest("button, a, input, textarea, select")) return;
+      if (["ArrowDown", "PageDown"].includes(event.key) || (event.key === " " && !event.shiftKey)) {
         event.preventDefault();
         next();
-      } else if (["ArrowUp", "PageUp"].includes(event.key)) {
+      } else if (["ArrowUp", "PageUp"].includes(event.key) || (event.key === " " && event.shiftKey)) {
         event.preventDefault();
         previous();
       }
@@ -355,7 +356,7 @@ export default function CenterfoldGallery() {
               <div className="centerfold-grid centerfold-closing-grid">
                 <div className="centerfold-section-bar"><b>Last Frame</b><span>Selected 10 / 11</span></div>
                 <h2 className="centerfold-headline">그리고,<br />오늘.</h2>
-                <figure className="centerfold-photo centerfold-final-photo"><img src="/couple-main.webp" alt="결혼을 앞둔 한원영과 이나경" width="1200" height="1800" /><figcaption>10 · 다음 면에서 두 사람의 10년 기록이 이어집니다.</figcaption></figure>
+                <figure className="centerfold-photo centerfold-final-photo"><img src="/couple-main.webp" alt="결혼을 앞둔 한원영과 이나경" width="1200" height="1800" /><figcaption>10 · 다음 면에서 날짜와 장소를 확인하세요.</figcaption></figure>
                 <p className="centerfold-deck">사진으로 먼저 전한 두 사람의 결혼 소식.</p>
                 <div className="centerfold-byline"><b>Continued</b><span>Page 03</span></div>
               </div>
