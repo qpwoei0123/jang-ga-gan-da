@@ -21,7 +21,7 @@ async function render(path = "/") {
   );
 }
 
-test("renders the CSR asset gate before the invitation", async () => {
+test("renders the actual invitation once, inert and unprinted, inside the asset gate", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
@@ -31,6 +31,10 @@ test("renders the CSR asset gate before the invitation", async () => {
   assert.match(html, /신문 인쇄 준비 중/);
   assert.match(html, /오늘의 소식을 준비합니다/);
   assert.match(html, /THE WEDDING PRESS/);
+  assert.match(html, /class="asset-scene is-page-printing" inert=""/);
+  assert.equal((html.match(/id="top"/g) ?? []).length, 1);
+  assert.match(html, /class="page-print/);
+  assert.doesNotMatch(html, /<canvas|class="print-sheet"/);
   assert.doesNotMatch(html, /사진, 종이 질감, 효과음을 먼저 준비하고 있습니다/);
   assert.doesNotMatch(html, /class="delivery-intro/);
 });
@@ -55,7 +59,7 @@ test("keeps every runtime asset local and predecoded", async () => {
   ]);
 
   assert.match(page, /^"use client";/);
-  assert.match(page, /<AssetGate assets=\{INVITATION_ASSETS\}>/);
+  assert.match(page, /<AssetGate assets=\{INVITATION_ASSETS\} printOnPage>/);
   assert.doesNotMatch(page, /OutdoorSunlight/);
   assert.match(page, /\.\.\.INTERACTION_SOUNDS/);
   assert.match(page, /\/couple-main\.webp/);

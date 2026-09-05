@@ -560,7 +560,7 @@ function WeddingNewspaper() {
 
 export default function Home() {
   return (
-    <AssetGate assets={INVITATION_ASSETS}>
+    <AssetGate assets={INVITATION_ASSETS} printOnPage>
       <WeddingNewspaper />
     </AssetGate>
   );

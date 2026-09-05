@@ -2,13 +2,16 @@
 
 import { useLayoutEffect, useRef } from "react";
 import { gsap, Observer, ScrollTrigger } from "gsap/all";
+import { useAssetsReady } from "./asset-loader";
 
 const GALLERY_STOPS = [.14, .5, .86] as const;
 
 export default function CenterfoldGallery() {
   const stageRef = useRef<HTMLElement>(null);
+  const assetsReady = useAssetsReady();
 
   useLayoutEffect(() => {
+    if (!assetsReady) return;
     const stage = stageRef.current;
     if (!stage) return;
 
@@ -283,7 +286,7 @@ export default function CenterfoldGallery() {
       intentObserver?.kill();
       scrollObserver?.kill();
     };
-  }, []);
+  }, [assetsReady]);
 
   return (
     <section

@@ -104,6 +104,35 @@ html:is([data-assets="loading"], [data-assets="preparing"], [data-assets="printi
   .is-printed .print-sheet { transform: none; transition: none; }
 }
 
+/* Print directly onto the existing front page. Its geometry never changes. */
+.asset-loader.is-on-page:not(.is-error) { display: block; padding: 0; overflow: hidden; background: transparent; pointer-events: none; }
+.asset-scene.is-page-printing .edition > :not(.cover-page) { visibility: hidden; }
+.asset-scene.is-page-printing .cover-page > * {
+  clip-path: inset(0 0 var(--print-cut, 100%) 0);
+  text-shadow: var(--print-registration, 0px) 0 rgb(0 166 204 / 55%), calc(-1 * var(--print-registration, 0px)) 0 rgb(232 61 121 / 45%);
+  filter: grayscale(var(--print-grayscale, 1)) sepia(var(--print-sepia, .65)) hue-rotate(var(--print-hue, 135deg));
+}
+.asset-scene.is-page-printing .cover-page[data-ink-complete="true"] > * { clip-path: none; filter: none; text-shadow: none; }
+.asset-scene.is-page-printing .cover-page { isolation: isolate; }
+.page-print { position: absolute; inset: 0; color: var(--press-ink); font-family: var(--sans); }
+.page-print-grain { position: absolute; z-index: 1; inset: 18px 0 0; opacity: var(--print-grain-opacity, 0); background: radial-gradient(circle, #313e45 .65px, transparent .85px) 0 0 / 3px 3px; }
+.page-print-scan { position: absolute; top: 0; right: 22px; left: 22px; height: 1px; opacity: var(--print-scan-opacity, 0); background: #328c9e; box-shadow: 0 -2px 0 rgb(232 61 121 / 25%); transform: translateY(var(--print-scan-y, 18px)); }
+.page-print-status { position: absolute; z-index: 3; right: 0; bottom: 0; left: 0; padding: 36px 22px max(20px, env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--paper) 27%); }
+.page-print-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; padding-top: 9px; border-top: 1px solid rgb(65 71 58 / 35%); font: 11px/1.4 var(--sans); letter-spacing: .06em; }
+.page-print-heading .print-inks span { width: 16px; height: 16px; font-size: 9px; }
+.page-print-status progress { display: block; appearance: none; width: 100%; height: 2px; margin: 9px 0 0; border: 0; color: #536343; background: #c3c9b8; }
+.page-print-status progress::-webkit-progress-bar { background: #c3c9b8; }
+.page-print-status progress::-webkit-progress-value { background: #536343; }
+.page-print-status progress::-moz-progress-bar { background: #536343; }
+.page-print-stamp { position: absolute; z-index: 2; top: min(54svh, 440px); right: 35px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 12px; border: 2px solid #aa4a31; color: #aa4a31; background: rgb(245 244 241 / 88%); opacity: 0; transform: rotate(-13deg) scale(1.3); }
+.page-print-stamp span { font: 700 21px/1.2 var(--text); letter-spacing: 2px; }
+.page-print-stamp small { font: 8px/1.3 var(--sans); letter-spacing: .06em; }
+.page-print.is-printed .page-print-stamp { animation: print-stamp-in 140ms cubic-bezier(.16, 1, .3, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .page-print-grain, .page-print-scan { display: none; }
+  .page-print.is-printed .page-print-stamp { animation-duration: 1ms; }
+}
+
 /* Delivery intro: its game behavior is preserved, only the paper world changed. */
 .delivery-intro { display: none; position: fixed; inset: 0 auto 0 50%; z-index: 100; width: min(100%, 390px); min-height: 100vh; min-height: 100dvh; color: var(--ink); background-color: var(--paper); background-image: radial-gradient(circle at 18% 24%, rgb(23 23 22 / 7%) 0 .4px, transparent .7px), radial-gradient(circle at 76% 68%, rgb(23 23 22 / 5%) 0 .35px, transparent .65px); background-size: 23px 29px, 31px 37px; transform: translateX(-50%); }
 [data-delivery="ready"] .delivery-intro, [data-delivery="opening"] .delivery-intro { display: block; }

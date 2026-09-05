@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, ty
 import { preloadSound } from "./audio-bank";
 import { preloadResources } from "./resource-preloader";
 import PrintLoading from "./print-loading";
+import PagePrint from "./print-page";
 
 const AssetsReady = createContext(false);
 export const useAssetsReady = () => useContext(AssetsReady);
@@ -41,10 +42,11 @@ function preloadAsset(source: string) {
 
 type LoadState = "loading" | "preparing" | "printing" | "exiting" | "ready" | "error";
 
-export default function AssetGate({ assets, children, label = "신문 인쇄 준비 중" }: {
+export default function AssetGate({ assets, children, label = "신문 인쇄 준비 중", printOnPage = false }: {
   assets: readonly string[];
   children: ReactNode;
   label?: string;
+  printOnPage?: boolean;
 }) {
   const [attempt, setAttempt] = useState(0);
   const [status, setStatus] = useState<LoadState>("loading");
@@ -56,6 +58,7 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
   useEffect(() => {
     const controller = new AbortController();
     document.documentElement.dataset.assets = "loading";
+    if (printOnPage) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     setStatus("loading");
     setComplete(0);
     preloadResources(assets, preloadAsset, setComplete, controller.signal)
@@ -64,22 +67,37 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
         setStatus(missing.length ? "error" : "preparing");
       }).catch(() => {});
     return () => controller.abort();
-  }, [assets, attempt]);
+  }, [assets, attempt, printOnPage]);
 
   useEffect(() => {
     document.documentElement.dataset.assets = status;
+    if (printOnPage && status === "ready" && window.location.hash) {
+      // Honor incoming section links only after the same cover has finished printing.
+      const frame = requestAnimationFrame(() => {
+        if (document.documentElement.classList.contains("delivery-locked")) return;
+        let id: string;
+        try { id = decodeURIComponent(window.location.hash.slice(1)); } catch { return; }
+        if (id === "details") window.dispatchEvent(new Event("wedding:show-details"));
+        else document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" });
+      });
+      return () => cancelAnimationFrame(frame);
+    }
     if (status !== "preparing") return;
     let active = true;
     let firstFrame = 0;
     let secondFrame = 0;
-    // Finish the real photo layout behind the loader before starting the intro.
+    // Decode and lay out the same page that the print effect will reveal.
     Promise.all([
       document.fonts.ready,
       ...[...(sceneRef.current?.querySelectorAll("img") ?? [])].map((image) => image.decode()),
     ]).then(() => {
       if (!active) return;
       firstFrame = requestAnimationFrame(() => {
-        secondFrame = requestAnimationFrame(() => { if (active) setStatus("printing"); });
+        secondFrame = requestAnimationFrame(() => {
+          if (!active) return;
+          if (printOnPage) window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+          setStatus("printing");
+        });
       });
     }).catch(() => {
       if (active) {
@@ -92,7 +110,7 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
       cancelAnimationFrame(firstFrame);
       cancelAnimationFrame(secondFrame);
     };
-  }, [status]);
+  }, [status, printOnPage]);
 
   const finishPrinting = useCallback(() => {
     setStatus((current) => current === "printing" ? "exiting" : current);
@@ -108,17 +126,17 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
     return () => window.clearTimeout(timer);
   }, [status, finishExit]);
 
-  const hasScene = status === "preparing" || status === "printing" || status === "exiting" || status === "ready";
+  const hasScene = printOnPage || status === "preparing" || status === "printing" || status === "exiting" || status === "ready";
 
   return (
     <AssetsReady.Provider value={status === "ready"}>
       {hasScene && (
-        <div ref={sceneRef} className={`asset-scene${status !== "ready" ? " is-preparing" : ""}`} inert={status !== "ready"}>
+        <div ref={sceneRef} className={`asset-scene${status !== "ready" ? printOnPage ? " is-page-printing" : " is-preparing" : ""}`} inert={status !== "ready"}>
           {children}
         </div>
       )}
       {status !== "ready" && (
-        <main className={`asset-loader${status === "error" ? " is-error" : ""}${status === "exiting" ? " is-exiting" : ""}`} aria-label={label} onAnimationEnd={(event) => {
+        <div className={`asset-loader${printOnPage ? " is-on-page" : ""}${status === "error" ? " is-error" : ""}${status === "exiting" ? " is-exiting" : ""}`} role="region" aria-label={label} onAnimationEnd={(event) => {
           if (event.target === event.currentTarget && event.animationName === "print-loader-out") finishExit();
         }}>
           {status === "error" ? <div className="asset-loader-inner">
@@ -126,8 +144,10 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
               <h1>잠시 연결이 끊겼어요.</h1>
               <p>{failed.includes("layout") ? "지면을 정리하지 못했어요. 다시 준비한 뒤 신문을 열어드릴게요." : `남은 파일 ${failed.length}개를 준비한 뒤 신문을 열어드릴게요.`}</p>
               <button type="button" onClick={() => setAttempt((current) => current + 1)}>다시 불러오기</button>
-            </div> : <PrintLoading complete={complete} total={total} preparing={status === "preparing"} resourcesReady={status === "printing" || status === "exiting"} onPrinted={finishPrinting} photo={preparedImages.get("/couple-main.webp")} />}
-        </main>
+            </div> : printOnPage
+              ? <PagePrint sceneRef={sceneRef} complete={complete} total={total} resourcesReady={status === "printing" || status === "exiting"} onPrinted={finishPrinting} />
+              : <PrintLoading complete={complete} total={total} preparing={status === "preparing"} resourcesReady={status === "printing" || status === "exiting"} onPrinted={finishPrinting} photo={preparedImages.get("/couple-main.webp")} />}
+        </div>
       )}
     </AssetsReady.Provider>
   );
