@@ -11,6 +11,9 @@
   --display: "Bodoni 72", Didot, "Times New Roman", serif;
   --text: "Iowan Old Style", "Noto Serif KR", "AppleMyungjo", "Times New Roman", serif;
   --sans: Arial, "Helvetica Neue", sans-serif;
+  --press-paper: #faf5e8;
+  --press-board: #e5e2d9;
+  --press-ink: #41473a;
 }
 
 * { box-sizing: border-box; }
@@ -31,19 +34,72 @@ img { display: block; max-width: 100%; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 /* Asset gate */
-.asset-loader { position: fixed; z-index: 200; inset: 0; display: grid; place-items: center; width: min(100%, 390px); min-height: 100vh; min-height: 100dvh; margin: 0 auto; padding: 30px; color: var(--ink); background: var(--paper); }
-.asset-loader-status { display: block; margin-top: 24px; font: 700 14px/1.5 var(--sans); }
+.asset-loader { position: fixed; z-index: 200; inset: 0; display: grid; place-items: center; width: min(100%, 390px); height: 100vh; height: 100dvh; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 22px max(20px, env(safe-area-inset-bottom)); overflow: auto; color: var(--ink); background: var(--press-board); }
+.asset-loader.is-ready { pointer-events: none; animation: print-loader-out 220ms ease-out both; }
+.asset-loader.is-error { background: var(--paper); }
 .asset-scene.is-preparing { opacity: 0; pointer-events: none; }
-.asset-loader-edition { display: block; font: 700 15px/1.3 var(--display); letter-spacing: .04em; }
-.asset-loader progress { display: block; appearance: none; width: 100%; height: 3px; margin: 16px 0 10px; border: 0; color: var(--ink); background: var(--line); }
-.asset-loader progress::-webkit-progress-bar { background: var(--line); }
-.asset-loader progress::-webkit-progress-value { background: var(--ink); }
-.asset-loader progress::-moz-progress-bar { background: var(--ink); }
-.asset-loader-count { display: block; text-align: right; font: 12px/1 var(--sans); font-variant-numeric: tabular-nums; }
+.asset-loader-edition { display: block; margin-bottom: 24px; font: 700 15px/1.3 var(--display); letter-spacing: .04em; }
 .asset-loader-inner { width: 100%; padding: 24px 0; border-top: 3px double var(--ink); border-bottom: 1px solid var(--ink); }
 .asset-loader h1 { max-width: 310px; margin: 0 0 12px; font: 400 31px/1.05 var(--display); letter-spacing: -.03em; }
-.asset-loader p { max-width: 290px; margin: 0; color: var(--muted); font: 12px/1.55 var(--text); }
-.asset-loader button { margin-top: 24px; padding: 10px 14px; border: 1px solid var(--ink); border-radius: 0; color: var(--paper); background: var(--ink); font: 800 10px/1 var(--sans); cursor: pointer; }
+.asset-loader p { max-width: 290px; margin: 0; color: var(--muted); font: 14px/1.55 var(--text); }
+.asset-loader button { min-height: 44px; margin-top: 24px; padding: 10px 14px; border: 1px solid var(--ink); border-radius: 0; color: var(--paper); background: var(--ink); font: 800 14px/1 var(--sans); cursor: pointer; }
+.print-loading { width: 100%; color: var(--press-ink); font-family: var(--sans); }
+.print-masthead { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid #969a8d; padding-top: 10px; font: 12px/1.4 var(--sans); letter-spacing: .035em; }
+.print-bed { position: relative; width: min(100%, 340px, calc((100svh - 200px) * .8)); margin: 28px auto 26px; padding: 12px; }
+.print-sheet { position: relative; background: var(--press-paper); box-shadow: 0 16px 28px rgb(23 28 19 / 10%), 0 2px 3px rgb(23 28 19 / 15%); transform-origin: center bottom; }
+.print-sheet::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .15; background-image: radial-gradient(circle, #615c4e 0 .4px, transparent .8px); background-size: 4px 5px; }
+.print-art { position: relative; display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; background: var(--press-paper); }
+.print-art[data-rendered="false"] { opacity: 0; }
+.print-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; overflow: hidden; opacity: .24; color: #292922; }
+.print-fallback strong { font: 700 30px/1 Georgia, serif; }
+.print-fallback span { font: 700 23px/1.2 var(--text); }
+.print-fallback b { font: 400 85px/1 Georgia, serif; color: #a26749; }
+.print-fallback small { font: 14px/1 var(--text); }
+.print-corner { position: absolute; width: 15px; height: 15px; border: 0 solid #8e9384; }
+.print-corner.corner-tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+.print-corner.corner-tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+.print-corner.corner-bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+.print-corner.corner-br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+.print-stamp { position: absolute; right: 7%; bottom: 14%; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 10px; border: 2px solid #aa4a31; color: #aa4a31; background: rgb(250 245 232 / 85%); transform: rotate(-13deg) scale(1.3); opacity: 0; }
+.print-stamp span { font: 700 20px/1.2 var(--text); letter-spacing: 2px; }
+.print-stamp small { font: 8px/1.2 var(--sans); letter-spacing: 1px; }
+.is-printed .print-stamp { animation: print-stamp-in 140ms cubic-bezier(.16, 1, .3, 1) both; }
+.is-printed .print-sheet { transform: translateY(-3px) rotate(-.8deg); transition: transform 180ms ease-out; }
+.print-status { width: min(100%, 316px); margin: auto; }
+.print-status-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; min-height: 26px; }
+.print-message { font: 14px/1.4 var(--sans); letter-spacing: -.04em; }
+.print-count { flex-shrink: 0; font: 25px/1 Georgia, serif; font-variant-numeric: tabular-nums; }
+.print-count small { margin-left: 3px; font: 12px/1 var(--sans); }
+.print-status progress { display: block; appearance: none; width: 100%; height: 2px; margin: 10px 0 12px; border: 0; color: #536343; background: #c3c9b8; }
+.print-status progress::-webkit-progress-bar { background: #c3c9b8; }
+.print-status progress::-webkit-progress-value { background: #536343; }
+.print-status progress::-moz-progress-bar { background: #536343; }
+.print-status-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.print-inks { display: flex; gap: 4px; }
+.print-inks span { display: grid; place-items: center; width: 20px; height: 20px; font: 11px/1 var(--sans); color: #20241f; background: #b9c0ae; opacity: .3; }
+.print-inks .is-inked { opacity: 1; }
+.print-inks .is-inked:nth-child(1) { background: #17bbd3; }
+.print-inks .is-inked:nth-child(2) { background: #ef7499; }
+.print-inks .is-inked:nth-child(3) { background: #edd448; }
+.print-inks .is-inked:nth-child(4) { background: #292d26; color: var(--press-paper); }
+.print-caption { font: 12px/1.4 var(--sans); }
+@keyframes print-loader-out { to { opacity: 0; visibility: hidden; } }
+@keyframes print-stamp-in { to { opacity: 1; transform: rotate(-13deg) scale(1); } }
+@media (max-height: 480px) {
+  .asset-loader { padding-top: 12px; padding-bottom: 12px; }
+  .print-masthead { display: none; }
+  .print-bed { width: min(100%, calc((100svh - 125px) * .8)); margin-top: 0; margin-bottom: 12px; padding: 8px; }
+  .print-fallback { gap: 4px; }
+  .print-fallback strong { font-size: 14px; }
+  .print-fallback span { font-size: 12px; }
+  .print-fallback b { font-size: 45px; }
+  .print-fallback small { font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .asset-loader.is-ready { animation-duration: 1ms; }
+  .is-printed .print-stamp { animation-duration: 1ms; }
+  .is-printed .print-sheet { transform: none; transition: none; }
+}
 
 /* Delivery intro: its game behavior is preserved, only the paper world changed. */
 .delivery-intro { display: none; position: fixed; inset: 0 auto 0 50%; z-index: 100; width: min(100%, 390px); min-height: 100vh; min-height: 100dvh; color: var(--ink); background-color: var(--paper); background-image: radial-gradient(circle at 18% 24%, rgb(23 23 22 / 7%) 0 .4px, transparent .7px), radial-gradient(circle at 76% 68%, rgb(23 23 22 / 5%) 0 .35px, transparent .65px); background-size: 23px 29px, 31px 37px; transform: translateX(-50%); }

@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { preloadSound } from "./audio-bank";
 import { preloadResources } from "./resource-preloader";
+import PrintLoading from "./print-loading";
 
 const AssetsReady = createContext(false);
 export const useAssetsReady = () => useContext(AssetsReady);
@@ -49,6 +50,7 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
   const [status, setStatus] = useState<LoadState>("loading");
   const [complete, setComplete] = useState(0);
   const [failed, setFailed] = useState<string[]>([]);
+  const [showLoader, setShowLoader] = useState(true);
   const sceneRef = useRef<HTMLDivElement>(null);
   const total = new Set(assets).size;
 
@@ -56,6 +58,7 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
     const controller = new AbortController();
     document.documentElement.dataset.assets = "loading";
     setStatus("loading");
+    setShowLoader(true);
     setComplete(0);
     preloadResources(assets, preloadAsset, setComplete, controller.signal)
       .then((missing) => {
@@ -93,6 +96,13 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
     };
   }, [status]);
 
+  useEffect(() => {
+    if (status !== "ready") return;
+    // The intro starts immediately; only the non-interactive exit overlay remains.
+    const timer = window.setTimeout(() => setShowLoader(false), 220);
+    return () => window.clearTimeout(timer);
+  }, [status]);
+
   return (
     <AssetsReady.Provider value={status === "ready"}>
       {(status === "preparing" || status === "ready") && (
@@ -100,20 +110,14 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
           {children}
         </div>
       )}
-      {status !== "ready" && (
-        <main className={`asset-loader${status === "error" ? " is-error" : ""}`} aria-label={label}>
-          <div className="asset-loader-inner">
-            <span className="asset-loader-edition">THE WEDDING NEWS</span>
-            {status === "error" ? <>
+      {showLoader && (
+        <main className={`asset-loader${status === "error" ? " is-error" : ""}${status === "ready" ? " is-ready" : ""}`} aria-label={label} aria-hidden={status === "ready" || undefined}>
+          {status === "error" ? <div className="asset-loader-inner">
+              <span className="asset-loader-edition">THE WEDDING NEWS</span>
               <h1>잠시 연결이 끊겼어요.</h1>
-              <p>남은 파일 {failed.length}개를 준비한 뒤 신문을 열어드릴게요.</p>
+              <p>{failed.includes("layout") ? "지면을 정리하지 못했어요. 다시 준비한 뒤 신문을 열어드릴게요." : `남은 파일 ${failed.length}개를 준비한 뒤 신문을 열어드릴게요.`}</p>
               <button type="button" onClick={() => setAttempt((current) => current + 1)}>다시 불러오기</button>
-            </> : <>
-              <span className="asset-loader-status">{status === "preparing" ? "마지막으로 지면을 정리하고 있어요." : "로딩중..."}</span>
-              <progress max={total + 1} value={complete + (status === "preparing" ? .5 : 0)} />
-              <span className="asset-loader-count">{complete} / {total}</span>
-            </>}
-          </div>
+            </div> : <PrintLoading complete={complete} total={total} preparing={status === "preparing"} ready={status === "ready"} photo={preparedImages.get("/couple-main.webp")} />}
         </main>
       )}
     </AssetsReady.Provider>

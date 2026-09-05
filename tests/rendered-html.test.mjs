@@ -29,7 +29,8 @@ test("renders the CSR asset gate before the invitation", async () => {
   const html = await response.text();
   assert.match(html, /<title>The Wedding News \| 한원영·이나경<\/title>/);
   assert.match(html, /신문 인쇄 준비 중/);
-  assert.match(html, /로딩중\.\.\./);
+  assert.match(html, /오늘의 소식을 준비합니다/);
+  assert.match(html, /THE WEDDING PRESS/);
   assert.doesNotMatch(html, /사진, 종이 질감, 효과음을 먼저 준비하고 있습니다/);
   assert.doesNotMatch(html, /class="delivery-intro/);
 });
