@@ -183,7 +183,21 @@ export default function CenterfoldGallery() {
 
     render(reducedMotion ? .5 : 0);
     updateCue();
-    if (reducedMotion) return;
+    const showDetails = () => {
+      gateTween?.kill();
+      unlockCall?.kill();
+      locked = false;
+      exiting = true;
+      deactivateInput();
+      step = GALLERY_STOPS.length - 1;
+      render(GALLERY_STOPS[step]);
+      updateCue();
+      document.getElementById("details")?.scrollIntoView({ behavior: "instant", block: "start" });
+      ScrollTrigger.update();
+      exiting = false;
+    };
+    window.addEventListener("wedding:show-details", showDetails);
+    if (reducedMotion) return () => window.removeEventListener("wedding:show-details", showDetails);
 
     scrollObserver = Observer.create({
       target: window,
@@ -240,11 +254,10 @@ export default function CenterfoldGallery() {
 
     const handleKeydown = (event: KeyboardEvent) => {
       if (!gateTrigger?.isActive) return;
-      if (event.target instanceof Element && event.target.closest("button, a, input, textarea, select")) return;
-      if (["ArrowDown", "PageDown"].includes(event.key) || (event.key === " " && !event.shiftKey)) {
+      if (["ArrowDown", "PageDown", " "].includes(event.key)) {
         event.preventDefault();
         next();
-      } else if (["ArrowUp", "PageUp"].includes(event.key) || (event.key === " " && event.shiftKey)) {
+      } else if (["ArrowUp", "PageUp"].includes(event.key)) {
         event.preventDefault();
         previous();
       }
@@ -260,6 +273,7 @@ export default function CenterfoldGallery() {
     return () => {
       window.cancelAnimationFrame(refreshFrame);
       deliveryObserver.disconnect();
+      window.removeEventListener("wedding:show-details", showDetails);
       window.removeEventListener("keydown", handleKeydown);
       deactivateInput();
       gateTween?.kill();

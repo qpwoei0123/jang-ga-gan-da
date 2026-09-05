@@ -468,7 +468,11 @@ function WeddingNewspaper() {
         <article className="paper-page cover-page" id="top">
           <div className="cover-utility">
             <span>The Grand Hall</span>
-            <a href="#details">가족식 안내 ↘</a>
+            <a href="#details" onClick={(event) => {
+              event.preventDefault();
+              window.dispatchEvent(new Event("wedding:show-details"));
+              window.history.replaceState(window.history.state, "", "#details");
+            }}>가족식 안내 ↘</a>
           </div>
           <div className="double-rule" aria-hidden="true" />
           <header className="cover-masthead">
