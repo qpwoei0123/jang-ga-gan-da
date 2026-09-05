@@ -34,8 +34,11 @@ img { display: block; max-width: 100%; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 /* Asset gate */
+html:is([data-assets="loading"], [data-assets="preparing"], [data-assets="printing"], [data-assets="exiting"]),
+html:is([data-assets="loading"], [data-assets="preparing"], [data-assets="printing"], [data-assets="exiting"]) body { overflow: hidden; overscroll-behavior: none; }
+html:is([data-assets="loading"], [data-assets="preparing"], [data-assets="printing"], [data-assets="exiting"]) body { touch-action: none; }
 .asset-loader { position: fixed; z-index: 200; inset: 0; display: grid; place-items: center; width: min(100%, 390px); height: 100vh; height: 100dvh; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 22px max(20px, env(safe-area-inset-bottom)); overflow: auto; color: var(--ink); background: var(--press-board); }
-.asset-loader.is-ready { pointer-events: none; animation: print-loader-out 220ms ease-out both; }
+.asset-loader.is-exiting { pointer-events: none; animation: print-loader-out 220ms ease-out both; }
 .asset-loader.is-error { background: var(--paper); }
 .asset-scene.is-preparing { opacity: 0; pointer-events: none; }
 .asset-loader-edition { display: block; margin-bottom: 24px; font: 700 15px/1.3 var(--display); letter-spacing: .04em; }
@@ -96,7 +99,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-o
   .print-fallback small { font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .asset-loader.is-ready { animation-duration: 1ms; }
+  .asset-loader.is-exiting { animation-duration: 1ms; }
   .is-printed .print-stamp { animation-duration: 1ms; }
   .is-printed .print-sheet { transform: none; transition: none; }
 }

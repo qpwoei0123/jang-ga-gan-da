@@ -1,22 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPrintRenderer } from "./print-loading-canvas";
+import { createPrintSequence, getPrintTarget } from "./print-sequence";
 
-export default function PrintLoading({ complete, total, preparing, ready, photo }: {
+export default function PrintLoading({ complete, total, preparing, resourcesReady, onPrinted, photo }: {
   complete: number;
   total: number;
   preparing: boolean;
-  ready: boolean;
+  resourcesReady: boolean;
+  onPrinted: () => void;
   photo?: HTMLImageElement;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<ReturnType<typeof createPrintRenderer>>(null);
   const paintedRef = useRef(0);
-  const frameRef = useRef(0);
-  const lastTimeRef = useRef(0);
-  // The final unit is real font, image-layout and paint preparation, not a timer.
-  const progress = ready ? 1 : complete / (total + 1);
+  const sequenceRef = useRef<ReturnType<typeof createPrintSequence>>(null);
+  const [progress, setProgress] = useState(0);
+  const ready = progress === 1;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -34,26 +35,32 @@ export default function PrintLoading({ complete, total, preparing, ready, photo 
   }, [photo]);
 
   useEffect(() => {
-    cancelAnimationFrame(frameRef.current);
-    lastTimeRef.current = 0;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const tick = (now: number) => {
-      const target = progress;
-      const elapsed = lastTimeRef.current ? Math.min(now - lastTimeRef.current, 64) : 16;
-      lastTimeRef.current = now;
-      const difference = target - paintedRef.current;
-      paintedRef.current = reduced || target === 1 || difference <= .001
-        ? target
-        : paintedRef.current + difference * (1 - Math.exp(-elapsed / 70));
-      rendererRef.current?.(paintedRef.current);
-      if (Math.abs(target - paintedRef.current) > .001) frameRef.current = requestAnimationFrame(tick);
-    };
-    frameRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameRef.current);
-  }, [progress, photo]);
+    const sequence = createPrintSequence({
+      reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+      onProgress: (next) => {
+        paintedRef.current = next;
+        try {
+          rendererRef.current?.(next);
+        } catch {
+          rendererRef.current = null;
+          if (canvasRef.current) canvasRef.current.dataset.rendered = "false";
+        }
+        setProgress(next);
+      },
+      onComplete: onPrinted,
+    });
+    sequenceRef.current = sequence;
+    return () => { sequence.dispose(); sequenceRef.current = null; };
+  }, [onPrinted]);
+
+  useEffect(() => {
+    // Complete the visible ink passes before handing control to the delivery intro.
+    sequenceRef.current?.setTarget(getPrintTarget(complete, total, resourcesReady));
+  }, [complete, total, resourcesReady, onPrinted]);
 
   const message = ready ? "따끈한 소식, 배달 준비 완료"
-    : preparing ? "마지막으로 지면을 정리하고 있어요."
+    : preparing && progress > .9 ? "마지막으로 지면을 정리하고 있어요."
+    : progress > .86 ? "색판을 맞추고 마지막 교정 중"
     : progress > .49 ? "두 사람의 이야기를 조판하는 중"
     : progress > .09 ? "추억에 색을 입히는 중"
     : "오늘의 소식을 준비합니다";
@@ -73,7 +80,7 @@ export default function PrintLoading({ complete, total, preparing, ready, photo 
       </div>
       <div className="print-status">
         <div className="print-status-line"><span className="print-message" role="status">{message}</span><span className="print-count">{String(percent).padStart(2, "0")}<small>%</small></span></div>
-        <progress max={total + 1} value={ready ? total + 1 : complete} aria-label="신문 준비 진행률" />
+        <progress max={1} value={progress} aria-label="신문 준비 진행률" />
         <div className="print-status-bottom">
           <div className="print-inks" aria-hidden="true">{["C", "M", "Y", "K"].map((ink, index) => <span key={ink} className={progress > [.04, .2, .36, .51][index] ? "is-inked" : ""}>{ink}</span>)}</div>
           <span className="print-caption">{ready ? "두 사람의 가장 특별한 호외" : `지면 준비 ${complete} / ${total}`}</span>

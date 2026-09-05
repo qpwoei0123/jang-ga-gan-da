@@ -87,6 +87,15 @@ or enforce explicit server-side membership or allowlist checks.
 Use SIWC for account pages, user-specific dashboards, saved records, and write
 actions tied to the current ChatGPT user. Leave public content anonymous.
 
+## 청첩장 연출 설정
+
+`app/experience-config.ts`의 `ENABLE_DELIVERY_INTRO`로 강아지 배달 인트로를 켜고 끕니다.
+
+- 현재 `false`: 인쇄 연출과 완료 도장 이후 청첩장 본문을 바로 엽니다.
+- `true`로 변경: 인쇄 화면이 사라진 뒤 강아지 배달 인트로가 시작됩니다. 전용 이미지와 효과음 선로딩도 함께 복구됩니다.
+
+강아지·거절 버튼·윌 스미스 연출 코드는 `app/newspaper-delivery.tsx`에, 이미지와 효과음은 `public/`에 그대로 보존합니다.
+
 ## Useful Commands
 
 - `npm run dev`: start local development

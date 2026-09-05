@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { preloadSound } from "./audio-bank";
 import { preloadResources } from "./resource-preloader";
 import PrintLoading from "./print-loading";
@@ -39,7 +39,7 @@ function preloadAsset(source: string) {
   return /\.(?:mp3|m4a|aac|wav|ogg)$/i.test(source) ? preloadSound(source) : preloadImage(source);
 }
 
-type LoadState = "loading" | "preparing" | "ready" | "error";
+type LoadState = "loading" | "preparing" | "printing" | "exiting" | "ready" | "error";
 
 export default function AssetGate({ assets, children, label = "신문 인쇄 준비 중" }: {
   assets: readonly string[];
@@ -50,7 +50,6 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
   const [status, setStatus] = useState<LoadState>("loading");
   const [complete, setComplete] = useState(0);
   const [failed, setFailed] = useState<string[]>([]);
-  const [showLoader, setShowLoader] = useState(true);
   const sceneRef = useRef<HTMLDivElement>(null);
   const total = new Set(assets).size;
 
@@ -58,7 +57,6 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
     const controller = new AbortController();
     document.documentElement.dataset.assets = "loading";
     setStatus("loading");
-    setShowLoader(true);
     setComplete(0);
     preloadResources(assets, preloadAsset, setComplete, controller.signal)
       .then((missing) => {
@@ -81,7 +79,7 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
     ]).then(() => {
       if (!active) return;
       firstFrame = requestAnimationFrame(() => {
-        secondFrame = requestAnimationFrame(() => { if (active) setStatus("ready"); });
+        secondFrame = requestAnimationFrame(() => { if (active) setStatus("printing"); });
       });
     }).catch(() => {
       if (active) {
@@ -96,28 +94,39 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
     };
   }, [status]);
 
+  const finishPrinting = useCallback(() => {
+    setStatus((current) => current === "printing" ? "exiting" : current);
+  }, []);
+  const finishExit = useCallback(() => {
+    setStatus((current) => current === "exiting" ? "ready" : current);
+  }, []);
+
   useEffect(() => {
-    if (status !== "ready") return;
-    // The intro starts immediately; only the non-interactive exit overlay remains.
-    const timer = window.setTimeout(() => setShowLoader(false), 220);
+    if (status !== "exiting") return;
+    // Backup for disabled CSS animations; the normal handoff uses animationend.
+    const timer = window.setTimeout(finishExit, 280);
     return () => window.clearTimeout(timer);
-  }, [status]);
+  }, [status, finishExit]);
+
+  const hasScene = status === "preparing" || status === "printing" || status === "exiting" || status === "ready";
 
   return (
     <AssetsReady.Provider value={status === "ready"}>
-      {(status === "preparing" || status === "ready") && (
-        <div ref={sceneRef} className={`asset-scene${status === "preparing" ? " is-preparing" : ""}`} inert={status !== "ready"}>
+      {hasScene && (
+        <div ref={sceneRef} className={`asset-scene${status !== "ready" ? " is-preparing" : ""}`} inert={status !== "ready"}>
           {children}
         </div>
       )}
-      {showLoader && (
-        <main className={`asset-loader${status === "error" ? " is-error" : ""}${status === "ready" ? " is-ready" : ""}`} aria-label={label} aria-hidden={status === "ready" || undefined}>
+      {status !== "ready" && (
+        <main className={`asset-loader${status === "error" ? " is-error" : ""}${status === "exiting" ? " is-exiting" : ""}`} aria-label={label} onAnimationEnd={(event) => {
+          if (event.target === event.currentTarget && event.animationName === "print-loader-out") finishExit();
+        }}>
           {status === "error" ? <div className="asset-loader-inner">
               <span className="asset-loader-edition">THE WEDDING NEWS</span>
               <h1>잠시 연결이 끊겼어요.</h1>
               <p>{failed.includes("layout") ? "지면을 정리하지 못했어요. 다시 준비한 뒤 신문을 열어드릴게요." : `남은 파일 ${failed.length}개를 준비한 뒤 신문을 열어드릴게요.`}</p>
               <button type="button" onClick={() => setAttempt((current) => current + 1)}>다시 불러오기</button>
-            </div> : <PrintLoading complete={complete} total={total} preparing={status === "preparing"} ready={status === "ready"} photo={preparedImages.get("/couple-main.webp")} />}
+            </div> : <PrintLoading complete={complete} total={total} preparing={status === "preparing"} resourcesReady={status === "printing" || status === "exiting"} onPrinted={finishPrinting} photo={preparedImages.get("/couple-main.webp")} />}
         </main>
       )}
     </AssetsReady.Provider>

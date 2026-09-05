@@ -5,16 +5,21 @@ import AssetGate from "./asset-loader";
 import { INTERACTION_SOUNDS } from "./audio-bank";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperDelivery from "./newspaper-delivery";
+import { ENABLE_DELIVERY_INTRO } from "./experience-config";
+
+const DELIVERY_ASSETS = [
+  "/dog-run-sprite-ddui-timid.webp",
+  "/will-smith-original.png",
+  ...INTERACTION_SOUNDS,
+] as const;
 
 const INVITATION_ASSETS = [
   "/favicon.svg",
   "/paper-crumple.png",
-  "/dog-run-sprite-ddui-timid.webp",
-  "/will-smith-original.png",
   "/couple-main.webp",
   "/couple-sample.webp",
   "/venue-sample.webp",
-  ...INTERACTION_SOUNDS,
+  ...(ENABLE_DELIVERY_INTRO ? DELIVERY_ASSETS : []),
 ] as const;
 
 const COVER_SLIDES = [
@@ -463,7 +468,7 @@ function WeddingNewspaper() {
 
   return (
     <>
-      <NewspaperDelivery />
+      {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
       <main className="edition" aria-label="한원영과 이나경의 웨딩 신문">
         <article className="paper-page cover-page" id="top">
           <div className="cover-utility">

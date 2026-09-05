@@ -265,9 +265,10 @@ export default function CenterfoldGallery() {
     window.addEventListener("keydown", handleKeydown);
 
     const deliveryObserver = new MutationObserver(() => {
-      if (document.documentElement.dataset.delivery === "complete") ScrollTrigger.refresh();
+      const { assets, delivery } = document.documentElement.dataset;
+      if (assets === "ready" || delivery === "complete") ScrollTrigger.refresh();
     });
-    deliveryObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-delivery"] });
+    deliveryObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-assets", "data-delivery"] });
     const refreshFrame = window.requestAnimationFrame(() => ScrollTrigger.refresh());
 
     return () => {
