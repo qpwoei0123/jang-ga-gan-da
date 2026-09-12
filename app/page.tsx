@@ -1,26 +1,10 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import AssetGate from "./asset-loader";
-import { INTERACTION_SOUNDS } from "./audio-bank";
+import { ImmediateContent } from "./asset-loader";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
-
-const DELIVERY_ASSETS = [
-  "/dog-run-sprite-ddui-timid.webp",
-  "/will-smith-original.png",
-  ...INTERACTION_SOUNDS,
-] as const;
-
-const INVITATION_ASSETS = [
-  "/favicon.svg",
-  "/paper-crumple.png",
-  "/couple-main.webp",
-  "/couple-sample.webp",
-  "/venue-sample.webp",
-  ...(ENABLE_DELIVERY_INTRO ? DELIVERY_ASSETS : []),
-] as const;
 
 const COVER_SLIDES = [
   {
@@ -560,8 +544,8 @@ function WeddingNewspaper() {
 
 export default function Home() {
   return (
-    <AssetGate assets={INVITATION_ASSETS} printOnPage>
+    <ImmediateContent>
       <WeddingNewspaper />
-    </AssetGate>
+    </ImmediateContent>
   );
 }

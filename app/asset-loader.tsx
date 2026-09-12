@@ -9,6 +9,20 @@ import PagePrint from "./print-page";
 const AssetsReady = createContext(false);
 export const useAssetsReady = () => useContext(AssetsReady);
 
+// The invitation opens immediately; the asset guide retains its own loader.
+export function ImmediateContent({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    document.documentElement.dataset.assets = "ready";
+    const frame = requestAnimationFrame(() => {
+      let id: string;
+      try { id = decodeURIComponent(window.location.hash.slice(1)); } catch { return; }
+      if (id) document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, []);
+  return <AssetsReady.Provider value={true}><div className="asset-scene">{children}</div></AssetsReady.Provider>;
+}
+
 // Keep decoded images, including CSS backgrounds, resident for this visit.
 const preparedImages = new Map<string, HTMLImageElement>();
 
