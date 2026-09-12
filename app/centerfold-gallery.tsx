@@ -80,14 +80,15 @@ export default function CenterfoldGallery() {
       }, rows[0]);
       setActive(Number(closest.dataset.year));
       const rect = journey.getBoundingClientRect();
-      const progress = Math.max(0, Math.min(1, (center - rect.top) / journey.offsetHeight));
+      const progress = Math.max(0, Math.min(1, (center - rect.top) / rect.height));
       const chapter = Math.min(25, Math.floor(progress * 26));
       const local = progress * 26 - chapter;
       const distance = stops[chapter] + (stops[chapter + 1] - stops[chapter]) * local;
       const point = path.getPointAtLength(distance);
       const next = path.getPointAtLength(Math.min(length, distance + 2));
-      const sx = 72 / 80, sy = journey.offsetHeight / 2600;
-      dog.style.transform = `translate(${point.x * sx - 36}px, ${point.y * sy}px)`;
+      const laneWidth = path.ownerSVGElement!.getBoundingClientRect().width;
+      const sx = laneWidth / 80, sy = journey.getBoundingClientRect().height / 2600;
+      dog.style.transform = `translate(${point.x * sx - laneWidth / 2}px, ${point.y * sy}px)`;
       const turn = reduced ? 0 : Math.max(-18, Math.min(18, (next.x - point.x) * 14));
       dog.style.setProperty("--dog-turn", `${turn}deg`);
       dog.dataset.backtracking = String(!reduced && next.y < point.y);
@@ -107,9 +108,11 @@ export default function CenterfoldGallery() {
         stops.push(path.getTotalLength());
       });
       length = stops[stops.length - 1];
+      const laneWidth = path.ownerSVGElement!.getBoundingClientRect().width;
+      const paperScale = laneWidth / 72;
       paws.forEach((paw, i) => {
         const point = path.getPointAtLength(length * i / paws.length);
-        paw.setAttribute("transform", `translate(${point.x} ${point.y}) scale(${80 / 72} ${2600 / journey.offsetHeight})`);
+        paw.setAttribute("transform", `translate(${point.x} ${point.y}) scale(${80 / 72} ${2600 * paperScale / journey.getBoundingClientRect().height})`);
       });
       schedule();
     };
