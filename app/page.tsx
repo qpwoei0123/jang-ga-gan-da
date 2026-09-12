@@ -269,18 +269,6 @@ function WeddingSearchPuzzle() {
 }
 
 function WeddingNewspaper() {
-  const [copyStatus, setCopyStatus] = useState("");
-  const address = "서울 성동구 연무장길 17";
-
-  async function copyAddress() {
-    try {
-      await navigator.clipboard.writeText(address);
-      setCopyStatus("주소를 복사했어요.");
-    } catch {
-      setCopyStatus("아래 주소를 길게 눌러 복사해 주세요.");
-    }
-  }
-
   return (
     <>
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
@@ -322,47 +310,14 @@ function WeddingNewspaper() {
         <CenterfoldGallery />
 
         <section className="paper-page details-page" id="details">
-          <PageTop page="03" section="SERVICE DESK · FAMILY CEREMONY" />
-          <header className="details-heading">
-            <span>날짜와 장소는 이 면에서 확인하세요.</span>
-            <h2>THE DAY,<br />THE PLACE</h2>
-          </header>
-          <div className="date-address-grid">
-            <time dateTime="2026-10-17">
-              <span>OCT</span>
-              <strong>17</strong>
-              <i>SATURDAY</i>
-            </time>
-            <div>
-              <span>WHEN</span>
-              <h3>2026년 10월 17일<br />토요일 오후 2시</h3>
-              <p>식전 사진 촬영은 오후 1시 20분부터 시작합니다.</p>
-            </div>
-            <div>
-              <span>WHERE</span>
-              <h3>서울 아카이브 홀 2층</h3>
-              <p>서울 성동구 연무장길 17<br />성수역 3번 출구 도보 7분</p>
-            </div>
+          <PageTop page="03" section="A NOTE OF THANKS" />
+          <div className="announcement-note">
+            <h2>저희, 결혼합니다.</h2>
+            <time dateTime="2026-10-17">2026년 10월 17일 토요일</time>
+            <p>가족들과 함께 조용히 예식을 올립니다.</p>
+            <p>오랜 시간 저희의 곁을 지켜주신<br />모든 분께 감사드립니다.<br />보내주시는 축하를 마음에 담고<br />서로 아끼며 잘 살겠습니다.</p>
+            <div className="announcement-signature">한원영 · 이나경 드림</div>
           </div>
-          <div className="service-map" role="img" aria-label="서울 아카이브 홀 약도 예시">
-            <span className="map-label station-label">성수역 3번 출구</span>
-            <span className="map-label hall-label">SEOUL<br />ARCHIVE HALL</span>
-            <span className="map-north">N ↑</span>
-            <span className="map-road map-road-a" />
-            <span className="map-road map-road-b" />
-            <span className="map-road map-road-c" />
-          </div>
-          <div className="travel-notes">
-            <article><span>SUBWAY</span><h3>성수역 3번 출구</h3><p>출구에서 연무장길 방향으로 약 7분 걸어오세요.</p></article>
-            <article><span>PARKING</span><h3>주차 2시간 지원</h3><p>건물 주차장이 좁아 가능하면 대중교통을 권합니다.</p></article>
-          </div>
-          <div className="venue-actions">
-            <a href={`https://map.naver.com/p/search/${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer">네이버지도 ↗</a>
-            <a href={`https://map.kakao.com/link/search/${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer">카카오맵 ↗</a>
-            <button type="button" onClick={copyAddress}>주소 복사</button>
-          </div>
-          <p className="address-feedback">{copyStatus || "지도에서 위치를 확인해 주세요."}</p>
-          {copyStatus.startsWith("아래") && <p className="address-copy-fallback">{address}</p>}
           <PageBottom next="END OF EDITION" />
         </section>
       </main>

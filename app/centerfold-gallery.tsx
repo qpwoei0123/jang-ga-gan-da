@@ -35,13 +35,13 @@ const ROUTE = [
   "C 34 2524 53 2530 49 2551 C 45 2570 27 2577 34 2600", // Z: arrive
 ] as const;
 const DIALOGUE = [
-  { at:.045, text:"열아홉부터? 나보다 오래됐네!" },
-  { at:.17, text:"잠깐! 이쪽에 뭐 있어!" },
-  { at:.29, text:"빙글~ 아무 일도 없었어." },
-  { at:.43, text:"스무 살부터 쭉 같이였대!" },
-  { at:.57, text:"간식 냄새… 아닌가?" },
-  { at:.71, text:"나 먼저 가서 기다릴게!" },
-  { at:.84, text:"이십 대를 전부 함께했네 ♥" },
+  { at:.045, text:"열아홉부터 쭉!" },
+  { at:.17, text:"잠깐, 뭐지?" },
+  { at:.29, text:"빙글~ 헤헤!" },
+  { at:.43, text:"계속 함께였대!" },
+  { at:.57, text:"간식 냄새…?" },
+  { at:.71, text:"먼저 가 있을게!" },
+  { at:.84, text:"스무 살도 함께 ♥" },
 ];
 
 export default function CenterfoldGallery() {
@@ -96,6 +96,7 @@ export default function CenterfoldGallery() {
       const laneWidth = path.ownerSVGElement!.getBoundingClientRect().width;
       const sx = laneWidth / 80, sy = journey.getBoundingClientRect().height / 2600;
       dog.style.transform = `translate(${point.x * sx - laneWidth / 2}px, ${point.y * sy}px)`;
+      dog.style.setProperty("--dog-offset", `${point.x * sx - laneWidth / 2}px`);
       const turn = reduced || finished ? 0 : Math.max(-18, Math.min(18, (next.x - point.x) * 14));
       dog.style.setProperty("--dog-turn", `${turn}deg`);
       dog.dataset.backtracking = String(!reduced && !finished && next.y < point.y);
@@ -149,7 +150,7 @@ export default function CenterfoldGallery() {
       <div ref={journeyRef} className="chronicle-journey">
       <svg className="chronicle-stream" viewBox="0 0 80 2600" preserveAspectRatio="none" aria-hidden="true"><path ref={pathRef}/>{Array.from({length:80}, (_, i) => <text key={i} className="chronicle-stream-paw" textAnchor="middle" dominantBaseline="middle">🐾</text>)}</svg>
       <ol className="chronicle-years">{years.map((year, index) => (
-        <li key={year} className="chronicle-year" data-year={year} data-active={year === active} data-past={year < active} data-featured={index === 0 || index === 5 || index === 11}>
+        <li key={year} className="chronicle-year" data-year={year} data-format={year === 2020 || year === 2023 ? "landscape" : [2016, 2018, 2021, 2024].includes(year) ? "small" : "portrait"} data-active={year === active} data-past={year < active} data-featured={index === 0 || index === 5 || index === 11}>
           <div className="chronicle-year-label"><h3>{year}{index === 0 ? <small> / 첫해</small> : index === 11 ? <small> / 오늘</small> : null}</h3></div>
           <figure>
             <img src={`/history/${year}.jpg`} alt={`${year}년 기록에 담은 두 사람의 사진`} width={year === 2020 || year === 2023 ? 1600 : 1066} height={year === 2020 || year === 2023 ? 1066 : 1600} loading="lazy"/>
@@ -160,7 +161,7 @@ export default function CenterfoldGallery() {
       ))}</ol>
       <button ref={dogRef} className="chronicle-dog" onClick={pet} aria-label="뚜이 쓰다듬기" type="button" data-petted={petted}>
         <img src="/history/ddui.webp" alt="" width="480" height="480"/>
-        {(petted || line) && <span className="chronicle-dog-bubble" role="status">{petted ? "헤헤, 한 번만 더! ♥" : line}</span>}
+        {(petted || line) && <span className="chronicle-dog-bubble" role="status">{petted ? "헤헤, 또! ♥" : line}</span>}
       </button>
       </div>
       <footer className="chronicle-end" id="chronicle-finale" data-arrived={arrived}><p className="chronicle-finale-speech" aria-hidden={!arrived} aria-label="뚜이의 말: 그리고 지금 형누나가 결혼합니다!"><svg className="finale-balloon" viewBox="0 0 346 202" preserveAspectRatio="none" aria-hidden="true"><path d="M 34 24 C 90 18 204 23 268 24 Q 295 24 307 4 Q 312 26 303 31 C 330 33 338 45 339 65 L 339 159 Q 338 187 310 190 C 225 196 112 190 37 190 Q 8 190 7 162 L 7 58 Q 8 28 34 24 Z" /></svg><span className="finale-lead">그리고 지금,</span><strong className="finale-message">형누나가<br/>결혼합니다!</strong><span className="finale-spark" aria-hidden="true">✧</span></p></footer>
