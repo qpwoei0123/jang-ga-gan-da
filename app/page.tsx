@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { ImmediateContent } from "./asset-loader";
 import CenterfoldGallery from "./centerfold-gallery";
+import HistoryReport from "./history-report";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
 
@@ -314,6 +315,7 @@ function WeddingNewspaper() {
               <p>신랑 한원영은 “그 얘기를 왜 청첩장에까지 쓰는지 모르겠다”며 어이없어했다. 다만 결혼식은 예정대로 진행된다.</p>
             </div>
           </article>
+          <HistoryReport photoSrc="/couple-main.webp" />
           <PageBottom next="CONTINUED ON PAGE 02" />
         </article>
 

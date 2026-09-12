@@ -1,7 +1,7 @@
-// Mount below the cover reaction when the couple's hanbok photograph is supplied.
+// The current photograph is temporary; replace it with the supplied hanbok portrait.
 export default function HistoryReport({ photoSrc }: { photoSrc: string }) {
   return (
-    <article className="history-report" aria-labelledby="history-report-title">
+    <article className="history-report" id="history-report" aria-labelledby="history-report-title">
       <header>
         <span>HISTORY / 역사 · 단독 보도</span>
         <h3 id="history-report-title">“전생에도 부부였다”</h3>
@@ -9,7 +9,7 @@ export default function HistoryReport({ photoSrc }: { photoSrc: string }) {
       </header>
       <div className="history-report-columns">
         <figure>
-          <img src={photoSrc} alt="한복을 입고 함께 선 한원영과 이나경. 신랑은 모자를 쓰지 않았다." loading="lazy" />
+          <img src={photoSrc} alt="기사 배치 확인용 흑백 커플 사진" width="1200" height="1800" loading="lazy" />
           <figcaption>국립중앙말티푸박물관 소장<br />촬영 연도 미상</figcaption>
         </figure>
         <div className="history-report-copy">
