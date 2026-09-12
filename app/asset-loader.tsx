@@ -86,10 +86,11 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
     let active = true;
     let firstFrame = 0;
     let secondFrame = 0;
-    // Decode and lay out the same page that the print effect will reveal.
+    // Only eager images belong to the opening print sequence. Lazy images
+    // load after scrolling; waiting for their decode here deadlocks the gate.
     Promise.all([
       document.fonts.ready,
-      ...[...(sceneRef.current?.querySelectorAll("img") ?? [])].map((image) => image.decode()),
+      ...[...(sceneRef.current?.querySelectorAll<HTMLImageElement>('img:not([loading="lazy"])') ?? [])].map((image) => image.decode()),
     ]).then(() => {
       if (!active) return;
       firstFrame = requestAnimationFrame(() => {
