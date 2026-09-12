@@ -6,30 +6,6 @@ import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
 
-const COVER_SLIDES = [
-  {
-    src: "/couple-main.webp",
-    alt: "창가에 나란히 앉아 꽃다발을 든 한원영과 이나경",
-    label: "EXCLUSIVE",
-    caption: "10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.",
-    position: "50% 53%",
-  },
-  {
-    src: "/couple-sample.webp",
-    alt: "햇살 아래 부케를 든 신랑과 신부",
-    label: "MOMENT 02",
-    caption: "빛이 번진 오후, 두 사람의 결혼을 기억할 한 장면.",
-    position: "54% 50%",
-  },
-  {
-    src: "/venue-sample.webp",
-    alt: "웨딩 장식 위에 놓인 두 개의 금색 반지",
-    label: "DETAIL 03",
-    caption: "오래 함께한 두 사람이 나눠 낄 약속의 반지.",
-    position: "50% 50%",
-  },
-] as const;
-
 const reports = [
   ["친구 제보 01", "결혼 발표, 사실상 뒤늦은 신고", "둘은 이미 서로의 주문을 대신하고 메뉴판도 한 장만 본다. 결혼은 새 소식이지만 생활은 오래전부터 그랬다."],
   ["친구 제보 02", "한 명 웃으면 다른 한 명도 웃음", "원영이 먼저 웃어도 나경이 먼저 웃어도 잠시 뒤엔 둘 다 웃고 있다. 옆 사람만 영문을 모른다."],
@@ -91,160 +67,14 @@ function PageBottom({ next }: { next: string }) {
   );
 }
 
-function CoverCarousel() {
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef({ pointerId: -1, startX: 0, startLeft: 0, moved: false });
-  const settleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const slide = COVER_SLIDES[activeSlide];
-  const loopedSlides = [
-    { item: COVER_SLIDES[COVER_SLIDES.length - 1], logicalIndex: COVER_SLIDES.length - 1, clone: true, key: "clone-last" },
-    ...COVER_SLIDES.map((item, logicalIndex) => ({ item, logicalIndex, clone: false, key: item.src })),
-    { item: COVER_SLIDES[0], logicalIndex: 0, clone: true, key: "clone-first" },
-  ];
-
-  function getPhysicalSlides() {
-    return [...(viewportRef.current?.querySelectorAll<HTMLElement>(".cover-photo-slide") ?? [])];
-  }
-
-  function getClosestPhysicalIndex() {
-    const viewport = viewportRef.current;
-    if (!viewport) return 1;
-
-    const viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
-    return getPhysicalSlides().reduce((best, item, index) => {
-      const distance = Math.abs(item.offsetLeft + item.clientWidth / 2 - viewportCenter);
-      return distance < best.distance ? { index, distance } : best;
-    }, { index: 1, distance: Number.POSITIVE_INFINITY }).index;
-  }
-
-  function scrollToPhysicalSlide(index: number, behavior: ScrollBehavior = "smooth") {
-    const viewport = viewportRef.current;
-    const target = getPhysicalSlides()[index];
-    if (!viewport || !target) return;
-
-    viewport.scrollTo({
-      left: target.offsetLeft - (viewport.clientWidth - target.clientWidth) / 2,
-      behavior,
-    });
-  }
-
-  function scrollToSlide(index: number, behavior: ScrollBehavior = "smooth") {
-    scrollToPhysicalSlide(index + 1, behavior);
-    setActiveSlide(index);
-  }
-
-  function moveSlide(direction: -1 | 1) {
-    const nextPhysicalIndex = Math.min(COVER_SLIDES.length + 1, Math.max(0, getClosestPhysicalIndex() + direction));
-    scrollToPhysicalSlide(nextPhysicalIndex);
-  }
-
-  function syncActiveSlide() {
-    const viewport = viewportRef.current;
-    if (!viewport) return;
-
-    const physicalIndex = getClosestPhysicalIndex();
-    setActiveSlide((physicalIndex - 1 + COVER_SLIDES.length) % COVER_SLIDES.length);
-
-    if (settleTimerRef.current) clearTimeout(settleTimerRef.current);
-    if (dragRef.current.pointerId !== -1) return;
-
-    settleTimerRef.current = setTimeout(() => {
-      const settledIndex = getClosestPhysicalIndex();
-      const loopTarget = settledIndex === 0
-        ? COVER_SLIDES.length
-        : settledIndex === COVER_SLIDES.length + 1
-          ? 1
-          : null;
-      if (loopTarget === null || !viewportRef.current) return;
-
-      viewportRef.current.style.scrollBehavior = "auto";
-      scrollToPhysicalSlide(loopTarget, "auto");
-      requestAnimationFrame(() => viewportRef.current?.style.removeProperty("scroll-behavior"));
-    }, 120);
-  }
-
-  useLayoutEffect(() => {
-    const viewport = viewportRef.current;
-    if (!viewport) return;
-    viewport.style.scrollBehavior = "auto";
-    scrollToPhysicalSlide(1, "auto");
-    requestAnimationFrame(() => viewport.style.removeProperty("scroll-behavior"));
-
-    return () => {
-      if (settleTimerRef.current) clearTimeout(settleTimerRef.current);
-    };
-  }, []);
-
-  function handleDragStart(event: PointerEvent<HTMLDivElement>) {
-    if (!event.isPrimary || dragRef.current.pointerId !== -1) return;
-    if (event.pointerType === "mouse" && event.button !== 0) return;
-    event.currentTarget.setPointerCapture(event.pointerId);
-    dragRef.current = {
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startLeft: event.currentTarget.scrollLeft,
-      moved: false,
-    };
-    setIsDragging(true);
-  }
-
-  function handleDragMove(event: PointerEvent<HTMLDivElement>) {
-    if (dragRef.current.pointerId !== event.pointerId) return;
-    const distance = event.clientX - dragRef.current.startX;
-    if (Math.abs(distance) > 3) dragRef.current.moved = true;
-    event.currentTarget.scrollLeft = dragRef.current.startLeft - distance;
-  }
-
-  function handleDragEnd(event: PointerEvent<HTMLDivElement>) {
-    if (dragRef.current.pointerId !== event.pointerId) return;
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    dragRef.current.pointerId = -1;
-    setIsDragging(false);
-    syncActiveSlide();
-  }
-
+function CoverPhoto() {
   return (
-    <figure className="cover-photo" aria-roledescription="carousel" aria-label="웨딩 사진 모음">
+    <figure className="cover-photo">
       <div className="cover-photo-print">
-        <div
-          ref={viewportRef}
-          className={`cover-photo-viewport${isDragging ? " is-dragging" : ""}`}
-          onScroll={syncActiveSlide}
-          onPointerDown={handleDragStart}
-          onPointerMove={handleDragMove}
-          onPointerUp={handleDragEnd}
-          onPointerCancel={handleDragEnd}
-        >
-          <div className="cover-photo-track">
-            {loopedSlides.map(({ item, logicalIndex, clone, key }) => (
-              <div className="cover-photo-slide" key={key} aria-hidden={clone || logicalIndex !== activeSlide} data-clone={clone || undefined}>
-                <img src={item.src} alt={!clone && logicalIndex === activeSlide ? item.alt : ""} draggable="false" style={{ objectPosition: item.position }} width="1200" height="1500" />
-              </div>
-            ))}
-          </div>
-        </div>
+        <img src="/couple-main.webp" alt="창가에 나란히 앉아 꽃을 든 한원영과 이나경" width="1200" height="1800" fetchPriority="high" />
         <span className="cover-photo-mark" aria-hidden="true">FRONT PAGE <b>W × N</b></span>
-        <button type="button" className="cover-photo-arrow cover-photo-prev" onClick={() => moveSlide(-1)} aria-label="이전 사진">‹</button>
-        <button type="button" className="cover-photo-arrow cover-photo-next" onClick={() => moveSlide(1)} aria-label="다음 사진">›</button>
-        <span className="cover-photo-count" aria-hidden="true">{String(activeSlide + 1).padStart(2, "0")} / {String(COVER_SLIDES.length).padStart(2, "0")}</span>
       </div>
-      <div className="cover-photo-meta">
-        <figcaption aria-live="polite"><b>{slide.label}</b> {slide.caption}</figcaption>
-        <div className="cover-photo-dots" aria-label="사진 선택">
-          {COVER_SLIDES.map((item, index) => (
-            <button
-              type="button"
-              key={item.src}
-              className={index === activeSlide ? "is-active" : ""}
-              aria-label={`${index + 1}번 사진 보기`}
-              aria-current={index === activeSlide ? "true" : undefined}
-              onClick={() => scrollToSlide(index)}
-            />
-          ))}
-        </div>
-      </div>
+      <figcaption><b>EXCLUSIVE</b> 10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.</figcaption>
     </figure>
   );
 }
@@ -457,11 +287,7 @@ function WeddingNewspaper() {
         <article className="paper-page cover-page" id="top">
           <div className="cover-utility">
             <span>The Grand Hall</span>
-            <a href="#details" onClick={(event) => {
-              event.preventDefault();
-              window.dispatchEvent(new Event("wedding:show-details"));
-              window.history.replaceState(window.history.state, "", "#details");
-            }}>가족식 안내 ↘</a>
+
           </div>
           <div className="double-rule" aria-hidden="true" />
           <header className="cover-masthead">
@@ -478,12 +304,12 @@ function WeddingNewspaper() {
             <h2>한원영 <i>&amp;</i> 이나경</h2>
             <span>10년의 연애 끝, 가족 앞에서 결혼합니다.</span>
           </div>
-          <CoverCarousel />
+          <CoverPhoto />
           <article className="cover-reaction">
             <span>BRIDE &amp; GROOM / 단독 소감</span>
             <h3>GD와 결혼하지 못한 신부의 한탄,<br />어이없어하는 남편의 소감</h3>
             <div className="cover-reaction-copy">
-              <p className="dropcap">신부 이나경은 오랫동안 꿈꿔 온 GD와의 결혼이 끝내 무산된 데 대해 “계획에 없던 결과라 유감스럽다”며 깊은 아쉬움을 표했다.</p>
+              <p>신부 이나경은 오랫동안 꿈꿔 온 GD와의 결혼이 끝내 무산된 데 대해 “계획에 없던 결과라 유감스럽다”며 깊은 아쉬움을 표했다.</p>
               <p>신부는 “어쩌다 보니 한원영과 식장까지 잡았다”고 한탄했지만, 취재진은 말끝마다 웃음을 참지 못한 점을 확인했다.</p>
               <p>신랑 한원영은 “그 얘기를 왜 청첩장에까지 쓰는지 모르겠다”며 어이없어했다. 다만 결혼식은 예정대로 진행된다.</p>
             </div>

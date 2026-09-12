@@ -221,31 +221,16 @@ figcaption { margin-top: 5px; color: var(--muted); font: 7px/1.35 var(--sans); }
 .cover-announcement span { display: block; margin-top: 6px; color: var(--muted); font: 12px/1.45 var(--sans); }
 .cover-photo { margin: 0; }
 .cover-photo-print { position: relative; width: 100%; margin: 0 auto; overflow: hidden; }
-.cover-photo-viewport { overflow-x: auto; overflow-y: hidden; padding: 0 16%; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; touch-action: pan-y; }
-.cover-photo-viewport::-webkit-scrollbar { display: none; }
-.cover-photo-viewport.is-dragging { cursor: grabbing; scroll-behavior: auto; scroll-snap-type: none; }
-.cover-photo-track { display: flex; gap: 8px; }
-.cover-photo-slide { flex: 0 0 100%; min-width: 0; overflow: hidden; background: var(--paper-soft); scroll-snap-align: center; }
-.cover-photo img { width: 100%; aspect-ratio: .8; object-fit: cover; filter: saturate(.78) contrast(1.035); }
-.cover-photo-mark { position: absolute; top: 12px; left: 16%; display: flex; align-items: baseline; gap: 8px; padding: 5px 7px 4px; color: var(--paper); background: var(--ink); font: 800 5.5px/1 var(--sans); letter-spacing: .04em; pointer-events: none; }
-.cover-photo-mark b { font: 700 10px/1 var(--display); letter-spacing: -.02em; }
-.cover-photo-arrow { position: absolute; z-index: 2; top: 50%; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; color: rgb(245 244 241 / 76%); background: rgb(23 23 22 / 8%); opacity: .65; font: 26px/1 var(--display); cursor: pointer; transform: translateY(-50%); transition: opacity .18s ease, background-color .18s ease; }
-.cover-photo-prev { left: calc(16% + 2px); }
-.cover-photo-next { right: calc(16% + 2px); }
-.cover-photo-print:hover .cover-photo-arrow, .cover-photo-arrow:focus-visible { opacity: .64; background: rgb(23 23 22 / 28%); }
-.cover-photo-count { position: absolute; right: calc(16% + 7px); bottom: 7px; padding: 3px 4px; color: var(--paper); background: rgb(23 23 22 / 62%); font: 700 5.5px/1 var(--sans); letter-spacing: .08em; pointer-events: none; }
-.cover-photo-meta { display: flex; flex-direction: column; gap: 0; }
-.cover-photo figcaption { flex: 1; min-width: 0; padding: 5px 0 0; font-size: 11px; line-height: 1.5; }
-.cover-photo figcaption b { margin-right: 4px; color: var(--ink); }
-.cover-photo-dots { display: flex; align-self: flex-end; gap: 0; }
-.cover-photo-dots button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 0; background: transparent; cursor: pointer; }
-.cover-photo-dots button::after { content: ""; width: 16px; height: 7px; border: 1px solid var(--line-strong); }
-.cover-photo-dots button.is-active::after { background: var(--ink); }
+.cover-photo img { width:100%; height:auto; aspect-ratio:4/5; object-fit:cover; object-position:50% 53%; filter:saturate(.78) contrast(1.035); }
+.cover-photo-mark { position:absolute; top:12px; left:12px; display:flex; align-items:baseline; gap:8px; padding:5px 7px 4px; color:var(--paper); background:var(--ink); font:800 5.5px/1 var(--sans); letter-spacing:.04em; pointer-events:none; }
+.cover-photo-mark b { font:700 10px/1 var(--display); letter-spacing:-.02em; }
+.cover-photo figcaption { margin:8px 0 0; padding:0 0 12px; font:11px/1.5 var(--sans); }
+.cover-photo figcaption b { margin-right:4px; color:var(--ink); }
 .cover-reaction { flex: 1; margin-top: 9px; padding-top: 8px; border-top: 3px double var(--line-strong); }
 .cover-reaction > span { font: 800 6.5px/1 var(--sans); letter-spacing: .04em; }
 .cover-reaction h3 { margin: 5px 0 8px; font: 20px/1.2 var(--display); letter-spacing: -.02em; }
-.cover-reaction-copy { min-height: 120px; column-count: 2; column-gap: 16px; column-rule: 1px solid var(--line); font: 12px/1.65 var(--text); text-align: start; }
-.cover-reaction-copy p { margin: 0 0 6px; break-inside: avoid; }
+.cover-reaction-copy { column-fill: balance; column-count: 2; column-gap: 16px; column-rule: 1px solid var(--line); font: 12px/1.65 var(--text); text-align: start; }
+.cover-reaction-copy p { margin: 0 0 8px; break-inside: auto; orphans: 2; widows: 2; }
 
 /* 02 — a walk through our years */
 .chronicle { position: relative; margin: 24px 0; padding: 20px 0 60px; background: var(--paper-soft); color: var(--ink); overflow: clip; }
