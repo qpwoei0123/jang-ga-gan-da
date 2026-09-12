@@ -42,7 +42,6 @@ const DIALOGUE = [
   { at:.57, text:"간식 냄새… 아닌가?" },
   { at:.71, text:"나 먼저 가서 기다릴게!" },
   { at:.84, text:"이십 대를 전부 함께했네 ♥" },
-  { at:.96, text:"서른엔 결혼! 나는 축하 담당!" },
 ];
 
 export default function CenterfoldGallery() {
@@ -139,12 +138,11 @@ export default function CenterfoldGallery() {
     <section ref={sectionRef} id="photo-edition" className="chronicle" aria-labelledby="chronicle-title">
       <header className="chronicle-topline"><span>THE WEDDING NEWS</span><span>OUR STORY · 02</span></header>
       <div className="chronicle-heading"><h2 id="chronicle-title">열아홉에서<br/>서른까지</h2><p>2015—2026</p><div className="chronicle-intro">열아홉에 만나 이십 대의 모든 날을 함께했습니다.<br/>그리고 서른, 부부가 됩니다.</div></div>
-      <div className="chronicle-current" aria-hidden="true"><span>지금 펼친 기록</span><b>{active}</b></div>
       <div ref={journeyRef} className="chronicle-journey">
       <svg className="chronicle-stream" viewBox="0 0 80 2600" preserveAspectRatio="none" aria-hidden="true"><path ref={pathRef}/>{Array.from({length:80}, (_, i) => <text key={i} className="chronicle-stream-paw" textAnchor="middle" dominantBaseline="middle">🐾</text>)}</svg>
       <ol className="chronicle-years">{years.map((year, index) => (
         <li key={year} className="chronicle-year" data-year={year} data-active={year === active} data-past={year < active} data-featured={index === 0 || index === 5 || index === 11}>
-          <div className="chronicle-year-label"><h3>{year}{index === 0 ? <small> / 첫해</small> : index === 11 ? <small> / 오늘</small> : null}</h3><span>기록 {String(index + 1).padStart(2, "0")}</span></div>
+          <div className="chronicle-year-label"><h3>{year}{index === 0 ? <small> / 첫해</small> : index === 11 ? <small> / 오늘</small> : null}</h3></div>
           <figure>
             <img src={`/history/${year}.jpg`} alt={`${year}년 기록에 담은 두 사람의 사진`} width={year === 2020 || year === 2023 ? 1600 : 1066} height={year === 2020 || year === 2023 ? 1066 : 1600} loading="lazy"/>
             {(index === 0 || index === 11) && <figcaption>{index === 0 ? "열아홉, 우리의 첫해." : "함께한 날들 위에, 새로운 시작."}</figcaption>}
@@ -157,7 +155,7 @@ export default function CenterfoldGallery() {
         {(petted || line) && <span className="chronicle-dog-bubble" role="status">{petted ? "헤헤, 한 번만 더! ♥" : line}</span>}
       </button>
       </div>
-      <footer className="chronicle-end"><span>OUR NEXT CHAPTER</span><p>그리고 지금,<br/>결혼합니다.</p><a href="#details">결혼식 안내 보기 ↓</a></footer>
+      <footer className="chronicle-end" id="chronicle-finale"><p className="chronicle-finale-speech" aria-label="뚜이의 말: 그리고 지금 형누나가 결혼합니다!">그리고 지금<br/>형누나가 결혼합니다!</p></footer>
     </section>
   );
 }
