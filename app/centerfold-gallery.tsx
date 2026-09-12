@@ -50,6 +50,7 @@ export default function CenterfoldGallery() {
   const pathRef = useRef<SVGPathElement>(null);
   const dogRef = useRef<HTMLButtonElement>(null);
   const [active, setActive] = useState(2015);
+  const [arrived, setArrived] = useState(false);
   const [line, setLine] = useState("");
   const [petted, setPetted] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -67,6 +68,7 @@ export default function CenterfoldGallery() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const paws = Array.from(journey.querySelectorAll<SVGTextElement>(".chronicle-stream-paw"));
     let frame = 0;
+    let finished = false;
     const update = () => {
       frame = 0;
       const center = window.innerHeight * .45;
@@ -79,7 +81,13 @@ export default function CenterfoldGallery() {
       }, rows[0]);
       setActive(Number(closest.dataset.year));
       const rect = journey.getBoundingClientRect();
-      const progress = Math.max(0, Math.min(1, (center - rect.top) / rect.height));
+      const scrollProgress = Math.max(0, Math.min(1, (center - rect.top) / rect.height));
+      if (!finished && scrollProgress >= 1) {
+        finished = true;
+        setArrived(true);
+        setPetted(false);
+      }
+      const progress = finished ? 1 : scrollProgress;
       const chapter = Math.min(25, Math.floor(progress * 26));
       const local = progress * 26 - chapter;
       const distance = stops[chapter] + (stops[chapter + 1] - stops[chapter]) * local;
@@ -88,10 +96,10 @@ export default function CenterfoldGallery() {
       const laneWidth = path.ownerSVGElement!.getBoundingClientRect().width;
       const sx = laneWidth / 80, sy = journey.getBoundingClientRect().height / 2600;
       dog.style.transform = `translate(${point.x * sx - laneWidth / 2}px, ${point.y * sy}px)`;
-      const turn = reduced ? 0 : Math.max(-18, Math.min(18, (next.x - point.x) * 14));
+      const turn = reduced || finished ? 0 : Math.max(-18, Math.min(18, (next.x - point.x) * 14));
       dog.style.setProperty("--dog-turn", `${turn}deg`);
-      dog.dataset.backtracking = String(!reduced && next.y < point.y);
-      setLine(DIALOGUE.find(cue => Math.abs(cue.at - progress) < .018)?.text || "");
+      dog.dataset.backtracking = String(!reduced && !finished && next.y < point.y);
+      setLine(finished ? "" : DIALOGUE.find(cue => Math.abs(cue.at - progress) < .018)?.text || "");
       paws.forEach((paw, i) => { paw.style.opacity = distance >= length * i / paws.length ? ".55" : ".12"; });
 
     };
@@ -155,7 +163,7 @@ export default function CenterfoldGallery() {
         {(petted || line) && <span className="chronicle-dog-bubble" role="status">{petted ? "헤헤, 한 번만 더! ♥" : line}</span>}
       </button>
       </div>
-      <footer className="chronicle-end" id="chronicle-finale"><p className="chronicle-finale-speech" aria-label="뚜이의 말: 그리고 지금 형누나가 결혼합니다!">그리고 지금<br/>형누나가 결혼합니다!</p></footer>
+      <footer className="chronicle-end" id="chronicle-finale" data-arrived={arrived}><p className="chronicle-finale-speech" aria-hidden={!arrived} aria-label="뚜이의 말: 그리고 지금 형누나가 결혼합니다!">그리고 지금<br/>형누나가 결혼합니다!</p></footer>
     </section>
   );
 }
