@@ -74,7 +74,7 @@ function CoverPhoto() {
         <img src="/couple-main.webp" alt="창가에 나란히 앉아 꽃을 든 한원영과 이나경" width="1200" height="1800" fetchPriority="high" />
         <span className="cover-photo-mark" aria-hidden="true">FRONT PAGE <b>W × N</b></span>
       </div>
-      <figcaption><b>EXCLUSIVE</b> 10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.</figcaption>
+      <figcaption className="cover-photo-caption" aria-label="10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다."><svg viewBox="0 0 600 24" aria-hidden="true"><text x="0" y="17" textLength="600" lengthAdjust="spacingAndGlyphs">10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.</text></svg></figcaption>
     </figure>
   );
 }
