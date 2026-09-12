@@ -443,13 +443,19 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .venue-actions a, .venue-actions button, .chronicle-end a { min-height:44px; }
 .chronicle-dog::after { content:""; position:absolute; width:44px; height:44px; left:50%; top:50%; transform:translate(-50%,-50%); }
 
-/* The journey ends with Ddui speaking into the space below the path. */
+/* A paper-and-ink balloon, opening from the point where Ddui arrives. */
 .chronicle-journey .chronicle-dog { z-index:3; }
-.chronicle-end { padding:calc(38 * var(--paper-unit)) 0 calc(24 * var(--paper-unit)); border:0; }
-.chronicle-end .chronicle-finale-speech { position:relative; margin:0; padding:calc(25 * var(--paper-unit)) calc(12 * var(--paper-unit)); border:1px solid var(--line-strong); border-radius:calc(16 * var(--paper-unit)); background:var(--paper); font:500 calc(25 * var(--paper-unit))/1.5 var(--text); letter-spacing:-.04em; }
-.chronicle-finale-speech::before { content:""; position:absolute; right:calc(34 * var(--paper-unit)); top:calc(-11 * var(--paper-unit)); width:calc(20 * var(--paper-unit)); height:calc(20 * var(--paper-unit)); background:var(--paper); border-top:1px solid var(--line-strong); border-left:1px solid var(--line-strong); transform:rotate(45deg); }
-
-/* Reveal once on arrival; keep the finale visible when scrolling back. */
-.chronicle-end .chronicle-finale-speech { opacity:0; visibility:hidden; transform:translateY(calc(14 * var(--paper-unit))) scale(.94); transform-origin:88% 0; transition:opacity .3s ease, transform .45s cubic-bezier(.2,.8,.2,1), visibility .3s; }
+.chronicle-end { padding:calc(16 * var(--paper-unit)) 0 calc(26 * var(--paper-unit)); border:0; }
+.chronicle-end .chronicle-finale-speech { position:relative; display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:calc(202 * var(--paper-unit)); margin:0; padding:calc(38 * var(--paper-unit)) calc(24 * var(--paper-unit)) calc(24 * var(--paper-unit)); background:transparent; letter-spacing:-.045em; opacity:0; visibility:hidden; transform:translateY(calc(10 * var(--paper-unit))) scale(.88); transform-origin:89% 2%; transition:opacity .25s ease, transform .65s cubic-bezier(.16,1.25,.3,1), visibility .25s; }
+.finale-balloon { position:absolute; inset:0; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 calc(5 * var(--paper-unit)) calc(5 * var(--paper-unit)) rgb(23 23 22 / 7%)); }
+.finale-balloon path { fill:var(--paper); stroke:var(--ink); stroke-width:1.1; vector-effect:non-scaling-stroke; }
+.finale-lead, .finale-message { position:relative; opacity:0; transform:translateY(calc(7 * var(--paper-unit))); transition:opacity .35s ease,transform .5s ease; }
+.finale-lead { color:var(--muted); font:500 calc(15 * var(--paper-unit))/1.4 var(--text); margin-bottom:calc(9 * var(--paper-unit)); }
+.finale-message { color:var(--ink); font:500 calc(35 * var(--paper-unit))/1.18 var(--text); letter-spacing:-.06em; }
+.finale-spark { position:absolute; right:calc(39 * var(--paper-unit)); top:calc(69 * var(--paper-unit)); font:calc(26 * var(--paper-unit))/1 var(--display); opacity:0; transform:rotate(-25deg) scale(.4); transition:opacity .3s ease,transform .5s cubic-bezier(.16,1.25,.3,1); }
 .chronicle-end[data-arrived="true"] .chronicle-finale-speech { opacity:1; visibility:visible; transform:none; }
-@media(prefers-reduced-motion:reduce) { .chronicle-end .chronicle-finale-speech { transition:none; transform:none; } }
+.chronicle-end[data-arrived="true"] .finale-lead, .chronicle-end[data-arrived="true"] .finale-message { opacity:1; transform:none; }
+.chronicle-end[data-arrived="true"] .finale-lead { transition-delay:.14s; }
+.chronicle-end[data-arrived="true"] .finale-message { transition-delay:.25s; }
+.chronicle-end[data-arrived="true"] .finale-spark { opacity:1; transform:rotate(8deg) scale(1); transition-delay:.4s; }
+@media(prefers-reduced-motion:reduce) { .chronicle-end .chronicle-finale-speech, .finale-lead, .finale-message, .finale-spark { transition:none; transform:none; } }
