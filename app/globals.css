@@ -268,16 +268,25 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-stream { position:absolute; top:0; right:0; width:calc(72 * var(--paper-unit)); height:100%; overflow:visible; pointer-events:none; }
 .chronicle-stream path { fill:none; stroke:var(--line); stroke-width:1; stroke-dasharray:2 7; stroke-linecap:round; vector-effect:non-scaling-stroke; }
 .chronicle-stream-paw { font-size:12px; filter:grayscale(1); }
-.chronicle-dog { position:absolute; top:0; right:calc(12 * var(--paper-unit)); width:calc(48 * var(--paper-unit)); height:calc(48 * var(--paper-unit)); margin-top:calc(-24 * var(--paper-unit)); padding:0; border:0; background:var(--paper); border-radius:50%; cursor:pointer; touch-action:pan-y; }
-.chronicle-dog > img { width:calc(48 * var(--paper-unit)); height:calc(48 * var(--paper-unit)); object-fit:contain; }
+.chronicle-dog { position:absolute; top:0; right:calc(12 * var(--paper-unit)); width:calc(48 * var(--paper-unit)); height:calc(48 * var(--paper-unit)); margin-top:calc(-24 * var(--paper-unit)); padding:0; border:0; background:var(--paper); border-radius:50%; cursor:pointer; touch-action:pan-y; -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none; }
+.chronicle-dog-gait > img { width:calc(48 * var(--paper-unit)); height:calc(48 * var(--paper-unit)); object-fit:contain; }
 .chronicle-dog-bubble { position:absolute; bottom:calc(54 * var(--paper-unit)); right:0; padding:calc(6 * var(--paper-unit)) calc(9 * var(--paper-unit)); width:max-content; max-width:calc(150 * var(--paper-unit)); background:var(--paper); border:1px solid var(--line); border-radius:0; color:var(--ink); font:600 calc(12 * var(--paper-unit))/1.4 var(--sans); }
-.chronicle-dog[data-petted=true] > img { animation:chronicle-pet .4s ease-in-out 2; }
-@keyframes chronicle-pet { 50% { transform:translateY(calc(-5 * var(--paper-unit))) rotate(4deg); } }
+/* Keep the hit target still while the face compresses and the feet patter. */
+.chronicle-dog-touch, .chronicle-dog-gait { display:block; width:100%; height:100%; transform-origin:50% 78%; }
+.chronicle-dog-touch { transition:transform 240ms cubic-bezier(.2,1.5,.4,1); }
+.chronicle-dog:focus .chronicle-dog-touch { transform:scale(1.06); }
+.chronicle-dog:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
+.chronicle-dog[data-pressed=true] .chronicle-dog-touch { transform:translateY(3px) scale(1.1,.84); transition-duration:80ms; transition-timing-function:ease-out; }
+.chronicle-dog[data-walking=true]:not([data-pressed=true]):not([data-petted=true]) .chronicle-dog-gait { animation:chronicle-trot 240ms linear infinite; }
+@keyframes chronicle-trot {
+  0%, 50%, 100% { transform:translateY(1px) scale(1.035,.96); }
+  25% { transform:translate(-1px,-4px) rotate(-4deg) scale(.98,1.03); }
+  75% { transform:translate(1px,-4px) rotate(4deg) scale(.98,1.03); }
+}
 .chronicle-end { text-align:center; padding:calc(30 * var(--paper-unit)) 0 0; border-top:var(--rule-double); }
 .chronicle-end > span { color:var(--muted); font:600 calc(12 * var(--paper-unit))/1.5 var(--sans); letter-spacing:.07em; }
 .chronicle-end p { margin:calc(20 * var(--paper-unit)) 0 calc(24 * var(--paper-unit)); font:500 calc(30 * var(--paper-unit))/1.4 var(--text); letter-spacing:-.03em; }
 .chronicle-end a { display:inline-block; padding:calc(12 * var(--paper-unit)) 0; border-bottom:1px solid var(--line-strong); font:600 calc(14 * var(--paper-unit))/1.5 var(--sans); }
-@media(prefers-reduced-motion:reduce) { .chronicle-dog > img { animation:none!important; } }
 
 /* 02 — people */
 .section-masthead { display: flex; align-items: baseline; justify-content: center; margin-top: calc(10 * var(--paper-unit)); padding: calc(7 * var(--paper-unit)) 0; border-top: var(--rule-double); border-bottom: var(--rule-double); }
@@ -398,10 +407,10 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .cover-photo-caption text { font:16px var(--sans); fill:var(--muted); }
 
 .chronicle-intro { margin-top:calc(14 * var(--paper-unit)); font:calc(14 * var(--paper-unit))/1.7 var(--text); color:var(--muted); }
-.chronicle-dog > img { transform:rotate(var(--dog-turn,0deg)); transition:transform .12s; }
-.chronicle-dog[data-backtracking="true"] > img { scale:-1 1; }
+.chronicle-dog-gait > img { transform:rotate(var(--dog-turn,0deg)); transition:transform .12s; }
+.chronicle-dog[data-backtracking="true"] .chronicle-dog-gait > img { scale:-1 1; }
 .chronicle-dog-bubble { max-width:calc(160 * var(--paper-unit)); white-space:normal; text-align:center; }
-@media(prefers-reduced-motion:reduce) { .chronicle-dog > img { transition:none; transform:none; scale:1; } }
+@media(prefers-reduced-motion:reduce) { .chronicle-dog-gait > img { transition:none; transform:none; scale:1; } }
 
 /* Shared editorial hierarchy across the inside pages. */
 .chronicle-topline, .details-page .page-topline {
@@ -482,3 +491,9 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .announcement-note time { display:block; margin-bottom:calc(26 * var(--paper-unit)); font:500 calc(13 * var(--paper-unit))/1.5 var(--sans); }
 .announcement-note p { margin:0 0 calc(20 * var(--paper-unit)); color:var(--muted); font: max(12px, calc(14 * var(--paper-unit)))/1.9 var(--text); }
 .announcement-signature { padding-top:calc(6 * var(--paper-unit)); font:500 calc(16 * var(--paper-unit))/1.5 var(--text); }
+
+@media(prefers-reduced-motion:reduce) {
+  .chronicle-dog .chronicle-dog-touch, .chronicle-dog .chronicle-dog-gait { animation:none!important; transition:none; transform:none; }
+  .chronicle-dog:focus { outline:2px solid var(--line-strong); outline-offset:3px; }
+  .chronicle-dog[data-pressed=true] { background:var(--line); }
+}

@@ -53,6 +53,8 @@ export default function CenterfoldGallery() {
   const [arrived, setArrived] = useState(false);
   const [line, setLine] = useState("");
   const [petted, setPetted] = useState(false);
+  const [pressed, setPressed] = useState(false);
+  const petAnimation = useRef<Animation | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -65,12 +67,15 @@ export default function CenterfoldGallery() {
     if (!journey || !path || !dog) return;
     let length = 0;
     let stops: number[] = [];
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let previousDistance: number | null = null;
+    let walkingTimer: ReturnType<typeof setTimeout> | undefined;
     const paws = Array.from(journey.querySelectorAll<SVGTextElement>(".chronicle-stream-paw"));
     let frame = 0;
     let finished = false;
     const update = () => {
       frame = 0;
+      const reduced = motionPreference.matches;
       const center = window.innerHeight * .45;
       const closest = rows.reduce((best, row) => {
         const distance = (item: HTMLElement) => {
@@ -91,6 +96,16 @@ export default function CenterfoldGallery() {
       const chapter = Math.min(25, Math.floor(progress * 26));
       const local = progress * 26 - chapter;
       const distance = stops[chapter] + (stops[chapter + 1] - stops[chapter]) * local;
+      const walking = !reduced && !finished && !document.hidden && rect.bottom > 0 && rect.top < window.innerHeight
+        && previousDistance !== null && Math.abs(distance - previousDistance) > .15;
+      previousDistance = distance;
+      if (walking) {
+        dog.dataset.walking = "true";
+        clearTimeout(walkingTimer);
+        walkingTimer = setTimeout(() => { dog.dataset.walking = "false"; }, 140);
+      } else if (reduced || finished || document.hidden) {
+        dog.dataset.walking = "false";
+      }
       const point = path.getPointAtLength(distance);
       const next = path.getPointAtLength(Math.min(length, distance + 2));
       const laneWidth = path.ownerSVGElement!.getBoundingClientRect().width;
@@ -128,17 +143,41 @@ export default function CenterfoldGallery() {
     resize.observe(journey);
     measure();
     window.addEventListener("scroll", schedule, { passive: true });
-    update();
+    document.addEventListener("visibilitychange", schedule);
+    motionPreference.addEventListener("change", schedule);
     return () => {
       observer.disconnect(); resize.disconnect(); cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
+      document.removeEventListener("visibilitychange", schedule);
+      motionPreference.removeEventListener("change", schedule);
+      clearTimeout(walkingTimer);
+      petAnimation.current?.cancel();
       if (timer.current) clearTimeout(timer.current);
     };
   }, []);
 
   useEffect(() => { setPetted(false); }, [active]);
+  const haptic = (pattern: number | number[]) => {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && typeof navigator.vibrate === "function") {
+      navigator.vibrate(pattern);
+    }
+  };
+  const release = () => setPressed(false);
   const pet = () => {
+    setPressed(false);
     setPetted(true);
+    haptic([9, 45, 7, 55, 5]);
+    petAnimation.current?.cancel();
+    const face = dogRef.current?.querySelector(".chronicle-dog-touch");
+    if (face && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      petAnimation.current = face.animate([
+        { transform: "translateY(3px) scale(1.1, .84)", offset: 0 },
+        { transform: "translateY(-7px) scale(.94, 1.08)", offset: .3 },
+        { transform: "translateY(1px) scale(1.04, .96)", offset: .58 },
+        { transform: "translateY(-2px) scale(.99, 1.02)", offset: .78 },
+        { transform: "scale(1.06)", offset: 1 },
+      ], { duration: 420, easing: "cubic-bezier(.22,.7,.32,1)" });
+    }
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => setPetted(false), 1800);
   };
@@ -159,8 +198,23 @@ export default function CenterfoldGallery() {
 
         </li>
       ))}</ol>
-      <button ref={dogRef} className="chronicle-dog" onClick={pet} aria-label="뚜이 쓰다듬기" type="button" data-petted={petted}>
-        <img src="/history/ddui.webp" alt="" width="480" height="480"/>
+      <button ref={dogRef} className="chronicle-dog" onClick={pet} aria-label="뚜이 쓰다듬기" type="button" data-petted={petted} data-pressed={pressed}
+        onPointerDown={event => {
+          if (!event.isPrimary || event.button !== 0) return;
+          petAnimation.current?.cancel();
+          event.currentTarget.focus({ preventScroll: true });
+          event.currentTarget.setPointerCapture(event.pointerId);
+          setPressed(true);
+          haptic(6);
+        }}
+        onPointerUp={release} onPointerCancel={release} onLostPointerCapture={release} onBlur={release}
+        onKeyDown={event => {
+          if ((event.key === " " || event.key === "Enter") && !event.repeat) {
+            petAnimation.current?.cancel();
+            setPressed(true);
+          }
+        }} onKeyUp={release}>
+        <span className="chronicle-dog-touch"><span className="chronicle-dog-gait"><img src="/history/ddui.webp" alt="" width="480" height="480" draggable="false"/></span></span>
         {(petted || line) && <span className="chronicle-dog-bubble" role="status">{petted ? "헤헤, 또! ♥" : line}</span>}
       </button>
       </div>
