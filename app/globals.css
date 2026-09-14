@@ -2,8 +2,6 @@
 
 :root {
   --page-gutter: 22px;
-  --page-gap: 22px;
-  --page-shadow: 0 9px 26px rgb(23 23 22 / 18%);
   --paper-grain: url("/paper-crumple.png");
   --photo-ink: saturate(.78) contrast(1.035);
   --rule-double: 3px double var(--line-strong);
@@ -195,11 +193,11 @@ html:is([data-assets="loading"], [data-assets="preparing"], [data-assets="printi
 /* The printed issue */
 /* One design unit equals one pixel on the 390px reference sheet. */
 .asset-scene { container-type:inline-size; }
-.edition { --paper-unit:min(1px, .2564102564cqw); --page-gutter:calc(22 * var(--paper-unit)); --page-gap:calc(22 * var(--paper-unit)); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+.edition { --paper-unit:min(1px, .2564102564cqw); --page-gutter:calc(22 * var(--paper-unit)); -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 .edition { position: relative; width: min(100%, 390px); margin: 0 auto; padding: calc(18 * var(--paper-unit)) 0 calc(30 * var(--paper-unit)); background: var(--paper); overflow-wrap: anywhere; word-break: keep-all; }
-.paper-page, .chronicle { position: relative; width: 100%; min-height: calc(660 * var(--paper-unit)); margin: 0 0 var(--page-gap); padding: calc(18 * var(--paper-unit)) var(--page-gutter) calc(15 * var(--paper-unit)); overflow: hidden; background: var(--paper); box-shadow: var(--page-shadow); }
-.paper-page::before, .chronicle::before { content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: .16; mix-blend-mode: multiply; filter: grayscale(1) contrast(1.08) brightness(1.08); background-image: var(--paper-grain), radial-gradient(circle at 22% 31%, rgb(23 23 22 / 24%) 0 .38px, transparent .68px), radial-gradient(circle at 73% 64%, rgb(23 23 22 / 18%) 0 .34px, transparent .64px); background-position: 52% 46%, 0 0, 0 0; background-size: calc(620 * var(--paper-unit)) calc(620 * var(--paper-unit)), calc(23 * var(--paper-unit)) calc(29 * var(--paper-unit)), calc(31 * var(--paper-unit)) calc(37 * var(--paper-unit)); }
-.paper-page::after, .chronicle::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: .13; mix-blend-mode: multiply; background: linear-gradient(104deg, transparent 0 37%, rgb(80 66 49 / 11%) 38%, transparent 39% 100%), linear-gradient(8deg, transparent 0 67%, rgb(255 255 255 / 35%) 68%, transparent 69% 100%), radial-gradient(ellipse at 12% 8%, rgb(75 58 38 / 10%), transparent 34%), radial-gradient(ellipse at 88% 94%, rgb(75 58 38 / 9%), transparent 36%); }
+.paper-page, .chronicle { position: relative; width: 100%; min-height: calc(660 * var(--paper-unit)); margin: 0; padding: calc(18 * var(--paper-unit)) var(--page-gutter) calc(15 * var(--paper-unit)); overflow: hidden; background: transparent; }
+.edition::before { content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: .16; mix-blend-mode: multiply; filter: grayscale(1) contrast(1.08) brightness(1.08); background-image: var(--paper-grain), radial-gradient(circle at 22% 31%, rgb(23 23 22 / 24%) 0 .38px, transparent .68px), radial-gradient(circle at 73% 64%, rgb(23 23 22 / 18%) 0 .34px, transparent .64px); background-position: 52% 46%, 0 0, 0 0; background-size: calc(620 * var(--paper-unit)) calc(620 * var(--paper-unit)), calc(23 * var(--paper-unit)) calc(29 * var(--paper-unit)), calc(31 * var(--paper-unit)) calc(37 * var(--paper-unit)); }
+.edition::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: .13; mix-blend-mode: multiply; background: linear-gradient(104deg, transparent 0 37%, rgb(80 66 49 / 11%) 38%, transparent 39% 100%), linear-gradient(8deg, transparent 0 67%, rgb(255 255 255 / 35%) 68%, transparent 69% 100%), radial-gradient(ellipse at 12% 8%, rgb(75 58 38 / 10%), transparent 34%), radial-gradient(ellipse at 88% 94%, rgb(75 58 38 / 9%), transparent 36%); }
 .paper-page > *, .chronicle > * { position: relative; z-index: 1; }
 .page-topline, .page-bottomline, .cover-utility, .issue-line { display: flex; align-items: center; justify-content: space-between; gap: calc(8 * var(--paper-unit)); font: 700 calc(6.5 * var(--paper-unit))/1.25 var(--sans); letter-spacing: .02em; }
 .page-topline { padding-bottom: calc(7 * var(--paper-unit)); border-bottom: 1px solid var(--line); color: var(--muted); }
