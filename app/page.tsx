@@ -312,11 +312,12 @@ function WeddingNewspaper() {
         <section className="paper-page details-page" id="details">
           <PageTop page="03" section="A NOTE OF THANKS" />
           <div className="announcement-note">
-            <h2>저희, 결혼합니다.</h2>
-            <time dateTime="2026-10-17">2026년 10월 17일 토요일</time>
             <p>가족들과 함께 조용히 예식을 올립니다.</p>
             <p>오랜 시간 저희의 곁을 지켜주신<br />모든 분께 감사드립니다.<br />보내주시는 축하를 마음에 담고<br />서로 아끼며 잘 살겠습니다.</p>
-            <div className="announcement-signature">한원영 · 이나경 드림</div>
+            <div className="announcement-signature">
+              <div><strong>한원영</strong>의 엄마 김현정 · 아빠 한동현</div>
+              <div><strong>이나경</strong>의 엄마 성호숙 · 아빠 이광범</div>
+            </div>
           </div>
           <PageBottom next="END OF EDITION" />
         </section>
