@@ -315,8 +315,8 @@ function WeddingNewspaper() {
             <p>가족들과 함께 조용히 예식을 올립니다.</p>
             <p>오랜 시간 저희의 곁을 지켜주신<br />모든 분께 감사드립니다.<br />보내주시는 축하를 마음에 담고<br />서로 아끼며 잘 살겠습니다.</p>
             <div className="announcement-signature">
-              <div><strong>한원영</strong>의 엄마 김현정 · 아빠 한동현</div>
-              <div><strong>이나경</strong>의 엄마 성호숙 · 아빠 이광범</div>
+              <div>한동현 · 김현정의 아들 <strong>한원영</strong></div>
+              <div>이광범 · 성호숙의 딸 <strong>이나경</strong></div>
             </div>
           </div>
           <PageBottom next="END OF EDITION" />
