@@ -275,7 +275,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-dog-touch, .chronicle-dog-gait { display:block; width:100%; height:100%; transform-origin:50% 78%; }
 .chronicle-dog-touch { transition:transform 240ms cubic-bezier(.2,1.5,.4,1); }
 .chronicle-dog:focus .chronicle-dog-touch { transform:scale(1.06); }
-.chronicle-dog:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
+.chronicle-dog:focus, .chronicle-dog:focus-visible { outline:none; }
 .chronicle-dog[data-pressed=true] .chronicle-dog-touch { transform:translateY(3px) scale(1.1,.84); transition-duration:80ms; transition-timing-function:ease-out; }
 .chronicle-dog[data-walking=true]:not([data-pressed=true]):not([data-petted=true]) .chronicle-dog-gait { animation:chronicle-trot 240ms linear infinite; }
 @keyframes chronicle-trot {
@@ -494,6 +494,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 
 @media(prefers-reduced-motion:reduce) {
   .chronicle-dog .chronicle-dog-touch, .chronicle-dog .chronicle-dog-gait { animation:none!important; transition:none; transform:none; }
-  .chronicle-dog:focus { outline:2px solid var(--line-strong); outline-offset:3px; }
+  .chronicle-dog:focus-visible { background:var(--line); }
   .chronicle-dog[data-pressed=true] { background:var(--line); }
 }
