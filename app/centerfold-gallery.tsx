@@ -218,7 +218,11 @@ export default function CenterfoldGallery() {
         {(petted || line) && <span className="chronicle-dog-bubble" role="status">{petted ? "헤헤, 또! ♥" : line}</span>}
       </button>
       </div>
-      <footer className="chronicle-end" id="chronicle-finale" data-arrived={arrived}><p className="chronicle-finale-speech" aria-hidden={!arrived} aria-label="뚜이의 말: 그리고 지금 형누나가 결혼합니다!"><svg className="finale-balloon" viewBox="0 0 346 202" preserveAspectRatio="none" aria-hidden="true"><path d="M 34 24 C 90 18 204 23 268 24 Q 295 24 307 4 Q 312 26 303 31 C 330 33 338 45 339 65 L 339 159 Q 338 187 310 190 C 225 196 112 190 37 190 Q 8 190 7 162 L 7 58 Q 8 28 34 24 Z" /></svg><span className="finale-lead">그리고 지금,</span><strong className="finale-message">형누나가<br/>결혼합니다!</strong><svg className="finale-bone" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" aria-hidden="true"><path d="M7 10C9 7 6 4 3.5 5.5C1 7 2 10 3.5 11.5C2 13 1 16 3.5 17.5C6 19 9 16 7 13H17C15 16 18 19 20.5 17.5C23 16 22 13 20.5 11.5C22 10 23 7 20.5 5.5C18 4 15 7 17 10Z"/></svg></p></footer>
+      <footer className="chronicle-end" id="chronicle-finale" data-arrived={arrived}><p className="chronicle-finale-speech" aria-hidden={!arrived} aria-label="뚜이의 말: 그리고 지금 형누나가 결혼합니다!"><svg className="finale-balloon" viewBox="0 0 346 202" preserveAspectRatio="none" aria-hidden="true"><path d="M 34 24 C 90 18 204 23 268 24 Q 295 24 307 4 Q 312 26 303 31 C 330 33 338 45 339 65 L 339 159 Q 338 187 310 190 C 225 196 112 190 37 190 Q 8 190 7 162 L 7 58 Q 8 28 34 24 Z" /></svg><span className="finale-lead">그리고 지금,</span><strong className="finale-message">형누나가<br/>결혼합니다!</strong><span className="finale-charms" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"><path d="M12 20 3.8 12A5.2 5.2 0 0 1 12 5.7 5.2 5.2 0 0 1 20.2 12Z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" aria-hidden="true"><path d="M7 10C9 7 6 4 3.5 5.5C1 7 2 10 3.5 11.5C2 13 1 16 3.5 17.5C6 19 9 16 7 13H17C15 16 18 19 20.5 17.5C23 16 22 13 20.5 11.5C22 10 23 7 20.5 5.5C18 4 15 7 17 10Z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"><path d="m12 2 2.8 6.3L22 9l-5.4 4.8 1.6 7.2L12 17.2 5.8 21l1.6-7.2L2 9l7.2-.7Z"/></svg>
+      </span></p></footer>
     </section>
   );
 }
