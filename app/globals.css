@@ -461,7 +461,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .finale-lead, .finale-message { position:relative; z-index:1; opacity:0; transform:translateY(calc(7 * var(--paper-unit))); transition:opacity .35s ease,transform .5s ease; }
 .finale-lead { color:var(--muted); font:500 calc(15 * var(--paper-unit))/1.4 var(--text); margin-bottom:calc(9 * var(--paper-unit)); }
 .finale-message { color:var(--ink); font:500 calc(35 * var(--paper-unit))/1.18 var(--text); letter-spacing:-.06em; }
-.finale-charms { position:absolute; left:calc(12 * var(--paper-unit)); right:calc(12 * var(--paper-unit)); top:calc(132 * var(--paper-unit)); pointer-events:none; display:grid; grid-template-columns:repeat(3, 1fr); align-items:center; opacity:0; transform:rotate(-25deg) scale(.4); transition:opacity .3s ease,transform .5s cubic-bezier(.16,1.25,.3,1); z-index:0; }
+.finale-charms { position:relative; flex-shrink:0; width:100%; margin-top:calc(18 * var(--paper-unit)); pointer-events:none; display:grid; grid-template-columns:repeat(3, 1fr); align-items:center; opacity:0; transform:scale(.4); transition:opacity .3s ease,transform .5s cubic-bezier(.16,1.25,.3,1); z-index:0; }
 .chronicle-end[data-arrived="true"] .chronicle-finale-speech { opacity:1; visibility:visible; transform:none; }
 .chronicle-end[data-arrived="true"] .finale-lead, .chronicle-end[data-arrived="true"] .finale-message { opacity:1; transform:none; }
 .chronicle-end[data-arrived="true"] .finale-lead { transition-delay:.14s; }
@@ -470,7 +470,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .finale-charm-heart { justify-self:start; transform:translateX(calc(-2 * var(--paper-unit))) rotate(-14deg); }
 .finale-charm-bone { width:calc(26 * var(--paper-unit)); height:calc(26 * var(--paper-unit)); transform:rotate(16deg); }
 .finale-charm-star { justify-self:end; width:calc(17 * var(--paper-unit)); height:calc(17 * var(--paper-unit)); transform:translateX(calc(2 * var(--paper-unit))) rotate(-12deg); }
-.chronicle-end[data-arrived="true"] .finale-charms { opacity:1; transform:rotate(8deg) scale(1); transition-delay:.4s; }
+.chronicle-end[data-arrived="true"] .finale-charms { opacity:1; transform:scale(1); transition-delay:.4s; }
 @media(prefers-reduced-motion:reduce) { .chronicle-end .chronicle-finale-speech, .finale-lead, .finale-message, .finale-charms { transition:none; transform:none; } }
 
 /* Shared article typography and a quieter, more varied photo sequence. */
