@@ -13,9 +13,9 @@ export default function HistoryReport({ photoSrc }: { photoSrc: string }) {
           <figcaption>국립중앙말티푸박물관 소장<br />촬영 연도 미상</figcaption>
         </figure>
         <div className="history-report-copy">
-          <p>국립중앙말티푸박물관이 공개한 옛 혼인 사진에서 한원영·이나경과 똑 닮은 부부가 발견됐다.</p>
-          <p>박물관 측은 “신랑이 모자를 쓰지 않은 점으로 보아, 전생에도 모자가 안 어울렸던 것으로 추정된다”고 밝혔다.</p>
-          <p>정확한 촬영 연도는 감정 중이다. 담당 학예견이 사진을 물고 달아나 조사가 잠시 중단됐다.</p>
+          <p>국립중앙말티푸박물관의 옛 혼인 사진에서 두 사람과 닮은 부부가 발견됐다.</p>
+          <p>박물관 측은 “모자 없는 신랑, 전생에도 안 어울렸던 듯”이라고 밝혔다.</p>
+          <p>학예견이 사진을 물고 달아나 연도 감정은 중단됐다.</p>
         </div>
       </div>
     </article>
