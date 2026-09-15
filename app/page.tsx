@@ -49,16 +49,6 @@ function PhotoSlot({ code, marker, caption, className = "" }: { code: string; ma
   );
 }
 
-function PageTop({ page, section }: { page: string; section: string }) {
-  return (
-    <header className="page-topline">
-      <span>The Wedding News</span>
-      <span>{section}</span>
-      <span>{page}</span>
-    </header>
-  );
-}
-
 function PageBottom({ next }: { next: string }) {
   return (
     <footer className="page-bottomline">
@@ -304,13 +294,12 @@ function WeddingNewspaper() {
             </div>
           </article>
           <HistoryReport photoSrc="/couple-main.webp" />
-          <PageBottom next="CONTINUED ON PAGE 02" />
         </article>
 
         <CenterfoldGallery />
 
         <section className="paper-page details-page" id="details">
-          <PageTop page="03" section="A NOTE OF THANKS" />
+          <header className="section-kicker">감사의 인사</header>
           <div className="announcement-note">
             <p>가족들과 함께 조용히 예식을 올립니다.</p>
             <p>오랜 시간 저희의 곁을 지켜주신<br />모든 분께 감사드립니다.<br />보내주시는 축하를 마음에 담고<br />서로 아끼며 잘 살겠습니다.</p>

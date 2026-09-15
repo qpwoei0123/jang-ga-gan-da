@@ -242,7 +242,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 
 /* 02 — culture pages: a photographic record */
 .chronicle { color:var(--ink); overflow:clip; }
-.chronicle-topline { display:flex; justify-content:space-between; gap:calc(8 * var(--paper-unit)); padding-bottom:calc(10 * var(--paper-unit)); border-bottom:1px solid var(--line-strong); font:700 calc(12 * var(--paper-unit))/1.4 var(--sans); }
 .chronicle-heading { padding:calc(24 * var(--paper-unit)) 0 calc(18 * var(--paper-unit)); }
 .chronicle-heading h2 { margin:0; font:500 calc(38 * var(--paper-unit))/1.2 var(--display); letter-spacing:-.045em; }
 .chronicle-heading p { margin:calc(12 * var(--paper-unit)) 0 0; font:500 calc(14 * var(--paper-unit))/1.4 var(--sans); letter-spacing:.08em; white-space:nowrap; }
@@ -410,11 +409,10 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-dog-bubble { max-width:calc(160 * var(--paper-unit)); white-space:normal; text-align:center; }
 @media(prefers-reduced-motion:reduce) { .chronicle-dog-gait > img { transition:none; transform:none; scale:1; } }
 
-/* Shared editorial hierarchy across the inside pages. */
-.chronicle-topline, .details-page .page-topline {
-  display:flex; align-items:center; justify-content:space-between; gap:calc(8 * var(--paper-unit));
-  padding:calc(7 * var(--paper-unit)) 0 calc(9 * var(--paper-unit)); border-top:var(--rule-double); border-bottom:var(--rule-single);
-  color:var(--ink); font:700 calc(10 * var(--paper-unit))/1.4 var(--sans); letter-spacing:.02em;
+/* Quiet section markers for the continuous newspaper. */
+.section-kicker {
+  padding:calc(12 * var(--paper-unit)) 0 0; border-top:var(--rule-single);
+  color:var(--muted); font:700 calc(11 * var(--paper-unit))/1.4 var(--sans); letter-spacing:.04em;
 }
 .chronicle-current {
   position:sticky; background-color:var(--paper);
