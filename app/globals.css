@@ -234,11 +234,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .cover-photo-mark b { font:700 calc(10 * var(--paper-unit))/1 var(--display); letter-spacing:-.02em; }
 .cover-photo figcaption { margin:calc(8 * var(--paper-unit)) 0 0; padding:0 0 calc(12 * var(--paper-unit)); font:calc(11 * var(--paper-unit))/1.5 var(--sans); }
 .cover-photo figcaption b { margin-right:calc(4 * var(--paper-unit)); color:var(--ink); }
-.cover-reaction { flex: 1; margin-top: calc(9 * var(--paper-unit)); padding-top: calc(8 * var(--paper-unit)); border-top: var(--rule-double); }
-.cover-reaction > span { font: 800 calc(6.5 * var(--paper-unit))/1 var(--sans); letter-spacing: .04em; }
-.cover-reaction h3 { margin: calc(5 * var(--paper-unit)) 0 calc(8 * var(--paper-unit)); font: calc(20 * var(--paper-unit))/1.2 var(--display); letter-spacing: -.02em; }
-.cover-reaction-copy { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:calc(14 * var(--paper-unit)) calc(20 * var(--paper-unit)); font: calc(12 * var(--paper-unit))/1.65 var(--text); text-align: start; }
-.cover-reaction-copy p { margin:0; }
 
 /* 02 — culture pages: a photographic record */
 .chronicle { color:var(--ink); overflow:clip; }
@@ -432,17 +427,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .service-map { background:var(--paper-soft); }
 .details-page .page-bottomline { border-top:var(--rule-double); }
 
-.history-report { margin-top:calc(24 * var(--paper-unit)); padding:calc(18 * var(--paper-unit)) 0 calc(20 * var(--paper-unit)); border-top:var(--rule-double); }
-.history-report header > span { font:700 calc(9 * var(--paper-unit))/1.4 var(--sans); }
-.history-report h3 { margin:calc(12 * var(--paper-unit)) 0 calc(6 * var(--paper-unit)); font:500 calc(28 * var(--paper-unit))/1.25 var(--text); letter-spacing:-.05em; }
-.history-report header > p { margin:0 0 calc(16 * var(--paper-unit)); font:700 calc(12 * var(--paper-unit))/1.5 var(--sans); }
-.history-report-columns { display:grid; grid-template-columns:minmax(0,45fr) minmax(0,55fr); gap:calc(13 * var(--paper-unit)); align-items:start; }
-.history-report figure { margin:0; }
-.history-report img { display:block; width:100%; height:auto; filter:grayscale(1) contrast(1.08); }
-.history-report figcaption { margin-top:calc(6 * var(--paper-unit)); color:var(--muted); font:calc(9 * var(--paper-unit))/1.5 var(--sans); }
-.history-report-copy { padding-left:calc(12 * var(--paper-unit)); border-left:var(--rule-single); font:calc(12 * var(--paper-unit))/1.8 var(--text); word-break:normal; overflow-wrap:anywhere; }
-.history-report-copy p { margin:0 0 calc(12 * var(--paper-unit)); }
-.history-report-copy p:last-child { margin-bottom:0; }
 
 /* Keep the controls easy to tap even when the printed layout shrinks. */
 .venue-actions a, .venue-actions button, .chronicle-end a { min-height:44px; }
@@ -471,14 +455,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 @media(prefers-reduced-motion:reduce) { .chronicle-end .chronicle-finale-speech, .finale-lead, .finale-message, .finale-charms { transition:none; transform:none; } }
 
 /* Shared article typography and a quieter, more varied photo sequence. */
-.cover-reaction, .history-report { margin-top:calc(24 * var(--paper-unit)); padding-top:calc(18 * var(--paper-unit)); }
-.cover-reaction > span, .history-report header > span { font:700 calc(9 * var(--paper-unit))/1.4 var(--sans); letter-spacing:.03em; }
-.cover-reaction h3, .history-report h3 { margin:calc(10 * var(--paper-unit)) 0 calc(12 * var(--paper-unit)); font:500 calc(22 * var(--paper-unit))/1.35 var(--text); letter-spacing:-.04em; }
-.cover-reaction-copy, .history-report-copy { font-size:calc(13 * var(--paper-unit)); line-height:1.8; white-space:nowrap; }
-.cover-reaction-copy p:nth-child(2) { padding-left:calc(10 * var(--paper-unit)); border-left:var(--rule-single); }
-.cover-reaction-copy p:last-child { grid-column:1 / -1; padding-top:calc(10 * var(--paper-unit)); border-top:var(--rule-single); }
-.history-report-columns { grid-template-columns:minmax(0,42fr) minmax(0,58fr); }
-.history-report header > p { font-weight:500; color:var(--muted); }
 .chronicle-year { width:92%; padding-bottom:calc(30 * var(--paper-unit)); }
 .chronicle-year[data-format="small"] { width:72%; padding-bottom:calc(38 * var(--paper-unit)); }
 .chronicle-year[data-format="landscape"], .chronicle-year[data-featured="true"] { width:100%; }
@@ -498,3 +474,5 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
   .chronicle-dog:focus-visible { background:var(--line); }
   .chronicle-dog[data-pressed=true] { background:var(--line); }
 }
+
+.canvas-article { margin-top:calc(24 * var(--paper-unit)); }

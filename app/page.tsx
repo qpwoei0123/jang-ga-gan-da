@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { ImmediateContent } from "./asset-loader";
 import CenterfoldGallery from "./centerfold-gallery";
-import HistoryReport from "./history-report";
+import ArticleCanvas from "./article-canvas";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
 
@@ -284,16 +284,8 @@ function WeddingNewspaper() {
             <span>10년의 연애 끝, 가족 앞에서 결혼합니다.</span>
           </div>
           <CoverPhoto />
-          <article className="cover-reaction">
-            <span>BRIDE &amp; GROOM / 단독 소감</span>
-            <h3>GD와 결혼하지 못한 신부의 한탄,<br />어이없어하는 남편의 소감</h3>
-            <div className="cover-reaction-copy">
-              <p>신부 이나경은 GD와의<br />결혼이 무산돼 “계획에<br />없던 결과라 유감”이라고<br />밝혔다.</p>
-              <p>“어쩌다 한원영과 식장까지<br />잡았다”는 신부는<br />말끝마다 웃음을<br />참지 못했다.</p>
-              <p>신랑은 “그걸 왜 청첩장에 쓰냐”며 어이없어했다.<br />결혼식은 예정대로 진행된다.</p>
-            </div>
-          </article>
-          <HistoryReport photoSrc="/couple-main.webp" />
+          <ArticleCanvas kind="reaction" />
+          <ArticleCanvas kind="history" photoSrc="/couple-main.webp" />
         </article>
 
         <CenterfoldGallery />
