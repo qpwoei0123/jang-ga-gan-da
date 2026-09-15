@@ -13,9 +13,9 @@ export default function HistoryReport({ photoSrc }: { photoSrc: string }) {
           <figcaption>국립중앙말티푸박물관 소장<br />촬영 연도 미상</figcaption>
         </figure>
         <div className="history-report-copy">
-          <p>국립중앙말티푸박물관의 옛 혼인 사진에서 두 사람과 닮은 부부가 발견됐다.</p>
-          <p>박물관 측은 “모자 없는 신랑, 전생에도 안 어울렸던 듯”이라고 밝혔다.</p>
-          <p>학예견이 사진을 물고 달아나 연도 감정은 중단됐다.</p>
+          <p>국립중앙말티푸박물관의 옛<br />혼인 사진에서 두 사람과<br />닮은 부부가 발견됐다.</p>
+          <p>박물관 측은 “모자 없는 신랑,<br />전생에도 안 어울렸던 듯”<br />이라고 밝혔다.</p>
+          <p>학예견이 사진을 물고 달아나<br />연도 감정은 중단됐다.</p>
         </div>
       </div>
     </article>
