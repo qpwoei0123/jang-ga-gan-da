@@ -44,6 +44,10 @@ const DIALOGUE = [
   { at:.71, text:"먼저 가 있을게!" },
   { at:.84, text:"스무 살도 함께 ♥" },
 ];
+const YEAR_DIALOGUE: Record<number, string> = {
+  2021: "내가 이때 태어났대요~",
+  2022: "아닌가..? 이땐가...?",
+};
 
 export default function CenterfoldGallery() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -104,7 +108,8 @@ export default function CenterfoldGallery() {
         };
         return distance(row) < distance(best) ? row : best;
       }, rows[0]);
-      setActive(Number(closest.dataset.year));
+      const currentYear = Number(closest.dataset.year);
+      setActive(currentYear);
       const rect = journey.getBoundingClientRect();
       const scrollProgress = Math.max(0, Math.min(1, (center - rect.top) / rect.height));
       if (!finished && scrollProgress >= 1) {
@@ -135,7 +140,7 @@ export default function CenterfoldGallery() {
       const turn = reduced || finished ? 0 : Math.max(-18, Math.min(18, (next.x - point.x) * 14));
       dog.style.setProperty("--dog-turn", `${turn}deg`);
       dog.dataset.backtracking = String(!reduced && !finished && next.y < point.y);
-      setLine(finished ? "" : DIALOGUE.find(cue => Math.abs(cue.at - progress) < .018)?.text || "");
+      setLine(finished ? "" : YEAR_DIALOGUE[currentYear] || DIALOGUE.find(cue => Math.abs(cue.at - progress) < .018)?.text || "");
       paws.forEach((paw, i) => { paw.style.opacity = distance >= length * i / paws.length ? ".55" : ".12"; });
 
     };
