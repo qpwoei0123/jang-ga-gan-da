@@ -197,6 +197,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 /* 01 — front */
 .cover-page { display: flex; flex-direction: column; min-height: calc(770 * var(--paper-unit)); }
 .cover-page > .page-bottomline { margin-top: auto; }
+.cover-opening { min-height:100svh; padding-bottom:var(--space-16); }
 .cover-utility { margin-bottom: calc(7 * var(--paper-unit)); color: var(--muted); }
 .cover-utility a { display: inline-flex; align-items: center; min-height: calc(44 * var(--paper-unit)); padding: var(--space-8) 0 var(--space-8) var(--space-12); color: var(--ink); font-size: calc(13 * var(--paper-unit)); font-weight: 800; }
 .cover-sections { display: flex; justify-content: center; gap: var(--space-8); padding: calc(6 * var(--paper-unit)) 0 calc(5 * var(--paper-unit)); font: 700 calc(5.6 * var(--paper-unit))/1 var(--sans); letter-spacing: .04em; }

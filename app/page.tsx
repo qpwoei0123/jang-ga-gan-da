@@ -264,6 +264,7 @@ function WeddingNewspaper() {
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
       <main className="edition" aria-label="한원영과 이나경의 웨딩 신문">
         <article className="paper-page cover-page" id="top">
+          <div className="cover-opening">
           <div className="cover-utility">
             <span>The Grand Hall</span>
 
@@ -283,8 +284,9 @@ function WeddingNewspaper() {
             <h2>한원영 <i>&amp;</i> 이나경</h2>
             <span>10년의 연애 끝, 가족 앞에서 결혼합니다.</span>
           </div>
-          <WeddingSong />
           <CoverPhoto />
+          </div>
+          <WeddingSong />
           <ArticleCanvas kind="reaction" />
           <ArticleCanvas kind="history" photoSrc="/couple-main.webp" />
         </article>
