@@ -83,7 +83,7 @@ export default function ArticleCanvas({ kind, photoSrc }: { kind: keyof typeof l
         text(["국립중앙말티푸박물관 소장", "촬영 연도 미상"], 0, 354, 8, 12, true, token("--muted"));
       }
     }
-    Promise.all([document.fonts.ready, photoReady]).then(draw);
+    Promise.all([document.fonts.load('400 28px "MaruBuri"'), photoReady]).then(draw, draw);
     window.addEventListener("resize", draw);
     window.addEventListener("edition-font-change", draw);
     return () => { disposed = true; window.removeEventListener("resize", draw); window.removeEventListener("edition-font-change", draw); };
