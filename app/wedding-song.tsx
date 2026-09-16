@@ -27,7 +27,7 @@ export default function WeddingSong() {
     return () => { observer.disconnect(); document.removeEventListener("visibilitychange", visibility); };
   }, []);
   return <section className="wedding-song" aria-labelledby="wedding-song-title">
-    <header><span>함께 듣는 노래</span><h2 id="wedding-song-title">가을에 감 잡은 재즈</h2><p>하루상점 haru_shop</p></header>
+    <header><h2 id="wedding-song-title">오늘의 선곡</h2><p>이 노래와 함께 읽어주세요.</p></header>
     <div ref={screen} className="wedding-song-screen">
       {source && <iframe ref={frame} src={source} onLoad={() => {
         const rect = screen.current?.getBoundingClientRect();
@@ -36,6 +36,6 @@ export default function WeddingSong() {
         }
       }} title="하루상점 — 가을에 감 잡은 재즈" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />}
     </div>
-    <p className="wedding-song-caption">재생 버튼을 눌러 함께 들어주세요. <a href={`https://www.youtube.com/watch?v=${VIDEO}`} target="_blank" rel="noopener">YouTube에서 듣기 ↗</a></p>
+    <p className="wedding-song-caption">가을에 감 잡은 재즈 · 하루상점<br /><a href={`https://www.youtube.com/watch?v=${VIDEO}`} target="_blank" rel="noopener">YouTube에서 듣기 ↗</a></p>
   </section>;
 }

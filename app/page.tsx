@@ -283,12 +283,12 @@ function WeddingNewspaper() {
             <h2>한원영 <i>&amp;</i> 이나경</h2>
             <span>10년의 연애 끝, 가족 앞에서 결혼합니다.</span>
           </div>
+          <WeddingSong />
           <CoverPhoto />
           <ArticleCanvas kind="reaction" />
           <ArticleCanvas kind="history" photoSrc="/couple-main.webp" />
         </article>
 
-        <WeddingSong />
         <CenterfoldGallery />
 
         <section className="paper-page details-page" id="details">
