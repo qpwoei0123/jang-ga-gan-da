@@ -26,8 +26,7 @@ export default function WeddingSong() {
     document.addEventListener("visibilitychange", visibility);
     return () => { observer.disconnect(); document.removeEventListener("visibilitychange", visibility); };
   }, []);
-  return <section className="wedding-song" aria-labelledby="wedding-song-title">
-    <header><h3 id="wedding-song-title">오늘의 선곡</h3><a href={`https://www.youtube.com/watch?v=${VIDEO}`} target="_blank" rel="noopener" aria-label="YouTube에서 노래 듣기 (새 창)">YouTube <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8"/></svg></a></header>
+  return <section className="wedding-song" aria-label="함께 듣는 음악">
     <div ref={screen} className="wedding-song-screen">
       {source && <iframe ref={frame} src={source} onLoad={() => {
         const rect = screen.current?.getBoundingClientRect();

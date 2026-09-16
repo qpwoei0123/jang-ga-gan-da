@@ -496,12 +496,8 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .announcement-signature { font-size:max(15px,calc(17 * var(--paper-unit))); }
 .announcement-signature strong { font-weight:400; }
 
-.wedding-song { position:relative; z-index:6; margin:0 0 var(--space-32); }
-.wedding-song header { display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-12); padding:var(--space-8) 0; border-top:var(--rule-single); }
-.wedding-song h3 { margin:0; font:600 calc(14 * var(--paper-unit))/1.5 var(--sans); color:var(--muted); }
-.wedding-song header a { display:inline-flex; align-items:center; gap:4px; font:400 10px/1.5 var(--sans); color:var(--muted); text-decoration:underline; text-underline-offset:3px; }
-.wedding-song header svg { width:11px; height:11px; fill:none; stroke:currentColor; stroke-width:1.3; }
-.wedding-song-screen { min-width:200px; width:100%; min-height:200px; aspect-ratio:16/9; background:var(--ink); }
+.wedding-song { position:relative; z-index:6; width:200px; margin:0 auto var(--space-32); }
+.wedding-song-screen { width:200px; height:200px; background:var(--ink); }
 .wedding-song-screen iframe { display:block; width:100%; height:100%; min-height:200px; border:0; }
 
 .chronicle-dog[data-arrived=true] .chronicle-dog-gait {
