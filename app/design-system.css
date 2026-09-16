@@ -1,0 +1,46 @@
+/* Shared newspaper foundations. Canvas reads the same custom properties. */
+:root {
+  --page-gutter: 22px;
+  --control-size: 44px;
+  --control-surface: rgb(23 23 22 / 78%);
+  --rule-color: #85847f;
+  --type-caption: 9;
+  --type-body: 12;
+  --type-title: 28;
+  --type-quote: 20;
+  --leading-body: 22;
+  --rule-width: .6;
+  --paper-grain: url("/paper-crumple.png");
+  --photo-ink: saturate(.78) contrast(1.035);
+  --rule-double: 3px double var(--line-strong);
+  --rule-single: 1px solid var(--line);
+  --paper: #f5f4f1;
+  --paper-soft: #ecebe7;
+  --ink: #171716;
+  --muted: #686762;
+  --line: rgb(23 23 22 / 32%);
+  --line-strong: rgb(23 23 22 / 74%);
+  --blackletter: "Old English Text MT", "Lucida Blackletter", Georgia, serif;
+  --display: "Bodoni 72", Didot, "Times New Roman", serif;
+  --text: "Iowan Old Style", "Noto Serif KR", "AppleMyungjo", "Times New Roman", serif;
+  --sans: Arial, "Helvetica Neue", sans-serif;
+  --press-paper: #faf5e8;
+  --press-board: #e5e2d9;
+  --press-ink: #41473a;
+}
+
+.edition {
+  --space-8: calc(8 * var(--paper-unit));
+  --space-12: calc(12 * var(--paper-unit));
+  --space-16: calc(16 * var(--paper-unit));
+  --space-24: calc(24 * var(--paper-unit));
+  --space-32: calc(32 * var(--paper-unit));
+  --motion-fast: 160ms;
+  --motion-ease: cubic-bezier(.16, 1, .3, 1);
+}
+.edition ::selection { background:var(--ink); color:var(--paper); }
+.cover-carousel-controls button { transition:background-color var(--motion-fast) var(--motion-ease); }
+.cover-carousel-controls button:hover { background:rgb(255 255 255 / 14%); }
+.cover-carousel-controls button:active { background:rgb(255 255 255 / 24%); }
+.cover-carousel-controls button:focus-visible { outline:2px solid var(--paper); outline-offset:-4px; }
+@media(prefers-reduced-motion:reduce) { .cover-carousel-controls button { transition:none; } }

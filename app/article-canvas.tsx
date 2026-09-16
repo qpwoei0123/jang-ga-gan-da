@@ -46,30 +46,33 @@ export default function ArticleCanvas({ kind, photoSrc }: { kind: keyof typeof l
       canvas.width = Math.ceil(W * ratio);
       canvas.height = Math.ceil(layout.height * ratio);
       ctx.scale(ratio, ratio);
-      const serif = getComputedStyle(canvas).getPropertyValue("--text");
-      const text = (lines: string[], x: number, y: number, size: number, step: number, sans = false, color = "#171716") => {
+      const style = getComputedStyle(canvas);
+      const token = (name: string) => style.getPropertyValue(name).trim();
+      const number = (name: string) => Number(token(name));
+      const serif = token("--text");
+      const text = (lines: string[], x: number, y: number, size: number, step: number, sans = false, color = token("--ink")) => {
         ctx.fillStyle = color;
-        ctx.font = `${sans ? 700 : 400} ${size}px ${sans ? 'Arial, sans-serif' : serif}`;
+        ctx.font = `${sans ? 700 : 400} ${size}px ${sans ? token("--sans") : serif}`;
         ctx.textBaseline = "top";
         lines.forEach((line, i) => ctx.fillText(line, x, y + i * step));
       };
       const rule = (x1: number, y1: number, x2: number, y2: number) => {
-        ctx.strokeStyle = "#85847f"; ctx.lineWidth = .6;
+        ctx.strokeStyle = token("--rule-color"); ctx.lineWidth = number("--rule-width");
         ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
       };
       rule(0, 1, W, 1);
-      text([layout.label], 0, 20, 9, 12, true);
-      text(layout.title, 0, 44, kind === "reaction" ? 28 : 27, 35);
-      layout.blocks.forEach(block => text(block.lines, block.x, block.y, 12, 22));
+      text([layout.label], 0, 20, number("--type-caption"), 12, true);
+      text(layout.title, 0, 44, number("--type-title"), 35);
+      layout.blocks.forEach(block => text(block.lines, block.x, block.y, number("--type-body"), number("--leading-body")));
       if (kind === "reaction") {
-        text(["어이없어하는 남편의 소감"], 1, 122, 11, 16, true, "#686762");
-        text(["“계획에 없던", "결과라", "유감입니다.”"], 0, 159, 20, 28);
+        text(["어이없어하는 남편의 소감"], 1, 122, 11, 16, true, token("--muted"));
+        text(["“계획에 없던", "결과라", "유감입니다.”"], 0, 159, number("--type-quote"), 28);
         rule(0, 256, 28, 256);
-        text(["신부 이나경"], 37, 250, 9, 12, true, "#686762");
+        text(["신부 이나경"], 37, 250, 9, 12, true, token("--muted"));
         rule(158, 158, 158, 264);
         rule(0, 277, W, 277);
       } else {
-        text(["국립중앙말티푸박물관서 혼인 사료 발견"], 0, 86, 11, 16, true, "#686762");
+        text(["국립중앙말티푸박물관서 혼인 사료 발견"], 0, 86, 11, 16, true, token("--muted"));
         if (photo?.naturalWidth) {
           ctx.save(); ctx.filter = "grayscale(1) contrast(1.08)";
           const cropHeight = photo.naturalWidth * 1.5;
@@ -77,7 +80,7 @@ export default function ArticleCanvas({ kind, photoSrc }: { kind: keyof typeof l
           ctx.restore();
         }
         rule(163, 122, 163, 328);
-        text(["국립중앙말티푸박물관 소장", "촬영 연도 미상"], 0, 354, 8, 12, true, "#686762");
+        text(["국립중앙말티푸박물관 소장", "촬영 연도 미상"], 0, 354, 8, 12, true, token("--muted"));
       }
     }
     Promise.all([document.fonts.ready, photoReady]).then(draw);
