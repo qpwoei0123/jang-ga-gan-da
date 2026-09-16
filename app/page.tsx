@@ -3,6 +3,7 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { ImmediateContent } from "./asset-loader";
 import CenterfoldGallery from "./centerfold-gallery";
+import WeddingSong from "./wedding-song";
 import FontTweaks from "./font-tweaks";
 import CoverCarousel from "./cover-carousel";
 import ArticleCanvas from "./article-canvas";
@@ -287,6 +288,7 @@ function WeddingNewspaper() {
           <ArticleCanvas kind="history" photoSrc="/couple-main.webp" />
         </article>
 
+        <WeddingSong />
         <CenterfoldGallery />
 
         <section className="paper-page details-page" id="details">
