@@ -85,7 +85,8 @@ export default function ArticleCanvas({ kind, photoSrc }: { kind: keyof typeof l
     }
     Promise.all([document.fonts.ready, photoReady]).then(draw);
     window.addEventListener("resize", draw);
-    return () => { disposed = true; window.removeEventListener("resize", draw); };
+    window.addEventListener("edition-font-change", draw);
+    return () => { disposed = true; window.removeEventListener("resize", draw); window.removeEventListener("edition-font-change", draw); };
   }, [kind, layout, photoSrc]);
   return <article id={kind === "history" ? "history-report" : undefined} className="canvas-article">
     <canvas ref={ref} width={W} height={layout.height} role="img" aria-label={[layout.label, ...layout.title, ...(kind === "reaction" ? ["계획에 없던 결과라 유감입니다. 신부 이나경. 어이없어하는 남편의 소감"] : []), ...layout.blocks.flatMap(block => block.lines)].join(" ")} style={{ display: "block", width: "100%", height: "auto" }} />
