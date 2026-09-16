@@ -94,7 +94,7 @@ export default function CenterfoldGallery() {
     const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     let previousDistance: number | null = null;
     let walkingTimer: ReturnType<typeof setTimeout> | undefined;
-    const paws = Array.from(journey.querySelectorAll<SVGTextElement>(".chronicle-stream-paw"));
+    const paws = Array.from(journey.querySelectorAll<SVGGElement>(".chronicle-stream-paw"));
     let frame = 0;
     let finished = false;
     const update = () => {
@@ -141,7 +141,7 @@ export default function CenterfoldGallery() {
       dog.style.setProperty("--dog-turn", `${turn}deg`);
       dog.dataset.backtracking = String(!reduced && !finished && next.y < point.y);
       setLine(finished ? "" : YEAR_DIALOGUE[currentYear] || DIALOGUE.find(cue => Math.abs(cue.at - progress) < .018)?.text || "");
-      paws.forEach((paw, i) => { paw.style.opacity = distance >= length * i / paws.length ? ".55" : ".12"; });
+      paws.forEach((paw, i) => { paw.style.opacity = distance >= length * i / paws.length ? ".55" : "0"; });
 
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
@@ -159,8 +159,12 @@ export default function CenterfoldGallery() {
       const laneWidth = path.ownerSVGElement!.getBoundingClientRect().width;
       const paperScale = laneWidth / 72;
       paws.forEach((paw, i) => {
-        const point = path.getPointAtLength(length * i / paws.length);
-        paw.setAttribute("transform", `translate(${point.x} ${point.y}) scale(${80 / 72} ${2600 * paperScale / journey.getBoundingClientRect().height})`);
+        const distance = length * i / paws.length;
+        const point = path.getPointAtLength(distance);
+        const next = path.getPointAtLength(Math.min(length, distance + 2));
+        const scaleY = 2600 * paperScale / journey.getBoundingClientRect().height;
+        const angle = Math.atan2((next.y - point.y) / scaleY, (next.x - point.x) / (80 / 72)) * 180 / Math.PI + 90;
+        paw.setAttribute("transform", `translate(${point.x} ${point.y}) scale(${80 / 72} ${scaleY}) rotate(${angle}) translate(${i % 2 ? 3 : -3} 0)`);
       });
       schedule();
     };
@@ -212,7 +216,7 @@ export default function CenterfoldGallery() {
       <header className="section-kicker">우리의 시간</header>
       <div className="chronicle-heading"><h2 id="chronicle-title">열아홉에서<br/>서른까지</h2><p>2015—2026</p><div className="chronicle-intro">열아홉에 만나 이십 대의 모든 날을 함께했습니다.<br/>그리고 서른, 부부가 됩니다.</div></div>
       <div ref={journeyRef} className="chronicle-journey">
-      <svg className="chronicle-stream" viewBox="0 0 80 2600" preserveAspectRatio="none" aria-hidden="true"><path ref={pathRef}/>{Array.from({length:80}, (_, i) => <text key={i} className="chronicle-stream-paw" textAnchor="middle" dominantBaseline="middle">🐾</text>)}</svg>
+      <svg className="chronicle-stream" viewBox="0 0 80 2600" preserveAspectRatio="none" aria-hidden="true"><path ref={pathRef}/>{Array.from({length:120}, (_, i) => <g key={i} className="chronicle-stream-paw"><ellipse cx="0" cy="2" rx="2.6" ry="2.2"/><ellipse cx="-3" cy="-1" rx="1.1" ry="1.5" transform="rotate(-25 -3 -1)"/><ellipse cx="-1.2" cy="-3" rx="1.1" ry="1.5"/><ellipse cx="1.2" cy="-3" rx="1.1" ry="1.5"/><ellipse cx="3" cy="-1" rx="1.1" ry="1.5" transform="rotate(25 3 -1)"/></g>)}</svg>
       <ol className="chronicle-years">{years.map((year, index) => (
         <li key={year} className="chronicle-year" data-year={year} data-format={year === 2020 || year === 2023 ? "landscape" : [2016, 2018, 2021, 2024].includes(year) ? "small" : "portrait"} data-active={year === active} data-past={year < active} data-featured={index === 0 || index === 5 || index === 11}>
           <div className="chronicle-year-label"><h3>{year}{index === 0 ? <small> / 첫해</small> : index === 11 ? <small> / 오늘</small> : null}</h3></div>

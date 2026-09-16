@@ -244,7 +244,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-year { padding-bottom:calc(38 * var(--paper-unit)); }
 .chronicle-stream { position:absolute; top:0; right:0; width:calc(72 * var(--paper-unit)); height:100%; overflow:visible; pointer-events:none; }
 .chronicle-stream path { fill:none; stroke:var(--line); stroke-width:1; stroke-dasharray:2 7; stroke-linecap:round; vector-effect:non-scaling-stroke; }
-.chronicle-stream-paw { font-size:12px; filter:grayscale(1); }
+.chronicle-stream-paw { fill:var(--muted); opacity:0; }
 .chronicle-dog { position:absolute; top:0; right:var(--space-12); width:calc(48 * var(--paper-unit)); height:calc(48 * var(--paper-unit)); margin-top:calc(-24 * var(--paper-unit)); padding:0; border:0; background:var(--paper); border-radius:50%; cursor:pointer; touch-action:pan-y; -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none; }
 .chronicle-dog-gait > img { width:calc(48 * var(--paper-unit)); height:calc(48 * var(--paper-unit)); object-fit:contain; }
 .chronicle-dog-bubble { position:absolute; bottom:calc(54 * var(--paper-unit)); right:0; padding:calc(6 * var(--paper-unit)) calc(9 * var(--paper-unit)); width:max-content; max-width:calc(150 * var(--paper-unit)); background:var(--paper); border:1px solid var(--line); border-radius:0; color:var(--ink); font:600 calc(12 * var(--paper-unit))/1.4 var(--sans); }
