@@ -27,11 +27,7 @@ export default function WeddingSong() {
     return () => { observer.disconnect(); document.removeEventListener("visibilitychange", visibility); };
   }, []);
   return <section className="wedding-song" aria-labelledby="wedding-song-title">
-    <header>
-      <svg className="wedding-song-record" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="currentColor"/><g fill="none" stroke="var(--paper)" strokeWidth=".6"><circle cx="20" cy="20" r="15"/><circle cx="20" cy="20" r="12"/></g><circle cx="20" cy="20" r="6" fill="var(--paper)"/><circle cx="20" cy="20" r="1.5" fill="currentColor"/></svg>
-      <h2 id="wedding-song-title">오늘의 선곡</h2>
-      <span className="wedding-song-side" aria-hidden="true">SIDE A<br />33⅓ RPM</span>
-    </header>
+    <header><h3 id="wedding-song-title">오늘의 선곡</h3><a href={`https://www.youtube.com/watch?v=${VIDEO}`} target="_blank" rel="noopener" aria-label="YouTube에서 노래 듣기 (새 창)">YouTube <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8"/></svg></a></header>
     <div ref={screen} className="wedding-song-screen">
       {source && <iframe ref={frame} src={source} onLoad={() => {
         const rect = screen.current?.getBoundingClientRect();
@@ -40,6 +36,6 @@ export default function WeddingSong() {
         }
       }} title="하루상점 — 가을에 감 잡은 재즈" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />}
     </div>
-    <footer className="wedding-song-caption"><span>W &amp; N · RECORD CLUB</span><a href={`https://www.youtube.com/watch?v=${VIDEO}`} target="_blank" rel="noopener" aria-label="YouTube에서 노래 듣기 (새 창)">YouTube <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8"/></svg></a></footer>
+
   </section>;
 }

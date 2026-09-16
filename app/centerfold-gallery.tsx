@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
+import WeddingSong from "./wedding-song";
 
 const years = Array.from({ length: 12 }, (_, i) => 2015 + i);
 
@@ -240,6 +241,7 @@ export default function CenterfoldGallery() {
     <section ref={sectionRef} id="photo-edition" className="chronicle" aria-labelledby="chronicle-title">
       <header className="section-kicker">우리의 시간</header>
       <div className="chronicle-heading"><h2 id="chronicle-title">열아홉에서<br/>서른까지</h2><p>2015—2026</p><div className="chronicle-intro">열아홉에 만나 이십 대의 모든 날을 함께했습니다.<br/>그리고 서른, 부부가 됩니다.</div></div>
+      <WeddingSong />
       <div ref={journeyRef} className="chronicle-journey">
       <svg className="chronicle-stream" viewBox="0 0 80 2600" preserveAspectRatio="none" aria-hidden="true"><path ref={pathRef}/>{Array.from({length:120}, (_, i) => <g key={i} className="chronicle-stream-paw"><ellipse cx="0" cy="2" rx="2.6" ry="2.2"/><ellipse cx="-3" cy="-1" rx="1.1" ry="1.5" transform="rotate(-25 -3 -1)"/><ellipse cx="-1.2" cy="-3" rx="1.1" ry="1.5"/><ellipse cx="1.2" cy="-3" rx="1.1" ry="1.5"/><ellipse cx="3" cy="-1" rx="1.1" ry="1.5" transform="rotate(25 3 -1)"/></g>)}</svg>
       <ol className="chronicle-years">{years.map((year, index) => (
