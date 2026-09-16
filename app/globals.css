@@ -234,7 +234,10 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-year-label small { font:400 calc(14 * var(--paper-unit))/1.5 var(--text); }
 .chronicle-year-label > span { color:var(--muted); font:400 calc(12 * var(--paper-unit))/1.5 var(--sans); }
 .chronicle-year figure { margin:0; }
-.chronicle-year img { display:block; width:100%; height:auto; filter:var(--photo-ink); }
+.chronicle-year img { display:block; width:100%; height:auto; filter:var(--photo-ink); transform:rotate(var(--photo-tilt, -1deg)); }
+.chronicle-year:nth-child(4n + 2) { --photo-tilt:1.4deg; }
+.chronicle-year:nth-child(4n + 3) { --photo-tilt:-1.7deg; }
+.chronicle-year:nth-child(4n) { --photo-tilt:.8deg; }
 .chronicle-year figcaption { margin:calc(10 * var(--paper-unit)) 0 0; color:var(--muted); font:400 calc(14 * var(--paper-unit))/1.55 var(--text); }
 .chronicle-journey { position:relative; }
 .chronicle-years { padding-right:calc(82 * var(--paper-unit)); }
