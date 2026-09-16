@@ -65,6 +65,12 @@ export default function CenterfoldGallery() {
   useEffect(() => {
     const dog = dogRef.current;
     if (!arrived || !dog) return;
+    const chooseSpin = () => { dog.style.setProperty("--celebration-turn", Math.random() < .1 ? "1080deg" : "0deg"); };
+    const nextJump = (event: AnimationEvent) => {
+      if (event.animationName === "chronicle-celebration-jump") chooseSpin();
+    };
+    chooseSpin();
+    dog.addEventListener("animationiteration", nextJump);
     let visible = false;
     const sync = () => { dog.dataset.celebrating = String(visible && !document.hidden); };
     const observer = new IntersectionObserver(([entry]) => {
@@ -75,6 +81,7 @@ export default function CenterfoldGallery() {
     document.addEventListener("visibilitychange", sync);
     return () => {
       observer.disconnect();
+      dog.removeEventListener("animationiteration", nextJump);
       document.removeEventListener("visibilitychange", sync);
       dog.dataset.celebrating = "false";
     };

@@ -509,28 +509,25 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .wedding-song-caption svg { width:11px; height:11px; fill:none; stroke:currentColor; stroke-width:1.3; }
 
 .chronicle-dog[data-arrived=true] .chronicle-dog-gait {
-  animation:chronicle-celebration-jump 3s linear infinite;
+  animation:chronicle-celebration-jump 900ms linear infinite;
   animation-play-state:paused;
 }
 .chronicle-dog[data-arrived=true] .chronicle-dog-gait > img {
   transform-origin:50% 50%;
-  animation:chronicle-celebration-spin 3s linear infinite;
+  animation:chronicle-celebration-spin 900ms linear infinite;
   animation-play-state:paused;
 }
 .chronicle-dog[data-celebrating=true] .chronicle-dog-gait,
 .chronicle-dog[data-celebrating=true] .chronicle-dog-gait > img { animation-play-state:running; }
 @keyframes chronicle-celebration-jump {
-  0%, 21%, 43%, 65%, 100% { transform:translateY(0) scale(1); }
-  3%, 24%, 46%, 68% { transform:translateY(calc(3 * var(--paper-unit))) scale(1.13,.82); animation-timing-function:cubic-bezier(.16,1,.3,1); }
-  10% { transform:translateY(calc(-26 * var(--paper-unit))) scale(.96,1.05); animation-timing-function:cubic-bezier(.55,0,1,.45); }
-  31% { transform:translateY(calc(-34 * var(--paper-unit))) scale(.95,1.06); animation-timing-function:cubic-bezier(.55,0,1,.45); }
-  53% { transform:translateY(calc(-29 * var(--paper-unit))) scale(.96,1.05); animation-timing-function:cubic-bezier(.55,0,1,.45); }
-  76%, 88% { transform:translateY(calc(-44 * var(--paper-unit))) scale(1); animation-timing-function:cubic-bezier(.55,0,1,.45); }
-  18%, 40%, 62%, 97% { transform:translateY(calc(2 * var(--paper-unit))) scale(1.12,.85); }
+  0%, 100% { transform:translateY(0) scale(1); }
+  10% { transform:translateY(calc(3 * var(--paper-unit))) scale(1.13,.82); animation-timing-function:cubic-bezier(.16,1,.3,1); }
+  35%, 65% { transform:translateY(calc(-38 * var(--paper-unit))) scale(1); animation-timing-function:cubic-bezier(.55,0,1,.45); }
+  90% { transform:translateY(calc(2 * var(--paper-unit))) scale(1.12,.85); }
 }
 @keyframes chronicle-celebration-spin {
-  0%, 76% { transform:rotate(0deg); }
-  88%, 100% { transform:rotate(1080deg); }
+  0%, 35% { transform:rotate(0deg); }
+  65%, 100% { transform:rotate(var(--celebration-turn, 0deg)); }
 }
 @media(prefers-reduced-motion:reduce) {
   .chronicle-dog[data-arrived=true] .chronicle-dog-gait,
