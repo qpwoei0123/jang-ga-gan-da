@@ -1,8 +1,10 @@
+@font-face { font-family:"NanumDaHaengCe"; src:url("https://ssl.pstatic.net/static/clova/service/clova_ai/event/handwriting/fonts_1007/22/나눔손글씨 다행체.woff2") format("woff2"); font-weight:400; font-style:normal; font-display:swap; }
 @font-face { font-family:"MaruBuri"; font-style:normal; font-weight:400; font-display:swap; src:url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.woff2") format("woff2"); }
 @font-face { font-family:"MaruBuri"; font-style:normal; font-weight:600; font-display:swap; src:url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.woff2") format("woff2"); }
 @font-face { font-family:"MaruBuri"; font-style:normal; font-weight:700; font-display:swap; src:url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.woff2") format("woff2"); }
 /* Shared newspaper foundations. Canvas reads the same custom properties. */
 :root {
+  --handwriting: "NanumDaHaengCe", "MaruBuri", serif;
   --page-gutter: 22px;
   --control-size: 44px;
   --control-surface: rgb(23 23 22 / 78%);

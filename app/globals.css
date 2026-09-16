@@ -485,3 +485,10 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .font-tweaks-samples small { color:var(--muted); font:11px system-ui,sans-serif; }
 .font-tweaks-samples p { font-size:21px; line-height:1.5; }
 .font-tweaks footer { position:sticky; bottom:-20px; display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; padding:12px 0; background:var(--paper); }
+
+.chronicle-finale-speech, .announcement-note { --text:var(--handwriting); }
+.chronicle-finale-speech .finale-lead { font-size:calc(19 * var(--paper-unit)); font-weight:400; }
+.chronicle-finale-speech .finale-message { font-weight:400; letter-spacing:0; }
+.announcement-note p { font-size:max(16px,calc(19 * var(--paper-unit))); line-height:1.75; }
+.announcement-signature { font-size:max(15px,calc(17 * var(--paper-unit))); }
+.announcement-signature strong { font-weight:400; }
