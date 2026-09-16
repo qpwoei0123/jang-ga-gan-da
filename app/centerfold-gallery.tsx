@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import confetti from "canvas-confetti";
 
 const years = Array.from({ length: 12 }, (_, i) => 2015 + i);
 
@@ -56,6 +57,25 @@ export default function CenterfoldGallery() {
   const [pressed, setPressed] = useState(false);
   const petAnimation = useRef<Animation | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!arrived || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const frame = requestAnimationFrame(() => {
+      const bubble = sectionRef.current?.querySelector(".chronicle-finale-speech");
+      if (!bubble || document.hidden) return;
+      const rect = bubble.getBoundingClientRect();
+      if (rect.bottom <= 0 || rect.top >= window.innerHeight) return;
+      const options = {
+        particleCount: 28, spread: 65, startVelocity: 22, gravity: .85,
+        ticks: 150, scalar: .7, disableForReducedMotion: true,
+        colors: ["#bd8879", "#c7ae79", "#8e9e88", "#e2d5bd"],
+      };
+      const y = Math.min(1, (rect.top + rect.height * .6) / window.innerHeight);
+      void confetti({ ...options, angle: 65, origin: { x: rect.left / window.innerWidth, y } });
+      void confetti({ ...options, angle: 115, origin: { x: rect.right / window.innerWidth, y } });
+    });
+    return () => { cancelAnimationFrame(frame); confetti.reset(); };
+  }, [arrived]);
 
   useEffect(() => {
     const section = sectionRef.current;
