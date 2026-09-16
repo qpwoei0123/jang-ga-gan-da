@@ -63,6 +63,24 @@ export default function CenterfoldGallery() {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
+    const dog = dogRef.current;
+    if (!arrived || !dog) return;
+    let visible = false;
+    const sync = () => { dog.dataset.celebrating = String(visible && !document.hidden); };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(dog);
+    document.addEventListener("visibilitychange", sync);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+      dog.dataset.celebrating = "false";
+    };
+  }, [arrived]);
+
+  useEffect(() => {
     if (!arrived || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const frame = requestAnimationFrame(() => {
       const bubble = sectionRef.current?.querySelector(".chronicle-finale-speech");
@@ -227,7 +245,7 @@ export default function CenterfoldGallery() {
 
         </li>
       ))}</ol>
-      <button ref={dogRef} className="chronicle-dog" onClick={pet} aria-label="뚜이 쓰다듬기" type="button" data-petted={petted} data-pressed={pressed}
+      <button ref={dogRef} className="chronicle-dog" onClick={pet} aria-label="뚜이 쓰다듬기" type="button" data-petted={petted} data-pressed={pressed} data-arrived={arrived}
         onPointerDown={event => {
           if (!event.isPrimary || event.button !== 0) return;
           petAnimation.current?.cancel();
