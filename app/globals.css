@@ -497,14 +497,16 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .announcement-signature { font-size:max(15px,calc(17 * var(--paper-unit))); }
 .announcement-signature strong { font-weight:400; }
 
-.wedding-song { position:relative; z-index:6; margin:0 0 var(--space-24); padding:var(--space-12) 0; border-block:var(--rule-single); background:var(--paper); }
-.wedding-song header { display:flex; align-items:baseline; flex-wrap:wrap; gap:4px var(--space-12); margin-bottom:var(--space-12); }
-.wedding-song h2 { margin:0; font:700 12px/1.5 var(--sans); }
-.wedding-song header p { margin:0; font:12px/1.5 var(--text); color:var(--muted); }
+.wedding-song { position:relative; z-index:6; margin:0 0 var(--space-24); padding:var(--space-12); border:var(--rule-single); border-top:3px double var(--ink); background:var(--paper); }
+.wedding-song header { display:flex; align-items:center; gap:var(--space-12); padding-bottom:var(--space-12); }
+.wedding-song-record { flex:none; width:36px; height:36px; color:var(--ink); }
+.wedding-song h2 { margin:0; font:600 19px/1.4 var(--text); }
+.wedding-song-side { margin-left:auto; text-align:right; font:700 9px/1.6 var(--sans); letter-spacing:.06em; color:var(--muted); }
 .wedding-song-screen { min-width:200px; width:100%; min-height:200px; aspect-ratio:16/9; background:var(--ink); }
 .wedding-song-screen iframe { display:block; width:100%; height:100%; min-height:200px; border:0; }
-.wedding-song-caption { margin:var(--space-8) 0 0; font:12px/1.6 var(--sans); color:var(--muted); }
-.wedding-song-caption a { display:inline-block; text-decoration:underline; text-underline-offset:3px; }
+.wedding-song-caption { display:flex; align-items:center; justify-content:space-between; gap:var(--space-8); margin-top:var(--space-8); font:700 9px/1.6 var(--sans); letter-spacing:.04em; color:var(--muted); }
+.wedding-song-caption a { display:inline-flex; align-items:center; gap:4px; padding:4px 0; text-decoration:underline; text-underline-offset:3px; }
+.wedding-song-caption svg { width:11px; height:11px; fill:none; stroke:currentColor; stroke-width:1.3; }
 
 .chronicle-dog[data-arrived=true] .chronicle-dog-gait {
   animation:chronicle-celebration-jump 3s linear infinite;
