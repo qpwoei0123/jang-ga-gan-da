@@ -19,8 +19,8 @@ export default function WeddingSong() {
         started = true;
         const params = new URLSearchParams({ autoplay: "1", controls: "1", playsinline: "1", enablejsapi: "1", origin: window.location.origin });
         setSource(`${HOST}/embed/${VIDEO}?${params}`);
-      } else if (entry.intersectionRatio < .5) pause();
-    }, { threshold: [0, .5, .6] });
+      }
+    }, { threshold: [.6] });
     const visibility = () => { if (document.hidden) pause(); };
     observer.observe(el);
     document.addEventListener("visibilitychange", visibility);
