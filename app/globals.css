@@ -476,3 +476,10 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 }
 
 .canvas-article { margin-top:calc(24 * var(--paper-unit)); }
+
+.cover-carousel-viewport { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; overscroll-behavior-x:contain; }
+.cover-carousel-viewport::-webkit-scrollbar { display:none; }
+.cover-carousel-viewport img { flex:0 0 100%; min-width:0; scroll-snap-align:start; scroll-snap-stop:always; }
+.cover-carousel-controls { position:absolute; bottom:12px; right:12px; display:flex; align-items:center; color:var(--paper); background:rgb(23 23 22 / 78%); }
+.cover-carousel-controls button { width:44px; height:44px; border:0; background:transparent; color:inherit; font:26px/1 var(--sans); cursor:pointer; }
+.cover-carousel-controls span { min-width:32px; text-align:center; font:11px/1 var(--sans); font-variant-numeric:tabular-nums; }
