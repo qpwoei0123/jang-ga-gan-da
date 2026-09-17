@@ -76,16 +76,20 @@ export default function CenterfoldGallery() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let played = false;
     let completed = false;
+    let disposed = false;
+    let visible = false;
+    let watchdog: ReturnType<typeof setTimeout> | undefined;
     let animations: Animation[] = [];
     const finish = () => {
-      if (completed) return;
+      if (completed || disposed) return;
       completed = true;
+      clearTimeout(watchdog);
       animations.forEach(animation => animation.cancel());
       setLine("");
       setEntranceDone(true);
     };
     const start = () => {
-      if (played || completed || document.hidden) return;
+      if (played || completed || disposed || document.hidden) return;
       if (reduced.matches || journey.getBoundingClientRect().top < window.innerHeight * .45) {
         finish(); return;
       }
@@ -100,6 +104,8 @@ export default function CenterfoldGallery() {
       const move = (dx: number, dy: number, turn = 0) => `translate(${dx}px, ${dy}px) rotate(${turn}deg)`;
       setLine("영차…!");
       const duration = 2300;
+      watchdog = setTimeout(finish, duration + 400);
+      try {
       const dogMotion = dog.animate([
         { transform:move(x,y), opacity:0, offset:0 },
         { transform:move(x,y), opacity:1, offset:.08 },
@@ -111,6 +117,7 @@ export default function CenterfoldGallery() {
         { transform:move(endX,-8*scale,4), opacity:1, offset:.85 },
         { transform:move(endX,0), opacity:1, offset:1 },
       ], { duration, fill:"both", easing:"ease-in-out" });
+      animations.push(dogMotion);
       const videoMotion = screen.animate([
         { transform:"rotate(0deg)", boxShadow:"0 1px 2px #17171612", offset:0 },
         { transform:"rotate(-.7deg)", offset:.16 },
@@ -123,27 +130,35 @@ export default function CenterfoldGallery() {
         { transform:"rotate(-.8deg)", offset:.92, easing:"cubic-bezier(.55,0,1,.45)" },
         { transform:"rotate(0deg)", boxShadow:"0 0 0 transparent", offset:1 },
       ], { duration, fill:"both" });
-      animations = [dogMotion, videoMotion];
-      dogMotion.finished.then(finish).catch(() => {});
+      animations.push(videoMotion);
+      Promise.all(animations.map(animation => animation.finished)).then(finish, finish);
+      } catch { finish(); }
     };
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.intersectionRatio >= .65) start();
+      visible = entry.intersectionRatio >= .65;
+      if (visible) start();
       else if (played && !entry.isIntersecting) finish();
     }, { threshold:[0,.65] });
     observer.observe(song);
     const skipPast = () => {
-      if (!played && journey.getBoundingClientRect().top < window.innerHeight * .45) finish();
+      if (journey.getBoundingClientRect().top < window.innerHeight * .45) finish();
     };
     const interrupt = () => { if (played) finish(); };
-    const hidden = () => { if (document.hidden) interrupt(); };
+    const hidden = () => {
+      if (document.hidden) interrupt();
+      else if (visible) start();
+    };
     song.addEventListener("pointerdown", finish);
     window.addEventListener("blur", interrupt);
     window.addEventListener("resize", interrupt);
     window.addEventListener("scroll", skipPast, { passive:true });
     document.addEventListener("visibilitychange", hidden);
     reduced.addEventListener("change", finish);
-    skipPast();
+    if (reduced.matches) finish();
+    else skipPast();
     return () => {
+      disposed = true;
+      clearTimeout(watchdog);
       observer.disconnect(); animations.forEach(animation => animation.cancel());
       song.removeEventListener("pointerdown", finish);
       window.removeEventListener("blur", interrupt);
