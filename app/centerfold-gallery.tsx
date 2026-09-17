@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import WeddingSong from "./wedding-song";
+import { useDogSpeech } from "./dog-speech";
 import { useAssetsReady } from "./asset-loader";
 
 const years = Array.from({ length: 12 }, (_, i) => 2015 + i);
@@ -60,7 +61,7 @@ export default function CenterfoldGallery() {
   const [active, setActive] = useState(2015);
   const [entranceDone, setEntranceDone] = useState(false);
   const [arrived, setArrived] = useState(false);
-  const [line, setLine] = useState("");
+  const { layerRef: speechLayerRef, emit: emitSpeech } = useDogSpeech();
   const [petted, setPetted] = useState(false);
   const [pressed, setPressed] = useState(false);
   const petAnimation = useRef<Animation | null>(null);
@@ -130,6 +131,8 @@ export default function CenterfoldGallery() {
     let phase: "waiting" | "lifting" | "following" = "waiting";
     let finished = false;
     let routeCursor = 0;
+    const spoken = new Set<string>();
+    let speechCues: { id:string; at:number; text:string }[] = [];
     let routePoints: { x:number; y:number }[] = [];
     let heading = 0;
     let walking = false;
@@ -201,7 +204,7 @@ export default function CenterfoldGallery() {
         screen.style.transform = `rotate(${angle}deg)`;
         screen.style.boxShadow = `0 ${shadow}px ${shadow*.8}px rgb(23 23 22 / 16%)`;
         dog.style.opacity = String(Math.min(1,t/.08));
-        setLine("영차…!");
+
         if (t === 1) {
           // Change only the destination source; never reset the body's position or velocity.
           phase = "following";
@@ -240,7 +243,7 @@ export default function CenterfoldGallery() {
         rowTops.forEach((top,i) => { if (Math.abs(rect.top+top-center) < Math.abs(rect.top+rowTops[closest]-center)) closest=i; });
         const currentYear = Number(rows[closest].dataset.year);
         setActive(currentYear);
-        setLine(finished ? "" : YEAR_DIALOGUE[currentYear] || DIALOGUE.find(cue=>Math.abs(cue.at-scrollProgress)<.018)?.text || "");
+
       }
       if (reduced) { body.x=targetX; body.y=targetY; body.vx=0; body.vy=0; }
       else {
@@ -252,7 +255,10 @@ export default function CenterfoldGallery() {
         }
       }
       dog.style.transform = `translate(${body.x}px, ${body.y}px) rotate(${lean}deg)`;
-      dog.style.setProperty("--dog-offset",`${body.x}px`);
+      if (phase === "lifting" && elapsed >= .8 && !spoken.has("intro")) {
+        spoken.add("intro");
+        emitSpeech("영차…!", "location", dog);
+      }
       const speed = Math.hypot(body.vx,body.vy);
       if (phase === "following" && !reduced && chaseArmed && !chaseSweated && now>=sweatUntil && speed>220*scale) {
         sweatUntil=now+2000;
@@ -278,6 +284,12 @@ export default function CenterfoldGallery() {
         // Record crossed route intervals, regardless of visibility or frame rate.
         const low=Math.min(trailCursor,routeCursor)/(routePoints.length-1);
         const high=Math.max(trailCursor,routeCursor)/(routePoints.length-1);
+        speechCues.forEach(cue => {
+          if (!spoken.has(cue.id) && cue.at>=low && cue.at<=high) {
+            spoken.add(cue.id);
+            emitSpeech(cue.text, "location", dog);
+          }
+        });
         paws.forEach((paw,i) => {
           const position=i/paws.length;
           if (!pawSeen.has(i) && position>=low && position<=high) {
@@ -310,6 +322,15 @@ export default function CenterfoldGallery() {
         const point=path.getPointAtLength(length*i/800);
         return { x:point.x*laneWidth/80-laneWidth/2, y:point.y*journeyRect.height/2600 };
       });
+      speechCues = DIALOGUE.map((cue,i) => {
+        const chapter=Math.min(25,Math.floor(cue.at*26));
+        return { id:`route-${i}`, text:cue.text, at:(stops[chapter]+(stops[chapter+1]-stops[chapter])*(cue.at*26-chapter))/length };
+      });
+      Object.entries(YEAR_DIALOGUE).forEach(([year,text]) => {
+        const rowIndex=rows.findIndex(row=>row.dataset.year===year);
+        const index=routePoints.findIndex(point=>point.y>=rowTops[rowIndex]+80*paperScale);
+        speechCues.push({ id:year, text, at:Math.max(0,index)/(routePoints.length-1) });
+      });
       paws.forEach((paw, i) => {
         const distance = length * i / paws.length;
         const point = path.getPointAtLength(distance);
@@ -336,9 +357,8 @@ export default function CenterfoldGallery() {
       petAnimation.current?.cancel();
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [assetsReady]);
+  }, [assetsReady, emitSpeech]);
 
-  useEffect(() => { setPetted(false); }, [active]);
   const haptic = (pattern: number | number[]) => {
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && typeof navigator.vibrate === "function") {
       navigator.vibrate(pattern);
@@ -348,6 +368,11 @@ export default function CenterfoldGallery() {
   const pet = () => {
     setPressed(false);
     setPetted(true);
+    const faceSource=dogRef.current?.querySelector<HTMLElement>(".chronicle-dog-gait > img");
+    if (faceSource) {
+      const phrases=["헤헤, 또! ♥", "좋아아~", "간식도 줘~", "으헤헤!"];
+      emitSpeech(phrases[Math.floor(Math.random()*phrases.length)], "interaction", faceSource);
+    }
     haptic([9, 45, 7, 55, 5]);
     petAnimation.current?.cancel();
     const face = dogRef.current?.querySelector(".chronicle-dog-touch");
@@ -366,6 +391,7 @@ export default function CenterfoldGallery() {
 
   return (
     <section ref={sectionRef} id="photo-edition" className="chronicle" aria-labelledby="chronicle-title">
+      <div ref={speechLayerRef} className="chronicle-speech-layer" aria-live="polite" aria-relevant="additions"/>
       <header className="section-kicker">우리의 시간</header>
       <div className="chronicle-heading"><h2 id="chronicle-title">열아홉에서<br/>서른까지</h2><p>2015—2026</p><div className="chronicle-intro">열아홉에 만나 이십 대의 모든 날을 함께했습니다.<br/>그리고 서른, 부부가 됩니다.</div></div>
       <WeddingSong />
@@ -399,7 +425,6 @@ export default function CenterfoldGallery() {
         }} onKeyUp={release}>
         <span className="chronicle-dog-sweat" aria-hidden="true"><i/><i/><i/></span>
         <span className="chronicle-dog-touch"><span className="chronicle-dog-gait"><img src="/history/ddui.webp" alt="" width="480" height="480" draggable="false"/></span></span>
-        {(petted || line) && <span className="chronicle-dog-bubble" role="status">{petted ? "헤헤, 또! ♥" : line}</span>}
       </button>
       </div>
       <footer className="chronicle-end" id="chronicle-finale" data-arrived={arrived}><p className="chronicle-finale-speech" aria-hidden={!arrived} aria-label="뚜이의 말: 그리고 지금 형누나가 결혼합니다!"><svg className="finale-balloon" viewBox="0 0 346 202" preserveAspectRatio="none" aria-hidden="true"><path d="M 34 24 C 90 18 204 23 268 24 Q 295 24 307 4 Q 312 26 303 31 C 330 33 338 45 339 65 L 339 159 Q 338 187 310 190 C 225 196 112 190 37 190 Q 8 190 7 162 L 7 58 Q 8 28 34 24 Z" /></svg><span className="finale-composition"><span className="finale-lead">그리고 지금,</span><strong className="finale-message">형누나가<br/>결혼합니다!</strong><span className="finale-charms" aria-hidden="true">

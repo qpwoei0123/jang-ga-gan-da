@@ -247,7 +247,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-stream-paw { fill:var(--muted); opacity:0; }
 .chronicle-dog { position:absolute; top:0; right:var(--space-12); width:calc(48 * var(--paper-unit)); height:calc(48 * var(--paper-unit)); margin-top:calc(-24 * var(--paper-unit)); padding:0; border:0; background:var(--paper); border-radius:50%; cursor:pointer; touch-action:pan-y; -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none; }
 .chronicle-dog-gait > img { width:calc(48 * var(--paper-unit)); height:calc(48 * var(--paper-unit)); object-fit:contain; }
-.chronicle-dog-bubble { position:absolute; bottom:calc(54 * var(--paper-unit)); right:0; padding:calc(6 * var(--paper-unit)) calc(9 * var(--paper-unit)); width:max-content; max-width:calc(150 * var(--paper-unit)); background:var(--paper); border:1px solid var(--line); border-radius:0; color:var(--ink); font:600 calc(12 * var(--paper-unit))/1.4 var(--sans); }
 /* Keep the hit target still while the face compresses and the feet patter. */
 .chronicle-dog-touch, .chronicle-dog-gait { display:block; width:100%; height:100%; transform-origin:50% 78%; }
 .chronicle-dog-touch { transition:transform 240ms cubic-bezier(.2,1.5,.4,1); }
@@ -386,7 +385,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-intro { margin-top:calc(14 * var(--paper-unit)); font:calc(14 * var(--paper-unit))/1.7 var(--text); color:var(--muted); }
 .chronicle-dog-gait > img { transform:rotate(var(--dog-turn,0deg)); }
 .chronicle-dog[data-backtracking="true"] .chronicle-dog-gait > img { scale:-1 1; }
-.chronicle-dog-bubble { max-width:calc(160 * var(--paper-unit)); white-space:normal; text-align:center; }
 @media(prefers-reduced-motion:reduce) { .chronicle-dog-gait > img { transition:none; transform:none; scale:1; } }
 
 /* Quiet section markers for the continuous newspaper. */
@@ -446,8 +444,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-year[data-format="landscape"] { padding-top:var(--space-8); padding-bottom:calc(40 * var(--paper-unit)); }
 .chronicle-year-label { border-top:0; padding-top:0; }
 .chronicle-year[data-featured="true"] .chronicle-year-label { border-top:var(--rule-single); padding-top:calc(10 * var(--paper-unit)); }
-.chronicle-dog-bubble { right:calc(var(--dog-offset, 0px) - 12 * var(--paper-unit)); width:calc(72 * var(--paper-unit)); max-width:none; padding:var(--space-8) calc(5 * var(--paper-unit)); border:1px solid var(--line-strong); border-radius:45% 40% 38% 44% / 22% 26% 20% 24%; font-size:calc(11 * var(--paper-unit)); line-height:1.5; word-break:keep-all; box-shadow:0 calc(3 * var(--paper-unit)) calc(5 * var(--paper-unit)) rgb(23 23 22 / 5%); }
-.chronicle-dog-bubble::after { content:""; position:absolute; bottom:calc(-5 * var(--paper-unit)); left:48%; width:var(--space-8); height:var(--space-8); transform:rotate(45deg); background:var(--paper); border-right:1px solid var(--line-strong); border-bottom:1px solid var(--line-strong); }
 .details-page { min-height:0; }
 .announcement-note { padding:var(--space-32) 0 calc(30 * var(--paper-unit)); text-align:center; }
 .announcement-note p { margin:0 0 calc(20 * var(--paper-unit)); color:var(--muted); font: max(12px, calc(14 * var(--paper-unit)))/1.9 var(--text); }
@@ -547,3 +543,8 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-dog[data-sweating=true] .chronicle-dog-sweat i { animation:chronicle-sweat 650ms ease-out infinite; }
 @keyframes chronicle-sweat { 0% { opacity:0; transform:translateY(-3px) scale(.6) rotate(-20deg); } 20% { opacity:.8; } 100% { opacity:0; transform:translateY(12px) scale(.85) rotate(-20deg); } }
 @media(prefers-reduced-motion:reduce) { .chronicle-dog-sweat { display:none; } }
+
+.chronicle-speech-layer { position:absolute; inset:0; z-index:7; pointer-events:none; }
+.chronicle-word { position:absolute; display:block; color:var(--ink); font:400 calc(23 * var(--paper-unit))/1.4 var(--handwriting); pointer-events:none; transform-origin:center; }
+.chronicle-word-location { width:max-content; max-width:calc(174 * var(--paper-unit)); text-align:right; word-break:keep-all; }
+.chronicle-word-interaction { white-space:nowrap; }
