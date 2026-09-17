@@ -103,7 +103,7 @@ export default function CenterfoldGallery() {
       const endX = -5.4 * scale;
       const move = (dx: number, dy: number, turn = 0) => `translate(${dx}px, ${dy}px) rotate(${turn}deg)`;
       setLine("영차…!");
-      const duration = 2300;
+      const duration = 4200;
       watchdog = setTimeout(finish, duration + 400);
       try {
       const dogMotion = dog.animate([
@@ -137,20 +137,24 @@ export default function CenterfoldGallery() {
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.intersectionRatio >= .65;
       if (visible) start();
-      else if (played && !entry.isIntersecting) finish();
+
     }, { threshold:[0,.65] });
     observer.observe(song);
     const skipPast = () => {
-      if (journey.getBoundingClientRect().top < window.innerHeight * .45) finish();
+      if (!played && journey.getBoundingClientRect().top < window.innerHeight * .45) finish();
     };
     const interrupt = () => { if (played) finish(); };
     const hidden = () => {
       if (document.hidden) interrupt();
       else if (visible) start();
     };
-    song.addEventListener("pointerdown", finish);
     window.addEventListener("blur", interrupt);
-    window.addEventListener("resize", interrupt);
+    let layoutWidth = window.innerWidth;
+    const resized = () => {
+      if (window.innerWidth !== layoutWidth) interrupt();
+      layoutWidth = window.innerWidth;
+    };
+    window.addEventListener("resize", resized);
     window.addEventListener("scroll", skipPast, { passive:true });
     document.addEventListener("visibilitychange", hidden);
     reduced.addEventListener("change", finish);
@@ -160,9 +164,8 @@ export default function CenterfoldGallery() {
       disposed = true;
       clearTimeout(watchdog);
       observer.disconnect(); animations.forEach(animation => animation.cancel());
-      song.removeEventListener("pointerdown", finish);
       window.removeEventListener("blur", interrupt);
-      window.removeEventListener("resize", interrupt);
+      window.removeEventListener("resize", resized);
       window.removeEventListener("scroll", skipPast);
       document.removeEventListener("visibilitychange", hidden);
       reduced.removeEventListener("change", finish);
@@ -229,8 +232,17 @@ export default function CenterfoldGallery() {
     const paws = Array.from(journey.querySelectorAll<SVGGElement>(".chronicle-stream-paw"));
     let frame = 0;
     let finished = false;
-    const update = () => {
+    let position = 0;
+    let velocity = 0;
+    let lastTime = 0;
+    const pawSeen = new Set<number>();
+    const update = (now: number) => {
       frame = 0;
+      if (document.hidden) {
+        lastTime = 0;
+        dog.dataset.walking = "false";
+        return;
+      }
       const reduced = motionPreference.matches;
       const center = window.innerHeight * .45;
       const closest = rows.reduce((best, row) => {
@@ -244,17 +256,47 @@ export default function CenterfoldGallery() {
       setActive(currentYear);
       const rect = journey.getBoundingClientRect();
       const scrollProgress = Math.max(0, Math.min(1, (center - rect.top) / rect.height));
-      if (!finished && scrollProgress >= 1) {
-        finished = true;
-        setArrived(true);
+      // Scroll sets a destination; the dog keeps its own position and velocity.
+      const dt = lastTime ? Math.min((now - lastTime) / 1000, .032) : 1 / 60;
+      lastTime = now;
+      const dogRect = dog.getBoundingClientRect();
+      const farAway = Math.abs(scrollProgress - position) * rect.height > window.innerHeight * 1.5;
+      if (!reduced && farAway && (dogRect.bottom < 0 || dogRect.top > window.innerHeight)) {
+        // Rejoin just outside the viewport after a large jump, never teleport in view.
+        const direction = Math.sign(scrollProgress - position);
+        position = Math.max(0, Math.min(1, scrollProgress - direction * window.innerHeight * .85 / rect.height));
+        velocity = 0;
+        previousDistance = null;
+      }
+      if (reduced) {
+        position = scrollProgress;
+        velocity = 0;
+      } else {
+        velocity += ((scrollProgress - position) * 64 - velocity * 14) * dt;
+        position += velocity * dt;
+        if (position < 0 || position > 1) {
+          position = Math.max(0, Math.min(1, position));
+          velocity = 0;
+        }
+        if (Math.abs(scrollProgress - position) * rect.height < .35 && Math.abs(velocity) * rect.height < 2) {
+          position = scrollProgress;
+          velocity = 0;
+        }
+      }
+      const progress = position;
+      const atEnd = progress >= .99999 && scrollProgress === 1 && velocity === 0;
+      if (atEnd !== finished) {
+        finished = atEnd;
+        setArrived(atEnd);
         setPetted(false);
       }
-      const progress = finished ? 1 : scrollProgress;
       const chapter = Math.min(25, Math.floor(progress * 26));
       const local = progress * 26 - chapter;
       const distance = stops[chapter] + (stops[chapter + 1] - stops[chapter]) * local;
       const walking = !reduced && !finished && !document.hidden && rect.bottom > 0 && rect.top < window.innerHeight
         && previousDistance !== null && Math.abs(distance - previousDistance) > .15;
+      const lastDistance = previousDistance;
+      const direction = lastDistance !== null && distance < lastDistance ? -1 : 1;
       previousDistance = distance;
       if (walking) {
         dog.dataset.walking = "true";
@@ -264,7 +306,7 @@ export default function CenterfoldGallery() {
         dog.dataset.walking = "false";
       }
       const point = path.getPointAtLength(distance);
-      const next = path.getPointAtLength(Math.min(length, distance + 2));
+      const next = path.getPointAtLength(Math.max(0, Math.min(length, distance + direction * 2)));
       const laneWidth = path.ownerSVGElement!.getBoundingClientRect().width;
       const sx = laneWidth / 80, sy = journey.getBoundingClientRect().height / 2600;
       dog.style.transform = `translate(${point.x * sx - laneWidth / 2}px, ${point.y * sy}px)`;
@@ -273,7 +315,13 @@ export default function CenterfoldGallery() {
       dog.style.setProperty("--dog-turn", `${turn}deg`);
       dog.dataset.backtracking = String(!reduced && !finished && next.y < point.y);
       setLine(finished ? "" : YEAR_DIALOGUE[currentYear] || DIALOGUE.find(cue => Math.abs(cue.at - progress) < .018)?.text || "");
-      paws.forEach((paw, i) => { paw.style.opacity = distance >= length * i / paws.length ? ".55" : "0"; });
+      paws.forEach((paw, i) => {
+        const step = length * i / paws.length;
+        if (lastDistance !== null && step >= Math.min(lastDistance, distance) && step <= Math.max(lastDistance, distance)) pawSeen.add(i);
+        paw.style.opacity = pawSeen.has(i) ? ".55" : "0";
+      });
+      if (!reduced && (position !== scrollProgress || velocity !== 0)) frame = requestAnimationFrame(update);
+      else lastTime = 0;
 
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
