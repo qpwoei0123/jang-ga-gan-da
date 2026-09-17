@@ -8,7 +8,7 @@ type SpeechKind = "location" | "interaction";
 export function useDogSpeech() {
   const layerRef = useRef<HTMLDivElement>(null);
   const utterances = useRef(new Map<HTMLElement, { kind: SpeechKind; animation: Animation }>());
-  const emit = useCallback((text: string, kind: SpeechKind, source: HTMLElement) => {
+  const emit = useCallback((text: string, kind: SpeechKind, source: HTMLElement, atViewportEdge = false) => {
     const layer = layerRef.current;
     if (!layer) return;
     const siblings = [...utterances.current].filter(([, item]) => item.kind === kind);
@@ -19,7 +19,8 @@ export function useDogSpeech() {
     const rect = source.getBoundingClientRect(), paper = layer.getBoundingClientRect();
     const scale = rect.width / 48;
     const x = rect.left - paper.left + rect.width / 2;
-    const y = rect.top - paper.top + rect.height / 2;
+    const centerY = rect.top + rect.height / 2;
+    const y = (atViewportEdge ? Math.max(40, Math.min(window.innerHeight-40, centerY)) : centerY) - paper.top;
     const word = document.createElement("span");
     word.className = `chronicle-word chronicle-word-${kind}`;
     word.textContent = text;

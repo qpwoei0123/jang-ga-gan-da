@@ -136,6 +136,9 @@ export default function CenterfoldGallery() {
     let routePoints: { x:number; y:number }[] = [];
     let heading = 0;
     let walking = false;
+    let offscreenSince = 0;
+    let calledFromOffscreen = false;
+    let nextOffscreenCall = 0;
     let backtracking = false;
     let trailCursor = 0;
     let chaseArmed = false;
@@ -278,6 +281,22 @@ export default function CenterfoldGallery() {
       dog.dataset.backtracking = String(backtracking);
       dog.dataset.walking = String(walking);
       dog.dataset.motionPhase = phase;
+      const dogTop = originY+body.y;
+      const dogBottom = dogTop+48*scale;
+      const offscreen = dogBottom<0 || dogTop>window.innerHeight;
+      if (!offscreen) {
+        offscreenSince=0;
+        if (dogTop>24 && dogBottom<window.innerHeight-24) calledFromOffscreen=false;
+      } else if (walking && !finished) {
+        if (!offscreenSince) offscreenSince=now;
+        const paperRect=section.getBoundingClientRect();
+        const visiblePaper=paperRect.top<40 && paperRect.bottom>window.innerHeight-40;
+        if (visiblePaper && !calledFromOffscreen && now-offscreenSince>=300 && now>=nextOffscreenCall) {
+          emitSpeech("같이가~", "location", dog, true);
+          calledFromOffscreen=true;
+          nextOffscreenCall=now+5000;
+        }
+      }
       const atEnd = phase === "following" && scrollProgress === 1 && Math.hypot(body.x-goalX,body.y-goalY)<.25 && body.vy === 0 && body.vx === 0;
       if (atEnd !== finished) { finished=atEnd; setArrived(atEnd); setPetted(false); }
       if (phase === "following") {
