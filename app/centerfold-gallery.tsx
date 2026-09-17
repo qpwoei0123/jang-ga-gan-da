@@ -67,112 +67,6 @@ export default function CenterfoldGallery() {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (!assetsReady) return;
-    const song = sectionRef.current?.querySelector<HTMLElement>(".wedding-song");
-    const screen = song?.querySelector<HTMLElement>(".wedding-song-screen");
-    const dog = dogRef.current;
-    const journey = journeyRef.current;
-    if (!song || !screen || !dog || !journey) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let played = false;
-    let completed = false;
-    let disposed = false;
-    let visible = false;
-    let watchdog: ReturnType<typeof setTimeout> | undefined;
-    let animations: Animation[] = [];
-    const finish = () => {
-      if (completed || disposed) return;
-      completed = true;
-      clearTimeout(watchdog);
-      animations.forEach(animation => animation.cancel());
-      setLine("");
-      setEntranceDone(true);
-    };
-    const start = () => {
-      if (played || completed || disposed || document.hidden) return;
-      if (reduced.matches || journey.getBoundingClientRect().top < window.innerHeight * .45) {
-        finish(); return;
-      }
-      if (document.activeElement === screen.querySelector("iframe")) { finish(); return; }
-      played = true;
-      const video = screen.getBoundingClientRect();
-      const origin = dog.getBoundingClientRect();
-      const scale = origin.width / 48;
-      const x = video.right - origin.left - origin.width * .9;
-      const y = video.bottom - origin.top - origin.height * .8;
-      const endX = -5.4 * scale;
-      const move = (dx: number, dy: number, turn = 0) => `translate(${dx}px, ${dy}px) rotate(${turn}deg)`;
-      setLine("영차…!");
-      const duration = 4200;
-      watchdog = setTimeout(finish, duration + 400);
-      try {
-      const dogMotion = dog.animate([
-        { transform:move(x,y), opacity:0, offset:0 },
-        { transform:move(x,y), opacity:1, offset:.08 },
-        { transform:move(x+7*scale,y-2*scale,-7), opacity:1, offset:.18 },
-        { transform:move(x,y), opacity:1, offset:.25 },
-        { transform:move(x+14*scale,y-10*scale,9), opacity:1, offset:.42 },
-        { transform:move(endX,y-25*scale,-10), opacity:1, offset:.58, easing:"cubic-bezier(.55,0,1,.45)" },
-        { transform:move(endX,0), opacity:1, offset:.76 },
-        { transform:move(endX,-8*scale,4), opacity:1, offset:.85 },
-        { transform:move(endX,0), opacity:1, offset:1 },
-      ], { duration, fill:"both", easing:"ease-in-out" });
-      animations.push(dogMotion);
-      const videoMotion = screen.animate([
-        { transform:"rotate(0deg)", boxShadow:"0 1px 2px #17171612", offset:0 },
-        { transform:"rotate(-.7deg)", offset:.16 },
-        { transform:"rotate(0deg)", offset:.23 },
-        { transform:"rotate(-7deg)", boxShadow:"9px 17px 13px #17171628", offset:.43 },
-        { transform:"rotate(-7.5deg)", offset:.56, easing:"cubic-bezier(.55,0,1,.45)" },
-        { transform:"rotate(0deg)", boxShadow:"0 1px 2px #17171618", offset:.70, easing:"cubic-bezier(.16,1,.3,1)" },
-        { transform:"rotate(-2.6deg)", boxShadow:"3px 6px 5px #17171620", offset:.79, easing:"cubic-bezier(.55,0,1,.45)" },
-        { transform:"rotate(0deg)", offset:.87, easing:"cubic-bezier(.16,1,.3,1)" },
-        { transform:"rotate(-.8deg)", offset:.92, easing:"cubic-bezier(.55,0,1,.45)" },
-        { transform:"rotate(0deg)", boxShadow:"0 0 0 transparent", offset:1 },
-      ], { duration, fill:"both" });
-      animations.push(videoMotion);
-      Promise.all(animations.map(animation => animation.finished)).then(finish, finish);
-      } catch { finish(); }
-    };
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.intersectionRatio >= .65;
-      if (visible) start();
-
-    }, { threshold:[0,.65] });
-    observer.observe(song);
-    const skipPast = () => {
-      if (!played && journey.getBoundingClientRect().top < window.innerHeight * .45) finish();
-    };
-    const interrupt = () => { if (played) finish(); };
-    const hidden = () => {
-      if (document.hidden) interrupt();
-      else if (visible) start();
-    };
-    window.addEventListener("blur", interrupt);
-    let layoutWidth = window.innerWidth;
-    const resized = () => {
-      if (window.innerWidth !== layoutWidth) interrupt();
-      layoutWidth = window.innerWidth;
-    };
-    window.addEventListener("resize", resized);
-    window.addEventListener("scroll", skipPast, { passive:true });
-    document.addEventListener("visibilitychange", hidden);
-    reduced.addEventListener("change", finish);
-    if (reduced.matches) finish();
-    else skipPast();
-    return () => {
-      disposed = true;
-      clearTimeout(watchdog);
-      observer.disconnect(); animations.forEach(animation => animation.cancel());
-      window.removeEventListener("blur", interrupt);
-      window.removeEventListener("resize", resized);
-      window.removeEventListener("scroll", skipPast);
-      document.removeEventListener("visibilitychange", hidden);
-      reduced.removeEventListener("change", finish);
-    };
-  }, [assetsReady]);
-
-  useEffect(() => {
     const dog = dogRef.current;
     if (!arrived || !dog) return;
     const chooseSpin = () => { dog.style.setProperty("--celebration-turn", Math.random() < .1 ? "1080deg" : "0deg"); };
@@ -218,115 +112,151 @@ export default function CenterfoldGallery() {
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!assetsReady || !entranceDone || !section) return;
-    const rows = Array.from(section.querySelectorAll<HTMLElement>(".chronicle-year"));
     const journey = journeyRef.current;
     const path = pathRef.current;
     const dog = dogRef.current;
-    if (!journey || !path || !dog) return;
+    const song = section?.querySelector<HTMLElement>(".wedding-song");
+    const screen = song?.querySelector<HTMLElement>(".wedding-song-screen");
+    if (!assetsReady || !section || !journey || !path || !dog || !song || !screen) return;
+    const rows = Array.from(section.querySelectorAll<HTMLElement>(".chronicle-year"));
+    const paws = Array.from(journey.querySelectorAll<SVGGElement>(".chronicle-stream-paw"));
+    const pawSeen = new Set<number>();
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
     let length = 0;
     let stops: number[] = [];
-    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let previousDistance: number | null = null;
-    let walkingTimer: ReturnType<typeof setTimeout> | undefined;
-    const paws = Array.from(journey.querySelectorAll<SVGGElement>(".chronicle-stream-paw"));
     let frame = 0;
+    let lastTime = 0;
+    let elapsed = 0;
+    let phase: "waiting" | "lifting" | "following" = "waiting";
     let finished = false;
     let position = 0;
     let velocity = 0;
-    let lastTime = 0;
-    const pawSeen = new Set<number>();
+    // One persistent body, one clock, one transform writer for the entire journey.
+    const body = { x:0, y:0, vx:0, vy:0 };
+    const sample = (keys: number[][], t: number) => {
+      const i = keys.findIndex(key => key[0] >= t);
+      if (i <= 0) return keys[i < 0 ? keys.length - 1 : 0].slice(1);
+      const a = keys[i-1], b = keys[i];
+      const fraction = (t-a[0]) / (b[0]-a[0]);
+      const ease = fraction * fraction * (3 - 2 * fraction);
+      return a.slice(1).map((value, j) => value + (b[j+1]-value) * ease);
+    };
     const update = (now: number) => {
       frame = 0;
-      if (document.hidden) {
-        lastTime = 0;
-        dog.dataset.walking = "false";
-        return;
-      }
-      const reduced = motionPreference.matches;
-      const center = window.innerHeight * .45;
-      const closest = rows.reduce((best, row) => {
-        const distance = (item: HTMLElement) => {
-          const r = item.getBoundingClientRect();
-          return Math.abs((r.top + r.bottom) / 2 - center);
-        };
-        return distance(row) < distance(best) ? row : best;
-      }, rows[0]);
-      const currentYear = Number(closest.dataset.year);
-      setActive(currentYear);
-      const rect = journey.getBoundingClientRect();
-      const scrollProgress = Math.max(0, Math.min(1, (center - rect.top) / rect.height));
-      // Scroll sets a destination; the dog keeps its own position and velocity.
-      const dt = lastTime ? Math.min((now - lastTime) / 1000, .032) : 1 / 60;
+      if (document.hidden) { lastTime = 0; dog.dataset.walking = "false"; return; }
+      const dt = lastTime ? Math.min((now-lastTime)/1000, .032) : 1/60;
       lastTime = now;
-      const dogRect = dog.getBoundingClientRect();
-      const farAway = Math.abs(scrollProgress - position) * rect.height > window.innerHeight * 1.5;
-      if (!reduced && farAway && (dogRect.bottom < 0 || dogRect.top > window.innerHeight)) {
-        // Rejoin just outside the viewport after a large jump, never teleport in view.
-        const direction = Math.sign(scrollProgress - position);
-        position = Math.max(0, Math.min(1, scrollProgress - direction * window.innerHeight * .85 / rect.height));
-        velocity = 0;
-        previousDistance = null;
-      }
-      if (reduced) {
-        position = scrollProgress;
-        velocity = 0;
-      } else {
-        velocity += ((scrollProgress - position) * 64 - velocity * 14) * dt;
-        position += velocity * dt;
-        if (position < 0 || position > 1) {
-          position = Math.max(0, Math.min(1, position));
-          velocity = 0;
-        }
-        if (Math.abs(scrollProgress - position) * rect.height < .35 && Math.abs(velocity) * rect.height < 2) {
-          position = scrollProgress;
-          velocity = 0;
-        }
-      }
-      const progress = position;
-      const atEnd = progress >= .99999 && scrollProgress === 1 && velocity === 0;
-      if (atEnd !== finished) {
-        finished = atEnd;
-        setArrived(atEnd);
-        setPetted(false);
-      }
-      const chapter = Math.min(25, Math.floor(progress * 26));
-      const local = progress * 26 - chapter;
-      const distance = stops[chapter] + (stops[chapter + 1] - stops[chapter]) * local;
-      const walking = !reduced && !finished && !document.hidden && rect.bottom > 0 && rect.top < window.innerHeight
-        && previousDistance !== null && Math.abs(distance - previousDistance) > .15;
-      const lastDistance = previousDistance;
-      const direction = lastDistance !== null && distance < lastDistance ? -1 : 1;
-      previousDistance = distance;
-      if (walking) {
-        dog.dataset.walking = "true";
-        clearTimeout(walkingTimer);
-        walkingTimer = setTimeout(() => { dog.dataset.walking = "false"; }, 140);
-      } else if (reduced || finished || document.hidden) {
-        dog.dataset.walking = "false";
-      }
-      const point = path.getPointAtLength(distance);
-      const next = path.getPointAtLength(Math.max(0, Math.min(length, distance + direction * 2)));
+      const reduced = motionPreference.matches;
+      const rect = journey.getBoundingClientRect();
+      const paper = song.getBoundingClientRect();
       const laneWidth = path.ownerSVGElement!.getBoundingClientRect().width;
-      const sx = laneWidth / 80, sy = journey.getBoundingClientRect().height / 2600;
-      dog.style.transform = `translate(${point.x * sx - laneWidth / 2}px, ${point.y * sy}px)`;
-      dog.style.setProperty("--dog-offset", `${point.x * sx - laneWidth / 2}px`);
-      const turn = reduced || finished ? 0 : Math.max(-18, Math.min(18, (next.x - point.x) * 14));
-      dog.style.setProperty("--dog-turn", `${turn}deg`);
-      dog.dataset.backtracking = String(!reduced && !finished && next.y < point.y);
-      setLine(finished ? "" : YEAR_DIALOGUE[currentYear] || DIALOGUE.find(cue => Math.abs(cue.at - progress) < .018)?.text || "");
-      paws.forEach((paw, i) => {
-        const step = length * i / paws.length;
-        if (lastDistance !== null && step >= Math.min(lastDistance, distance) && step <= Math.max(lastDistance, distance)) pawSeen.add(i);
+      const scale = laneWidth / 72;
+      const center = window.innerHeight * .45;
+      const scrollProgress = Math.max(0, Math.min(1, (center-rect.top)/rect.height));
+      const endX = -5.4 * scale;
+      const originX = rect.left + dog.offsetLeft;
+      const originY = rect.top + dog.offsetTop;
+      const startX = paper.right-originX-48*scale*.9;
+      const startY = paper.bottom-originY-48*scale*.8;
+      if (phase === "waiting") {
+        const visible = Math.max(0, Math.min(paper.bottom,window.innerHeight)-Math.max(paper.top,0))/paper.height;
+        if (reduced || scrollProgress > 0) {
+          phase = "following";
+          body.x = endX;
+          setEntranceDone(true);
+        } else if (visible >= .65) {
+          phase = "lifting";
+          body.x = startX; body.y = startY;
+        } else { lastTime = 0; return; }
+      }
+      if (reduced && phase === "lifting") {
+        phase = "following";
+        setEntranceDone(true);
+      }
+      let targetX = endX, targetY = 0, lean = 0;
+      if (phase === "lifting") {
+        elapsed += dt;
+        const t = Math.min(1, elapsed / 4.2);
+        [targetX,targetY,lean] = sample([
+          [0,startX,startY,0],[.08,startX,startY,0],
+          [.18,startX+7*scale,startY-2*scale,-7],[.25,startX,startY,0],
+          [.42,startX+14*scale,startY-10*scale,9],
+          [.58,endX,startY-25*scale,-10],[.76,endX,0,0],
+          [.85,endX,-8*scale,4],[1,endX,0,0],
+        ],t);
+        const [angle,shadow] = sample([
+          [0,0,0],[.16,-.7,2],[.23,0,0],[.43,-7,17],[.56,-7.5,17],
+          [.70,0,1],[.79,-2.6,6],[.87,0,1],[.92,-.8,2],[1,0,0],
+        ],t);
+        screen.style.transform = `rotate(${angle}deg)`;
+        screen.style.boxShadow = `0 ${shadow}px ${shadow*.8}px rgb(23 23 22 / 16%)`;
+        dog.style.opacity = String(Math.min(1,t/.08));
+        setLine("영차…!");
+        if (t === 1) {
+          // Change only the destination source; never reset the body's position or velocity.
+          phase = "following";
+          setEntranceDone(true);
+        }
+      } else {
+        screen.style.removeProperty("transform");
+        screen.style.removeProperty("box-shadow");
+        dog.style.opacity = "1";
+        const dogTop = originY + body.y;
+        const farAway = Math.abs(scrollProgress-position)*rect.height > window.innerHeight*1.5;
+        if (!reduced && farAway && (dogTop+48*scale < 0 || dogTop > window.innerHeight)) {
+          position = Math.max(0,Math.min(1,scrollProgress-Math.sign(scrollProgress-position)*window.innerHeight*.85/rect.height));
+          velocity = 0;
+          const chapter = Math.min(25,Math.floor(position*26));
+          const point = path.getPointAtLength(stops[chapter]+(stops[chapter+1]-stops[chapter])*(position*26-chapter));
+          body.x = point.x*laneWidth/80-laneWidth/2;
+          body.y = point.y*rect.height/2600;
+          body.vx = 0; body.vy = 0;
+        }
+        if (reduced) { position = scrollProgress; velocity = 0; }
+        else {
+          velocity += ((scrollProgress-position)*64-velocity*14)*dt;
+          position += velocity*dt;
+          if (position < 0 || position > 1) { position = Math.max(0,Math.min(1,position)); velocity = 0; }
+          if (Math.abs(scrollProgress-position)*rect.height < .35 && Math.abs(velocity)*rect.height < 2) { position = scrollProgress; velocity = 0; }
+        }
+        const chapter = Math.min(25,Math.floor(position*26));
+        const distance = stops[chapter]+(stops[chapter+1]-stops[chapter])*(position*26-chapter);
+        const point = path.getPointAtLength(distance);
+        targetX = point.x*laneWidth/80-laneWidth/2;
+        targetY = point.y*rect.height/2600;
+        const closest = rows.reduce((best,row) => Math.abs(row.getBoundingClientRect().top-center) < Math.abs(best.getBoundingClientRect().top-center) ? row : best,rows[0]);
+        const currentYear = Number(closest.dataset.year);
+        setActive(currentYear);
+        setLine(finished ? "" : YEAR_DIALOGUE[currentYear] || DIALOGUE.find(cue=>Math.abs(cue.at-position)<.018)?.text || "");
+      }
+      if (reduced) { body.x=targetX; body.y=targetY; body.vx=0; body.vy=0; }
+      else {
+        body.vx += ((targetX-body.x)*180-body.vx*25)*dt;
+        body.vy += ((targetY-body.y)*180-body.vy*25)*dt;
+        body.x += body.vx*dt; body.y += body.vy*dt;
+        if (Math.hypot(targetX-body.x,targetY-body.y)<.25 && Math.hypot(body.vx,body.vy)<2) {
+          body.x=targetX; body.y=targetY; body.vx=0; body.vy=0;
+        }
+      }
+      dog.style.transform = `translate(${body.x}px, ${body.y}px) rotate(${lean}deg)`;
+      dog.style.setProperty("--dog-offset",`${body.x}px`);
+      dog.style.setProperty("--dog-turn",`${Math.max(-18,Math.min(18,body.vx*.12))}deg`);
+      dog.dataset.backtracking = String(body.vy < -2);
+      dog.dataset.walking = String(phase === "following" && !reduced && Math.hypot(body.vx,body.vy)>4);
+      dog.dataset.motionPhase = phase;
+      const atEnd = phase === "following" && position === 1 && scrollProgress === 1 && body.vy === 0 && body.vx === 0;
+      if (atEnd !== finished) { finished=atEnd; setArrived(atEnd); setPetted(false); }
+      if (phase === "following") paws.forEach((paw,i) => {
+        const point = path.getPointAtLength(length*i/paws.length);
+        if (Math.hypot(body.x-(point.x*laneWidth/80-laneWidth/2),body.y-point.y*rect.height/2600)<14*scale) pawSeen.add(i);
         paw.style.opacity = pawSeen.has(i) ? ".55" : "0";
       });
-      if (!reduced && (position !== scrollProgress || velocity !== 0)) frame = requestAnimationFrame(update);
-      else lastTime = 0;
-
+      if (phase === "lifting" || position !== scrollProgress || velocity !== 0 || body.vx !== 0 || body.vy !== 0 || body.x !== targetX || body.y !== targetY) frame=requestAnimationFrame(update);
+      else lastTime=0;
     };
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
-    const observer = new IntersectionObserver(schedule, { rootMargin: "-20% 0px -20% 0px", threshold: [0, .25, .5, .75, 1] });
-    rows.forEach(row => observer.observe(row));
+    const schedule = () => { if (!frame) frame=requestAnimationFrame(update); };
+    const observer = new IntersectionObserver(schedule,{threshold:[0,.65,1]});
+    observer.observe(song);
     const measure = () => {
       let d = "";
       stops = [0];
@@ -356,14 +286,15 @@ export default function CenterfoldGallery() {
     motionPreference.addEventListener("change", schedule);
     return () => {
       observer.disconnect(); resize.disconnect(); cancelAnimationFrame(frame);
+      screen.style.removeProperty("transform");
+      screen.style.removeProperty("box-shadow");
       window.removeEventListener("scroll", schedule);
       document.removeEventListener("visibilitychange", schedule);
       motionPreference.removeEventListener("change", schedule);
-      clearTimeout(walkingTimer);
       petAnimation.current?.cancel();
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [assetsReady, entranceDone]);
+  }, [assetsReady]);
 
   useEffect(() => { setPetted(false); }, [active]);
   const haptic = (pattern: number | number[]) => {
