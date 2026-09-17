@@ -254,12 +254,12 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .chronicle-dog:focus .chronicle-dog-touch { transform:scale(1.06); }
 .chronicle-dog:focus, .chronicle-dog:focus-visible { outline:none; }
 .chronicle-dog[data-pressed=true] .chronicle-dog-touch { transform:translateY(3px) scale(1.1,.84); transition-duration:80ms; transition-timing-function:ease-out; }
-.chronicle-dog[data-walking=true]:not([data-pressed=true]):not([data-petted=true]) .chronicle-dog-gait { animation:chronicle-trot 240ms linear infinite; }
+.chronicle-dog[data-walking=true]:not([data-pressed=true]):not([data-petted=true]) .chronicle-dog-gait { animation:chronicle-trot 420ms ease-in-out infinite; }
 @keyframes chronicle-trot {
-  0%, 50%, 100% { transform:translateY(1px) scale(1.035,.96); }
-  25% { transform:translate(-1px,-4px) rotate(-4deg) scale(.98,1.03); }
-  75% { transform:translate(1px,-4px) rotate(4deg) scale(.98,1.03); }
+  0%, 100% { transform:translateY(0); }
+  50% { transform:translateY(-2px); }
 }
+
 .chronicle-end { text-align:center; padding:calc(30 * var(--paper-unit)) 0 0; border-top:var(--rule-double); }
 .chronicle-end > span { color:var(--muted); font:600 calc(12 * var(--paper-unit))/1.5 var(--sans); letter-spacing:.07em; }
 .chronicle-end p { margin:calc(20 * var(--paper-unit)) 0 var(--space-24); font:500 calc(30 * var(--paper-unit))/1.4 var(--text); letter-spacing:-.03em; }
@@ -384,7 +384,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .cover-photo-caption text { font:16px var(--sans); fill:var(--muted); }
 
 .chronicle-intro { margin-top:calc(14 * var(--paper-unit)); font:calc(14 * var(--paper-unit))/1.7 var(--text); color:var(--muted); }
-.chronicle-dog-gait > img { transform:rotate(var(--dog-turn,0deg)); transition:transform .12s; }
+.chronicle-dog-gait > img { transform:rotate(var(--dog-turn,0deg)); }
 .chronicle-dog[data-backtracking="true"] .chronicle-dog-gait > img { scale:-1 1; }
 .chronicle-dog-bubble { max-width:calc(160 * var(--paper-unit)); white-space:normal; text-align:center; }
 @media(prefers-reduced-motion:reduce) { .chronicle-dog-gait > img { transition:none; transform:none; scale:1; } }

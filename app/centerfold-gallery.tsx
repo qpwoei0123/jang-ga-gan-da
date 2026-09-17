@@ -131,6 +131,11 @@ export default function CenterfoldGallery() {
     let finished = false;
     let position = 0;
     let velocity = 0;
+    let heading = 0;
+    let walking = false;
+    let backtracking = false;
+    let pawPoints: { x:number; y:number }[] = [];
+    let rowTops: number[] = [];
     // One persistent body, one clock, one transform writer for the entire journey.
     const body = { x:0, y:0, vx:0, vy:0 };
     const sample = (keys: number[][], t: number) => {
@@ -224,8 +229,9 @@ export default function CenterfoldGallery() {
         const point = path.getPointAtLength(distance);
         targetX = point.x*laneWidth/80-laneWidth/2;
         targetY = point.y*rect.height/2600;
-        const closest = rows.reduce((best,row) => Math.abs(row.getBoundingClientRect().top-center) < Math.abs(best.getBoundingClientRect().top-center) ? row : best,rows[0]);
-        const currentYear = Number(closest.dataset.year);
+        let closest = 0;
+        rowTops.forEach((top,i) => { if (Math.abs(rect.top+top-center) < Math.abs(rect.top+rowTops[closest]-center)) closest=i; });
+        const currentYear = Number(rows[closest].dataset.year);
         setActive(currentYear);
         setLine(finished ? "" : YEAR_DIALOGUE[currentYear] || DIALOGUE.find(cue=>Math.abs(cue.at-position)<.018)?.text || "");
       }
@@ -240,16 +246,23 @@ export default function CenterfoldGallery() {
       }
       dog.style.transform = `translate(${body.x}px, ${body.y}px) rotate(${lean}deg)`;
       dog.style.setProperty("--dog-offset",`${body.x}px`);
-      dog.style.setProperty("--dog-turn",`${Math.max(-18,Math.min(18,body.vx*.12))}deg`);
-      dog.dataset.backtracking = String(body.vy < -2);
-      dog.dataset.walking = String(phase === "following" && !reduced && Math.hypot(body.vx,body.vy)>4);
+      const speed = Math.hypot(body.vx,body.vy);
+      const wantedHeading = Math.max(-7,Math.min(7,body.vx*.035));
+      heading += (wantedHeading-heading)*(1-Math.exp(-8*dt));
+      if (speed < 2) heading = 0;
+      if (Math.abs(velocity)*rect.height > 45) backtracking = velocity < 0;
+      walking = phase === "following" && !reduced && speed > (walking ? 12 : 35);
+      dog.style.setProperty("--dog-turn",`${heading}deg`);
+      dog.dataset.backtracking = String(backtracking);
+      dog.dataset.walking = String(walking);
       dog.dataset.motionPhase = phase;
       const atEnd = phase === "following" && position === 1 && scrollProgress === 1 && body.vy === 0 && body.vx === 0;
       if (atEnd !== finished) { finished=atEnd; setArrived(atEnd); setPetted(false); }
       if (phase === "following") paws.forEach((paw,i) => {
-        const point = path.getPointAtLength(length*i/paws.length);
-        if (Math.hypot(body.x-(point.x*laneWidth/80-laneWidth/2),body.y-point.y*rect.height/2600)<14*scale) pawSeen.add(i);
-        paw.style.opacity = pawSeen.has(i) ? ".55" : "0";
+        const point = pawPoints[i];
+        if (!pawSeen.has(i) && point && Math.hypot(body.x-point.x,body.y-point.y)<14*scale) {
+          pawSeen.add(i); paw.style.opacity = ".55";
+        }
       });
       if (phase === "lifting" || position !== scrollProgress || velocity !== 0 || body.vx !== 0 || body.vy !== 0 || body.x !== targetX || body.y !== targetY) frame=requestAnimationFrame(update);
       else lastTime=0;
@@ -268,11 +281,15 @@ export default function CenterfoldGallery() {
       length = stops[stops.length - 1];
       const laneWidth = path.ownerSVGElement!.getBoundingClientRect().width;
       const paperScale = laneWidth / 72;
+      const journeyRect = journey.getBoundingClientRect();
+      rowTops = rows.map(row => row.getBoundingClientRect().top-journeyRect.top);
+      pawPoints = [];
       paws.forEach((paw, i) => {
         const distance = length * i / paws.length;
         const point = path.getPointAtLength(distance);
         const next = path.getPointAtLength(Math.min(length, distance + 2));
-        const scaleY = 2600 * paperScale / journey.getBoundingClientRect().height;
+        pawPoints.push({ x:point.x*laneWidth/80-laneWidth/2, y:point.y*journeyRect.height/2600 });
+        const scaleY = 2600 * paperScale / journeyRect.height;
         const angle = Math.atan2((next.y - point.y) / scaleY, (next.x - point.x) / (80 / 72)) * 180 / Math.PI + 90;
         paw.setAttribute("transform", `translate(${point.x} ${point.y}) scale(${80 / 72} ${scaleY}) rotate(${angle}) translate(${i % 2 ? 3 : -3} 0)`);
       });
