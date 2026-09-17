@@ -129,8 +129,8 @@ export default function CenterfoldGallery() {
     let elapsed = 0;
     let phase: "waiting" | "lifting" | "following" = "waiting";
     let finished = false;
-    let position = 0;
-    let velocity = 0;
+    let routeCursor = 0;
+    let routePoints: { x:number; y:number }[] = [];
     let heading = 0;
     let walking = false;
     let backtracking = false;
@@ -179,6 +179,8 @@ export default function CenterfoldGallery() {
         setEntranceDone(true);
       }
       let targetX = endX, targetY = 0, lean = 0;
+      let moreWaypoints = false;
+      let goalX = endX, goalY = 0;
       if (phase === "lifting") {
         elapsed += dt;
         const t = Math.min(1, elapsed / 4.2);
@@ -206,34 +208,42 @@ export default function CenterfoldGallery() {
         screen.style.removeProperty("transform");
         screen.style.removeProperty("box-shadow");
         dog.style.opacity = "1";
+        const chapter = Math.min(25,Math.floor(scrollProgress*26));
+        const distance = stops[chapter]+(stops[chapter+1]-stops[chapter])*(scrollProgress*26-chapter);
+        const goal = path.getPointAtLength(distance);
+        goalX = goal.x*laneWidth/80-laneWidth/2;
+        goalY = goal.y*rect.height/2600;
+        const goalIndex = Math.round(distance/length*(routePoints.length-1));
         const dogTop = originY + body.y;
-        const farAway = Math.abs(scrollProgress-position)*rect.height > window.innerHeight*1.5;
-        if (!reduced && farAway && (dogTop+48*scale < 0 || dogTop > window.innerHeight)) {
-          position = Math.max(0,Math.min(1,scrollProgress-Math.sign(scrollProgress-position)*window.innerHeight*.85/rect.height));
-          velocity = 0;
-          const chapter = Math.min(25,Math.floor(position*26));
-          const point = path.getPointAtLength(stops[chapter]+(stops[chapter+1]-stops[chapter])*(position*26-chapter));
-          body.x = point.x*laneWidth/80-laneWidth/2;
-          body.y = point.y*rect.height/2600;
-          body.vx = 0; body.vy = 0;
+        if (!reduced && Math.abs(goalY-body.y)>window.innerHeight*1.5 && (dogTop+48*scale<0 || dogTop>window.innerHeight)) {
+          const entryY = goalY-Math.sign(goalY-body.y)*window.innerHeight*.85;
+          routeCursor = routePoints.reduce((best,point,i) => Math.abs(point.y-entryY)<Math.abs(routePoints[best].y-entryY) ? i : best,0);
+          body.x=routePoints[routeCursor].x; body.y=routePoints[routeCursor].y;
+          body.vx=0; body.vy=0;
         }
-        if (reduced) { position = scrollProgress; velocity = 0; }
-        else {
-          velocity += ((scrollProgress-position)*64-velocity*14)*dt;
-          position += velocity*dt;
-          if (position < 0 || position > 1) { position = Math.max(0,Math.min(1,position)); velocity = 0; }
-          if (Math.abs(scrollProgress-position)*rect.height < .35 && Math.abs(velocity)*rect.height < 2) { position = scrollProgress; velocity = 0; }
+        // Cursor identifies the nearby path segment; it has no velocity or easing.
+        // Only the dog's body is integrated. Nearby waypoints preserve loops and turns.
+        let nearest = routeCursor;
+        const forward = goalIndex >= routeCursor;
+        const from = forward ? routeCursor : Math.max(goalIndex,routeCursor-8);
+        const to = forward ? Math.min(goalIndex,routeCursor+8) : routeCursor;
+        for (let i=from; i<=to; i++) {
+          if (Math.hypot(routePoints[i].x-body.x,routePoints[i].y-body.y)<Math.hypot(routePoints[nearest].x-body.x,routePoints[nearest].y-body.y)) nearest=i;
         }
-        const chapter = Math.min(25,Math.floor(position*26));
-        const distance = stops[chapter]+(stops[chapter+1]-stops[chapter])*(position*26-chapter);
-        const point = path.getPointAtLength(distance);
-        targetX = point.x*laneWidth/80-laneWidth/2;
-        targetY = point.y*rect.height/2600;
+        routeCursor=nearest;
+        const remaining = goalIndex-routeCursor;
+        if (Math.abs(remaining)>8 && !reduced) {
+          const waypoint = routePoints[routeCursor+Math.sign(remaining)*8];
+          targetX=waypoint.x; targetY=waypoint.y;
+          moreWaypoints=true;
+        } else { targetX=goalX; targetY=goalY; }
+        if (reduced) routeCursor=goalIndex;
+        if (Math.abs(remaining)>3) backtracking=remaining<0;
         let closest = 0;
         rowTops.forEach((top,i) => { if (Math.abs(rect.top+top-center) < Math.abs(rect.top+rowTops[closest]-center)) closest=i; });
         const currentYear = Number(rows[closest].dataset.year);
         setActive(currentYear);
-        setLine(finished ? "" : YEAR_DIALOGUE[currentYear] || DIALOGUE.find(cue=>Math.abs(cue.at-position)<.018)?.text || "");
+        setLine(finished ? "" : YEAR_DIALOGUE[currentYear] || DIALOGUE.find(cue=>Math.abs(cue.at-scrollProgress)<.018)?.text || "");
       }
       if (reduced) { body.x=targetX; body.y=targetY; body.vx=0; body.vy=0; }
       else {
@@ -250,13 +260,12 @@ export default function CenterfoldGallery() {
       const wantedHeading = Math.max(-7,Math.min(7,body.vx*.035));
       heading += (wantedHeading-heading)*(1-Math.exp(-8*dt));
       if (speed < 2) heading = 0;
-      if (Math.abs(velocity)*rect.height > 45) backtracking = velocity < 0;
       walking = phase === "following" && !reduced && speed > (walking ? 12 : 35);
       dog.style.setProperty("--dog-turn",`${heading}deg`);
       dog.dataset.backtracking = String(backtracking);
       dog.dataset.walking = String(walking);
       dog.dataset.motionPhase = phase;
-      const atEnd = phase === "following" && position === 1 && scrollProgress === 1 && body.vy === 0 && body.vx === 0;
+      const atEnd = phase === "following" && scrollProgress === 1 && Math.hypot(body.x-goalX,body.y-goalY)<.25 && body.vy === 0 && body.vx === 0;
       if (atEnd !== finished) { finished=atEnd; setArrived(atEnd); setPetted(false); }
       if (phase === "following") paws.forEach((paw,i) => {
         const point = pawPoints[i];
@@ -264,7 +273,7 @@ export default function CenterfoldGallery() {
           pawSeen.add(i); paw.style.opacity = ".55";
         }
       });
-      if (phase === "lifting" || position !== scrollProgress || velocity !== 0 || body.vx !== 0 || body.vy !== 0 || body.x !== targetX || body.y !== targetY) frame=requestAnimationFrame(update);
+      if (phase === "lifting" || moreWaypoints || body.vx !== 0 || body.vy !== 0 || body.x !== targetX || body.y !== targetY) frame=requestAnimationFrame(update);
       else lastTime=0;
     };
     const schedule = () => { if (!frame) frame=requestAnimationFrame(update); };
@@ -283,6 +292,10 @@ export default function CenterfoldGallery() {
       const paperScale = laneWidth / 72;
       const journeyRect = journey.getBoundingClientRect();
       rowTops = rows.map(row => row.getBoundingClientRect().top-journeyRect.top);
+      routePoints = Array.from({length:801},(_,i) => {
+        const point=path.getPointAtLength(length*i/800);
+        return { x:point.x*laneWidth/80-laneWidth/2, y:point.y*journeyRect.height/2600 };
+      });
       pawPoints = [];
       paws.forEach((paw, i) => {
         const distance = length * i / paws.length;
