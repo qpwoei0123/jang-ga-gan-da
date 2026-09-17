@@ -134,7 +134,10 @@ export default function CenterfoldGallery() {
     let heading = 0;
     let walking = false;
     let backtracking = false;
-    let pawPoints: { x:number; y:number }[] = [];
+    let trailCursor = 0;
+    let chaseArmed = false;
+    let chaseSweated = false;
+    let sweatUntil = 0;
     let rowTops: number[] = [];
     // One persistent body, one clock, one transform writer for the entire journey.
     const body = { x:0, y:0, vx:0, vy:0 };
@@ -214,13 +217,7 @@ export default function CenterfoldGallery() {
         goalX = goal.x*laneWidth/80-laneWidth/2;
         goalY = goal.y*rect.height/2600;
         const goalIndex = Math.round(distance/length*(routePoints.length-1));
-        const dogTop = originY + body.y;
-        if (!reduced && Math.abs(goalY-body.y)>window.innerHeight*1.5 && (dogTop+48*scale<0 || dogTop>window.innerHeight)) {
-          const entryY = goalY-Math.sign(goalY-body.y)*window.innerHeight*.85;
-          routeCursor = routePoints.reduce((best,point,i) => Math.abs(point.y-entryY)<Math.abs(routePoints[best].y-entryY) ? i : best,0);
-          body.x=routePoints[routeCursor].x; body.y=routePoints[routeCursor].y;
-          body.vx=0; body.vy=0;
-        }
+        if (Math.abs(goalY-body.y)>window.innerHeight*.65) chaseArmed=true;
         // Cursor identifies the nearby path segment; it has no velocity or easing.
         // Only the dog's body is integrated. Nearby waypoints preserve loops and turns.
         let nearest = routeCursor;
@@ -257,6 +254,16 @@ export default function CenterfoldGallery() {
       dog.style.transform = `translate(${body.x}px, ${body.y}px) rotate(${lean}deg)`;
       dog.style.setProperty("--dog-offset",`${body.x}px`);
       const speed = Math.hypot(body.vx,body.vy);
+      if (phase === "following" && !reduced && chaseArmed && !chaseSweated && now>=sweatUntil && speed>220*scale) {
+        sweatUntil=now+2000;
+        chaseSweated=true;
+      }
+      if (phase === "following" && Math.hypot(body.x-goalX,body.y-goalY)<40*scale && speed<35) {
+        chaseArmed=false;
+        chaseSweated=false;
+      }
+      if (reduced) sweatUntil=0;
+      dog.dataset.sweating=String(now<sweatUntil);
       const wantedHeading = Math.max(-7,Math.min(7,body.vx*.035));
       heading += (wantedHeading-heading)*(1-Math.exp(-8*dt));
       if (speed < 2) heading = 0;
@@ -267,13 +274,20 @@ export default function CenterfoldGallery() {
       dog.dataset.motionPhase = phase;
       const atEnd = phase === "following" && scrollProgress === 1 && Math.hypot(body.x-goalX,body.y-goalY)<.25 && body.vy === 0 && body.vx === 0;
       if (atEnd !== finished) { finished=atEnd; setArrived(atEnd); setPetted(false); }
-      if (phase === "following") paws.forEach((paw,i) => {
-        const point = pawPoints[i];
-        if (!pawSeen.has(i) && point && Math.hypot(body.x-point.x,body.y-point.y)<14*scale) {
-          pawSeen.add(i); paw.style.opacity = ".55";
-        }
-      });
-      if (phase === "lifting" || moreWaypoints || body.vx !== 0 || body.vy !== 0 || body.x !== targetX || body.y !== targetY) frame=requestAnimationFrame(update);
+      if (phase === "following") {
+        // Record crossed route intervals, regardless of visibility or frame rate.
+        const low=Math.min(trailCursor,routeCursor)/(routePoints.length-1);
+        const high=Math.max(trailCursor,routeCursor)/(routePoints.length-1);
+        paws.forEach((paw,i) => {
+          const position=i/paws.length;
+          if (!pawSeen.has(i) && position>=low && position<=high) {
+            pawSeen.add(i);
+            paw.style.opacity=".55";
+          }
+        });
+        trailCursor=routeCursor;
+      }
+      if (phase === "lifting" || now<sweatUntil || moreWaypoints || body.vx !== 0 || body.vy !== 0 || body.x !== targetX || body.y !== targetY) frame=requestAnimationFrame(update);
       else lastTime=0;
     };
     const schedule = () => { if (!frame) frame=requestAnimationFrame(update); };
@@ -296,12 +310,10 @@ export default function CenterfoldGallery() {
         const point=path.getPointAtLength(length*i/800);
         return { x:point.x*laneWidth/80-laneWidth/2, y:point.y*journeyRect.height/2600 };
       });
-      pawPoints = [];
       paws.forEach((paw, i) => {
         const distance = length * i / paws.length;
         const point = path.getPointAtLength(distance);
         const next = path.getPointAtLength(Math.min(length, distance + 2));
-        pawPoints.push({ x:point.x*laneWidth/80-laneWidth/2, y:point.y*journeyRect.height/2600 });
         const scaleY = 2600 * paperScale / journeyRect.height;
         const angle = Math.atan2((next.y - point.y) / scaleY, (next.x - point.x) / (80 / 72)) * 180 / Math.PI + 90;
         paw.setAttribute("transform", `translate(${point.x} ${point.y}) scale(${80 / 72} ${scaleY}) rotate(${angle}) translate(${i % 2 ? 3 : -3} 0)`);
@@ -385,6 +397,7 @@ export default function CenterfoldGallery() {
             setPressed(true);
           }
         }} onKeyUp={release}>
+        <span className="chronicle-dog-sweat" aria-hidden="true"><i/><i/><i/></span>
         <span className="chronicle-dog-touch"><span className="chronicle-dog-gait"><img src="/history/ddui.webp" alt="" width="480" height="480" draggable="false"/></span></span>
         {(petted || line) && <span className="chronicle-dog-bubble" role="status">{petted ? "헤헤, 또! ♥" : line}</span>}
       </button>
