@@ -496,9 +496,16 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .announcement-signature { font-size:max(15px,calc(17 * var(--paper-unit))); }
 .announcement-signature strong { font-weight:400; }
 
-.wedding-song { position:relative; z-index:6; box-sizing:content-box; width:200px; margin:0 auto var(--space-32); padding:8px; border:1px solid var(--rule-color); border-radius:6px; background:var(--paper); }
-.wedding-song-screen { width:200px; height:200px; background:var(--ink); }
+/* The rotating paper disc sits behind the complete, stationary player. */
+.wedding-song { position:relative; z-index:6; display:grid; place-items:center; width:300px; max-width:100%; aspect-ratio:1; margin:0 0 var(--space-32); isolation:isolate; }
+.wedding-song-record { position:absolute; inset:0; z-index:-1; border:1px solid var(--rule-color); border-radius:50%; pointer-events:none; background:repeating-radial-gradient(circle, transparent 0 5px, rgba(23,23,22,.13) 5px 6px, transparent 6px 9px),var(--paper); animation:wedding-record-turn 32s linear infinite; }
+.wedding-song-record::before { content:""; position:absolute; inset:9px; border:1px solid var(--rule-color); border-radius:50%; }
+.wedding-song-record::after { content:""; position:absolute; top:8px; left:50%; width:5px; height:5px; border-radius:50%; background:var(--ink); }
+.wedding-song-screen { position:relative; width:200px; height:200px; background:var(--ink); outline:6px solid var(--paper); }
 .wedding-song-screen iframe { display:block; width:100%; height:100%; min-height:200px; border:0; }
+@keyframes wedding-record-turn { to { transform:rotate(360deg); } }
+.asset-scene.is-preparing .wedding-song-record { animation-play-state:paused; }
+@media(prefers-reduced-motion:reduce) { .wedding-song-record { animation:none; } }
 
 .chronicle-dog[data-arrived=true] .chronicle-dog-gait {
   animation:chronicle-celebration-jump 900ms linear infinite;

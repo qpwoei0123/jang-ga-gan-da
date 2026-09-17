@@ -57,6 +57,7 @@ export default function WeddingSong() {
   }, [assetsReady, ready]);
 
   return <section className="wedding-song" aria-label="함께 듣는 음악">
+    <div className="wedding-song-record" aria-hidden="true" />
     <div ref={screen} className="wedding-song-screen" />
   </section>;
 }
