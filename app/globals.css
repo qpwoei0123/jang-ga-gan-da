@@ -525,3 +525,14 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
   .chronicle-dog[data-arrived=true] .chronicle-dog-gait,
   .chronicle-dog[data-arrived=true] .chronicle-dog-gait > img { animation:none; transform:none; }
 }
+
+.invitation-loader { background:var(--paper); }
+.invitation-loader progress { display:block; width:100%; height:3px; margin-top:24px; accent-color:var(--ink); }
+.invitation-loader-actions { display:flex; gap:8px; }
+.invitation-loader-actions button:last-child { color:var(--ink); background:transparent; }
+
+.invitation-loader h1 { word-break:keep-all; }
+.invitation-loader progress { appearance:none; border:0; background:var(--line); }
+.invitation-loader progress::-webkit-progress-bar { background:var(--line); }
+.invitation-loader progress::-webkit-progress-value { background:var(--ink); }
+.invitation-loader progress::-moz-progress-bar { background:var(--ink); }

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import confetti from "canvas-confetti";
 import WeddingSong from "./wedding-song";
+import { useAssetsReady } from "./asset-loader";
 
 const years = Array.from({ length: 12 }, (_, i) => 2015 + i);
 
@@ -51,6 +52,7 @@ const YEAR_DIALOGUE: Record<number, string> = {
 };
 
 export default function CenterfoldGallery() {
+  const assetsReady = useAssetsReady();
   const sectionRef = useRef<HTMLElement>(null);
   const journeyRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
@@ -109,7 +111,7 @@ export default function CenterfoldGallery() {
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!assetsReady || !section) return;
     const rows = Array.from(section.querySelectorAll<HTMLElement>(".chronicle-year"));
     const journey = journeyRef.current;
     const path = pathRef.current;
@@ -209,7 +211,7 @@ export default function CenterfoldGallery() {
       petAnimation.current?.cancel();
       if (timer.current) clearTimeout(timer.current);
     };
-  }, []);
+  }, [assetsReady]);
 
   useEffect(() => { setPetted(false); }, [active]);
   const haptic = (pattern: number | number[]) => {

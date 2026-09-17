@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { ImmediateContent } from "./asset-loader";
+import { InvitationGate } from "./asset-loader";
 import CenterfoldGallery from "./centerfold-gallery";
 import FontTweaks from "./font-tweaks";
 import CoverCarousel from "./cover-carousel";
@@ -309,8 +309,8 @@ function WeddingNewspaper() {
 
 export default function Home() {
   return (
-    <ImmediateContent>
+    <InvitationGate>
       <WeddingNewspaper />
-    </ImmediateContent>
+    </InvitationGate>
   );
 }

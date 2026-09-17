@@ -9,18 +9,70 @@ import PagePrint from "./print-page";
 const AssetsReady = createContext(false);
 export const useAssetsReady = () => useContext(AssetsReady);
 
-// The invitation opens immediately; the asset guide retains its own loader.
-export function ImmediateContent({ children }: { children: ReactNode }) {
+type PlayerStatus = "pending" | "ready" | "error";
+const PlayerPreparation = createContext<(status: PlayerStatus) => void>(() => {});
+export const useReportPlayerReady = () => useContext(PlayerPreparation);
+
+export function InvitationGate({ children }: { children: ReactNode }) {
+  const scene = useRef<HTMLDivElement>(null);
+  const [player, setPlayer] = useState<PlayerStatus>("pending");
+  const [resources, setResources] = useState<PlayerStatus>("pending");
+  const [progress, setProgress] = useState({ complete: 0, total: 1 });
+  const [expired, setExpired] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const [ready, setReady] = useState(false);
+  const allReady = resources === "ready" && player === "ready";
+  const problem = expired || resources === "error" || player === "error";
+
   useEffect(() => {
-    document.documentElement.dataset.assets = "ready";
-    const frame = requestAnimationFrame(() => {
-      let id: string;
-      try { id = decodeURIComponent(window.location.hash.slice(1)); } catch { return; }
-      if (id) document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" });
+    let active = true;
+    document.documentElement.dataset.assets = "loading";
+    const images = [...scene.current!.querySelectorAll<HTMLImageElement>("img")];
+    images.forEach(image => { image.loading = "eager"; });
+    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/paper-crumple.png", "/favicon.svg"])];
+    const fonts = [...document.fonts].map(font => font.load());
+    const tasks = [...sources.map(preloadImage), ...fonts];
+    setProgress({ complete: 0, total: tasks.length + 1 });
+    Promise.allSettled(tasks.map(task => task.then(() => {
+      if (active) setProgress(value => ({ ...value, complete: value.complete + 1 }));
+    }))).then(async results => {
+      await document.fonts.ready;
+      const decoded = await Promise.allSettled(images.map(image => image.decode()));
+      if (active) setResources([...results, ...decoded].some(result => result.status === "rejected") ? "error" : "ready");
     });
-    return () => cancelAnimationFrame(frame);
+    const timeout = window.setTimeout(() => { if (active) setExpired(true); }, 30000);
+    return () => { active = false; clearTimeout(timeout); delete document.documentElement.dataset.assets; };
   }, []);
-  return <AssetsReady.Provider value={true}><div className="asset-scene">{children}</div></AssetsReady.Provider>;
+
+  useEffect(() => {
+    if (!allReady && !opened) return;
+    let second = 0;
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => setReady(true));
+    });
+    return () => { cancelAnimationFrame(first); cancelAnimationFrame(second); };
+  }, [allReady, opened]);
+
+  useEffect(() => {
+    if (!ready) return;
+    document.documentElement.dataset.assets = "ready";
+    let id: string;
+    try { id = decodeURIComponent(window.location.hash.slice(1)); } catch { return; }
+    if (id) document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" });
+  }, [ready]);
+
+  return <AssetsReady.Provider value={ready}><PlayerPreparation.Provider value={setPlayer}>
+    <div ref={scene} className={`asset-scene${ready ? "" : " is-preparing"}`} inert={!ready} aria-hidden={!ready}>{children}</div>
+    {!ready && <div className="asset-loader invitation-loader" role="region" aria-label="신문 준비">
+      <div className="asset-loader-inner">
+        <span className="asset-loader-edition">THE WEDDING NEWS</span>
+        <h1>{problem ? "조금 늦어지고 있어요." : "신문을 준비합니다."}</h1>
+        <p role="status">{problem ? "일부 자료를 불러오지 못했어요. 다시 시도하거나 먼저 읽으실 수 있어요." : resources === "ready" && player === "pending" ? "음악 플레이어를 준비하고 있어요." : "사진과 글꼴, 음악을 미리 준비합니다."}</p>
+        <progress max={progress.total} value={progress.complete + (player === "ready" ? 1 : 0)} aria-label="자료 준비 진행률" />
+        {problem && <div className="invitation-loader-actions"><button onClick={() => window.location.reload()}>다시 불러오기</button><button onClick={() => setOpened(true)}>먼저 읽기</button></div>}
+      </div>
+    </div>}
+  </PlayerPreparation.Provider></AssetsReady.Provider>;
 }
 
 // Keep decoded images, including CSS backgrounds, resident for this visit.
