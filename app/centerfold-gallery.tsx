@@ -58,12 +58,101 @@ export default function CenterfoldGallery() {
   const pathRef = useRef<SVGPathElement>(null);
   const dogRef = useRef<HTMLButtonElement>(null);
   const [active, setActive] = useState(2015);
+  const [entranceDone, setEntranceDone] = useState(false);
   const [arrived, setArrived] = useState(false);
   const [line, setLine] = useState("");
   const [petted, setPetted] = useState(false);
   const [pressed, setPressed] = useState(false);
   const petAnimation = useRef<Animation | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!assetsReady) return;
+    const song = sectionRef.current?.querySelector<HTMLElement>(".wedding-song");
+    const screen = song?.querySelector<HTMLElement>(".wedding-song-screen");
+    const dog = dogRef.current;
+    const journey = journeyRef.current;
+    if (!song || !screen || !dog || !journey) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let played = false;
+    let completed = false;
+    let animations: Animation[] = [];
+    const finish = () => {
+      if (completed) return;
+      completed = true;
+      animations.forEach(animation => animation.cancel());
+      setLine("");
+      setEntranceDone(true);
+    };
+    const start = () => {
+      if (played || completed || document.hidden) return;
+      if (reduced.matches || journey.getBoundingClientRect().top < window.innerHeight * .45) {
+        finish(); return;
+      }
+      if (document.activeElement === screen.querySelector("iframe")) { finish(); return; }
+      played = true;
+      const video = screen.getBoundingClientRect();
+      const origin = dog.getBoundingClientRect();
+      const scale = origin.width / 48;
+      const x = video.right - origin.left - origin.width * .9;
+      const y = video.bottom - origin.top - origin.height * .8;
+      const endX = -5.4 * scale;
+      const move = (dx: number, dy: number, turn = 0) => `translate(${dx}px, ${dy}px) rotate(${turn}deg)`;
+      setLine("영차…!");
+      const duration = 2300;
+      const dogMotion = dog.animate([
+        { transform:move(x,y), opacity:0, offset:0 },
+        { transform:move(x,y), opacity:1, offset:.08 },
+        { transform:move(x+7*scale,y-2*scale,-7), opacity:1, offset:.18 },
+        { transform:move(x,y), opacity:1, offset:.25 },
+        { transform:move(x+14*scale,y-10*scale,9), opacity:1, offset:.42 },
+        { transform:move(endX,y-25*scale,-10), opacity:1, offset:.58, easing:"cubic-bezier(.55,0,1,.45)" },
+        { transform:move(endX,0), opacity:1, offset:.76 },
+        { transform:move(endX,-8*scale,4), opacity:1, offset:.85 },
+        { transform:move(endX,0), opacity:1, offset:1 },
+      ], { duration, fill:"both", easing:"ease-in-out" });
+      const videoMotion = screen.animate([
+        { transform:"rotate(0deg)", boxShadow:"0 1px 2px #17171612", offset:0 },
+        { transform:"rotate(-.7deg)", offset:.16 },
+        { transform:"rotate(0deg)", offset:.23 },
+        { transform:"rotate(-7deg)", boxShadow:"9px 17px 13px #17171628", offset:.43 },
+        { transform:"rotate(-7.5deg)", offset:.56, easing:"cubic-bezier(.55,0,1,.45)" },
+        { transform:"rotate(0deg)", boxShadow:"0 1px 2px #17171618", offset:.70, easing:"cubic-bezier(.16,1,.3,1)" },
+        { transform:"rotate(-2.6deg)", boxShadow:"3px 6px 5px #17171620", offset:.79, easing:"cubic-bezier(.55,0,1,.45)" },
+        { transform:"rotate(0deg)", offset:.87, easing:"cubic-bezier(.16,1,.3,1)" },
+        { transform:"rotate(-.8deg)", offset:.92, easing:"cubic-bezier(.55,0,1,.45)" },
+        { transform:"rotate(0deg)", boxShadow:"0 0 0 transparent", offset:1 },
+      ], { duration, fill:"both" });
+      animations = [dogMotion, videoMotion];
+      dogMotion.finished.then(finish).catch(() => {});
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.intersectionRatio >= .65) start();
+      else if (played && !entry.isIntersecting) finish();
+    }, { threshold:[0,.65] });
+    observer.observe(song);
+    const skipPast = () => {
+      if (!played && journey.getBoundingClientRect().top < window.innerHeight * .45) finish();
+    };
+    const interrupt = () => { if (played) finish(); };
+    const hidden = () => { if (document.hidden) interrupt(); };
+    song.addEventListener("pointerdown", finish);
+    window.addEventListener("blur", interrupt);
+    window.addEventListener("resize", interrupt);
+    window.addEventListener("scroll", skipPast, { passive:true });
+    document.addEventListener("visibilitychange", hidden);
+    reduced.addEventListener("change", finish);
+    skipPast();
+    return () => {
+      observer.disconnect(); animations.forEach(animation => animation.cancel());
+      song.removeEventListener("pointerdown", finish);
+      window.removeEventListener("blur", interrupt);
+      window.removeEventListener("resize", interrupt);
+      window.removeEventListener("scroll", skipPast);
+      document.removeEventListener("visibilitychange", hidden);
+      reduced.removeEventListener("change", finish);
+    };
+  }, [assetsReady]);
 
   useEffect(() => {
     const dog = dogRef.current;
@@ -111,7 +200,7 @@ export default function CenterfoldGallery() {
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!assetsReady || !section) return;
+    if (!assetsReady || !entranceDone || !section) return;
     const rows = Array.from(section.querySelectorAll<HTMLElement>(".chronicle-year"));
     const journey = journeyRef.current;
     const path = pathRef.current;
@@ -211,7 +300,7 @@ export default function CenterfoldGallery() {
       petAnimation.current?.cancel();
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [assetsReady]);
+  }, [assetsReady, entranceDone]);
 
   useEffect(() => { setPetted(false); }, [active]);
   const haptic = (pattern: number | number[]) => {
@@ -256,7 +345,7 @@ export default function CenterfoldGallery() {
 
         </li>
       ))}</ol>
-      <button ref={dogRef} className="chronicle-dog" onClick={pet} aria-label="뚜이 쓰다듬기" type="button" data-petted={petted} data-pressed={pressed} data-arrived={arrived}
+      <button ref={dogRef} className="chronicle-dog" data-entered={entranceDone} tabIndex={entranceDone ? 0 : -1} onClick={pet} aria-label="뚜이 쓰다듬기" type="button" data-petted={petted} data-pressed={pressed} data-arrived={arrived}
         onPointerDown={event => {
           if (!event.isPrimary || event.button !== 0) return;
           petAnimation.current?.cancel();
