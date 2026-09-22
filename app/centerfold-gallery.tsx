@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import WeddingSong from "./wedding-song";
+import { useJellyTouch } from "./use-jelly-touch";
 import { useAssetsReady } from "./asset-loader";
 
 // Rectangular prints form the outline themselves; no heart mask or rotated tiles.
@@ -26,6 +27,7 @@ export default function CenterfoldGallery() {
   const touchX=useRef<number | null>(null);
   const curatorButton=useRef<HTMLButtonElement>(null);
   const restoreCuratorFocus=useRef(false);
+  useJellyTouch(curatorButton);
   const [selected,setSelected]=useState<number | null>(null);
   const [visible,setVisible]=useState(false);
   const [recommendation,setRecommendation]=useState<number | null>(null);
@@ -34,15 +36,9 @@ export default function CenterfoldGallery() {
   const move=(direction:number)=>setSelected(current=>current===null?null:(current+direction+photos.length)%photos.length);
 
   useEffect(()=>{
-    if(!ready || !section.current) return;
-    const update=()=>{
-      const bounds=section.current!.getBoundingClientRect();
-      setVisible(bounds.top<window.innerHeight+60 && bounds.bottom>0);
-    };
-    update();
-    window.addEventListener("scroll",update,{passive:true});
-    window.addEventListener("resize",update);
-    return()=>{window.removeEventListener("scroll",update);window.removeEventListener("resize",update);};
+    if(!ready)return;
+    const frame=requestAnimationFrame(()=>setVisible(true));
+    return()=>cancelAnimationFrame(frame);
   },[ready]);
   useEffect(()=>{if(!visible)setCuratorOpen(false);},[visible]);
   useEffect(()=>{

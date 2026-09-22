@@ -1,0 +1,62 @@
+"use client";
+import { useEffect, type RefObject } from "react";
+
+export function useJellyTouch(ref: RefObject<HTMLButtonElement | null>) {
+  useEffect(() => {
+    const button=ref.current, image=button?.querySelector('img');
+    if(!button || !image) return;
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+    const position=[0,0,1,1], velocity=[0,0,0,0], target=[0,0,1,1];
+    let frame=0, last=0, held=false, focused=false, pointer:number|null=null, originX=0, originY=0;
+    const update=(now:number)=>{
+      frame=0;
+      const dt=last?Math.min((now-last)/1000,.032):1/60;last=now;
+      let moving=false;
+      for(let i=0;i<4;i++) {
+        velocity[i]+=((target[i]-position[i])*190-velocity[i]*15)*dt;
+        position[i]+=velocity[i]*dt;
+        if(Math.abs(target[i]-position[i])>.001 || Math.abs(velocity[i])>.01) moving=true;
+        else {position[i]=target[i];velocity[i]=0;}
+      }
+      image.style.transform=`translate(${position[0]}px,${position[1]}px) rotate(${position[0]*.65}deg) scale(${position[2]},${position[3]})`;
+      if(moving)frame=requestAnimationFrame(update);else last=0;
+    };
+    const run=()=>{
+      if(reduced.matches){cancelAnimationFrame(frame);frame=0;last=0;image.style.transform='none';return;}
+      if(!frame)frame=requestAnimationFrame(update);
+    };
+    const release=()=>{
+      held=false;pointer=null;button.dataset.pressed='false';
+      target[0]=target[1]=0;target[2]=target[3]=focused?1.025:1;run();
+    };
+    const press=()=>{held=true;button.dataset.pressed='true';target[1]=5;target[2]=1.18;target[3]=.8;run();};
+    const down=(event:PointerEvent)=>{
+      if(!event.isPrimary || event.button!==0)return;
+      pointer=event.pointerId;originX=event.clientX;originY=event.clientY;
+      button.setPointerCapture(event.pointerId);press();
+    };
+    const move=(event:PointerEvent)=>{
+      if(!held || pointer!==event.pointerId)return;
+      target[0]=Math.max(-10,Math.min(10,(event.clientX-originX)*.2));
+      target[1]=5+Math.max(-5,Math.min(7,(event.clientY-originY)*.15));run();
+    };
+    const up=(event:PointerEvent)=>{if(pointer===event.pointerId)release();};
+    const focus=()=>{focused=true;if(!held){target[2]=target[3]=1.025;velocity[1]=-28;velocity[2]=.7;velocity[3]=-.5;run();}};
+    const blur=()=>{focused=false;release();};
+    const keyDown=(event:KeyboardEvent)=>{if((event.key===' '||event.key==='Enter')&&!event.repeat)press();};
+    const keyUp=(event:KeyboardEvent)=>{if(event.key===' '||event.key==='Enter')release();};
+    button.addEventListener('pointerdown',down);button.addEventListener('pointermove',move);
+    button.addEventListener('pointerup',up);button.addEventListener('pointercancel',up);button.addEventListener('lostpointercapture',up);
+    button.addEventListener('focus',focus);button.addEventListener('blur',blur);
+    button.addEventListener('keydown',keyDown);button.addEventListener('keyup',keyUp);
+    reduced.addEventListener('change',release);
+    return()=>{
+      cancelAnimationFrame(frame);image.style.removeProperty('transform');
+      button.removeEventListener('pointerdown',down);button.removeEventListener('pointermove',move);
+      button.removeEventListener('pointerup',up);button.removeEventListener('pointercancel',up);button.removeEventListener('lostpointercapture',up);
+      button.removeEventListener('focus',focus);button.removeEventListener('blur',blur);
+      button.removeEventListener('keydown',keyDown);button.removeEventListener('keyup',keyUp);
+      reduced.removeEventListener('change',release);
+    };
+  },[ref]);
+}
