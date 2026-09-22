@@ -3,7 +3,6 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { InvitationGate } from "./asset-loader";
 import CenterfoldGallery from "./centerfold-gallery";
-import CoverCarousel from "./cover-carousel";
 import ArticleCanvas from "./article-canvas";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
@@ -62,7 +61,10 @@ function PageBottom({ next }: { next: string }) {
 function CoverPhoto() {
   return (
     <figure className="cover-photo" data-ddui-tip="둘이 제법 잘 어울리죠? 헤헤.">
-      <CoverCarousel />
+      <div className="cover-photo-print">
+        <img src="/couple-main.webp" alt="창가에 나란히 앉아 꽃을 든 한원영과 이나경" width="1200" height="1500" fetchPriority="high" />
+        <span className="cover-photo-mark" aria-hidden="true">FRONT PAGE <b>W × N</b></span>
+      </div>
       <figcaption className="cover-photo-caption" aria-label="10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다."><svg viewBox="0 0 600 24" aria-hidden="true"><text x="0" y="17" textLength="600" lengthAdjust="spacingAndGlyphs">10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.</text></svg></figcaption>
     </figure>
   );
