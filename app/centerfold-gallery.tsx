@@ -7,17 +7,17 @@ import { useAssetsReady } from "./asset-loader";
 
 // Rectangular prints form the outline themselves; no heart mask or rotated tiles.
 const photos = [
-  { file:2016, column:"2 / 6", row:"1 / 3", position:"50% 60%", caption:"둘이 함께, 문 너머의 하루.", tip:"문 너머로 살짝 보이는 둘. 이 사진부터 볼까요?" },
-  { file:2024, column:"8 / 12", row:"1 / 3", position:"50% 38%", caption:"나란히 남은 순간.", tip:"나란히 있는 모습, 제가 좋아하는 사진이에요." },
-  { file:2017, column:"1 / 5", row:"3 / 7", position:"50% 40%", caption:"함께하는 날들.", tip:"오늘은 이 장면이 눈에 들어오네요. 크게 봐요!" },
-  { file:2015, column:"5 / 9", row:"3 / 7", position:"50% 38%", caption:"우리, 함께.", tip:"형누나가 나란히 앉았어요. 둘 다 잘 나왔죠?" },
-  { file:2019, column:"9 / 13", row:"3 / 7", position:"50% 40%", caption:"서로의 곁에서.", tip:"조금 더 가까이 보면 또 다른 표정이 보여요." },
-  { file:2020, column:"2 / 7", row:"7 / 9", position:"50% 42%", caption:"오래 기억할 장면.", tip:"이 장면도 놓치지 마세요. 제가 골랐어요!" },
-  { file:2023, column:"7 / 12", row:"7 / 9", position:"50% 42%", caption:"마주 보고 웃는 날.", tip:"형누나가 웃으면 저도 좋아요. 헤헤." },
-  { file:2018, column:"3 / 7", row:"9 / 11", position:"50% 38%", caption:"둘만의 한 장면.", tip:"여기에도 둘의 순간이 숨어 있어요." },
-  { file:2021, column:"7 / 11", row:"9 / 11", position:"50% 42%", caption:"발맞춰 걷는 시간.", tip:"사진 속 작은 모습들도 찬찬히 봐주세요~" },
-  { file:2026, column:"4 / 10", row:"11 / 13", position:"50% 52%", caption:"함께한 날들 위에, 새로운 시작.", tip:"그리고 지금, 형누나가 결혼합니다!" },
-  { file:2022, column:"6 / 8", row:"13 / 15", position:"50% 40%", caption:"우리의 다음 장면으로.", tip:"하트 끝에 있는 이 사진도 꺼내볼까요?" },
+  { file:2016, position:"50% 60%", caption:"둘이 함께, 문 너머의 하루.", tip:"문 너머로 살짝 보이는 둘. 이 사진부터 볼까요?" },
+  { file:2024, position:"50% 38%", caption:"나란히 남은 순간.", tip:"나란히 있는 모습, 제가 좋아하는 사진이에요." },
+  { file:2017, position:"50% 40%", caption:"함께하는 날들.", tip:"오늘은 이 장면이 눈에 들어오네요. 크게 봐요!" },
+  { file:2015, position:"50% 38%", caption:"우리, 함께.", tip:"형누나가 나란히 앉았어요. 둘 다 잘 나왔죠?" },
+  { file:2019, position:"50% 40%", caption:"서로의 곁에서.", tip:"조금 더 가까이 보면 또 다른 표정이 보여요." },
+  { file:2020, position:"50% 42%", caption:"오래 기억할 장면.", tip:"이 장면도 놓치지 마세요. 제가 골랐어요!" },
+  { file:2023, position:"50% 42%", caption:"마주 보고 웃는 날.", tip:"형누나가 웃으면 저도 좋아요. 헤헤." },
+  { file:2018, position:"50% 38%", caption:"둘만의 한 장면.", tip:"여기에도 둘의 순간이 숨어 있어요." },
+  { file:2021, position:"50% 42%", caption:"발맞춰 걷는 시간.", tip:"사진 속 작은 모습들도 찬찬히 봐주세요~" },
+  { file:2026, position:"50% 52%", caption:"함께한 날들 위에, 새로운 시작.", tip:"그리고 지금, 형누나가 결혼합니다!" },
+  { file:2022, position:"50% 40%", caption:"우리의 다음 장면으로.", tip:"하트 끝에 있는 이 사진도 꺼내볼까요?" },
 ];
 
 export default function CenterfoldGallery() {
@@ -42,7 +42,7 @@ export default function CenterfoldGallery() {
   return <section ref={section} className="heart-gallery" id="photo-edition" aria-labelledby="gallery-title">
     <header className="heart-gallery-heading"><h2 id="gallery-title">함께 모은 순간들</h2><p>하나하나 모여, 우리의 마음이 되었습니다.</p></header>
     <div className="heart-puzzle" aria-label="하트 모양으로 모은 열한 장의 사진">
-      {photos.map((photo,i)=><button key={photo.file} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--tile-index":i,"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected(i)}>
+      {photos.map((photo,i)=><button key={photo.file} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected(i)}>
         <img src={`/history/${photo.file}.jpg`} alt={photo.caption} draggable="false"/>
       </button>)}
     </div>

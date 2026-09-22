@@ -62,7 +62,7 @@ function PageBottom({ next }: { next: string }) {
 
 function CoverPhoto() {
   return (
-    <figure className="cover-photo">
+    <figure className="cover-photo" data-ddui-tip="둘이 제법 잘 어울리죠? 헤헤.">
       <CoverCarousel />
       <figcaption className="cover-photo-caption" aria-label="10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다."><svg viewBox="0 0 600 24" aria-hidden="true"><text x="0" y="17" textLength="600" lengthAdjust="spacingAndGlyphs">10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.</text></svg></figcaption>
     </figure>
@@ -277,7 +277,7 @@ function WeddingNewspaper() {
             <span>SATURDAY, OCTOBER 17, 2026</span>
             <span>PRICE: ONE BLESSING</span>
           </div>
-          <div className="cover-announcement">
+          <div className="cover-announcement" data-ddui-tip="오늘 신문 주인공은 우리 형누나예요~">
             <p>CELEBRATING THE UNION OF</p>
             <h2>한원영 <i>&amp;</i> 이나경</h2>
             <span>10년의 연애 끝, 가족 앞에서 결혼합니다.</span>
@@ -290,7 +290,7 @@ function WeddingNewspaper() {
         </div>
         <CenterfoldGallery />
 
-        <section className="paper-page details-page" id="details">
+        <section className="paper-page details-page" id="details" data-ddui-tip="형누나가 결혼합니다! 많이 많이 축하해 주세요~" data-ddui-celebrate="true">
           <h2 className="thanks-heading">마음을 전합니다</h2>
           <div className="announcement-note">
             <p>가족들과 함께 조용히 예식을 올립니다.</p>

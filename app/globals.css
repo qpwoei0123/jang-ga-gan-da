@@ -637,3 +637,23 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 @media(max-width:600px) { .heart-puzzle { aspect-ratio:1 / 1.35; } .heart-tile { border-width:2px; } }
 @media(prefers-reduced-motion:reduce) { .gallery-curator[data-visible=true] .ddui-waddle { animation:none; } .ddui-flying-word { animation:ddui-word-fade 4.8s both; } }
 @keyframes ddui-word-fade { 0%,100% { opacity:0; } 10%,70% { opacity:1; } }
+
+/* Straight, unequal modules: the silhouette is a heart, its interior is asymmetric. */
+.heart-puzzle { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); grid-template-rows:repeat(6,minmax(0,1fr)); gap:5px; aspect-ratio:7 / 6; }
+.heart-puzzle .heart-tile { position:static; width:auto; height:auto; transform:none; border:0; box-shadow:none; }
+.heart-tile:nth-child(1) { grid-area:1 / 2 / 2 / 4; }
+.heart-tile:nth-child(2) { grid-area:1 / 5 / 3 / 7; }
+.heart-tile:nth-child(3) { grid-area:2 / 1 / 4 / 2; }
+.heart-tile:nth-child(4) { grid-area:2 / 2 / 4 / 4; }
+.heart-tile:nth-child(5) { grid-area:2 / 7 / 4 / 8; }
+.heart-tile:nth-child(6) { grid-area:2 / 4 / 3 / 5; }
+.heart-tile:nth-child(7) { grid-area:3 / 4 / 4 / 5; }
+.heart-tile:nth-child(8) { grid-area:3 / 5 / 5 / 7; }
+.heart-tile:nth-child(9) { grid-area:4 / 3 / 6 / 5; }
+.heart-tile:nth-child(10) { grid-area:5 / 5 / 6 / 6; }
+.heart-tile:nth-child(11) { grid-area:6 / 4 / 7 / 5; }
+.wedding-site { padding-top:16px; }
+.wedding-site .edition { width:min(calc(100% - 24px),390px); box-shadow:0 5px 22px #29231b12; }
+.ddui-flying-word { padding:0; border-radius:0; background:none; box-shadow:none; color:#242424; -webkit-text-stroke:3px #fff; paint-order:stroke fill; text-shadow:0 1px 2px #fff; font-size:23px; }
+.ddui-words { right:20px; }
+@media(max-width:600px) { .heart-puzzle { gap:4px; aspect-ratio:7 / 6; } }
