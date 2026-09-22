@@ -664,3 +664,6 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .wedding-site .edition::before { background-image:var(--paper-grain); background-size:100% 100%; background-position:center; background-repeat:no-repeat; opacity:.16; mix-blend-mode:multiply; filter:grayscale(1) contrast(1.2); }
 .wedding-site .edition::after { z-index:6; background-image:var(--paper-grain); background-size:100% 100%; background-position:center; background-repeat:no-repeat; opacity:.12; mix-blend-mode:soft-light; filter:grayscale(1) contrast(1.4); }
 @media print { .wedding-site .edition { filter:none; } }
+
+.ddui-music { right:21px; bottom:75px; max-width:min(230px,calc(100vw - 34px)); white-space:normal; pointer-events:none; }
+.ddui-music .ddui-flying-word { min-width:0; padding:0; margin:0; text-align:right; font:17px/1.45 var(--handwriting); background:none; border:0; border-radius:0; }

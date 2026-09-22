@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useAssetsReady, useReportPlayerReady } from "./asset-loader";
 
 type Playback = "waiting" | "counting" | "blocked" | "playing" | "error";
@@ -13,6 +13,7 @@ export default function WeddingSong() {
   const [state, setState] = useState<Playback>("waiting");
   const [count, setCount] = useState<string | number>("노래 나옵니다");
   const [attempt, setAttempt] = useState(0);
+  const [hintGone, setHintGone] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -52,7 +53,7 @@ export default function WeddingSong() {
     const later = (fn: () => void, ms: number) => timers.push(window.setTimeout(() => { if (!cancelled) fn(); }, ms));
     const delay = attempt === 0 ? 1600 : 0;
     later(() => { setState("counting"); setCount("노래 나옵니다"); }, delay);
-    [3, 2, 1].forEach((n, i) => later(() => setCount(n), delay + 1100 + i * 1000));
+    [3, 2, 1].forEach((n, i) => later(() => setCount(n), delay + 1800 + i * 1800));
     later(() => {
       const audio = engine.current;
       if (!audio) return;
@@ -67,7 +68,7 @@ export default function WeddingSong() {
       audio.gain.gain.linearRampToValueAtTime(.45, audio.context.currentTime + 3);
       source.start();
       setState("playing");
-    }, delay + 4100);
+    }, delay + 7200);
     return () => { cancelled = true; timers.forEach(clearTimeout); };
   }, [ready, loaded, attempt]);
 
@@ -81,12 +82,23 @@ export default function WeddingSong() {
     }).catch(() => setState("blocked"));
   };
 
-  if (state === "waiting" || state === "playing") return null;
-  return <div className="ddui-music">
-    {state === "counting" ? <p className="ddui-countdown" role="status" aria-live="polite"><span key={count}>{count}</span></p>
-      : state === "error" ? <p className="ddui-music-error">음악을 불러오지 못했어요.</p>
-      : <button type="button" onClick={toggle} aria-label="음악 재생">
-        터치하면 노래 나와요
-      </button>}
+  useEffect(() => {
+    if (state !== "blocked") return;
+    const start = () => toggle();
+    document.addEventListener("pointerup", start);
+    document.addEventListener("keydown", start);
+    return () => {
+      document.removeEventListener("pointerup", start);
+      document.removeEventListener("keydown", start);
+    };
+  }, [state]);
+
+  if (state === "waiting" || state === "playing" || (state !== "counting" && hintGone)) return null;
+  const flight = { "--drift":"110px", "--rise":"9.62px" } as CSSProperties;
+  return <div className="ddui-music" style={flight}>
+    {state === "counting" ? <p key={count} className="ddui-countdown ddui-flying-word" role="status" aria-live="polite">{count}</p>
+      : <p className="ddui-flying-word" role="status" onAnimationEnd={() => setHintGone(true)}>
+        {state === "error" ? "음악을 불러오지 못했어요." : "터치하면 노래 나와요~"}
+      </p>}
   </div>;
 }
