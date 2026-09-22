@@ -628,7 +628,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 @keyframes ddui-waddle { 0%,24%,48%,72% { transform:rotate(7deg) translateY(0); } 12%,36%,60%,84% { transform:rotate(-6deg) translateY(-5px); } 100% { transform:none; } }
 .ddui-words { position:absolute; right:13px; bottom:74px; width:min(230px,calc(100vw - 34px)); display:flex; flex-direction:column; align-items:flex-end; gap:10px; pointer-events:none; }
 .ddui-flying-word { flex:none; margin:0; max-width:100%; padding:9px 13px; border-radius:14px; background:#fff; color:#282828; box-shadow:0 3px 14px #0000001a; font:21px/1.45 var(--handwriting); word-break:keep-all; animation:ddui-word-flight 1.8s ease-out both; }
-@keyframes ddui-word-flight { 0% { opacity:0; transform:translate(0,12px) scale(.95); } 12%,45% { opacity:1; } 100% { opacity:0; transform:translate(calc(-1 * var(--drift)),-75px) rotate(-5deg); } }
+@keyframes ddui-word-flight { 0% { opacity:0; transform:translate(0,0); } 12%,45% { opacity:1; } 100% { opacity:0; transform:translate(calc(-1 * var(--drift)),calc(-1 * var(--rise))); } }
 .lightbox-content footer { justify-content:flex-start; padding-right:65px; gap:12px; }
 .lightbox-content footer nav { display:flex; flex:none; gap:4px; }
 .lightbox-content footer p { font-size:12px; text-align:left; }
