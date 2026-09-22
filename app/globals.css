@@ -680,3 +680,19 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
   100% { opacity:0; transform:translate(var(--flight-x),calc(50% + var(--flight-y))); }
 }
 @media(prefers-reduced-motion:reduce) { .ddui-flying-word { animation-name:ddui-word-fade; transform:translateY(50%); } }
+
+/* Constant travel and a separate, regular sway keep the path straight. */
+.ddui-flying-word { animation-timing-function:linear; }
+.ddui-flying-word .ddui-speech-sway { display:inline-block; transform-origin:center; animation:ddui-regular-sway .6s linear infinite; }
+@keyframes ddui-centre-flight {
+  0% { opacity:0; transform:translate(0,50%); }
+  12% { opacity:.95; }
+  48% { opacity:.9; }
+  76% { opacity:.5; }
+  100% { opacity:0; transform:translate(var(--flight-x),calc(50% + var(--flight-y))); }
+}
+@keyframes ddui-regular-sway {
+  0%,100% { transform:rotate(-2deg); }
+  50% { transform:rotate(2deg); }
+}
+@media(prefers-reduced-motion:reduce) { .ddui-flying-word .ddui-speech-sway { animation:none; } }

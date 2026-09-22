@@ -97,9 +97,9 @@ export default function WeddingSong() {
   const flight = useMemo(speechFlight, [count, state]);
   if (state === "waiting" || state === "playing" || (state !== "counting" && hintGone)) return null;
   return <div className="ddui-music" style={flight}>
-    {state === "counting" ? <p key={count} className="ddui-countdown ddui-flying-word" role="status" aria-live="polite">{count}</p>
+    {state === "counting" ? <p key={count} className="ddui-countdown ddui-flying-word" role="status" aria-live="polite"><span className="ddui-speech-sway">{count}</span></p>
       : <p className="ddui-flying-word" role="status" onAnimationEnd={() => setHintGone(true)}>
-        {state === "error" ? "음악을 불러오지 못했어요." : "터치하면 노래 나와요~"}
+        <span className="ddui-speech-sway">{state === "error" ? "음악을 불러오지 못했어요." : "터치하면 노래 나와요~"}</span>
       </p>}
   </div>;
 }
