@@ -607,20 +607,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 @keyframes ddui-count-in { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
 @media(prefers-reduced-motion:reduce) { .ddui-countdown span { animation:none; } }
 
-/* Uneven interlocking prints retain the heart silhouette without straight rows. */
-.heart-puzzle { display:block; position:relative; aspect-ratio:1 / 1.15; }
-.heart-tile { position:absolute; box-shadow:0 3px 12px #00000012; border:3px solid #fff; }
-.heart-tile:nth-child(1) { left:9%; top:2%; width:32%; height:19%; transform:rotate(-5deg); z-index:2; }
-.heart-tile:nth-child(2) { left:59%; top:0%; width:31%; height:23%; transform:rotate(4deg); }
-.heart-tile:nth-child(3) { left:0%; top:20%; width:31%; height:31%; transform:rotate(-3deg); }
-.heart-tile:nth-child(4) { left:29%; top:17%; width:37%; height:36%; transform:rotate(2deg); z-index:3; }
-.heart-tile:nth-child(5) { left:67%; top:22%; width:32%; height:30%; transform:rotate(6deg); z-index:2; }
-.heart-tile:nth-child(6) { left:10%; top:50%; width:38%; height:20%; transform:rotate(4deg); z-index:2; }
-.heart-tile:nth-child(7) { left:49%; top:51%; width:39%; height:21%; transform:rotate(-4deg); }
-.heart-tile:nth-child(8) { left:23%; top:68%; width:27%; height:17%; transform:rotate(-6deg); z-index:3; }
-.heart-tile:nth-child(9) { left:53%; top:72%; width:23%; height:17%; transform:rotate(5deg); z-index:2; }
-.heart-tile:nth-child(10) { left:35%; top:84%; width:31%; height:12%; transform:rotate(-3deg); z-index:4; }
-.heart-tile:nth-child(11) { left:46%; top:94%; width:12%; height:8%; transform:rotate(4deg); }
 .gallery-curator { right:1px; bottom:calc(1px + env(safe-area-inset-bottom)); transform:translateX(85px); transition:opacity .4s,transform 1.6s cubic-bezier(.22,1,.36,1),visibility .4s; }
 .curator-dog { padding:1px; }
 .curator-dog:focus-visible { outline:1px dashed #888; outline-offset:-2px; border-radius:50%; }
@@ -672,13 +658,6 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .ddui-words { right:33px; bottom:33px; width:min(180px,calc(100vw - 48px)); }
 .ddui-music { right:34px; bottom:calc(34px + env(safe-area-inset-bottom)); width:min(180px,calc(100vw - 48px)); max-width:none; }
 .ddui-flying-word { transform-origin:right center; pointer-events:none; animation-name:ddui-centre-flight; }
-@keyframes ddui-centre-flight {
-  0% { opacity:0; transform:translate(0,50%) scale(.94); }
-  12% { opacity:.95; }
-  48% { opacity:.9; transform:translate(var(--flight-mid-x),calc(50% + var(--flight-mid-y))) rotate(var(--flutter)); }
-  76% { opacity:.5; transform:translate(var(--flight-late-x),calc(50% + var(--flight-late-y))) rotate(calc(-.5 * var(--flutter))); }
-  100% { opacity:0; transform:translate(var(--flight-x),calc(50% + var(--flight-y))); }
-}
 @media(prefers-reduced-motion:reduce) { .ddui-flying-word { animation-name:ddui-word-fade; transform:translateY(50%); } }
 
 /* Constant travel and a separate, regular sway keep the path straight. */
@@ -711,3 +690,40 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .lightbox-content button { color:#242424; }
 .gallery-lightbox button:focus-visible { outline-color:#333; }
 @supports not (backdrop-filter:blur(1px)) { .gallery-lightbox::backdrop { background:rgb(255 255 255 / 92%); } }
+
+/* Finishing rhythm: a printed front page, an intimate gallery, a handwritten closing. */
+.wedding-site { --reading-muted:#65635e; --section-space:clamp(64px,9vw,96px); --focus-ink:#555046; }
+.wedding-site ::selection { background:#e7dccb; color:#24211d; }
+.cover-photo-print > img { display:block; }
+.heart-gallery { padding:var(--section-space) 16px 0; }
+.heart-gallery-heading { margin-bottom:32px; }
+.heart-gallery-heading h2,.thanks-heading { font:400 clamp(25px,3.5vw,30px)/1.5 var(--text); letter-spacing:-.025em; text-wrap:balance; }
+.heart-gallery-heading h2 { margin-bottom:10px; }
+.heart-gallery-heading p { color:var(--reading-muted); font-size:13px; text-wrap:balance; }
+.heart-puzzle { max-width:490px; }
+.heart-tile { -webkit-tap-highlight-color:transparent; }
+.heart-tile img { transition:transform .22s ease,filter .22s ease; }
+.heart-tile:active img { transform:scale(.975); filter:brightness(.94); }
+.heart-tile:focus-visible { position:relative; z-index:8; outline:2px solid var(--focus-ink); outline-offset:3px; }
+.heart-gallery-hint { margin:22px 0 0; color:var(--reading-muted); font:12px/1.7 var(--sans); }
+.wedding-site .details-page { max-width:490px; padding:var(--section-space) 28px 72px; }
+.thanks-heading::before { content:""; display:block; width:32px; height:1px; background:#b9b1a6; margin:0 auto 28px; }
+.wedding-site .announcement-note { padding:24px 0 0; }
+.wedding-site .announcement-note p { margin:0 0 24px; font:400 22px/1.75 var(--handwriting); color:#494640; word-break:keep-all; }
+.wedding-site .announcement-signature { margin-top:32px; gap:10px; font:400 13px/1.85 var(--text); color:#514d47; }
+.wedding-site .announcement-signature strong { font-weight:600; color:#272521; }
+.gallery-signoff { margin-top:34px; color:#65615b; font:12px/1.6 var(--text); letter-spacing:.06em; }
+.lightbox-content { max-width:1100px; margin:auto; grid-template-rows:64px minmax(0,1fr) 96px; padding-left:max(20px,env(safe-area-inset-left)); padding-right:max(20px,env(safe-area-inset-right)); }
+.lightbox-content header { font-variant-numeric:tabular-nums; }
+.lightbox-content header span { font-size:12px; letter-spacing:.06em; }
+.lightbox-content header button,.lightbox-content nav button { display:grid; place-items:center; width:44px; height:44px; min-width:44px; min-height:44px; border-radius:50%; background:rgb(255 255 255 / 72%); transition:background .15s ease,transform .15s ease; }
+.lightbox-content button svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.lightbox-content header button:active,.lightbox-content nav button:active { transform:scale(.94); background:#fff; }
+.lightbox-content nav { gap:10px; }
+.lightbox-content footer { padding-right:60px; gap:16px; }
+.lightbox-content footer p { font:12px/1.6 var(--text); word-break:keep-all; text-wrap:balance; }
+.lightbox-image { padding:4px 0 12px; }
+.lightbox-image img { box-shadow:0 8px 30px #30291f18; }
+@media(hover:hover) { .lightbox-content header button:hover,.lightbox-content nav button:hover { background:#fff; } }
+@media(max-width:360px) { .lightbox-content { padding-left:12px; padding-right:12px; } .lightbox-content footer { gap:10px; } .lightbox-content nav { gap:4px; } }
+@media(prefers-reduced-motion:reduce) { .heart-tile img,.lightbox-content button { transition:none; } }

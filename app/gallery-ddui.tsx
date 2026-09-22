@@ -6,7 +6,7 @@ import { useJellyTouch } from "./use-jelly-touch";
 
 let celebrated = false;
 
-export default function GalleryDdui({ ready, photo }: { ready:boolean; photo?:string }) {
+export default function GalleryDdui({ ready, photo, hidden=false }: { ready:boolean; photo?:string; hidden?:boolean }) {
   const button=useRef<HTMLButtonElement>(null);
   useJellyTouch(button);
   const [visible,setVisible]=useState(false);
@@ -14,7 +14,7 @@ export default function GalleryDdui({ ready, photo }: { ready:boolean; photo?:st
   const last=useRef(Date.now()+5000), serial=useRef(0);
   const say=useCallback((text:string,force=false)=>{
     const now=Date.now();
-    if(!force && (now-last.current<5500 || document.querySelector(".ddui-countdown")))return false;
+    if(!force && (now-last.current<5500 || document.querySelector(".ddui-music")))return false;
     last.current=now;
     setWords([{id:++serial.current,text,flight:speechFlight()}]);
     return true;
@@ -49,9 +49,9 @@ export default function GalleryDdui({ ready, photo }: { ready:boolean; photo?:st
     const lines=['말랑말랑~','헤헤, 간지러워요!','한 번 더 쓰다듬어 주세요~','저도 신나요!'];
     say(lines[Math.floor(Math.random()*lines.length)],true);
   };
-  return <div className="gallery-curator" data-visible={visible}>
+  return <div className="gallery-curator" data-visible={visible && !hidden} inert={hidden} aria-hidden={hidden}>
     <div className="ddui-words" aria-live="polite" aria-atomic="false">
-      {words.map(word=><p key={word.id} className="ddui-flying-word" style={word.flight} onAnimationEnd={()=>setWords(previous=>previous.filter(item=>item.id!==word.id))}><span className="ddui-speech-sway">{word.text}</span></p>)}
+      {words.map(word=><p key={word.id} className="ddui-flying-word" style={word.flight} onAnimationEnd={event=>{if(event.target===event.currentTarget)setWords(previous=>previous.filter(item=>item.id!==word.id));}}><span className="ddui-speech-sway">{word.text}</span></p>)}
     </div>
     <div className="ddui-waddle"><button ref={button} className="curator-dog" type="button" aria-label="뚜이 쓰다듬기" onClick={touch}><img src="/history/ddui.webp" alt="" width="64" height="64"/></button></div>
   </div>;

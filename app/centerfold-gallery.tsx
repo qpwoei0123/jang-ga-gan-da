@@ -24,7 +24,7 @@ export default function CenterfoldGallery() {
   const ready=useAssetsReady();
   const section=useRef<HTMLElement>(null);
   const dialog=useRef<HTMLDialogElement>(null);
-  const touchX=useRef<number | null>(null);
+  const touchStart=useRef<{x:number;y:number} | null>(null);
   const [selected,setSelected]=useState<number | null>(null);
   const index=selected ?? 0;
   const move=(direction:number)=>setSelected(current=>current===null?null:(current+direction+photos.length)%photos.length);
@@ -48,12 +48,12 @@ export default function CenterfoldGallery() {
     </div>
     <p className="heart-gallery-hint">사진을 누르면 더 크게 볼 수 있어요.</p>
     <WeddingSong/>
-    {selected===null && <GalleryDdui ready={ready}/>}
+    <GalleryDdui ready={ready} hidden={selected!==null}/>
     <dialog ref={dialog} className="gallery-lightbox" aria-label="웨딩 사진 크게 보기" onCancel={close} onClose={()=>setSelected(null)} onClick={event=>{if(event.target===event.currentTarget)close();}} onKeyDown={event=>{if(event.key==="ArrowRight"){event.preventDefault();move(1);}if(event.key==="ArrowLeft"){event.preventDefault();move(-1);}}}>
-      {selected!==null && <div className="lightbox-content">
-        <header><span>{String(index+1).padStart(2,"0")} / {photos.length}</span><button autoFocus type="button" onClick={close} aria-label="사진 닫기">×</button></header>
-        <div className="lightbox-image" onTouchStart={event=>{touchX.current=event.touches[0].clientX;}} onTouchCancel={()=>{touchX.current=null;}} onTouchEnd={event=>{if(touchX.current!==null){const delta=event.changedTouches[0].clientX-touchX.current;if(Math.abs(delta)>45)move(delta<0?1:-1);}touchX.current=null;}}><img src={`/history/${photos[index].file}.jpg`} alt={photos[index].caption}/></div>
-        <footer><nav aria-label="사진 이동"><button type="button" onClick={()=>move(-1)} aria-label="이전 사진">←</button><button type="button" onClick={()=>move(1)} aria-label="다음 사진">→</button></nav><p aria-live="polite">{photos[index].caption}</p></footer>
+      {selected!==null && <div className="lightbox-content" onClick={event=>{if(event.target===event.currentTarget)close();}}>
+        <header><span>{String(index+1).padStart(2,"0")} / {photos.length}</span><button autoFocus type="button" onClick={close} aria-label="사진 닫기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
+        <div className="lightbox-image" onClick={event=>{if(event.target===event.currentTarget)close();}} onTouchStart={event=>{touchStart.current={x:event.touches[0].clientX,y:event.touches[0].clientY};}} onTouchCancel={()=>{touchStart.current=null;}} onTouchEnd={event=>{if(touchStart.current){const dx=event.changedTouches[0].clientX-touchStart.current.x,dy=event.changedTouches[0].clientY-touchStart.current.y;if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.4)move(dx<0?1:-1);}touchStart.current=null;}}><img src={`/history/${photos[index].file}.jpg`} alt={photos[index].caption}/></div>
+        <footer><nav aria-label="사진 이동"><button type="button" onClick={()=>move(-1)} aria-label="이전 사진"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></button><button type="button" onClick={()=>move(1)} aria-label="다음 사진"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg></button></nav><p aria-live="polite">{photos[index].caption}</p></footer>
         <GalleryDdui ready={true} photo={photos[index].tip}/>
       </div>}
     </dialog>
