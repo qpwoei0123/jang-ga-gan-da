@@ -3,7 +3,6 @@
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { InvitationGate } from "./asset-loader";
 import CenterfoldGallery from "./centerfold-gallery";
-import FontTweaks from "./font-tweaks";
 import CoverCarousel from "./cover-carousel";
 import ArticleCanvas from "./article-canvas";
 import NewspaperDelivery from "./newspaper-delivery";
@@ -313,7 +312,6 @@ function WeddingNewspaper() {
           <p className="gallery-signoff">한원영 · 이나경</p>
         </section>
       </main>
-      <FontTweaks />
     </>
   );
 }
