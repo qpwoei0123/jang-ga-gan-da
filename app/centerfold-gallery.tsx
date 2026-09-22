@@ -63,8 +63,8 @@ export default function CenterfoldGallery() {
       </button>)}
     </div>
     <p className="heart-gallery-hint">사진을 누르면 더 크게 볼 수 있어요.</p>
-    <div className="gallery-music"><WeddingSong/></div>
     <div className="gallery-curator" data-visible={visible && selected===null} inert={!visible || selected!==null}>
+      <WeddingSong/>
       {curatorOpen && recommendation!==null && <div className="curator-note" role="status">
         <button type="button" className="curator-dismiss" aria-label="뚜이 안내 닫기" onClick={()=>setCuratorOpen(false)}>×</button>
         <p>{photos[recommendation].tip}</p>

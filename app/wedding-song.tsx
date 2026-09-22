@@ -2,61 +2,96 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAssetsReady, useReportPlayerReady } from "./asset-loader";
-import { loadYouTubeAPI, type YouTubePlayer } from "./youtube-player";
+
+type Playback = "waiting" | "counting" | "blocked" | "playing" | "paused" | "error";
 
 export default function WeddingSong() {
-  const screen = useRef<HTMLDivElement>(null);
-  const player = useRef<YouTubePlayer | null>(null);
-  const started = useRef(false);
-  const assetsReady = useAssetsReady();
+  const ready = useAssetsReady();
   const reportReady = useReportPlayerReady();
-  const [ready, setReady] = useState(false);
+  const engine = useRef<{ context: AudioContext; buffer: AudioBuffer; gain: GainNode; source: AudioBufferSourceNode | null } | null>(null);
+  const [loaded, setLoaded] = useState(false);
+  const [state, setState] = useState<Playback>("waiting");
+  const [count, setCount] = useState<string | number>("노래 나옵니다");
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
+    const controller = new AbortController();
     let active = true;
-    const container = screen.current!;
-    loadYouTubeAPI().then((api) => {
-      if (!active) return;
-      const mount = document.createElement("div");
-      container.append(mount);
-      player.current = new api.Player(mount, {
-        host: "https://www.youtube-nocookie.com",
-        videoId: "fvJKrvxu6SE", width: 200, height: 200,
-        playerVars: { autoplay: 0, controls: 1, playsinline: 1, origin: window.location.origin },
-        events: {
-          onReady: ({ target }) => {
-            if (!active) return;
-            target.getIframe().title = "하루상점 — 가을에 감 잡은 재즈";
-            setReady(true);
-            reportReady("ready");
-          },
-          onError: () => { if (active) reportReady("error"); },
-        },
-      });
-    }).catch(() => { if (active) reportReady("error"); });
-    return () => { active = false; player.current?.destroy(); player.current = null; container.replaceChildren(); };
+    const context = new AudioContext();
+    const gain = context.createGain();
+    gain.gain.value = 0;
+    gain.connect(context.destination);
+    const timeout = window.setTimeout(() => controller.abort(), 30000);
+    // A real gesture can unlock sound while the entrance/countdown is still running.
+    const unlock = () => { if (context.state === "suspended") void context.resume().catch(() => {}); };
+    document.addEventListener("pointerdown", unlock);
+    document.addEventListener("keydown", unlock);
+    fetch("/sounds/aurectheme-jazz-584847.mp3", { signal: controller.signal })
+      .then(response => { if (!response.ok) throw new Error("Audio unavailable"); return response.arrayBuffer(); })
+      .then(bytes => context.decodeAudioData(bytes))
+      .then(buffer => {
+        if (!active) return;
+        engine.current = { context, buffer, gain, source: null };
+        setLoaded(true);
+        reportReady("ready");
+      }).catch(() => { if (active) { setState("error"); reportReady("error"); } })
+      .finally(() => clearTimeout(timeout));
+    return () => {
+      active = false; controller.abort(); clearTimeout(timeout);
+      document.removeEventListener("pointerdown", unlock);
+      document.removeEventListener("keydown", unlock);
+      engine.current?.source?.stop(); engine.current = null;
+      void context.close();
+    };
   }, [reportReady]);
 
   useEffect(() => {
-    if (!assetsReady || !ready) return;
-    let visible = false;
-    const sync = () => {
-      if (document.hidden) player.current?.pauseVideo();
-      else if (visible && !started.current) {
-        started.current = true;
-        player.current?.playVideo();
-      }
-    };
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.intersectionRatio >= .6;
-      sync();
-    }, { threshold: [.6] });
-    observer.observe(screen.current!);
-    document.addEventListener("visibilitychange", sync);
-    return () => { observer.disconnect(); document.removeEventListener("visibilitychange", sync); };
-  }, [assetsReady, ready]);
+    if (!ready || !loaded) return;
+    let cancelled = false;
+    const timers: number[] = [];
+    const later = (fn: () => void, ms: number) => timers.push(window.setTimeout(() => { if (!cancelled) fn(); }, ms));
+    const delay = attempt === 0 ? 1600 : 0;
+    later(() => { setState("counting"); setCount("노래 나옵니다"); }, delay);
+    [3, 2, 1].forEach((n, i) => later(() => setCount(n), delay + 1100 + i * 1000));
+    later(() => {
+      const audio = engine.current;
+      if (!audio) return;
+      if (audio.context.state !== "running") { setState("blocked"); return; }
+      const source = audio.context.createBufferSource();
+      source.buffer = audio.buffer;
+      source.loop = true;
+      source.connect(audio.gain);
+      audio.source = source;
+      audio.gain.gain.cancelScheduledValues(audio.context.currentTime);
+      audio.gain.gain.setValueAtTime(0, audio.context.currentTime);
+      audio.gain.gain.linearRampToValueAtTime(.45, audio.context.currentTime + 3);
+      source.start();
+      setState("playing");
+    }, delay + 4100);
+    return () => { cancelled = true; timers.forEach(clearTimeout); };
+  }, [ready, loaded, attempt]);
 
-  return <section className="wedding-song" aria-label="함께 듣는 음악">
-    <div ref={screen} className="wedding-song-screen" />
-  </section>;
+  const toggle = () => {
+    const audio = engine.current;
+    if (!audio) return;
+    if (state === "playing") {
+      audio.source?.stop(); audio.source?.disconnect(); audio.source = null;
+      setState("paused");
+    } else {
+      void audio.context.resume().then(() => {
+        if (engine.current !== audio) return;
+        if (audio.context.state === "running") setAttempt(value => value + 1);
+        else setState("blocked");
+      }).catch(() => setState("blocked"));
+    }
+  };
+
+  if (state === "waiting") return null;
+  return <div className="ddui-music">
+    {state === "counting" ? <p className="ddui-countdown" role="status" aria-live="polite"><span key={count}>{count}</span></p>
+      : state === "error" ? <p className="ddui-music-error">음악을 불러오지 못했어요.</p>
+      : <button type="button" onClick={toggle} aria-label={state === "playing" ? "음악 끄기" : "음악 재생"}>
+        {state === "playing" ? "음악 끄기" : state === "blocked" ? "터치하면 노래 나와요" : "음악 켜기"}
+      </button>}
+  </div>;
 }

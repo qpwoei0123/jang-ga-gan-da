@@ -1,3 +1,7 @@
+## 음악 — 2026-09-22
+
+유튜브 플레이어를 제거하고 제공된 aurectheme-jazz-584847.mp3를 자체 재생한다. 로더에서 음원을 다운로드·디코딩한 뒤 뚜이의 1.6초 등장을 기다린다. 뚜이 옆에 “노래 나옵니다 → 3 → 2 → 1”을 띄우고 3초간 볼륨을 45%까지 올린다. 자동재생이 차단되면 명시적인 재생 버튼을 제공하고 터치 후 다시 카운트한다. 재생 중에는 음악 끄기 버튼을 유지한다.
+
 # Design Direction — The Wedding News
 
 ## Current shipped direction — newspaper landing, white gallery and thanks

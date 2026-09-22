@@ -596,3 +596,13 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 @media(max-width:600px) { .heart-gallery { padding:62px 16px 24px; } .heart-puzzle { aspect-ratio:12 / 17; gap:3px; } .heart-gallery-heading { margin-bottom:32px; } }
 @media(prefers-reduced-motion:reduce) { .gallery-curator,.heart-tile img,.curator-dog img { transition:none; } }
 .gallery-lightbox button:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+
+.ddui-music { position:absolute; right:0; bottom:100%; margin-bottom:12px; white-space:nowrap; }
+.ddui-music button { padding:8px 12px; border:1px solid #ddd; border-radius:20px; background:#fff; color:#444; font:12px/1.4 var(--sans); cursor:pointer; min-height:36px; }
+.ddui-music button:focus-visible { outline:2px solid #555; outline-offset:3px; }
+.ddui-countdown { margin:0; padding:6px 10px; background:#fff; border-radius:12px; font:25px/1.4 var(--handwriting); text-align:center; min-width:64px; }
+.ddui-countdown span { display:block; animation:ddui-count-in .3s ease-out both; }
+.ddui-music-error { background:#fff; padding:6px; font:12px/1.4 var(--sans); }
+.gallery-curator:has(.curator-note) .ddui-music { right:82px; bottom:12px; margin:0; }
+@keyframes ddui-count-in { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+@media(prefers-reduced-motion:reduce) { .ddui-countdown span { animation:none; } }
