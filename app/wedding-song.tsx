@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import { speechFlight } from "./ddui-speech-motion";
 import { useAssetsReady, useReportPlayerReady } from "./asset-loader";
 
-type Playback = "waiting" | "counting" | "blocked" | "playing" | "error";
+type Playback = "waiting" | "blocked" | "playing" | "error";
 
 export default function WeddingSong() {
   const ready = useAssetsReady();
@@ -12,7 +12,6 @@ export default function WeddingSong() {
   const engine = useRef<{ context: AudioContext; buffer: AudioBuffer; gain: GainNode; source: AudioBufferSourceNode | null } | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [state, setState] = useState<Playback>("waiting");
-  const [count, setCount] = useState<string | number>("노래 나옵니다");
   const [attempt, setAttempt] = useState(0);
   const [hintGone, setHintGone] = useState(false);
 
@@ -24,7 +23,7 @@ export default function WeddingSong() {
     gain.gain.value = 0;
     gain.connect(context.destination);
     const timeout = window.setTimeout(() => controller.abort(), 30000);
-    // A real gesture can unlock sound while the entrance/countdown is still running.
+    // A real gesture can unlock sound while the entrance is still running.
     const unlock = () => { if (context.state === "suspended") void context.resume().catch(() => {}); };
     document.addEventListener("pointerdown", unlock);
     document.addEventListener("keydown", unlock);
@@ -53,11 +52,9 @@ export default function WeddingSong() {
     const timers: number[] = [];
     const later = (fn: () => void, ms: number) => timers.push(window.setTimeout(() => { if (!cancelled) fn(); }, ms));
     const delay = attempt === 0 ? 1600 : 0;
-    later(() => { setState("counting"); setCount("노래 나옵니다"); }, delay);
-    [3, 2, 1].forEach((n, i) => later(() => setCount(n), delay + 1800 + i * 1800));
     later(() => {
       const audio = engine.current;
-      if (!audio) return;
+      if (!audio || audio.source) return;
       if (audio.context.state !== "running") { setState("blocked"); return; }
       const source = audio.context.createBufferSource();
       source.buffer = audio.buffer;
@@ -68,8 +65,9 @@ export default function WeddingSong() {
       audio.gain.gain.setValueAtTime(0, audio.context.currentTime);
       audio.gain.gain.linearRampToValueAtTime(.45, audio.context.currentTime + 3);
       source.start();
+      setHintGone(false);
       setState("playing");
-    }, delay + 7200);
+    }, delay);
     return () => { cancelled = true; timers.forEach(clearTimeout); };
   }, [ready, loaded, attempt]);
 
@@ -94,12 +92,11 @@ export default function WeddingSong() {
     };
   }, [state]);
 
-  const flight = useMemo(speechFlight, [count, state]);
-  if (state === "waiting" || state === "playing" || (state !== "counting" && hintGone)) return null;
+  const flight = useMemo(speechFlight, [state]);
+  if (state === "waiting" || hintGone) return null;
   return <div className="ddui-music" style={flight}>
-    {state === "counting" ? <p key={count} className="ddui-countdown ddui-flying-word" role="status" aria-live="polite"><span className="ddui-speech-sway">{count}</span></p>
-      : <p className="ddui-flying-word" role="status" onAnimationEnd={() => setHintGone(true)}>
-        <span className="ddui-speech-sway">{state === "error" ? "음악을 불러오지 못했어요." : "터치하면 노래 나와요~"}</span>
-      </p>}
+    <p key={state} className="ddui-flying-word" role="status" onAnimationEnd={event => { if(event.target === event.currentTarget) setHintGone(true); }}>
+      <span className="ddui-speech-sway">{state === "playing" ? "뮤직 큐~~" : state === "error" ? "음악을 불러오지 못했어요." : "터치하면 노래 나와요~"}</span>
+    </p>
   </div>;
 }
