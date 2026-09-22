@@ -657,3 +657,10 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .ddui-flying-word { padding:0; border-radius:0; background:none; box-shadow:none; color:#242424; -webkit-text-stroke:3px #fff; paint-order:stroke fill; text-shadow:0 1px 2px #fff; font-size:23px; }
 .ddui-words { right:20px; }
 @media(max-width:600px) { .heart-puzzle { gap:4px; aspect-ratio:7 / 6; } }
+
+/* One physical sheet: folds shade and gently displace the ink and photographs too. */
+.paper-surface-filters { position:absolute; pointer-events:none; }
+.wedding-site .edition { isolation:isolate; filter:url(#printed-paper-relief); }
+.wedding-site .edition::before { background-image:var(--paper-grain); background-size:100% 100%; background-position:center; background-repeat:no-repeat; opacity:.16; mix-blend-mode:multiply; filter:grayscale(1) contrast(1.2); }
+.wedding-site .edition::after { z-index:6; background-image:var(--paper-grain); background-size:100% 100%; background-position:center; background-repeat:no-repeat; opacity:.12; mix-blend-mode:soft-light; filter:grayscale(1) contrast(1.4); }
+@media print { .wedding-site .edition { filter:none; } }

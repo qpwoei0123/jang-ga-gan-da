@@ -262,6 +262,16 @@ function WeddingNewspaper() {
     <>
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
       <main className="wedding-site" aria-label="한원영과 이나경의 웨딩 신문">
+        <svg className="paper-surface-filters" aria-hidden="true" width="0" height="0">
+          <defs>
+            <filter id="printed-paper-relief" x="-1%" y="-1%" width="102%" height="102%" colorInterpolationFilters="sRGB">
+              <feImage href="/paper-crumple.png" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="paper" />
+              <feColorMatrix in="paper" type="saturate" values="0" result="folds" />
+              <feGaussianBlur in="folds" stdDeviation="3" result="soft-folds" />
+              <feDisplacementMap in="SourceGraphic" in2="soft-folds" scale="0.8" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </defs>
+        </svg>
         <div className="edition"><article className="paper-page cover-page" id="top">
           <div className="cover-utility">
             <span>The Grand Hall</span>
