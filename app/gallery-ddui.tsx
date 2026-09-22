@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { speechFlight } from "./ddui-speech-motion";
 import confetti from "canvas-confetti";
 import { useJellyTouch } from "./use-jelly-touch";
 
@@ -9,13 +10,13 @@ export default function GalleryDdui({ ready, photo }: { ready:boolean; photo?:st
   const button=useRef<HTMLButtonElement>(null);
   useJellyTouch(button);
   const [visible,setVisible]=useState(false);
-  const [words,setWords]=useState<{id:number;text:string;drift:number}[]>([]);
+  const [words,setWords]=useState<{id:number;text:string;flight:CSSProperties}[]>([]);
   const last=useRef(Date.now()+5000), serial=useRef(0);
   const say=useCallback((text:string,force=false)=>{
     const now=Date.now();
     if(!force && (now-last.current<5500 || document.querySelector(".ddui-countdown")))return false;
     last.current=now;
-    setWords([{id:++serial.current,text,drift:100+Math.random()*20}]);
+    setWords([{id:++serial.current,text,flight:speechFlight()}]);
     return true;
   },[]);
   useEffect(()=>{if(ready){const frame=requestAnimationFrame(()=>setVisible(true));return()=>cancelAnimationFrame(frame);}},[ready]);
@@ -50,7 +51,7 @@ export default function GalleryDdui({ ready, photo }: { ready:boolean; photo?:st
   };
   return <div className="gallery-curator" data-visible={visible}>
     <div className="ddui-words" aria-live="polite" aria-atomic="false">
-      {words.map(word=><p key={word.id} className="ddui-flying-word" style={{'--drift':`${word.drift}px`,'--rise':`${word.drift*Math.tan(5*Math.PI/180)}px`} as CSSProperties} onAnimationEnd={()=>setWords(previous=>previous.filter(item=>item.id!==word.id))}>{word.text}</p>)}
+      {words.map(word=><p key={word.id} className="ddui-flying-word" style={word.flight} onAnimationEnd={()=>setWords(previous=>previous.filter(item=>item.id!==word.id))}>{word.text}</p>)}
     </div>
     <div className="ddui-waddle"><button ref={button} className="curator-dog" type="button" aria-label="뚜이 쓰다듬기" onClick={touch}><img src="/history/ddui.webp" alt="" width="64" height="64"/></button></div>
   </div>;

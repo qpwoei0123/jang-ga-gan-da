@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
+import { speechFlight } from "./ddui-speech-motion";
 import { useAssetsReady, useReportPlayerReady } from "./asset-loader";
 
 type Playback = "waiting" | "counting" | "blocked" | "playing" | "error";
@@ -93,8 +94,8 @@ export default function WeddingSong() {
     };
   }, [state]);
 
+  const flight = useMemo(speechFlight, [count, state]);
   if (state === "waiting" || state === "playing" || (state !== "counting" && hintGone)) return null;
-  const flight = { "--drift":"110px", "--rise":"9.62px" } as CSSProperties;
   return <div className="ddui-music" style={flight}>
     {state === "counting" ? <p key={count} className="ddui-countdown ddui-flying-word" role="status" aria-live="polite">{count}</p>
       : <p className="ddui-flying-word" role="status" onAnimationEnd={() => setHintGone(true)}>

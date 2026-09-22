@@ -667,3 +667,16 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 
 .ddui-music { right:21px; bottom:75px; max-width:min(230px,calc(100vw - 34px)); white-space:normal; pointer-events:none; }
 .ddui-music .ddui-flying-word { min-width:0; padding:0; margin:0; text-align:right; font:17px/1.45 var(--handwriting); background:none; border:0; border-radius:0; }
+
+/* Speech launches from the 66px dog's centre, never intercepting page touches. */
+.ddui-words { right:33px; bottom:33px; width:min(180px,calc(100vw - 48px)); }
+.ddui-music { right:34px; bottom:calc(34px + env(safe-area-inset-bottom)); width:min(180px,calc(100vw - 48px)); max-width:none; }
+.ddui-flying-word { transform-origin:right center; pointer-events:none; animation-name:ddui-centre-flight; }
+@keyframes ddui-centre-flight {
+  0% { opacity:0; transform:translate(0,50%) scale(.94); }
+  12% { opacity:.95; }
+  48% { opacity:.9; transform:translate(var(--flight-mid-x),calc(50% + var(--flight-mid-y))) rotate(var(--flutter)); }
+  76% { opacity:.5; transform:translate(var(--flight-late-x),calc(50% + var(--flight-late-y))) rotate(calc(-.5 * var(--flutter))); }
+  100% { opacity:0; transform:translate(var(--flight-x),calc(50% + var(--flight-y))); }
+}
+@media(prefers-reduced-motion:reduce) { .ddui-flying-word { animation-name:ddui-word-fade; transform:translateY(50%); } }
