@@ -261,8 +261,8 @@ function WeddingNewspaper() {
   return (
     <>
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
-      <main className="edition" aria-label="한원영과 이나경의 웨딩 신문">
-        <article className="paper-page cover-page" id="top">
+      <main className="wedding-site" aria-label="한원영과 이나경의 웨딩 신문">
+        <div className="edition"><article className="paper-page cover-page" id="top">
           <div className="cover-utility">
             <span>The Grand Hall</span>
 
@@ -287,10 +287,11 @@ function WeddingNewspaper() {
           <ArticleCanvas kind="history" photoSrc="/couple-main.webp" />
         </article>
 
+        </div>
         <CenterfoldGallery />
 
         <section className="paper-page details-page" id="details">
-          <header className="section-kicker">감사의 인사</header>
+          <h2 className="thanks-heading">마음을 전합니다</h2>
           <div className="announcement-note">
             <p>가족들과 함께 조용히 예식을 올립니다.</p>
             <p>오랜 시간 저희의 곁을 지켜주신<br />모든 분께 감사드립니다.<br />보내주시는 축하를 마음에 담고<br />서로 아끼며 잘 살겠습니다.</p>
@@ -299,7 +300,7 @@ function WeddingNewspaper() {
               <div>이광범 · 성호숙의 딸 <strong>이나경</strong></div>
             </div>
           </div>
-          <PageBottom next="END OF EDITION" />
+          <p className="gallery-signoff">한원영 · 이나경</p>
         </section>
       </main>
       <FontTweaks />
