@@ -703,3 +703,11 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
     drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff)
     drop-shadow(0 2px 2px rgb(40 32 24 / 18%));
 }
+
+/* Keep the invitation visible behind the enlarged photograph. */
+.gallery-lightbox { background:transparent; color:#242424; }
+.gallery-lightbox::backdrop { background:rgb(255 255 255 / 48%); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+.lightbox-content header span,.lightbox-content footer p { color:#333; }
+.lightbox-content button { color:#242424; }
+.gallery-lightbox button:focus-visible { outline-color:#333; }
+@supports not (backdrop-filter:blur(1px)) { .gallery-lightbox::backdrop { background:rgb(255 255 255 / 92%); } }
