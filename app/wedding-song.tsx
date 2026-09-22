@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAssetsReady, useReportPlayerReady } from "./asset-loader";
 
-type Playback = "waiting" | "counting" | "blocked" | "playing" | "paused" | "error";
+type Playback = "waiting" | "counting" | "blocked" | "playing" | "error";
 
 export default function WeddingSong() {
   const ready = useAssetsReady();
@@ -74,24 +74,19 @@ export default function WeddingSong() {
   const toggle = () => {
     const audio = engine.current;
     if (!audio) return;
-    if (state === "playing") {
-      audio.source?.stop(); audio.source?.disconnect(); audio.source = null;
-      setState("paused");
-    } else {
-      void audio.context.resume().then(() => {
-        if (engine.current !== audio) return;
-        if (audio.context.state === "running") setAttempt(value => value + 1);
-        else setState("blocked");
-      }).catch(() => setState("blocked"));
-    }
+    void audio.context.resume().then(() => {
+      if (engine.current !== audio) return;
+      if (audio.context.state === "running") setAttempt(value => value + 1);
+      else setState("blocked");
+    }).catch(() => setState("blocked"));
   };
 
-  if (state === "waiting") return null;
+  if (state === "waiting" || state === "playing") return null;
   return <div className="ddui-music">
     {state === "counting" ? <p className="ddui-countdown" role="status" aria-live="polite"><span key={count}>{count}</span></p>
       : state === "error" ? <p className="ddui-music-error">음악을 불러오지 못했어요.</p>
-      : <button type="button" onClick={toggle} aria-label={state === "playing" ? "음악 끄기" : "음악 재생"}>
-        {state === "playing" ? "음악 끄기" : state === "blocked" ? "터치하면 노래 나와요" : "음악 켜기"}
+      : <button type="button" onClick={toggle} aria-label="음악 재생">
+        터치하면 노래 나와요
       </button>}
   </div>;
 }

@@ -13,7 +13,7 @@ export function useJellyTouch(ref: RefObject<HTMLButtonElement | null>) {
       const dt=last?Math.min((now-last)/1000,.032):1/60;last=now;
       let moving=false;
       for(let i=0;i<4;i++) {
-        velocity[i]+=((target[i]-position[i])*190-velocity[i]*15)*dt;
+        velocity[i]+=((target[i]-position[i])*190-velocity[i]*11)*dt;
         position[i]+=velocity[i]*dt;
         if(Math.abs(target[i]-position[i])>.001 || Math.abs(velocity[i])>.01) moving=true;
         else {position[i]=target[i];velocity[i]=0;}
@@ -29,7 +29,7 @@ export function useJellyTouch(ref: RefObject<HTMLButtonElement | null>) {
       held=false;pointer=null;button.dataset.pressed='false';
       target[0]=target[1]=0;target[2]=target[3]=focused?1.025:1;run();
     };
-    const press=()=>{held=true;button.dataset.pressed='true';target[1]=5;target[2]=1.18;target[3]=.8;run();};
+    const press=()=>{held=true;button.dataset.pressed='true';target[0]=(Math.random()-.5)*12;target[1]=4+Math.random()*4;target[2]=1.18+Math.random()*.14;target[3]=1/target[2]-.08;velocity[0]+=(Math.random()-.5)*25;run();};
     const down=(event:PointerEvent)=>{
       if(!event.isPrimary || event.button!==0)return;
       pointer=event.pointerId;originX=event.clientX;originY=event.clientY;

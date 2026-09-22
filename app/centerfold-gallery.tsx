@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import WeddingSong from "./wedding-song";
-import { useJellyTouch } from "./use-jelly-touch";
+import GalleryDdui from "./gallery-ddui";
 import { useAssetsReady } from "./asset-loader";
 
 // Rectangular prints form the outline themselves; no heart mask or rotated tiles.
@@ -25,22 +25,10 @@ export default function CenterfoldGallery() {
   const section=useRef<HTMLElement>(null);
   const dialog=useRef<HTMLDialogElement>(null);
   const touchX=useRef<number | null>(null);
-  const curatorButton=useRef<HTMLButtonElement>(null);
-  const restoreCuratorFocus=useRef(false);
-  useJellyTouch(curatorButton);
   const [selected,setSelected]=useState<number | null>(null);
-  const [visible,setVisible]=useState(false);
-  const [recommendation,setRecommendation]=useState<number | null>(null);
-  const [curatorOpen,setCuratorOpen]=useState(false);
   const index=selected ?? 0;
   const move=(direction:number)=>setSelected(current=>current===null?null:(current+direction+photos.length)%photos.length);
 
-  useEffect(()=>{
-    if(!ready)return;
-    const frame=requestAnimationFrame(()=>setVisible(true));
-    return()=>cancelAnimationFrame(frame);
-  },[ready]);
-  useEffect(()=>{if(!visible)setCuratorOpen(false);},[visible]);
   useEffect(()=>{
     const modal=dialog.current;
     if(selected===null || !modal) return;
@@ -50,33 +38,23 @@ export default function CenterfoldGallery() {
     return()=>{document.body.style.overflow=previous;};
   },[selected!==null]);
   const close=()=>{dialog.current?.close();setSelected(null);};
-  const recommend=()=>{
-    setRecommendation(previous=>previous===null?3:(previous+3)%photos.length);
-    setCuratorOpen(true);
-  };
 
   return <section ref={section} className="heart-gallery" id="photo-edition" aria-labelledby="gallery-title">
     <header className="heart-gallery-heading"><h2 id="gallery-title">함께 모은 순간들</h2><p>하나하나 모여, 우리의 마음이 되었습니다.</p></header>
     <div className="heart-puzzle" aria-label="하트 모양으로 모은 열한 장의 사진">
-      {photos.map((photo,i)=><button key={photo.file} type="button" className="heart-tile" style={{gridColumn:photo.column,gridRow:photo.row,"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected(i)}>
+      {photos.map((photo,i)=><button key={photo.file} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--tile-index":i,"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected(i)}>
         <img src={`/history/${photo.file}.jpg`} alt={photo.caption} draggable="false"/>
       </button>)}
     </div>
     <p className="heart-gallery-hint">사진을 누르면 더 크게 볼 수 있어요.</p>
-    <div className="gallery-curator" data-visible={visible && selected===null} inert={!visible || selected!==null}>
-      <WeddingSong/>
-      {curatorOpen && recommendation!==null && <div className="curator-note" role="status">
-        <button type="button" className="curator-dismiss" aria-label="뚜이 안내 닫기" onClick={()=>setCuratorOpen(false)}>×</button>
-        <p>{photos[recommendation].tip}</p>
-        <div><button type="button" onClick={()=>{restoreCuratorFocus.current=true;setSelected(recommendation);setCuratorOpen(false);}}>사진 보기 <span aria-hidden="true">↗</span></button><button type="button" onClick={recommend}>다른 사진</button></div>
-      </div>}
-      <button ref={curatorButton} className="curator-dog" type="button" aria-label="뚜이에게 사진 추천받기" aria-expanded={curatorOpen} onClick={()=>curatorOpen?setCuratorOpen(false):recommend()}><img src="/history/ddui.webp" alt="" width="64" height="64"/><span>뚜이의 픽</span></button>
-    </div>
-    <dialog ref={dialog} className="gallery-lightbox" aria-label="웨딩 사진 크게 보기" onCancel={close} onClose={()=>{setSelected(null);if(restoreCuratorFocus.current){restoreCuratorFocus.current=false;requestAnimationFrame(()=>curatorButton.current?.focus({preventScroll:true}));}}} onClick={event=>{if(event.target===event.currentTarget)close();}} onKeyDown={event=>{if(event.key==="ArrowRight"){event.preventDefault();move(1);}if(event.key==="ArrowLeft"){event.preventDefault();move(-1);}}}>
+    <WeddingSong/>
+    {selected===null && <GalleryDdui ready={ready}/>}
+    <dialog ref={dialog} className="gallery-lightbox" aria-label="웨딩 사진 크게 보기" onCancel={close} onClose={()=>setSelected(null)} onClick={event=>{if(event.target===event.currentTarget)close();}} onKeyDown={event=>{if(event.key==="ArrowRight"){event.preventDefault();move(1);}if(event.key==="ArrowLeft"){event.preventDefault();move(-1);}}}>
       {selected!==null && <div className="lightbox-content">
         <header><span>{String(index+1).padStart(2,"0")} / {photos.length}</span><button autoFocus type="button" onClick={close} aria-label="사진 닫기">×</button></header>
         <div className="lightbox-image" onTouchStart={event=>{touchX.current=event.touches[0].clientX;}} onTouchCancel={()=>{touchX.current=null;}} onTouchEnd={event=>{if(touchX.current!==null){const delta=event.changedTouches[0].clientX-touchX.current;if(Math.abs(delta)>45)move(delta<0?1:-1);}touchX.current=null;}}><img src={`/history/${photos[index].file}.jpg`} alt={photos[index].caption}/></div>
-        <footer><button type="button" onClick={()=>move(-1)} aria-label="이전 사진">←</button><p aria-live="polite">{photos[index].caption}</p><button type="button" onClick={()=>move(1)} aria-label="다음 사진">→</button></footer>
+        <footer><nav aria-label="사진 이동"><button type="button" onClick={()=>move(-1)} aria-label="이전 사진">←</button><button type="button" onClick={()=>move(1)} aria-label="다음 사진">→</button></nav><p aria-live="polite">{photos[index].caption}</p></footer>
+        <GalleryDdui ready={true} photo={photos[index].tip}/>
       </div>}
     </dialog>
   </section>;
