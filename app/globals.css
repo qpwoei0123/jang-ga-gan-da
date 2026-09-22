@@ -627,7 +627,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .gallery-curator[data-visible=true] .ddui-waddle { animation:ddui-waddle 1.6s ease-out both; }
 @keyframes ddui-waddle { 0%,24%,48%,72% { transform:rotate(7deg) translateY(0); } 12%,36%,60%,84% { transform:rotate(-6deg) translateY(-5px); } 100% { transform:none; } }
 .ddui-words { position:absolute; right:13px; bottom:74px; width:min(230px,calc(100vw - 34px)); display:flex; flex-direction:column; align-items:flex-end; gap:10px; pointer-events:none; }
-.ddui-flying-word { flex:none; margin:0; max-width:100%; padding:9px 13px; border-radius:14px; background:#fff; color:#282828; box-shadow:0 3px 14px #0000001a; font:21px/1.45 var(--handwriting); word-break:keep-all; animation:ddui-word-flight 4.8s ease-out both; }
+.ddui-flying-word { flex:none; margin:0; max-width:100%; padding:9px 13px; border-radius:14px; background:#fff; color:#282828; box-shadow:0 3px 14px #0000001a; font:21px/1.45 var(--handwriting); word-break:keep-all; animation:ddui-word-flight 1.8s ease-out both; }
 @keyframes ddui-word-flight { 0% { opacity:0; transform:translate(0,12px) scale(.95); } 12%,45% { opacity:1; } 100% { opacity:0; transform:translate(calc(-1 * var(--drift)),-75px) rotate(-5deg); } }
 .lightbox-content footer { justify-content:flex-start; padding-right:65px; gap:12px; }
 .lightbox-content footer nav { display:flex; flex:none; gap:4px; }
@@ -635,7 +635,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .ddui-music { position:fixed; z-index:81; right:8px; bottom:82px; margin:0; }
 body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 @media(max-width:600px) { .heart-puzzle { aspect-ratio:1 / 1.35; } .heart-tile { border-width:2px; } }
-@media(prefers-reduced-motion:reduce) { .gallery-curator[data-visible=true] .ddui-waddle { animation:none; } .ddui-flying-word { animation:ddui-word-fade 4.8s both; } }
+@media(prefers-reduced-motion:reduce) { .gallery-curator[data-visible=true] .ddui-waddle { animation:none; } .ddui-flying-word { animation:ddui-word-fade 1.8s both; } }
 @keyframes ddui-word-fade { 0%,100% { opacity:0; } 10%,70% { opacity:1; } }
 
 /* Straight, unequal modules: the silhouette is a heart, its interior is asymmetric. */
@@ -654,7 +654,7 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .heart-tile:nth-child(11) { grid-area:6 / 4 / 7 / 5; }
 .wedding-site { padding-top:16px; }
 .wedding-site .edition { width:min(calc(100% - 24px),390px); box-shadow:0 5px 22px #29231b12; }
-.ddui-flying-word { padding:0; border-radius:0; background:none; box-shadow:none; color:#242424; -webkit-text-stroke:3px #fff; paint-order:stroke fill; text-shadow:0 1px 2px #fff; font-size:23px; }
+.ddui-flying-word { padding:0; border-radius:0; background:none; box-shadow:none; color:#242424; -webkit-text-stroke:3px #fff; paint-order:stroke fill; text-shadow:0 1px 2px #fff; font-size:17px; }
 .ddui-words { right:20px; }
 @media(max-width:600px) { .heart-puzzle { gap:4px; aspect-ratio:7 / 6; } }
 
