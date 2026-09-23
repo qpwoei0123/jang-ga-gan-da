@@ -738,3 +738,16 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .heart-tile[data-featured=true] img { animation:heart-breathe 2.8s ease-in-out both; }
 @keyframes heart-breathe { 0%,100% { transform:scale(1); filter:brightness(1); } 40%,60% { transform:scale(1.07); filter:brightness(1.035); } }
 @media(prefers-reduced-motion:reduce) { .ddui-peek { transition:none; } .heart-tile[data-featured=true] img { animation:none; } }
+
+/* The dog shares the sheet's space: ground, companion, ink, then paper grain. */
+.wedding-site { isolation:isolate; }
+.wedding-site .edition { isolation:auto; filter:none; background:transparent; box-shadow:none; }
+.wedding-site .edition::before { z-index:0; opacity:1; mix-blend-mode:normal; filter:none; background:var(--paper); box-shadow:0 5px 22px #29231b12; }
+.wedding-site .edition::after { z-index:3; opacity:.18; mix-blend-mode:multiply; }
+.wedding-site .edition > .paper-page { overflow:visible; }
+.wedding-site .edition > .paper-page > * { z-index:2; filter:url(#printed-paper-relief); }
+.heart-gallery { background:transparent; }
+.heart-gallery-heading,.heart-puzzle,.heart-gallery-hint,.thanks-heading,.announcement-note,.gallery-signoff { position:relative; z-index:2; }
+.ddui-companion { z-index:1; }
+.ddui-peek,.ddui-companion[data-finale=true] .ddui-peek { clip-path:none; transition:none; }
+@media print { .wedding-site .edition > .paper-page > * { filter:none; } .ddui-companion { display:none; } }
