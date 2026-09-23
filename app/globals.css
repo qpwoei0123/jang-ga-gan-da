@@ -211,11 +211,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .cover-announcement span { display: block; margin-top: calc(6 * var(--paper-unit)); color: var(--muted); font: calc(12 * var(--paper-unit))/1.45 var(--sans); }
 .cover-photo { margin: 0; }
 .cover-photo-print { position: relative; width: 100%; margin: 0 auto; overflow: hidden; }
-.cover-photo img { width:100%; height:auto; aspect-ratio:4/5; object-fit:cover; object-position:50% 53%; filter:var(--photo-ink); }
-.cover-photo-mark { position:absolute; top:var(--space-12); left:var(--space-12); display:flex; align-items:baseline; gap:var(--space-8); padding:calc(5 * var(--paper-unit)) calc(7 * var(--paper-unit)) calc(4 * var(--paper-unit)); color:var(--paper); background:var(--ink); font:800 calc(5.5 * var(--paper-unit))/1 var(--sans); letter-spacing:.04em; pointer-events:none; }
-.cover-photo-mark b { font:700 calc(10 * var(--paper-unit))/1 var(--display); letter-spacing:-.02em; }
-.cover-photo figcaption { margin:var(--space-8) 0 0; padding:0 0 var(--space-12); font:calc(11 * var(--paper-unit))/1.5 var(--sans); }
-.cover-photo figcaption b { margin-right:calc(4 * var(--paper-unit)); color:var(--ink); }
+.cover-photo img { width:100%; height:auto; aspect-ratio:2/3; object-fit:cover; filter:var(--photo-ink); }
 
 /* 02 — culture pages: a photographic record */
 .chronicle { color:var(--ink); overflow:clip; }
@@ -378,9 +374,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
   .phase-opening { animation: none; opacity: 0; }
   .phase-opening .delivery-brand-reveal img { animation: none; }
 }
-
-.cover-photo-caption svg { display:block; width:100%; height:auto; overflow:visible; }
-.cover-photo-caption text { font:16px var(--sans); fill:var(--muted); }
 
 .chronicle-intro { margin-top:calc(14 * var(--paper-unit)); font:calc(14 * var(--paper-unit))/1.7 var(--text); color:var(--muted); }
 .chronicle-dog-gait > img { transform:rotate(var(--dog-turn,0deg)); }

@@ -5,22 +5,22 @@ import { useEffect, useRef } from "react";
 const W = 346;
 const layouts = {
   reaction: {
-    height: 342,
+    height: 360,
     label: "BRIDE & GROOM / 단독 소감",
     title: ["GD와 결혼하지 못한", "신부의 한탄"],
     blocks: [
-      { x: 174, y: 158, lines: ["신부 이나경은 GD와의 결혼이", "무산돼 유감을 표했다.", "“어쩌다 한원영과 식장까지", "잡았다”는 신부는 말끝마다", "웃음을 참지 못했다."] },
-      { x: 0, y: 286, lines: ["신랑은 “그걸 왜 청첩장에 쓰냐”며 어이없어했다.", "결혼식은 예정대로 진행된다."] },
+      { x: 174, y: 158, lines: ["신부 이나경은 GD와의 결혼이", "무산돼 유감을 표했다.", "“어쩌다 식장까지", "잡았다”는 신부는 말끝마다", "웃음을 참지 못했다."] },
+      { x: 0, y: 320, lines: ["신랑은 “그걸 왜 청첩장에 쓰냐”며 어이없어했다."] },
     ],
   },
   history: {
-    height: 378,
+    height: 400,
     label: "HISTORY / 역사 · 단독 보도",
     title: ["“전생에도 부부였다”"],
     blocks: [
-      { x: 176, y: 122, lines: ["국립중앙말티푸박물관의", "옛 혼인 사진에서 두 사람과", "닮은 부부가 발견됐다."] },
-      { x: 176, y: 203, lines: ["박물관 측은 “모자 없는 신랑,", "전생에도 안 어울렸던 듯”", "이라고 밝혔다."] },
-      { x: 176, y: 284, lines: ["학예견이 사진을 물고 달아나", "연도 감정은 중단됐다."] },
+      { x: 176, y: 122, lines: ["국립중앙말티푸박물관이", "오래된 혼인 사진 한 장을", "새로 공개했다."] },
+      { x: 176, y: 203, lines: ["박물관 측은 “어디선가", "본 듯한 수상한 부부다.", "전생에도 키 차이는", "어쩔 수 없나 보다ㅋ”라고", "밝혔다."] },
+      { x: 176, y: 320, lines: ["정확한 감정을 하려 했으나", "괴도 강아지가 사진을 물고", "달아나 조사가 중단됐다."] },
     ],
   },
 };
@@ -66,11 +66,11 @@ export default function ArticleCanvas({ kind, photoSrc }: { kind: keyof typeof l
       layout.blocks.forEach(block => text(block.lines, block.x, block.y, number("--type-body"), number("--leading-body")));
       if (kind === "reaction") {
         text(["어이없어하는 남편의 소감"], 1, 122, 11, 16, true, token("--muted"));
-        text(["“계획에 없던", "결과라", "유감입니다.”"], 0, 159, number("--type-quote"), 28);
-        rule(0, 256, 28, 256);
-        text(["신부 이나경"], 37, 250, 9, 12, true, token("--muted"));
-        rule(158, 158, 158, 264);
-        rule(0, 277, W, 277);
+        text(["“딱 하나", "아쉬운 건,", "GD랑 결혼은", "꿈도 못 꾼다는", "것.”"], 0, 158, 18, 23);
+        rule(0, 291, 28, 291);
+        text(["신부 이나경"], 37, 285, 9, 12, true, token("--muted"));
+        rule(158, 158, 158, 297);
+        rule(0, 311, W, 311);
       } else {
         text(["국립중앙말티푸박물관서 혼인 사료 발견"], 0, 86, 11, 16, true, token("--muted"));
         if (photo?.naturalWidth) {
@@ -99,6 +99,6 @@ export default function ArticleCanvas({ kind, photoSrc }: { kind: keyof typeof l
     return () => { disposed = true; window.removeEventListener("resize", onResize); window.removeEventListener("edition-font-change", draw); };
   }, [kind, layout, photoSrc]);
   return <article id={kind === "history" ? "history-report" : undefined} className="canvas-article" data-ddui-tip={kind === "history" ? "앗, 그 사진 물고 간 학예견… 저 아니에요!" : "GD 말고 우리 형도 꽤 괜찮아요~"}>
-    <canvas ref={ref} width={W} height={layout.height} role="img" aria-label={[layout.label, ...layout.title, ...(kind === "reaction" ? ["계획에 없던 결과라 유감입니다. 신부 이나경. 어이없어하는 남편의 소감"] : []), ...layout.blocks.flatMap(block => block.lines)].join(" ")} style={{ display: "block", width: "100%", height: "auto" }} />
+    <canvas ref={ref} width={W} height={layout.height} role="img" aria-label={[layout.label, ...layout.title, ...(kind === "reaction" ? ["딱 하나 아쉬운 건, GD랑 결혼은 꿈도 못 꾼다는 것. 신부 이나경. 어이없어하는 남편의 소감"] : []), ...layout.blocks.flatMap(block => block.lines)].join(" ")} style={{ display: "block", width: "100%", height: "auto" }} />
   </article>;
 }

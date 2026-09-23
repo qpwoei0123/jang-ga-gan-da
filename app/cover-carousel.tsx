@@ -35,7 +35,6 @@ export default function CoverCarousel() {
         </div>)}
       </div>
     </div>
-    <span className="cover-photo-mark" aria-hidden="true">FRONT PAGE <b>W × N</b></span>
     <div className="cover-carousel-controls">
       <button type="button" onClick={() => move(-1)} aria-label="이전 사진">‹</button>
       <span aria-live="polite" aria-atomic="true">{index + 1} / {photos.length}</span>

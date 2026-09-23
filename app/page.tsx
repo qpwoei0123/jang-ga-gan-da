@@ -63,10 +63,8 @@ function CoverPhoto() {
   return (
     <figure className="cover-photo" data-ddui-tip="둘이 제법 잘 어울리죠? 헤헤.">
       <div className="cover-photo-print">
-        <img src="/couple-main.webp" alt="창가에 나란히 앉아 꽃을 든 한원영과 이나경" width="1200" height="1500" fetchPriority="high" />
-        <span className="cover-photo-mark" aria-hidden="true">FRONT PAGE <b>W × N</b></span>
+        <img src="/cover-doodle.webp" alt="창가에 나란히 앉은 한원영과 이나경의 사진에 손글씨와 하트가 그려져 있다" width="1024" height="1536" fetchPriority="high" />
       </div>
-      <figcaption className="cover-photo-caption" aria-label="10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다."><svg viewBox="0 0 600 24" aria-hidden="true"><text x="0" y="17" textLength="600" lengthAdjust="spacingAndGlyphs">10년을 함께한 한원영과 이나경이 2026년 가을 가족 앞에서 결혼한다.</text></svg></figcaption>
     </figure>
   );
 }
