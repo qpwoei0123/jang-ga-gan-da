@@ -24,42 +24,25 @@ export default function CenterfoldGallery() {
   const dialog=useRef<HTMLDialogElement>(null);
   const touchStart=useRef<{x:number;y:number} | null>(null);
   const [selected,setSelected]=useState<number | null>(null);
-  const [featured,setFeatured]=useState<number|null>(null);
+  const [beating,setBeating]=useState(false);
   const interacting=useRef(false);
   useEffect(()=>{
     const gallery=section.current;
     if(!ready || !gallery || selected!==null)return;
     const reduced=matchMedia('(prefers-reduced-motion:reduce)');
-    let inView=false,timer=0;
-    // Follow the outer heart clockwise from the upper-left lobe.
-    const order=[0,1,4,7,9,10,8,2];
-    const step=5000/order.length;
-    const stop=()=>{clearTimeout(timer);timer=0;setFeatured(null);};
-    const sync=()=>{
-      stop();
-      if(!inView || document.hidden || reduced.matches || interacting.current)return;
-      let cursor=0;
-      const next=()=>{
-        if(cursor===order.length){
-          setFeatured(null);cursor=0;
-          timer=window.setTimeout(next,3000);
-          return;
-        }
-        setFeatured(order[cursor++]);
-        timer=window.setTimeout(next,step);
-      };
-      next();
-    };
-    const observer=new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;sync();},{threshold:.15});
+    let inView=false;
+    const stop=()=>setBeating(false);
+    const sync=()=>setBeating(inView && !document.hidden && !reduced.matches && !interacting.current);
+    const observer=new IntersectionObserver(([entry])=>{inView=entry.isIntersecting && entry.intersectionRatio>=.15;sync();},{threshold:.15});
     observer.observe(gallery.querySelector('.heart-puzzle')!);
     const pause=()=>{interacting.current=true;stop();};
     const resume=()=>{interacting.current=false;sync();};
     const blur=(event:FocusEvent)=>{if(!gallery.contains(event.relatedTarget as Node))resume();};
     gallery.addEventListener('pointerenter',pause);gallery.addEventListener('pointerleave',resume);
-    gallery.addEventListener('touchstart',pause,{passive:true});gallery.addEventListener('touchend',resume,{passive:true});
+    gallery.addEventListener('touchstart',pause,{passive:true});gallery.addEventListener('touchend',resume,{passive:true});gallery.addEventListener('touchcancel',resume,{passive:true});
     gallery.addEventListener('focusin',pause);gallery.addEventListener('focusout',blur);
     document.addEventListener('visibilitychange',sync);reduced.addEventListener('change',sync);
-    return()=>{stop();observer.disconnect();gallery.removeEventListener('pointerenter',pause);gallery.removeEventListener('pointerleave',resume);gallery.removeEventListener('touchstart',pause);gallery.removeEventListener('touchend',resume);gallery.removeEventListener('focusin',pause);gallery.removeEventListener('focusout',blur);document.removeEventListener('visibilitychange',sync);reduced.removeEventListener('change',sync);};
+    return()=>{stop();observer.disconnect();gallery.removeEventListener('pointerenter',pause);gallery.removeEventListener('pointerleave',resume);gallery.removeEventListener('touchstart',pause);gallery.removeEventListener('touchend',resume);gallery.removeEventListener('touchcancel',resume);gallery.removeEventListener('focusin',pause);gallery.removeEventListener('focusout',blur);document.removeEventListener('visibilitychange',sync);reduced.removeEventListener('change',sync);};
   },[ready,selected!==null]);
   const index=selected ?? 0;
   const move=(direction:number)=>setSelected(current=>current===null?null:(current+direction+photos.length)%photos.length);
@@ -76,8 +59,8 @@ export default function CenterfoldGallery() {
 
   return <section ref={section} className="heart-gallery" id="photo-edition" aria-labelledby="gallery-title">
     <header className="heart-gallery-heading"><h2 id="gallery-title">함께 모은 순간들</h2><p>하나하나 모여, 우리의 마음이 되었습니다.</p></header>
-    <div className="heart-puzzle" aria-label="하트 모양으로 모은 열한 장의 사진">
-      {photos.map((photo,i)=><button key={photo.file} type="button" className="heart-tile" data-featured={featured===i} data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected(i)}>
+    <div className="heart-puzzle" data-beating={beating && selected===null} aria-label="하트 모양으로 모은 열한 장의 사진">
+      {photos.map((photo,i)=><button key={photo.file} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected(i)}>
         <img src={`/history/${photo.file}.jpg`} alt={photo.caption} draggable="false"/>
       </button>)}
     </div>
