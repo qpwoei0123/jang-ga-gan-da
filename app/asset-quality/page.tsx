@@ -4,7 +4,7 @@ import AssetGate from "../asset-loader";
 import styles from "./quality-guide.module.css";
 
 const GUIDE_ASSETS = [
-  "/paper-crumple.png",
+  "/paper-crumple.webp",
   "/dog-run-sprite-ddui-timid.webp",
   "/will-smith-original.png",
 ] as const;

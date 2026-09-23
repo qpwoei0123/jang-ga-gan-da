@@ -29,7 +29,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     document.documentElement.dataset.assets = "loading";
     const images = [...scene.current!.querySelectorAll<HTMLImageElement>("img")];
     images.forEach(image => { image.loading = "eager"; });
-    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/paper-crumple.png", "/favicon.svg"])];
+    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/paper-crumple.webp", "/favicon.svg"])];
     const fonts = [...document.fonts].map(font => font.load());
     const tasks = [...sources.map(preloadImage), ...fonts];
     setProgress({ complete: 0, total: tasks.length + 1 });

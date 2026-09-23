@@ -15,7 +15,7 @@
   --type-quote: 20;
   --leading-body: 22;
   --rule-width: .6;
-  --paper-grain: url("/paper-crumple.png");
+  --paper-grain: url("/paper-crumple.webp");
   --photo-ink: saturate(.78) contrast(1.035);
   --rule-double: 3px double var(--line-strong);
   --rule-single: 1px solid var(--line);

@@ -756,3 +756,114 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .ddui-companion { z-index:1; }
 .ddui-peek,.ddui-companion[data-finale=true] .ddui-peek { clip-path:none; transition:none; }
 @media print { .wedding-site .edition > .paper-page > * { filter:none; } .ddui-companion { display:none; } }
+
+/* The three chapters now live on one continuous printed sheet. */
+.wedding-site .edition {
+  width:min(calc(100% - 24px),490px);
+  padding:18px 0 0;
+  background:var(--paper);
+  box-shadow:0 7px 28px rgb(41 35 27 / 13%);
+  isolation:isolate;
+}
+.wedding-site .edition::before {
+  z-index:0;
+  background-image:var(--paper-grain);
+  background-size:100% auto;
+  background-repeat:repeat-y;
+  opacity:.09;
+  mix-blend-mode:multiply;
+  box-shadow:none;
+}
+.wedding-site .edition::after {
+  z-index:6;
+  background-image:var(--paper-grain);
+  background-size:100% auto;
+  background-repeat:repeat-y;
+  opacity:.14;
+  mix-blend-mode:soft-light;
+}
+.wedding-site .edition > .cover-page { max-width:390px; margin-inline:auto; }
+.wedding-site .edition > .heart-gallery {
+  background:transparent;
+  padding:70px 16px 12px;
+}
+.edition > .heart-gallery::before {
+  content:"";
+  position:absolute;
+  top:24px;
+  left:28px;
+  right:28px;
+  border-top:1px solid var(--line);
+}
+.edition > .heart-gallery > .heart-gallery-heading,
+.edition > .heart-gallery > .heart-puzzle,
+.edition > .heart-gallery > .heart-gallery-hint { filter:url(#printed-paper-relief); }
+/* Canvas text keeps its own sharp raster; the shared grain still prints over it. */
+.wedding-site .edition > .cover-page > .canvas-article { filter:none; }
+.wedding-site .edition > .details-page {
+  width:100%;
+  max-width:490px;
+  padding-top:44px;
+  background:transparent;
+}
+.edition .thanks-heading::before { margin-bottom:20px; }
+
+/* The zoom controls travel with the photograph, while phone controls sit below it. */
+.gallery-lightbox .lightbox-content {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  max-width:none;
+  margin:0;
+  padding:16px max(16px,env(safe-area-inset-right)) 16px max(16px,env(safe-area-inset-left));
+}
+.lightbox-stage {
+  position:relative;
+  display:grid;
+  grid-template-rows:44px minmax(0,1fr) auto;
+  gap:10px;
+  width:min(100%,520px);
+  height:min(100%,850px);
+  min-height:0;
+}
+.lightbox-stage header { display:flex; align-items:center; justify-content:space-between; }
+.lightbox-stage .lightbox-image { padding:0 46px; }
+.lightbox-stage .lightbox-image img { max-width:100%; max-height:100%; }
+.lightbox-stage footer { justify-content:center; min-height:44px; padding:0; }
+.lightbox-stage footer p { max-width:100%; text-align:center; }
+.lightbox-stage footer nav { position:absolute; inset:0; pointer-events:none; }
+.lightbox-stage footer nav button {
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  pointer-events:auto;
+}
+.lightbox-stage footer nav button:first-child { left:0; }
+.lightbox-stage footer nav button:last-child { right:0; }
+.lightbox-stage footer nav button:active { transform:translateY(-50%) scale(.94); }
+@media(max-width:600px) {
+  .gallery-lightbox .lightbox-content { padding-top:max(12px,env(safe-area-inset-top)); padding-bottom:max(12px,env(safe-area-inset-bottom)); }
+  .lightbox-stage { width:100%; height:100%; gap:8px; }
+  .lightbox-stage .lightbox-image { padding:0; }
+  .lightbox-stage footer { flex-direction:column; gap:6px; }
+  .lightbox-stage footer p { order:-1; }
+  .lightbox-stage footer nav { position:static; display:flex; justify-content:center; gap:20px; pointer-events:auto; }
+  .lightbox-stage footer nav button { position:static; transform:none; }
+  .lightbox-stage footer nav button:active { transform:scale(.94); }
+}
+
+/* A single quiet entrance for each chapter; the heart keeps its own pulse. */
+.cover-photo[data-revealed=true],
+.canvas-article[data-revealed=true],
+.heart-gallery[data-revealed=true],
+.details-page[data-revealed=true] { animation:editorial-appear 280ms cubic-bezier(.2,.8,.2,1) both; }
+@keyframes editorial-appear {
+  from { opacity:.86; transform:translateY(6px); }
+  to { opacity:1; transform:none; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .cover-photo[data-revealed=true],
+  .canvas-article[data-revealed=true],
+  .heart-gallery[data-revealed=true],
+  .details-page[data-revealed=true] { animation:none; }
+}

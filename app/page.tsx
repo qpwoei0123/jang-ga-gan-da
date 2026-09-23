@@ -1,7 +1,7 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { InvitationGate } from "./asset-loader";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { InvitationGate, useAssetsReady } from "./asset-loader";
 import WeddingSong from "./wedding-song";
 import CenterfoldGallery from "./centerfold-gallery";
 import ArticleCanvas from "./article-canvas";
@@ -260,6 +260,19 @@ function WeddingSearchPuzzle() {
 }
 
 function WeddingNewspaper() {
+  const ready = useAssetsReady();
+  useEffect(() => {
+    if (!ready || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.setAttribute("data-revealed", "true");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: .12 });
+    document.querySelectorAll(".cover-photo, .canvas-article, .heart-gallery, .details-page").forEach(element => observer.observe(element));
+    return () => observer.disconnect();
+  }, [ready]);
   return (
     <>
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
@@ -267,7 +280,7 @@ function WeddingNewspaper() {
         <svg className="paper-surface-filters" aria-hidden="true" width="0" height="0">
           <defs>
             <filter id="printed-paper-relief" x="-1%" y="-1%" width="102%" height="102%" colorInterpolationFilters="sRGB">
-              <feImage href="/paper-crumple.png" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="paper" />
+              <feImage href="/paper-crumple.webp" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="paper" />
               <feColorMatrix in="paper" type="saturate" values="0" result="folds" />
               <feGaussianBlur in="folds" stdDeviation="3" result="soft-folds" />
               <feDisplacementMap in="SourceGraphic" in2="soft-folds" scale="0.8" xChannelSelector="R" yChannelSelector="G" />
@@ -298,10 +311,7 @@ function WeddingNewspaper() {
           <ArticleCanvas kind="reaction" />
           <ArticleCanvas kind="history" photoSrc="/couple-main.webp" />
         </article>
-
-        </div>
         <CenterfoldGallery />
-
         <section className="paper-page details-page" id="details" data-ddui-tip="형누나가 결혼합니다! 많이 많이 축하해 주세요~" data-ddui-celebrate="true">
           <h2 className="thanks-heading">마음을 전합니다</h2>
           <div className="announcement-note">
@@ -314,6 +324,7 @@ function WeddingNewspaper() {
           </div>
           <p className="gallery-signoff">한원영 · 이나경</p>
         </section>
+        </div>
         <WeddingSong showAnnouncement={false}/>
       </main>
     </>

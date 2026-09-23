@@ -5,7 +5,7 @@
   padding: 28px 30px 40px;
   color: var(--ink);
   background-color: var(--paper);
-  background-image: url("/paper-crumple.png");
+  background-image: url("/paper-crumple.webp");
   background-size: 540px 540px;
   box-shadow: 0 0 70px rgb(37 30 20 / 24%);
 }
@@ -104,7 +104,7 @@
   overflow: hidden;
   isolation: isolate;
   background-color: #e5dece;
-  background-image: url("/paper-crumple.png");
+  background-image: url("/paper-crumple.webp");
   background-size: 410px 410px;
 }
 
