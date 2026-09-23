@@ -21,17 +21,21 @@ export default function CenterfoldGallery() {
   const dialog=useRef<HTMLDialogElement>(null);
   const touchStart=useRef<{x:number;y:number} | null>(null);
   const [selected,setSelected]=useState<number | null>(null);
+  const isOpen=selected!==null;
   const index=selected ?? 0;
   const move=(direction:number)=>setSelected(current=>current===null?null:(current+direction+photos.length)%photos.length);
 
   useEffect(()=>{
     const modal=dialog.current;
-    if(selected===null || !modal) return;
+    if(!isOpen || !modal) return;
     if(!modal.open)modal.showModal();
+    const root=document.documentElement;
+    const previousRoot=root.style.overflowY;
     const previous=document.body.style.overflow;
+    root.style.overflowY="hidden";
     document.body.style.overflow="hidden";
-    return()=>{document.body.style.overflow=previous;};
-  },[selected!==null]);
+    return()=>{root.style.overflowY=previousRoot;document.body.style.overflow=previous;};
+  },[isOpen]);
   const close=()=>{dialog.current?.close();setSelected(null);};
 
   return <section className="heart-gallery" id="photo-edition" aria-labelledby="gallery-title">

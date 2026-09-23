@@ -577,7 +577,7 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .curator-note > div { display:flex; gap:18px; }
 .curator-note button { background:transparent; color:#333; border:0; cursor:pointer; font:12px/1.5 var(--sans); min-height:34px; padding:0; }
 .curator-note .curator-dismiss { position:absolute; right:9px; top:3px; width:32px; height:32px; font-size:20px; }
-.gallery-lightbox { position:fixed; inset:0; margin:0; width:100vw; height:100dvh; max-width:none; max-height:none; border:0; padding:0; background:#101010; color:#fff; }
+.gallery-lightbox { position:fixed; inset:0; margin:0; width:100vw; height:100vh; height:100dvh; max-width:none; max-height:none; border:0; padding:0; background:#101010; color:#fff; }
 .gallery-lightbox::backdrop { background:#101010; }
 .lightbox-content { width:100%; height:100%; display:grid; grid-template-rows:64px minmax(0,1fr) 80px; padding:env(safe-area-inset-top) max(16px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(16px,env(safe-area-inset-left)); }
 .lightbox-content header,.lightbox-content footer { display:flex; align-items:center; justify-content:space-between; gap:16px; font:12px/1.5 var(--sans); }
@@ -644,9 +644,8 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .ddui-words { right:20px; }
 @media(max-width:600px) { .heart-puzzle { gap:4px; aspect-ratio:7 / 6; } }
 
-/* One physical sheet: folds shade and gently displace the ink and photographs too. */
-.paper-surface-filters { position:absolute; pointer-events:none; }
-.wedding-site .edition { isolation:isolate; filter:url(#printed-paper-relief); }
+/* One physical sheet: the paper grain sits above its ink and photographs. */
+.wedding-site .edition { isolation:isolate; }
 .wedding-site .edition::before { background-image:var(--paper-grain); background-size:100% 100%; background-position:center; background-repeat:no-repeat; opacity:.16; mix-blend-mode:multiply; filter:grayscale(1) contrast(1.2); }
 .wedding-site .edition::after { z-index:6; background-image:var(--paper-grain); background-size:100% 100%; background-position:center; background-repeat:no-repeat; opacity:.12; mix-blend-mode:soft-light; filter:grayscale(1) contrast(1.4); }
 @media print { .wedding-site .edition { filter:none; } }
@@ -743,12 +742,12 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .wedding-site .edition::before { z-index:0; opacity:1; mix-blend-mode:normal; filter:none; background:var(--paper); box-shadow:0 5px 22px #29231b12; }
 .wedding-site .edition::after { z-index:3; opacity:.18; mix-blend-mode:multiply; }
 .wedding-site .edition > .paper-page { overflow:visible; }
-.wedding-site .edition > .paper-page > * { z-index:2; filter:url(#printed-paper-relief); }
+.wedding-site .edition > .paper-page > * { z-index:2; }
 .heart-gallery { background:transparent; }
 .heart-gallery-heading,.heart-puzzle,.heart-gallery-hint,.thanks-heading,.announcement-note,.gallery-signoff { position:relative; z-index:2; }
 .ddui-companion { z-index:1; }
 .ddui-peek,.ddui-companion[data-finale=true] .ddui-peek { clip-path:none; transition:none; }
-@media print { .wedding-site .edition > .paper-page > * { filter:none; } .ddui-companion { display:none; } }
+@media print { .ddui-companion { display:none; } }
 
 /* The zoom controls travel with the photograph, while phone controls sit below it. */
 .gallery-lightbox .lightbox-content {
