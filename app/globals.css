@@ -735,9 +735,9 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .ddui-peek { clip-path:inset(-5px -5px -5px 36%); transition:clip-path .45s ease; }
 .ddui-companion[data-finale=true] .ddui-peek,.ddui-peek:focus-within,.ddui-peek:hover { clip-path:inset(-5px); }
 .ddui-companion .ddui-music { position:absolute; right:33px; bottom:33px; width:180px; }
-.heart-tile[data-featured=true] img { animation:heart-breathe 2.8s ease-in-out both; }
-@keyframes heart-breathe { 0%,100% { transform:scale(1); filter:brightness(1); } 40%,60% { transform:scale(1.07); filter:brightness(1.035); } }
-@media(prefers-reduced-motion:reduce) { .ddui-peek { transition:none; } .heart-tile[data-featured=true] img { animation:none; } }
+.heart-tile[data-featured=true] { position:relative; z-index:3; animation:heart-breathe .625s ease-in-out both; }
+@keyframes heart-breathe { 0%,100% { transform:scale(1); } 45%,55% { transform:scale(1.07); } }
+@media(prefers-reduced-motion:reduce) { .ddui-peek { transition:none; } .heart-tile[data-featured=true] { animation:none; } }
 
 /* The dog shares the sheet's space: ground, companion, ink, then paper grain. */
 .wedding-site { isolation:isolate; }

@@ -30,14 +30,25 @@ export default function CenterfoldGallery() {
     const gallery=section.current;
     if(!ready || !gallery || selected!==null)return;
     const reduced=matchMedia('(prefers-reduced-motion:reduce)');
-    let inView=false,timer=0,cursor=0;
-    const order=[3,7,1,8,0,6,4,9,2,10,5];
-    const stop=()=>{clearInterval(timer);timer=0;setFeatured(null);};
+    let inView=false,timer=0;
+    // Follow the outer heart clockwise from the upper-left lobe.
+    const order=[0,1,4,7,9,10,8,2];
+    const step=5000/order.length;
+    const stop=()=>{clearTimeout(timer);timer=0;setFeatured(null);};
     const sync=()=>{
       stop();
       if(!inView || document.hidden || reduced.matches || interacting.current)return;
-      const next=()=>setFeatured(order[cursor++%order.length]);
-      next();timer=window.setInterval(next,2800);
+      let cursor=0;
+      const next=()=>{
+        if(cursor===order.length){
+          setFeatured(null);cursor=0;
+          timer=window.setTimeout(next,3000);
+          return;
+        }
+        setFeatured(order[cursor++]);
+        timer=window.setTimeout(next,step);
+      };
+      next();
     };
     const observer=new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;sync();},{threshold:.15});
     observer.observe(gallery.querySelector('.heart-puzzle')!);
