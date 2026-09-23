@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import WeddingSong from "./wedding-song";
-import GalleryDdui from "./gallery-ddui";
 import { useAssetsReady } from "./asset-loader";
 
 // Rectangular prints form the outline themselves; no heart mask or rotated tiles.
@@ -26,6 +24,32 @@ export default function CenterfoldGallery() {
   const dialog=useRef<HTMLDialogElement>(null);
   const touchStart=useRef<{x:number;y:number} | null>(null);
   const [selected,setSelected]=useState<number | null>(null);
+  const [featured,setFeatured]=useState<number|null>(null);
+  const interacting=useRef(false);
+  useEffect(()=>{
+    const gallery=section.current;
+    if(!ready || !gallery || selected!==null)return;
+    const reduced=matchMedia('(prefers-reduced-motion:reduce)');
+    let inView=false,timer=0,cursor=0;
+    const order=[3,7,1,8,0,6,4,9,2,10,5];
+    const stop=()=>{clearInterval(timer);timer=0;setFeatured(null);};
+    const sync=()=>{
+      stop();
+      if(!inView || document.hidden || reduced.matches || interacting.current)return;
+      const next=()=>setFeatured(order[cursor++%order.length]);
+      next();timer=window.setInterval(next,2800);
+    };
+    const observer=new IntersectionObserver(([entry])=>{inView=entry.isIntersecting;sync();},{threshold:.15});
+    observer.observe(gallery.querySelector('.heart-puzzle')!);
+    const pause=()=>{interacting.current=true;stop();};
+    const resume=()=>{interacting.current=false;sync();};
+    const blur=(event:FocusEvent)=>{if(!gallery.contains(event.relatedTarget as Node))resume();};
+    gallery.addEventListener('pointerenter',pause);gallery.addEventListener('pointerleave',resume);
+    gallery.addEventListener('touchstart',pause,{passive:true});gallery.addEventListener('touchend',resume,{passive:true});
+    gallery.addEventListener('focusin',pause);gallery.addEventListener('focusout',blur);
+    document.addEventListener('visibilitychange',sync);reduced.addEventListener('change',sync);
+    return()=>{stop();observer.disconnect();gallery.removeEventListener('pointerenter',pause);gallery.removeEventListener('pointerleave',resume);gallery.removeEventListener('touchstart',pause);gallery.removeEventListener('touchend',resume);gallery.removeEventListener('focusin',pause);gallery.removeEventListener('focusout',blur);document.removeEventListener('visibilitychange',sync);reduced.removeEventListener('change',sync);};
+  },[ready,selected!==null]);
   const index=selected ?? 0;
   const move=(direction:number)=>setSelected(current=>current===null?null:(current+direction+photos.length)%photos.length);
 
@@ -42,19 +66,16 @@ export default function CenterfoldGallery() {
   return <section ref={section} className="heart-gallery" id="photo-edition" aria-labelledby="gallery-title">
     <header className="heart-gallery-heading"><h2 id="gallery-title">함께 모은 순간들</h2><p>하나하나 모여, 우리의 마음이 되었습니다.</p></header>
     <div className="heart-puzzle" aria-label="하트 모양으로 모은 열한 장의 사진">
-      {photos.map((photo,i)=><button key={photo.file} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected(i)}>
+      {photos.map((photo,i)=><button key={photo.file} type="button" className="heart-tile" data-featured={featured===i} data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected(i)}>
         <img src={`/history/${photo.file}.jpg`} alt={photo.caption} draggable="false"/>
       </button>)}
     </div>
     <p className="heart-gallery-hint">사진을 누르면 더 크게 볼 수 있어요.</p>
-    <WeddingSong/>
-    <GalleryDdui ready={ready} hidden={selected!==null}/>
     <dialog ref={dialog} className="gallery-lightbox" aria-label="웨딩 사진 크게 보기" onCancel={close} onClose={()=>setSelected(null)} onClick={event=>{if(event.target===event.currentTarget)close();}} onKeyDown={event=>{if(event.key==="ArrowRight"){event.preventDefault();move(1);}if(event.key==="ArrowLeft"){event.preventDefault();move(-1);}}}>
       {selected!==null && <div className="lightbox-content" onClick={event=>{if(event.target===event.currentTarget)close();}}>
         <header><span>{String(index+1).padStart(2,"0")} / {photos.length}</span><button autoFocus type="button" onClick={close} aria-label="사진 닫기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header>
         <div className="lightbox-image" onClick={event=>{if(event.target===event.currentTarget)close();}} onTouchStart={event=>{touchStart.current={x:event.touches[0].clientX,y:event.touches[0].clientY};}} onTouchCancel={()=>{touchStart.current=null;}} onTouchEnd={event=>{if(touchStart.current){const dx=event.changedTouches[0].clientX-touchStart.current.x,dy=event.changedTouches[0].clientY-touchStart.current.y;if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.4)move(dx<0?1:-1);}touchStart.current=null;}}><img src={`/history/${photos[index].file}.jpg`} alt={photos[index].caption}/></div>
         <footer><nav aria-label="사진 이동"><button type="button" onClick={()=>move(-1)} aria-label="이전 사진"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></button><button type="button" onClick={()=>move(1)} aria-label="다음 사진"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg></button></nav><p aria-live="polite">{photos[index].caption}</p></footer>
-        <GalleryDdui ready={true} photo={photos[index].tip}/>
       </div>}
     </dialog>
   </section>;
