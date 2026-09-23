@@ -735,14 +735,7 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .ddui-peek { clip-path:inset(-5px -5px -5px 36%); transition:clip-path .45s ease; }
 .ddui-companion[data-finale=true] .ddui-peek,.ddui-peek:focus-within,.ddui-peek:hover { clip-path:inset(-5px); }
 .ddui-companion .ddui-music { position:absolute; right:33px; bottom:33px; width:180px; }
-/* 1.2 seconds of two soft beats, followed by three seconds at rest. */
-.heart-puzzle[data-beating=true] { animation:heart-double-beat 4.2s ease-in-out infinite; transform-origin:50% 50%; }
-@keyframes heart-double-beat {
-  0%,12%,28.571%,100% { transform:scale(1); }
-  6% { transform:scale(1.02); }
-  20% { transform:scale(1.03); }
-}
-@media(prefers-reduced-motion:reduce) { .ddui-peek { transition:none; } .heart-puzzle[data-beating=true] { animation:none; } }
+@media(prefers-reduced-motion:reduce) { .ddui-peek { transition:none; } }
 
 /* The dog shares the sheet's space: ground, companion, ink, then paper grain. */
 .wedding-site { isolation:isolate; }
@@ -756,57 +749,6 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .ddui-companion { z-index:1; }
 .ddui-peek,.ddui-companion[data-finale=true] .ddui-peek { clip-path:none; transition:none; }
 @media print { .wedding-site .edition > .paper-page > * { filter:none; } .ddui-companion { display:none; } }
-
-/* The three chapters now live on one continuous printed sheet. */
-.wedding-site .edition {
-  width:min(calc(100% - 24px),490px);
-  padding:18px 0 0;
-  background:var(--paper);
-  box-shadow:0 7px 28px rgb(41 35 27 / 13%);
-  isolation:isolate;
-}
-.wedding-site .edition::before {
-  z-index:0;
-  background-image:var(--paper-grain);
-  background-size:100% auto;
-  background-repeat:repeat-y;
-  opacity:.09;
-  mix-blend-mode:multiply;
-  box-shadow:none;
-}
-.wedding-site .edition::after {
-  z-index:6;
-  background-image:var(--paper-grain);
-  background-size:100% auto;
-  background-repeat:repeat-y;
-  opacity:.14;
-  mix-blend-mode:soft-light;
-}
-.wedding-site .edition > .cover-page { max-width:390px; margin-inline:auto; }
-.wedding-site .edition > .heart-gallery {
-  background:transparent;
-  padding:70px 16px 12px;
-}
-.edition > .heart-gallery::before {
-  content:"";
-  position:absolute;
-  top:24px;
-  left:28px;
-  right:28px;
-  border-top:1px solid var(--line);
-}
-.edition > .heart-gallery > .heart-gallery-heading,
-.edition > .heart-gallery > .heart-puzzle,
-.edition > .heart-gallery > .heart-gallery-hint { filter:url(#printed-paper-relief); }
-/* Canvas text keeps its own sharp raster; the shared grain still prints over it. */
-.wedding-site .edition > .cover-page > .canvas-article { filter:none; }
-.wedding-site .edition > .details-page {
-  width:100%;
-  max-width:490px;
-  padding-top:44px;
-  background:transparent;
-}
-.edition .thanks-heading::before { margin-bottom:20px; }
 
 /* The zoom controls travel with the photograph, while phone controls sit below it. */
 .gallery-lightbox .lightbox-content {
@@ -852,10 +794,9 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
   .lightbox-stage footer nav button:active { transform:scale(.94); }
 }
 
-/* A single quiet entrance for each chapter; the heart keeps its own pulse. */
+/* A single quiet entrance for the front page and closing note. */
 .cover-photo[data-revealed=true],
 .canvas-article[data-revealed=true],
-.heart-gallery[data-revealed=true],
 .details-page[data-revealed=true] { animation:editorial-appear 280ms cubic-bezier(.2,.8,.2,1) both; }
 @keyframes editorial-appear {
   from { opacity:.86; transform:translateY(6px); }
@@ -864,6 +805,5 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 @media(prefers-reduced-motion:reduce) {
   .cover-photo[data-revealed=true],
   .canvas-article[data-revealed=true],
-  .heart-gallery[data-revealed=true],
   .details-page[data-revealed=true] { animation:none; }
 }

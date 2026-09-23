@@ -270,7 +270,7 @@ function WeddingNewspaper() {
         observer.unobserve(entry.target);
       });
     }, { threshold: .12 });
-    document.querySelectorAll(".cover-photo, .canvas-article, .heart-gallery, .details-page").forEach(element => observer.observe(element));
+    document.querySelectorAll(".cover-photo, .canvas-article, .details-page").forEach(element => observer.observe(element));
     return () => observer.disconnect();
   }, [ready]);
   return (
@@ -311,6 +311,7 @@ function WeddingNewspaper() {
           <ArticleCanvas kind="reaction" />
           <ArticleCanvas kind="history" photoSrc="/couple-main.webp" />
         </article>
+        </div>
         <CenterfoldGallery />
         <section className="paper-page details-page" id="details" data-ddui-tip="형누나가 결혼합니다! 많이 많이 축하해 주세요~" data-ddui-celebrate="true">
           <h2 className="thanks-heading">마음을 전합니다</h2>
@@ -324,7 +325,6 @@ function WeddingNewspaper() {
           </div>
           <p className="gallery-signoff">한원영 · 이나경</p>
         </section>
-        </div>
         <WeddingSong showAnnouncement={false}/>
       </main>
     </>
