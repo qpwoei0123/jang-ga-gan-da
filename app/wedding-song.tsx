@@ -6,7 +6,7 @@ import { useAssetsReady, useReportPlayerReady } from "./asset-loader";
 
 type Playback = "waiting" | "blocked" | "playing" | "error";
 
-export default function WeddingSong() {
+export default function WeddingSong({ showAnnouncement = true }: { showAnnouncement?: boolean }) {
   const ready = useAssetsReady();
   const reportReady = useReportPlayerReady();
   const engine = useRef<{ context: AudioContext; buffer: AudioBuffer; gain: GainNode; source: AudioBufferSourceNode | null } | null>(null);
@@ -93,7 +93,7 @@ export default function WeddingSong() {
   }, [state]);
 
   const flight = useMemo(speechFlight, [state]);
-  if (state === "waiting" || hintGone) return null;
+  if (!showAnnouncement || state === "waiting" || hintGone) return null;
   return <div className="ddui-music" style={flight}>
     <p key={state} className="ddui-flying-word" role="status" onAnimationEnd={event => { if(event.target === event.currentTarget) setHintGone(true); }}>
       <span className="ddui-speech-sway">{state === "playing" ? "뮤직 큐~~" : state === "error" ? "음악을 불러오지 못했어요." : "터치하면 노래 나와요~"}</span>

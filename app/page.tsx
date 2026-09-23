@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { InvitationGate } from "./asset-loader";
-import GalleryDdui from "./gallery-ddui";
+import WeddingSong from "./wedding-song";
 import CenterfoldGallery from "./centerfold-gallery";
 import ArticleCanvas from "./article-canvas";
 import NewspaperDelivery from "./newspaper-delivery";
@@ -314,7 +314,7 @@ function WeddingNewspaper() {
           </div>
           <p className="gallery-signoff">한원영 · 이나경</p>
         </section>
-        <GalleryDdui/>
+        <WeddingSong showAnnouncement={false}/>
       </main>
     </>
   );
