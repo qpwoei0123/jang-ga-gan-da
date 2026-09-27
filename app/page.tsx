@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type 
 import { InvitationGate, useAssetsReady } from "./asset-loader";
 import WeddingSong from "./wedding-song";
 import CenterfoldGallery from "./centerfold-gallery";
-import ArticleCanvas from "./article-canvas";
+import NewspaperArticle from "./newspaper-article";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
 
@@ -268,7 +268,7 @@ function WeddingNewspaper() {
         observer.unobserve(entry.target);
       });
     }, { threshold: .12 });
-    document.querySelectorAll(".cover-photo, .canvas-article, .details-page").forEach(element => observer.observe(element));
+    document.querySelectorAll(".cover-photo, .newspaper-article, .details-page").forEach(element => observer.observe(element));
     return () => observer.disconnect();
   }, [ready]);
   return (
@@ -296,8 +296,8 @@ function WeddingNewspaper() {
             <span>10년의 연애 끝, 가족 앞에서 결혼합니다.</span>
           </div>
           <CoverPhoto />
-          <ArticleCanvas kind="reaction" />
-          <ArticleCanvas kind="history" photoSrc="/couple-main.webp" />
+          <NewspaperArticle kind="reaction" />
+          <NewspaperArticle kind="history" photoSrc="/couple-main.webp" />
         </article>
         </div>
         <CenterfoldGallery />

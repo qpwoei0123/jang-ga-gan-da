@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 
 const groups = [
-  { key: "--text", label: "본문 · 캔버스 기사", sample: "열아홉에서 서른까지, 함께한 모든 날.", options: [
+  { key: "--text", label: "본문 · 기사", sample: "열아홉에서 서른까지, 함께한 모든 날.", options: [
     ["마루부리 · 기본", ""], ["Noto Serif KR", '"Noto Serif KR", serif'], ["AppleMyungjo", 'AppleMyungjo, serif'], ["고딕 · 시스템", 'system-ui, sans-serif'],
   ] },
   { key: "--display", label: "영문 제목", sample: "The Wedding News", options: [
@@ -31,7 +31,7 @@ export default function FontTweaks() {
     <button className="font-tweaks-launch" type="button" onClick={() => dialog.current?.showModal()}>Aa <span>폰트</span></button>
     <dialog ref={dialog} className="font-tweaks" aria-labelledby="font-tweaks-title" onClick={event => { if (event.target === dialog.current) dialog.current.close(); }}>
       <div className="font-tweaks-inner">
-        <header><div><h2 id="font-tweaks-title">폰트 비교</h2><p>선택하면 신문과 캔버스에 바로 적용됩니다.</p></div><button type="button" aria-label="닫기" onClick={() => dialog.current?.close()}>×</button></header>
+        <header><div><h2 id="font-tweaks-title">폰트 비교</h2><p>선택하면 신문과 기사에 바로 적용됩니다.</p></div><button type="button" aria-label="닫기" onClick={() => dialog.current?.close()}>×</button></header>
         <p className="font-tweaks-note">마루부리는 웹폰트로 제공됩니다. 나머지는 기기에 없으면 대체 글꼴로 표시됩니다. 테스트 설정은 새로고침하면 초기화됩니다.</p>
         {groups.map(group => <fieldset key={group.key}>
           <legend>{group.label}</legend>
