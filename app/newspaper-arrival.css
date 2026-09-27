@@ -26,8 +26,8 @@
 .arrival-progress::-moz-progress-bar { background:#867865; }
 .arrival-walk { position:relative; display:flex; justify-content:center; width:100%; padding-bottom:32px; }
 .arrival-medley { position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; pointer-events:none; }
-.arrival-medley-photos { position:relative; width:104px; height:138px; overflow:hidden; border-radius:14px; background:#ece9e2; }
-.arrival-medley-frame { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; animation:arrival-medley-frame 2.5s step-end infinite; }
+.arrival-medley-photos { position:relative; width:112px; height:112px; }
+.arrival-medley-frame { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; animation:arrival-medley-frame 2.5s step-end infinite; }
 .arrival-medley p { margin:0; color:#6c5e49; font:14px/1.5 var(--sans); }
 .arrival-dog { position:relative; width:var(--arrival-dog-width); aspect-ratio:480 / 408; opacity:0; transform:translateX(calc(100% + 60px)); }
 .is-dog-ready .arrival-dog { opacity:1; animation:arrival-approach 1.35s cubic-bezier(.16,.7,.32,1) both; }
