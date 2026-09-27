@@ -13,7 +13,7 @@ export default function NewspaperArticle({ kind, photoSrc }: {
     <h2>{history ? "“전생에도 부부였다”" : <>GD와 결혼하지 못한<br />신부의 한탄</>}</h2>
     <p className="article-deck">{history ? "국립중앙말티푸박물관서 혼인 사료 발견" : "어이없어하는 남편의 소감"}</p>
     {history && photoSrc && <figure className="article-photo">
-      <img src={photoSrc} alt="창가에 나란히 앉은 신랑 한원영과 신부 이나경" width={1200} height={1800} />
+      <img src={photoSrc} alt="한옥 앞에서 전통 혼례복을 입고 나란히 선 한원영과 이나경" width={1365} height={2048} />
       <figcaption>국립중앙말티푸박물관 소장 · 촬영 연도 미상</figcaption>
     </figure>}
     <p className="article-body">{history

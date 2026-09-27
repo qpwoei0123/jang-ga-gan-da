@@ -297,7 +297,7 @@ function WeddingNewspaper() {
           </div>
           <CoverPhoto />
           <NewspaperArticle kind="reaction" />
-          <NewspaperArticle kind="history" photoSrc="/couple-main.webp" />
+          <NewspaperArticle kind="history" photoSrc="/history-hanbok.webp" />
         </article>
         </div>
         <CenterfoldGallery />
