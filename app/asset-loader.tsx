@@ -29,7 +29,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.dataset.assets = "loading";
-    // Give the inline spinner a painted frame before starting image requests.
+    // Paint the inline photo medley before starting the first-page image requests.
     let secondFrame = 0;
     const firstFrame = requestAnimationFrame(() => {
       secondFrame = requestAnimationFrame(() => setPreloading(true));
@@ -54,7 +54,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     ]);
     // font-display:swap keeps text readable when a font connection is slow.
     let fontTimeout = 0;
-    let spinnerTimeout = 0;
+    let medleyTimeout = 0;
     const fontReady = Promise.race([fonts, new Promise<void>(resolve => {
       fontTimeout = window.setTimeout(resolve, 1200);
     })]);
@@ -64,15 +64,15 @@ export function InvitationGate({ children }: { children: ReactNode }) {
         if (active) setProgress({ complete, total });
       }, controller.signal),
       fontReady,
-      // Cached resources still leave time for one complete spinner turn.
-      new Promise<void>(resolve => { spinnerTimeout = window.setTimeout(resolve, 1000); }),
+      // Cached resources still leave time to see the photo medley.
+      new Promise<void>(resolve => { medleyTimeout = window.setTimeout(resolve, 1000); }),
     ]).then(async ([failed]) => {
       clearTimeout(fontTimeout);
       const decoded = failed.length ? [] : await Promise.allSettled(images.map(image => image.decode()));
       if (active) setResources(failed.length || decoded.some(result => result.status === "rejected") ? "error" : "ready");
     }).catch(() => {});
     const timeout = window.setTimeout(() => { if (active) setExpired(true); }, 30000);
-    return () => { active = false; controller.abort(); clearTimeout(timeout); clearTimeout(fontTimeout); clearTimeout(spinnerTimeout); };
+    return () => { active = false; controller.abort(); clearTimeout(timeout); clearTimeout(fontTimeout); clearTimeout(medleyTimeout); };
   }, [preloading]);
 
   useEffect(() => {

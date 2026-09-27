@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { arrivalPreview } from "./arrival-preview";
+import { arrivalMedley } from "./arrival-preview";
 
 export default function NewspaperArrival({ preloading, prepared, problem, opening, complete, total, onOpen }: {
   preloading: boolean;
@@ -77,7 +77,12 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
             </div>}
           </div>
           <div className="arrival-walk">
-            {!entering && !opening && <img className="arrival-spinner" src={arrivalPreview} alt="뚜이가 신문을 준비하고 있어요" width="80" height="68" />}
+            {!entering && !opening && !problem && <div className="arrival-medley" role="status" aria-label="열심히 만드는중...">
+              <div className="arrival-medley-photos" aria-hidden="true">
+                {arrivalMedley.map((photo, index) => <img key={photo.name} className="arrival-medley-frame" src={photo.src} alt="" width={photo.width} height={photo.height} style={{ animationDelay: `${index * 0.5}s` }} />)}
+              </div>
+              <p>열심히 만드는중...</p>
+            </div>}
             <div className="arrival-dog">
               <span className="arrival-shadow" aria-hidden="true" />
               <div className="arrival-gait">
