@@ -20,28 +20,36 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
   }, []);
 
   return (
-    <section className={`newspaper-arrival${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="강아지가 가져온 결혼 신문">
+    <section className={`newspaper-arrival${arrived ? " is-arrived" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="강아지가 가져온 결혼 신문">
       <button type="button" className="arrival-receive" disabled={!canOpen} onClick={onOpen} aria-label={canOpen ? "신문을 받아 펼치기" : "강아지가 신문을 준비하고 있어요"}>
         <span className="arrival-heading">
-          <span className="arrival-kicker">A LITTLE BIG NEWS</span>
-          <span className="arrival-title">결혼 소식 도착!</span>
-          <span className="arrival-names">한원영 &amp; 이나경</span>
+          <span className="arrival-kicker"><span>결혼 특별호</span><span>2026. 11. 01</span></span>
+          <span className="arrival-title"><span>The</span> Wedding News</span>
+          <span className="arrival-names">한원영 · 이나경</span>
         </span>
-        <span className="arrival-halo" aria-hidden="true" />
-        <span className="arrival-walk" aria-hidden="true" onAnimationEnd={event => {
-          if (event.target === event.currentTarget && event.animationName === "arrival-approach") setArrived(true);
-        }}>
-          <span className="arrival-shadow" />
-          <span className="arrival-gait">
-            <img src="/opening-dog.webp" alt="" width="480" height="408" fetchPriority="high" />
+        <span className="arrival-hero" aria-hidden="true">
+          <span className="arrival-halo" />
+          <span className="arrival-walk" onAnimationEnd={event => {
+            if (event.target === event.currentTarget && event.animationName === "arrival-approach") setArrived(true);
+          }}>
+            <span className="arrival-speech"><span>호외요, 호외~!</span><span>경사났어요, 여러분!</span></span>
+            <span className="arrival-dog">
+              <span className="arrival-shadow" />
+              <span className="arrival-gait">
+                <img src="/opening-dog.webp" alt="" width="480" height="408" fetchPriority="high" />
+              </span>
+            </span>
           </span>
-          <span className="arrival-speech">경사났어요,<br />여러분~!</span>
         </span>
-        <span className={`arrival-instruction${canOpen ? " is-ready" : ""}`} role="status">
-          {opening ? "신문 펼치는 중" : problem ? "신문이 조금 늦어지고 있어요." : canOpen ? "터치해서 신문 펼치기" : "잠깐만요, 신문 가져갈게요!"}
+        <span className="arrival-footer">
+          <span className="arrival-status" role="status">{opening ? "두 사람의 이야기를 펼칩니다." : problem ? "신문이 조금 늦어지고 있어요." : canOpen ? "오늘의 신문이 도착했어요." : prepared ? "배달원이 다가오고 있어요." : "잠깐만요, 소식을 준비하고 있어요."}</span>
+          <span className={`arrival-instruction${canOpen ? " is-ready" : ""}`}>
+            {canOpen ? <>신문 펼쳐 보기 <span aria-hidden="true">→</span></> : opening ? "신문 펼치는 중" : problem ? "아래에서 다시 시도해 주세요" : "곧 도착합니다"}
+          </span>
+          <span className="arrival-footer-note">{canOpen ? "화면 어디든 터치해 주세요" : "11년의 이야기, 새로운 시작"}</span>
+          {!prepared && !problem && !opening && <progress className="arrival-progress" max={total} value={complete} aria-label="신문 준비 진행률" />}
         </span>
       </button>
-      {!prepared && !problem && !opening && <progress className="arrival-progress" max={total} value={complete} aria-label="신문 준비 진행률" />}
       {problem && !opening && <div className="arrival-retry">
         <button type="button" onClick={() => window.location.reload()}>다시 불러오기</button>
         <button type="button" onClick={onOpen}>먼저 읽기</button>
