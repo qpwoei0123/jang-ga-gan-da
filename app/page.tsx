@@ -6,6 +6,7 @@ import WeddingSong from "./wedding-song";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperArticle from "./newspaper-article";
 import NewspaperInterview from "./newspaper-interview";
+import ParentsAccounts from "./parents-accounts";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
 
@@ -317,6 +318,7 @@ function WeddingNewspaper() {
             <p>함께하지 못하는 아쉬운 마음 대신<br />저희의 새로운 시작을 따뜻하게 축복해 주시면<br />그 마음 소중히 간직하겠습니다.</p>
           </div>
           <p className="gallery-signoff">한원영 · 이나경</p>
+          <ParentsAccounts />
         </section>
         <WeddingSong showAnnouncement={false}/>
       </main>

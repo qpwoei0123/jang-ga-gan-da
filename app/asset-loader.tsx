@@ -5,6 +5,7 @@ import { preloadSound } from "./audio-bank";
 import { preloadResources } from "./resource-preloader";
 import PrintLoading from "./print-loading";
 import PagePrint from "./print-page";
+import NewspaperArrival from "./newspaper-arrival";
 
 const AssetsReady = createContext(false);
 export const useAssetsReady = () => useContext(AssetsReady);
@@ -22,14 +23,14 @@ export function InvitationGate({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);
   const [ready, setReady] = useState(false);
   const allReady = resources === "ready" && player === "ready";
-  const problem = expired || resources === "error" || player === "error";
+  const problem = !allReady && (expired || resources === "error" || player === "error");
 
   useEffect(() => {
     let active = true;
     document.documentElement.dataset.assets = "loading";
     const images = [...scene.current!.querySelectorAll<HTMLImageElement>("img")];
     images.forEach(image => { image.loading = "eager"; });
-    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/paper-crumple.webp", "/favicon.svg"])];
+    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/paper-crumple.webp", "/favicon.svg"])];
     const fonts = [...document.fonts].map(font => font.load());
     const tasks = [...sources.map(preloadImage), ...fonts];
     setProgress({ complete: 0, total: tasks.length + 1 });
@@ -45,13 +46,11 @@ export function InvitationGate({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!allReady && !opened) return;
-    let second = 0;
-    const first = requestAnimationFrame(() => {
-      second = requestAnimationFrame(() => setReady(true));
-    });
-    return () => { cancelAnimationFrame(first); cancelAnimationFrame(second); };
-  }, [allReady, opened]);
+    if (!opened) return;
+    const duration = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 850;
+    const timer = window.setTimeout(() => setReady(true), duration);
+    return () => clearTimeout(timer);
+  }, [opened]);
 
   useEffect(() => {
     if (!ready) return;
@@ -62,16 +61,20 @@ export function InvitationGate({ children }: { children: ReactNode }) {
   }, [ready]);
 
   return <AssetsReady.Provider value={ready}><PlayerPreparation.Provider value={setPlayer}>
-    <div ref={scene} className={`asset-scene${ready ? "" : " is-preparing"}`} inert={!ready} aria-hidden={!ready}>{children}</div>
-    {!ready && <div className="asset-loader invitation-loader" role="region" aria-label="신문 준비">
-      <div className="asset-loader-inner">
-        <span className="asset-loader-edition">THE WEDDING NEWS</span>
-        <h1>{problem ? "조금 늦어지고 있어요." : "신문을 준비합니다."}</h1>
-        <p role="status">{problem ? "일부 자료를 불러오지 못했어요. 다시 시도하거나 먼저 읽으실 수 있어요." : resources === "ready" && player === "pending" ? "음악 플레이어를 준비하고 있어요." : "사진과 글꼴, 음악을 미리 준비합니다."}</p>
-        <progress max={progress.total} value={progress.complete + (player === "ready" ? 1 : 0)} aria-label="자료 준비 진행률" />
-        {problem && <div className="invitation-loader-actions"><button onClick={() => window.location.reload()}>다시 불러오기</button><button onClick={() => setOpened(true)}>먼저 읽기</button></div>}
-      </div>
-    </div>}
+    <div ref={scene} className={`asset-scene${ready ? "" : opened ? " is-arrival-opening" : " is-preparing"}`} inert={!ready} aria-hidden={!ready} onAnimationEnd={event => {
+      if (event.animationName === "arrival-page-unfold") setReady(true);
+    }}>{children}</div>
+    {!ready && <NewspaperArrival
+      prepared={allReady}
+      problem={problem}
+      opening={opened}
+      complete={progress.complete + (player === "ready" ? 1 : 0)}
+      total={progress.total}
+      onOpen={() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        setOpened(true);
+      }}
+    />}
   </PlayerPreparation.Provider></AssetsReady.Provider>;
 }
 

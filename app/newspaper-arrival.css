@@ -1,0 +1,122 @@
+.newspaper-arrival {
+  position:fixed;
+  inset:0;
+  z-index:200;
+  width:min(100%,390px);
+  height:100vh;
+  height:100dvh;
+  margin:auto;
+  overflow:hidden;
+  isolation:isolate;
+  color:#29261f;
+  background:#ece7db;
+  font-family:var(--text);
+}
+.arrival-receive {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  padding:0;
+  border:0;
+  border-radius:0;
+  color:inherit;
+  background:transparent;
+  text-align:center;
+  font:inherit;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.arrival-receive:disabled { opacity:1; cursor:default; }
+.arrival-receive:focus-visible { outline-offset:-6px; }
+.arrival-heading { position:absolute; top:max(40px,11svh); left:20px; right:20px; }
+.arrival-kicker { display:block; font:11px/1.4 var(--sans); letter-spacing:.17em; }
+.arrival-title { display:block; margin-top:17px; font:400 32px/1.45 var(--text); letter-spacing:-.045em; }
+.arrival-names { display:block; margin-top:12px; font:13px/1.5 var(--text); letter-spacing:.06em; }
+.arrival-halo {
+  position:absolute;
+  width:min(260px,68vw);
+  aspect-ratio:1;
+  left:50%;
+  bottom:calc(21svh + 5px);
+  translate:-50% 0;
+  border-radius:50%;
+  background:#faf7ef;
+  box-shadow:0 0 0 20px #f5f1e788,0 0 0 42px #f5f1e744;
+}
+.arrival-walk {
+  position:absolute;
+  width:min(280px,74vw);
+  aspect-ratio:480 / 408;
+  left:50%;
+  bottom:21svh;
+  margin-left:calc(min(280px,74vw) / -2);
+  transform-origin:50% 100%;
+  animation:arrival-approach 2.6s cubic-bezier(.16,.7,.32,1) both;
+}
+.arrival-gait { position:absolute; inset:0; transform-origin:50% 92%; animation:arrival-waddle .58s ease-in-out infinite; }
+.arrival-gait > img { position:absolute; width:100%; height:100%; object-fit:contain; }
+.arrival-shadow { position:absolute; width:66%; height:6%; bottom:-1%; left:15%; background:#3f352222; border-radius:50%; filter:blur(6px); }
+.arrival-speech {
+  position:absolute;
+  top:-47px;
+  left:16%;
+  padding:10px 20px;
+  border-radius:22px 22px 22px 3px;
+  color:#393329;
+  background:#fffdf7;
+  box-shadow:0 2px 0 #bfb4a33b;
+  font:400 26px/1.05 var(--handwriting);
+  text-align:left;
+  transform:rotate(-6deg);
+  animation:arrival-call 1.5s ease-in-out infinite;
+}
+.arrival-instruction { position:absolute; bottom:max(55px,10svh); left:15px; right:15px; color:#716958; font:13px/1.6 var(--text); word-break:keep-all; }
+.arrival-instruction.is-ready { color:#393329; }
+.arrival-instruction.is-ready::before { content:'↓'; display:block; margin-bottom:8px; font-size:22px; animation:arrival-tap 1.7s ease-in-out infinite; }
+.arrival-progress { position:absolute; left:50%; bottom:max(35px,7svh); width:80px; height:2px; translate:-50% 0; appearance:none; border:0; background:#d0c7b7; accent-color:#716958; }
+.arrival-progress::-webkit-progress-bar { background:#d0c7b7; }
+.arrival-progress::-webkit-progress-value { background:#716958; }
+.arrival-progress::-moz-progress-bar { background:#716958; }
+.arrival-retry { position:absolute; bottom:max(20px,4svh); left:20px; right:20px; display:flex; justify-content:center; gap:12px; }
+.arrival-retry button { min-height:44px; padding:10px 14px; border:1px solid #918470; background:#faf7ef; color:#393329; font:13px/1.4 var(--sans); cursor:pointer; }
+.arrival-retry button:last-child { background:transparent; }
+.has-problem .arrival-instruction { bottom:85px; }
+.asset-scene.is-arrival-opening {
+  position:fixed;
+  inset:0;
+  z-index:201;
+  overflow:hidden;
+  opacity:1;
+  pointer-events:none;
+}
+.is-arrival-opening > .wedding-site {
+  transform-origin:50% 68svh;
+  animation:arrival-page-unfold .85s cubic-bezier(.16,1,.3,1) both;
+}
+.newspaper-arrival.is-opening { pointer-events:none; animation:arrival-overlay-exit .85s ease both; }
+.is-opening .arrival-walk { opacity:0; transition:opacity .3s; }
+.is-opening .arrival-heading, .is-opening .arrival-instruction { opacity:0; transition:opacity .2s; }
+.is-opening .arrival-gait, .is-opening .arrival-speech { animation-play-state:paused; }
+@keyframes arrival-approach { from { transform:translateY(-95px) scale(.17); opacity:.4; } to { transform:translateY(0) scale(1); opacity:1; } }
+@keyframes arrival-waddle { 0%,100% { transform:rotate(-3deg) translateY(0); } 50% { transform:rotate(3deg) translateY(-5px); } }
+@keyframes arrival-call { 0%,100% { translate:0 0; } 50% { translate:0 -4px; } }
+@keyframes arrival-tap { 0%,100% { opacity:.5; translate:0 0; } 50% { opacity:1; translate:0 3px; } }
+@keyframes arrival-page-unfold { 0% { opacity:0; transform:translateY(22svh) scale(.16) rotate(-7deg); } 15% { opacity:1; } 100% { opacity:1; transform:none; } }
+@keyframes arrival-overlay-exit { 0%,85% { opacity:1; } 100% { opacity:0; } }
+@media(max-height:600px) {
+  .arrival-heading { top:28px; }
+  .arrival-title { margin-top:10px; font-size:26px; }
+  .arrival-names { margin-top:7px; }
+  .arrival-walk { width:min(210px,65vw); margin-left:calc(min(210px,65vw) / -2); bottom:90px; }
+  .arrival-halo { width:180px; bottom:100px; }
+  .arrival-speech { top:-29px; font-size:22px; padding:8px 14px; }
+  .arrival-instruction { bottom:32px; }
+  .arrival-progress { bottom:17px; }
+  .arrival-retry { bottom:4px; }
+  .has-problem .arrival-instruction { bottom:60px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .newspaper-arrival *, .newspaper-arrival *::before, .newspaper-arrival.is-opening { animation:none!important; transition:none!important; }
+  .is-arrival-opening > .wedding-site { animation:none; }
+}

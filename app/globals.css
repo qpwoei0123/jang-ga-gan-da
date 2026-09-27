@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./design-system.css";
+@import "./newspaper-arrival.css";
 
 
 
@@ -734,6 +735,38 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .wedding-site .announcement-signature { margin-top:32px; gap:10px; font:400 13px/1.85 var(--text); color:#514d47; }
 .wedding-site .announcement-signature strong { font-weight:600; color:#272521; }
 .gallery-signoff { margin-top:34px; color:#65615b; font:12px/1.6 var(--text); letter-spacing:.06em; }
+.parents-accounts { position:relative; z-index:2; margin-top:36px; text-align:center; }
+.parents-accounts-cta { display:inline-flex; align-items:center; justify-content:center; gap:14px; min-height:48px; padding:12px 24px; border:1px solid #bfb8af; border-radius:3px; background:transparent; color:#494640; font:400 14px/1.6 var(--text); cursor:pointer; transition:background .18s ease,border-color .18s ease; }
+.parents-accounts-cta svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.25; stroke-linejoin:round; }
+.parents-accounts-note { margin:10px 0 0; color:#827c74; font:11px/1.6 var(--sans); }
+.parents-accounts-dialog { position:fixed; inset:0; width:min(440px,calc(100% - 32px)); max-height:calc(100dvh - 48px); margin:auto; padding:24px; border:1px solid #e4ded5; border-radius:12px; background:#faf9f6; color:#38342f; text-align:left; box-shadow:0 12px 48px #30291f26; overflow-y:auto; overscroll-behavior:contain; }
+.parents-accounts-dialog::backdrop { background:rgb(43 37 29 / 26%); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
+.parents-accounts-dialog[open] { animation:parents-accounts-enter 220ms ease-out both; }
+.parents-accounts-dialog[open]::backdrop { animation:parents-accounts-backdrop 220ms ease-out both; }
+.parents-accounts-header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.parents-accounts-header h2 { margin:0; font:400 23px/1.5 var(--text); letter-spacing:-.03em; }
+.parents-accounts-close { display:grid; place-items:center; flex:none; width:44px; height:44px; margin-right:-10px; padding:0; border:0; background:transparent; color:inherit; cursor:pointer; }
+.parents-accounts-close svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; }
+.parents-accounts-intro { margin:8px 0 24px; color:#827c74; font:12px/1.7 var(--sans); word-break:keep-all; }
+.parents-account-group + .parents-account-group { margin-top:24px; padding-top:20px; border-top:1px solid #e4ded5; }
+.parents-account-group h3 { margin:0 0 12px; color:#696258; font:600 13px/1.6 var(--sans); }
+.parents-account-group ul { display:grid; gap:18px; margin:0; padding:0; list-style:none; }
+.parents-account-row { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:12px; }
+.parents-account-holder { margin:0 0 6px; font:600 15px/1.6 var(--text); }
+.parents-account-bank { margin:0 0 3px; color:#827c74; font:12px/1.6 var(--sans); }
+.parents-account-number { margin:0; font:15px/1.6 var(--sans); font-variant-numeric:tabular-nums; overflow-wrap:anywhere; user-select:text; }
+.parents-account-copy { min-width:58px; min-height:44px; padding:8px 12px; border:1px solid #d9d2c8; border-radius:4px; background:transparent; color:#696258; font:12px/1.6 var(--sans); cursor:pointer; }
+.parents-account-empty { margin:0; color:#827c74; font:13px/1.7 var(--sans); }
+.parents-accounts-status { min-height:20px; margin:20px 0 0; color:#696258; font:12px/1.7 var(--sans); word-break:keep-all; }
+.parents-accounts button:focus-visible { outline:2px solid #696258; outline-offset:3px; }
+body:has(.parents-accounts-dialog[open]) .ddui-music { visibility:hidden; }
+@keyframes parents-accounts-enter { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+@keyframes parents-accounts-backdrop { from { opacity:0; } to { opacity:1; } }
+@media(hover:hover) { .parents-accounts-cta:hover,.parents-account-copy:hover { background:#eee9e1; border-color:#a69d90; } }
+@media(max-width:600px) {
+  .parents-accounts-dialog { inset:auto 0 0; width:100%; max-height:85dvh; margin:0; padding:24px max(24px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left)); border-radius:18px 18px 0 0; border-bottom:0; }
+}
+@media(prefers-reduced-motion:reduce) { .parents-accounts-cta { transition:none; } .parents-accounts-dialog[open],.parents-accounts-dialog[open]::backdrop { animation:none; } }
 .lightbox-content { max-width:1100px; margin:auto; grid-template-rows:64px minmax(0,1fr) 96px; padding-left:max(20px,env(safe-area-inset-left)); padding-right:max(20px,env(safe-area-inset-right)); }
 .lightbox-content header { font-variant-numeric:tabular-nums; }
 .lightbox-content header span { font-size:12px; letter-spacing:.06em; }
