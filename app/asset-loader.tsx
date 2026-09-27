@@ -16,38 +16,48 @@ export const useReportPlayerReady = () => useContext(PlayerPreparation);
 
 export function InvitationGate({ children }: { children: ReactNode }) {
   const scene = useRef<HTMLDivElement>(null);
-  const [player, setPlayer] = useState<PlayerStatus>("pending");
   const [resources, setResources] = useState<PlayerStatus>("pending");
   const [progress, setProgress] = useState({ complete: 0, total: 1 });
   const [expired, setExpired] = useState(false);
   const [opened, setOpened] = useState(false);
   const [ready, setReady] = useState(false);
-  const allReady = resources === "ready" && player === "ready";
-  const problem = !allReady && (expired || resources === "error" || player === "error");
+  const allReady = resources === "ready";
+  const problem = !allReady && (expired || resources === "error");
 
   useEffect(() => {
     let active = true;
     document.documentElement.dataset.assets = "loading";
-    const images = [...scene.current!.querySelectorAll<HTMLImageElement>("img")];
-    images.forEach(image => { image.loading = "eager"; });
-    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/opening-dog-sitting.webp", "/opening-dog-high-five.webp", "/paper-crumple.webp", "/favicon.svg"])];
-    const fonts = [...document.fonts].map(font => font.load());
-    const tasks = [...sources.map(preloadImage), ...fonts];
-    setProgress({ complete: 0, total: tasks.length + 1 });
-    Promise.allSettled(tasks.map(task => task.then(() => {
-      if (active) setProgress(value => ({ ...value, complete: value.complete + 1 }));
-    }))).then(async results => {
-      await document.fonts.ready;
-      const decoded = await Promise.allSettled(images.map(image => image.decode()));
-      if (active) setResources([...results, ...decoded].some(result => result.status === "rejected") ? "error" : "ready");
-    });
+    // Only first-page artwork belongs to the entrance; offscreen photos stay lazy.
+    const images = [...scene.current!.querySelectorAll<HTMLImageElement>(".cover-photo img")];
+    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/paper-crumple.webp"])];
+    const controller = new AbortController();
+    const fonts = Promise.allSettled([
+      document.fonts.load('400 16px "Noto Serif KR"', "한원영 이나경 결혼합니다"),
+      document.fonts.load('600 16px "Noto Serif KR"', "한원영 이나경"),
+    ]);
+    // font-display:swap keeps text readable when a font connection is slow.
+    let fontTimeout = 0;
+    const fontReady = Promise.race([fonts, new Promise<void>(resolve => {
+      fontTimeout = window.setTimeout(resolve, 1200);
+    })]);
+    setProgress({ complete: 0, total: sources.length });
+    Promise.all([
+      preloadResources(sources, preloadImage, (complete, total) => {
+        if (active) setProgress({ complete, total });
+      }, controller.signal),
+      fontReady,
+    ]).then(async ([failed]) => {
+      clearTimeout(fontTimeout);
+      const decoded = failed.length ? [] : await Promise.allSettled(images.map(image => image.decode()));
+      if (active) setResources(failed.length || decoded.some(result => result.status === "rejected") ? "error" : "ready");
+    }).catch(() => {});
     const timeout = window.setTimeout(() => { if (active) setExpired(true); }, 30000);
-    return () => { active = false; clearTimeout(timeout); delete document.documentElement.dataset.assets; };
+    return () => { active = false; controller.abort(); clearTimeout(timeout); clearTimeout(fontTimeout); delete document.documentElement.dataset.assets; };
   }, []);
 
   useEffect(() => {
     if (!opened) return;
-    const duration = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 850;
+    const duration = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 900;
     const timer = window.setTimeout(() => setReady(true), duration);
     return () => clearTimeout(timer);
   }, [opened]);
@@ -60,7 +70,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     if (id) document.getElementById(id)?.scrollIntoView({ behavior: "instant", block: "start" });
   }, [ready]);
 
-  return <AssetsReady.Provider value={ready}><PlayerPreparation.Provider value={setPlayer}>
+  return <AssetsReady.Provider value={ready}>
     <div ref={scene} className={`asset-scene${ready ? "" : opened ? " is-arrival-opening" : " is-preparing"}`} inert={!ready} aria-hidden={!ready} onAnimationEnd={event => {
       if (event.animationName === "arrival-page-unfold") setReady(true);
     }}>{children}</div>
@@ -68,14 +78,14 @@ export function InvitationGate({ children }: { children: ReactNode }) {
       prepared={allReady}
       problem={problem}
       opening={opened}
-      complete={progress.complete + (player === "ready" ? 1 : 0)}
+      complete={progress.complete}
       total={progress.total}
       onOpen={() => {
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
         setOpened(true);
       }}
     />}
-  </PlayerPreparation.Provider></AssetsReady.Provider>;
+  </AssetsReady.Provider>;
 }
 
 // Keep decoded images, including CSS backgrounds, resident for this visit.

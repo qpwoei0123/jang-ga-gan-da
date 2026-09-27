@@ -9,6 +9,7 @@ import NewspaperInterview from "./newspaper-interview";
 import ParentsAccounts from "./parents-accounts";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
+import FamilyDogNote from "./family-dog-note";
 
 const reports = [
   ["친구 제보 01", "결혼 발표, 사실상 뒤늦은 신고", "둘은 이미 서로의 주문을 대신하고 메뉴판도 한 장만 본다. 결혼은 새 소식이지만 생활은 오래전부터 그랬다."],
@@ -303,6 +304,7 @@ function WeddingNewspaper() {
           <NewspaperInterview />
           <footer className="newspaper-footer">
             <p className="newspaper-closing">취재는 여기까지. 두 사람의 이야기는 계속됩니다.</p>
+            <FamilyDogNote kind="reporter" />
             <div className="newspaper-imprint">
               <span>THE WEDDING NEWS</span>
               <time dateTime="2026-11-01">2026.11.01</time>
@@ -319,6 +321,7 @@ function WeddingNewspaper() {
           </div>
           <p className="gallery-signoff">한원영 · 이나경</p>
           <ParentsAccounts />
+          <FamilyDogNote kind="thanks" />
         </section>
         <WeddingSong showAnnouncement={false}/>
       </main>

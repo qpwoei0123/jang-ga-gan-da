@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function NewspaperArrival({ prepared, problem, opening, complete, total, onOpen }: {
   prepared: boolean;
@@ -11,76 +11,54 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
   onOpen: () => void;
 }) {
   const [arrived, setArrived] = useState(false);
-  const [sittingReady, setSittingReady] = useState(false);
-  const sittingPhoto = useRef<HTMLImageElement>(null);
-  const [greeting, setGreeting] = useState(false);
-  const greetingTimer = useRef<number | null>(null);
-  const showSitting = arrived && (sittingReady || prepared);
-  const canOpen = prepared && arrived && !greeting && !opening;
+  const [waiting, setWaiting] = useState(false);
+  const [asideReady, setAsideReady] = useState(false);
+  const canOpen = prepared && !opening;
 
   useEffect(() => {
-    const duration = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 2600;
+    const duration = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1000;
     const timer = window.setTimeout(() => setArrived(true), duration);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    let active = true;
-    const photo = sittingPhoto.current;
-    if (photo?.complete && photo.naturalWidth) {
-      void photo.decode().then(() => { if (active) setSittingReady(true); }, () => {});
-    }
-    return () => { active = false; };
-  }, []);
-
-  useEffect(() => () => {
-    if (greetingTimer.current !== null) clearTimeout(greetingTimer.current);
-  }, []);
-
-  function receiveNewspaper() {
-    if (!canOpen || greetingTimer.current !== null) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      onOpen();
-      return;
-    }
-    setGreeting(true);
-    greetingTimer.current = window.setTimeout(onOpen, 620);
-  }
+    if (!prepared || opening) return;
+    const timer = window.setTimeout(() => setWaiting(true), 8000);
+    return () => clearTimeout(timer);
+  }, [prepared, opening]);
 
   return (
-    <section className={`newspaper-arrival${showSitting ? " is-arrived" : ""}${greeting ? " is-greeting" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="강아지가 가져온 결혼 신문">
-      <button type="button" className="arrival-receive" disabled={!canOpen} onClick={receiveNewspaper} aria-label={canOpen ? "강아지와 하이파이브하고 신문 펼치기" : "강아지가 신문을 준비하고 있어요"}>
+    <section className={`newspaper-arrival${arrived ? " is-arrived" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="우리 집 강아지가 전하는 결혼 특별호">
+      <button type="button" className="arrival-receive" disabled={!canOpen} onClick={onOpen} aria-label={canOpen ? "한원영과 이나경의 결혼 신문 펼쳐 보기" : "결혼 신문 첫 장을 준비하고 있어요"}>
         <span className="arrival-heading">
           <span className="arrival-kicker"><span>결혼 특별호</span><span>2026. 11. 01</span></span>
           <span className="arrival-title"><span>The</span> Wedding News</span>
+          <span className="arrival-headline"><span>호외요, 호외!</span><strong>우리 가족이 결혼한대요!</strong></span>
           <span className="arrival-names">한원영 · 이나경</span>
         </span>
         <span className="arrival-hero" aria-hidden="true">
           <span className="arrival-halo" />
-          <span className="arrival-walk" onAnimationEnd={event => {
-            if (event.target === event.currentTarget && event.animationName === "arrival-approach") setArrived(true);
-          }}>
-            <span className="arrival-speech"><span>호외요, 호외~!</span><span>경사났어요, 여러분!</span></span>
+          <span className="arrival-walk">
             <span className="arrival-dog">
               <span className="arrival-shadow" />
-              <span className="arrival-gait">
-                <img className="arrival-pose arrival-pose-walking" src="/opening-dog.webp" alt="" width="480" height="408" fetchPriority="high" />
-                <img ref={sittingPhoto} className="arrival-pose arrival-pose-sitting" src="/opening-dog-sitting.webp" alt="" width="480" height="408" decoding="async" onLoad={event => {
-                  void event.currentTarget.decode().then(() => setSittingReady(true), () => {});
-                }} />
-                <img className="arrival-pose arrival-pose-high-five" src="/opening-dog-high-five.webp" alt="" width="480" height="408" decoding="async" />
-              </span>
-              <span className="arrival-high-five-word">짝!</span>
+              <span className="arrival-gait"><img src="/opening-dog.webp" alt="" width="480" height="408" fetchPriority="high" /></span>
             </span>
           </span>
+          {waiting && !opening && <span className={`arrival-aside${asideReady ? " is-visible" : ""}`}>
+            <img src="/dog-family/side-eye.webp" alt="" width="120" height="144" decoding="async" onLoad={event => {
+              void event.currentTarget.decode().then(() => setAsideReady(true), () => {});
+            }} />
+            <span>좋은 소식인데…<br />안 보실 거예요?</span>
+          </span>}
+          {opening && <span className="arrival-opening-call">경사났어요, 여러분~!</span>}
         </span>
         <span className="arrival-footer">
-          <span className="arrival-status" role="status">{opening ? "두 사람의 이야기를 펼칩니다." : greeting ? "하이파이브! 반가워요." : problem ? "신문이 조금 늦어지고 있어요." : canOpen ? "오늘의 신문이 도착했어요." : prepared ? "배달원이 다가오고 있어요." : "잠깐만요, 소식을 준비하고 있어요."}</span>
+          <span className="arrival-status" role="status">{opening ? "두 사람의 이야기를 펼칩니다." : problem ? "신문 첫 장을 불러오지 못했어요." : prepared ? "11년의 이야기, 새로운 시작" : "결혼 특별호 첫 장을 준비하고 있어요."}</span>
           <span className={`arrival-instruction${canOpen ? " is-ready" : ""}`}>
-            {canOpen ? <>신문 펼쳐 보기 <span aria-hidden="true">→</span></> : opening || greeting ? "신문 펼치는 중" : problem ? "아래에서 다시 시도해 주세요" : "곧 도착합니다"}
+            {canOpen ? <>신문 펼쳐 보기 <span aria-hidden="true">→</span></> : opening ? "신문 펼치는 중" : problem ? "아래에서 다시 시도해 주세요" : "잠깐만 기다려 주세요"}
           </span>
-          <span className="arrival-footer-note">{canOpen ? "화면 어디든 터치해 주세요" : "11년의 이야기, 새로운 시작"}</span>
-          {!prepared && !problem && !opening && <progress className="arrival-progress" max={total} value={complete} aria-label="신문 준비 진행률" />}
+          <span className="arrival-footer-note">{canOpen ? "화면 어디든 터치해 주세요" : "배달 담당 · 우리 집 강아지 뚜이"}</span>
+          {!prepared && !problem && !opening && <progress className="arrival-progress" max={total} value={complete} aria-label="신문 첫 장 준비 진행률" />}
         </span>
       </button>
       {problem && !opening && <div className="arrival-retry">

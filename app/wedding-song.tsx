@@ -9,42 +9,52 @@ type Playback = "waiting" | "blocked" | "playing" | "error";
 export default function WeddingSong({ showAnnouncement = true }: { showAnnouncement?: boolean }) {
   const ready = useAssetsReady();
   const reportReady = useReportPlayerReady();
-  const engine = useRef<{ context: AudioContext; buffer: AudioBuffer; gain: GainNode; source: AudioBufferSourceNode | null } | null>(null);
+  const engine = useRef<{ context: AudioContext; buffer: AudioBuffer | null; gain: GainNode; source: AudioBufferSourceNode | null } | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [state, setState] = useState<Playback>("waiting");
   const [attempt, setAttempt] = useState(0);
   const [hintGone, setHintGone] = useState(false);
 
   useEffect(() => {
-    const controller = new AbortController();
-    let active = true;
     const context = new AudioContext();
     const gain = context.createGain();
     gain.gain.value = 0;
     gain.connect(context.destination);
-    const timeout = window.setTimeout(() => controller.abort(), 30000);
+    engine.current = { context, buffer: null, gain, source: null };
     // A real gesture can unlock sound while the entrance is still running.
     const unlock = () => { if (context.state === "suspended") void context.resume().catch(() => {}); };
     document.addEventListener("pointerdown", unlock);
     document.addEventListener("keydown", unlock);
+    return () => {
+      document.removeEventListener("pointerdown", unlock);
+      document.removeEventListener("keydown", unlock);
+      engine.current?.source?.stop(); engine.current = null;
+      void context.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!ready || !engine.current) return;
+    const audio = engine.current;
+    const controller = new AbortController();
+    let active = true;
+    const timeout = window.setTimeout(() => controller.abort(), 30000);
+    // Sound starts preparing after the newspaper opens, without delaying entry.
     fetch("/sounds/aurectheme-jazz-584847.mp3", { signal: controller.signal })
       .then(response => { if (!response.ok) throw new Error("Audio unavailable"); return response.arrayBuffer(); })
-      .then(bytes => context.decodeAudioData(bytes))
+      .then(bytes => audio.context.decodeAudioData(bytes))
       .then(buffer => {
         if (!active) return;
-        engine.current = { context, buffer, gain, source: null };
+        if (engine.current !== audio) return;
+        audio.buffer = buffer;
         setLoaded(true);
         reportReady("ready");
       }).catch(() => { if (active) { setState("error"); reportReady("error"); } })
       .finally(() => clearTimeout(timeout));
     return () => {
       active = false; controller.abort(); clearTimeout(timeout);
-      document.removeEventListener("pointerdown", unlock);
-      document.removeEventListener("keydown", unlock);
-      engine.current?.source?.stop(); engine.current = null;
-      void context.close();
     };
-  }, [reportReady]);
+  }, [ready, reportReady]);
 
   useEffect(() => {
     if (!ready || !loaded) return;
@@ -54,7 +64,7 @@ export default function WeddingSong({ showAnnouncement = true }: { showAnnouncem
     const delay = attempt === 0 ? 1600 : 0;
     later(() => {
       const audio = engine.current;
-      if (!audio || audio.source) return;
+      if (!audio?.buffer || audio.source) return;
       if (audio.context.state !== "running") { setState("blocked"); return; }
       const source = audio.context.createBufferSource();
       source.buffer = audio.buffer;

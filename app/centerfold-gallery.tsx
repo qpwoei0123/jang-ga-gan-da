@@ -118,7 +118,7 @@ export default function CenterfoldGallery() {
     <header className="heart-gallery-heading"><h2 id="gallery-title">함께 모은 순간들</h2><p>하나하나 모여, 우리의 마음이 되었습니다.</p></header>
     <div ref={puzzle} className="heart-puzzle" aria-label="하트 모양으로 모은 열한 장의 사진">
       {photos.map((photo,i)=><button key={photo.src} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected({index:i,previous:null,direction:1})}>
-        <img src={photo.thumbnail} alt={photo.caption} draggable="false" decoding="async" style={{scale:photo.zoom ?? 1}}/>
+        <img src={photo.thumbnail} alt={photo.caption} loading="lazy" draggable="false" decoding="async" style={{scale:photo.zoom ?? 1}}/>
       </button>)}
     </div>
     <p className="heart-gallery-hint">사진을 누르면 더 크게 볼 수 있어요.</p>
