@@ -16,6 +16,8 @@ export const viewport: Viewport = {
   maximumScale: 5,
   userScalable: true,
   viewportFit: "cover",
+  themeColor: "#f5f4f1",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -24,8 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <body>{children}</body>
+    <html lang="ko" style={{ backgroundColor: "#f5f4f1", colorScheme: "light" }}>
+      <body style={{ backgroundColor: "#f5f4f1" }}>{children}</body>
     </html>
   );
 }
