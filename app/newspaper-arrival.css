@@ -60,7 +60,16 @@
 .arrival-dog { position:relative; display:block; width:var(--arrival-dog-width); aspect-ratio:480 / 408; margin-top:24px; }
 .arrival-gait { position:absolute; inset:0; transform-origin:50% 92%; animation:arrival-waddle .68s ease-in-out infinite; }
 .arrival-gait > img { position:absolute; width:100%; height:100%; object-fit:contain; }
-.is-arrived .arrival-gait { animation:arrival-idle 2.8s ease-in-out infinite; }
+.arrival-pose { opacity:0; transition:opacity .26s ease; }
+.arrival-pose-walking { opacity:1; }
+.is-arrived .arrival-pose-walking { opacity:0; }
+.is-arrived .arrival-pose-sitting { opacity:1; }
+.is-greeting .arrival-pose-sitting, .is-opening .arrival-pose-sitting { opacity:0; }
+.is-greeting .arrival-pose-high-five, .is-opening .arrival-pose-high-five { opacity:1; }
+.is-arrived .arrival-gait { animation:arrival-head-tilt 4.2s ease-in-out infinite; }
+.is-greeting .arrival-gait { z-index:2; animation:arrival-high-five .62s cubic-bezier(.2,.8,.2,1) both; }
+.arrival-high-five-word { position:absolute; top:46%; right:4%; z-index:3; color:#514b3f; font:400 37px/1 var(--handwriting); opacity:0; pointer-events:none; }
+.is-greeting .arrival-high-five-word { animation:arrival-paw-pop .48s ease .12s both; }
 .arrival-shadow { position:absolute; width:66%; height:5%; bottom:-1%; left:17%; background:#3f35221a; border-radius:50%; filter:blur(6px); }
 .arrival-speech {
   position:relative;
@@ -74,8 +83,11 @@
   font:400 23px/1.12 var(--handwriting);
   text-align:center;
   transform:rotate(-3deg);
-  animation:arrival-call 3.6s ease-in-out infinite;
+  opacity:0;
+  transition:opacity .25s;
 }
+.is-arrived .arrival-speech { opacity:1; animation:arrival-call 3.6s ease-in-out infinite; }
+.is-greeting .arrival-speech { opacity:0; }
 .arrival-speech::after { content:""; position:absolute; bottom:-6px; left:33%; width:10px; height:10px; border-right:1px solid #d8d0c1; border-bottom:1px solid #d8d0c1; background:#fffdf7; transform:rotate(45deg); }
 .arrival-speech > span { display:block; }
 .arrival-speech > span:first-child { font-size:31px; margin-bottom:2px; }
@@ -105,7 +117,9 @@
 .is-opening .arrival-gait, .is-opening .arrival-speech { animation-play-state:paused; }
 @keyframes arrival-approach { from { transform:translateY(-70px) scale(.17); opacity:.4; } to { transform:translateY(0) scale(1); opacity:1; } }
 @keyframes arrival-waddle { 0%,100% { transform:rotate(-2.2deg) translateY(0); } 50% { transform:rotate(2.2deg) translateY(-4px); } }
-@keyframes arrival-idle { 0%,100% { transform:rotate(-.5deg); } 50% { transform:rotate(.5deg) translateY(-2px); } }
+@keyframes arrival-head-tilt { 0%,100% { transform:rotate(-1deg); } 42% { transform:rotate(1.2deg) translateY(-2px); } 64%,82% { transform:rotate(-2deg); } }
+@keyframes arrival-high-five { 0% { transform:scale(1); } 65% { transform:translateY(-15px) scale(1.24) rotate(-2deg); } 100% { transform:translateY(-10px) scale(1.2); } }
+@keyframes arrival-paw-pop { 0% { opacity:0; transform:translateY(8px) scale(.6) rotate(8deg); } 30%,70% { opacity:1; } 100% { opacity:0; transform:translateY(-16px) scale(1.12) rotate(-8deg); } }
 @keyframes arrival-call { 0%,100% { translate:0 0; } 50% { translate:0 -2px; } }
 @keyframes arrival-page-unfold { 0% { opacity:0; transform:translateY(22svh) scale(.16) rotate(-7deg); } 15% { opacity:1; } 100% { opacity:1; transform:none; } }
 @keyframes arrival-overlay-exit { 0%,85% { opacity:1; } 100% { opacity:0; } }
