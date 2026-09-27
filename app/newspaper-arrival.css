@@ -7,11 +7,13 @@
   overflow:hidden; isolation:isolate;
   color:var(--arrival-ink); background:var(--arrival-surface);
 }
-.newspaper-arrival::before { content:""; position:absolute; inset:0; z-index:-1; opacity:.16; background-image:var(--paper-grain); background-size:cover; pointer-events:none; }
+.newspaper-arrival::before { content:""; position:absolute; inset:0; z-index:-1; opacity:.16; background-size:cover; pointer-events:none; }
+.newspaper-arrival.is-preloading::before { background-image:var(--paper-grain); }
 .arrival-layout { display:grid; place-items:center; width:100%; min-height:0; padding:max(24px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom)); }
 .arrival-hero { position:relative; display:flex; flex-direction:column; align-items:center; width:100%; }
 .arrival-speech { position:relative; z-index:3; width:min(100%,300px); min-height:220px; margin-bottom:22px; padding:18px 20px; border:1px solid #d5ccbb; border-radius:24px 25px 22px 23px; background:#fffdf7; box-shadow:0 4px 16px #5b432908; text-align:center; font:22px/1.3 var(--handwriting); transform:rotate(-2deg); }
 .arrival-speech::before { content:""; position:absolute; left:63%; bottom:-10px; width:18px; height:18px; border-right:1px solid #d5ccbb; border-bottom:1px solid #d5ccbb; background:#fffdf7; transform:rotate(45deg); }
+.is-loading:not(.has-problem):not(.is-opening) .arrival-speech { visibility:hidden; }
 .arrival-speech strong { display:block; font:30px/1.2 var(--handwriting); }
 .arrival-speech p { margin:8px 0 4px; }
 .is-high-fiving .arrival-speech { display:grid; place-items:center; }
@@ -23,7 +25,7 @@
 .arrival-progress::-webkit-progress-value { background:#867865; transition:width .2s; }
 .arrival-progress::-moz-progress-bar { background:#867865; }
 .arrival-walk { position:relative; display:flex; justify-content:center; width:100%; padding-bottom:32px; }
-.arrival-spinner { position:absolute; left:calc(50% - 40px); top:calc(50% - 50px); width:80px; height:68px; animation:arrival-spinner-turn 1.8s linear infinite; }
+.arrival-spinner { position:fixed; inset:0; margin:auto; width:80px; height:68px; animation:arrival-spinner-turn 1s linear infinite; }
 .arrival-dog { position:relative; width:var(--arrival-dog-width); aspect-ratio:480 / 408; opacity:0; transform:translateX(calc(100% + 60px)); }
 .is-dog-ready .arrival-dog { opacity:1; animation:arrival-approach 1.35s cubic-bezier(.16,.7,.32,1) both; }
 .arrival-gait { position:absolute; inset:0; transform-origin:50% 92%; animation:arrival-waddle .38s ease-in-out infinite; }

@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { arrivalPreview } from "./arrival-preview";
 
-export default function NewspaperArrival({ prepared, problem, opening, complete, total, onOpen }: {
+export default function NewspaperArrival({ preloading, prepared, problem, opening, complete, total, onOpen }: {
+  preloading: boolean;
   prepared: boolean;
   problem: boolean;
   opening: boolean;
@@ -17,6 +18,7 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
   const [highFiving, setHighFiving] = useState(false);
   const highFiveTimer = useRef<number | null>(null);
   const walkingImage = useRef<HTMLImageElement>(null);
+  const entering = prepared && walkingReady;
   const offeringPaw = arrived && prepared;
   const canHighFive = offeringPaw && !highFiving && !opening;
 
@@ -31,11 +33,11 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
   }, []);
 
   useEffect(() => {
-    if (!walkingReady) return;
+    if (!entering) return;
     const duration = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1350;
     const timer = window.setTimeout(() => setArrived(true), duration);
     return () => clearTimeout(timer);
-  }, [walkingReady]);
+  }, [entering]);
 
   useEffect(() => {
     if (!canHighFive) return;
@@ -56,7 +58,7 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
   const speaking = highFiving || opening;
 
   return (
-    <section className={`newspaper-arrival${walkingReady ? " is-dog-ready" : ""}${arrived ? " is-arrived" : ""}${offeringPaw ? " is-offering-paw" : ""}${highFiving ? " is-high-fiving" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="뚜이가 전하는 한원영과 이나경의 결혼 소식">
+    <section className={`newspaper-arrival${preloading ? " is-preloading" : ""}${entering ? " is-dog-ready" : " is-loading"}${arrived ? " is-arrived" : ""}${offeringPaw ? " is-offering-paw" : ""}${highFiving ? " is-high-fiving" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="뚜이가 전하는 한원영과 이나경의 결혼 소식">
       <div className="arrival-layout">
         <div className="arrival-hero">
           <div className="arrival-speech">
@@ -75,14 +77,14 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
             </div>}
           </div>
           <div className="arrival-walk">
-            {!walkingReady && <img className="arrival-spinner" src={arrivalPreview} alt="뚜이가 오고 있어요" width="80" height="68" />}
+            {!entering && !opening && <img className="arrival-spinner" src={arrivalPreview} alt="뚜이가 신문을 준비하고 있어요" width="80" height="68" />}
             <div className="arrival-dog">
               <span className="arrival-shadow" aria-hidden="true" />
               <div className="arrival-gait">
-                <img ref={walkingImage} className="arrival-pose-walking" src="/opening-dog.webp" alt="" width="480" height="408" fetchPriority="high" decoding="async" onLoad={event => {
+                <img ref={walkingImage} className="arrival-pose-walking" src={preloading ? "/opening-dog.webp" : undefined} alt="" width="480" height="408" fetchPriority="high" decoding="async" onLoad={event => {
                   event.currentTarget.decode().then(() => setWalkingReady(true)).catch(() => {});
                 }} />
-                <img className="arrival-pose-paw" src="/opening-dog-high-five.webp" alt="" width="480" height="408" decoding="async" />
+                <img className="arrival-pose-paw" src={preloading ? "/opening-dog-high-five.webp" : undefined} alt="" width="480" height="408" decoding="async" />
                 <svg className="arrival-paw-outline" viewBox="0 0 480 408" aria-hidden="true">
                   <circle className="arrival-paw-ring" cx="244" cy="352" r="75" />
                   <circle className="arrival-paw-ripple" cx="244" cy="352" r="75" />

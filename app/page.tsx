@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { InvitationGate, useAssetsReady } from "./asset-loader";
+import { InvitationGate, useAssetsReady, usePreloadStarted } from "./asset-loader";
 import WeddingSong from "./wedding-song";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperArticle from "./newspaper-article";
@@ -63,10 +63,11 @@ function PageBottom({ next }: { next: string }) {
 }
 
 function CoverPhoto() {
+  const preloading = usePreloadStarted();
   return (
     <figure className="cover-photo" data-ddui-tip="둘이 제법 잘 어울리죠? 헤헤.">
       <div className="cover-photo-print">
-        <img src="/cover-doodle.webp" alt="창가에 나란히 앉은 한원영과 이나경의 사진에 손글씨와 하트가 그려져 있다" width="1024" height="1536" fetchPriority="high" />
+        <img src={preloading ? "/cover-doodle.webp" : undefined} alt="창가에 나란히 앉은 한원영과 이나경의 사진에 손글씨와 하트가 그려져 있다" width="1024" height="1536" fetchPriority="high" />
       </div>
     </figure>
   );
