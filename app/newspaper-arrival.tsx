@@ -11,14 +11,26 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
   onOpen: () => void;
 }) {
   const [arrived, setArrived] = useState(false);
+  const [sittingReady, setSittingReady] = useState(false);
+  const sittingPhoto = useRef<HTMLImageElement>(null);
   const [greeting, setGreeting] = useState(false);
   const greetingTimer = useRef<number | null>(null);
+  const showSitting = arrived && (sittingReady || prepared);
   const canOpen = prepared && arrived && !greeting && !opening;
 
   useEffect(() => {
     const duration = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 2600;
     const timer = window.setTimeout(() => setArrived(true), duration);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    const photo = sittingPhoto.current;
+    if (photo?.complete && photo.naturalWidth) {
+      void photo.decode().then(() => { if (active) setSittingReady(true); }, () => {});
+    }
+    return () => { active = false; };
   }, []);
 
   useEffect(() => () => {
@@ -36,7 +48,7 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
   }
 
   return (
-    <section className={`newspaper-arrival${arrived ? " is-arrived" : ""}${greeting ? " is-greeting" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="강아지가 가져온 결혼 신문">
+    <section className={`newspaper-arrival${showSitting ? " is-arrived" : ""}${greeting ? " is-greeting" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="강아지가 가져온 결혼 신문">
       <button type="button" className="arrival-receive" disabled={!canOpen} onClick={receiveNewspaper} aria-label={canOpen ? "강아지와 하이파이브하고 신문 펼치기" : "강아지가 신문을 준비하고 있어요"}>
         <span className="arrival-heading">
           <span className="arrival-kicker"><span>결혼 특별호</span><span>2026. 11. 01</span></span>
@@ -53,7 +65,9 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
               <span className="arrival-shadow" />
               <span className="arrival-gait">
                 <img className="arrival-pose arrival-pose-walking" src="/opening-dog.webp" alt="" width="480" height="408" fetchPriority="high" />
-                <img className="arrival-pose arrival-pose-sitting" src="/opening-dog-sitting.webp" alt="" width="480" height="408" decoding="async" />
+                <img ref={sittingPhoto} className="arrival-pose arrival-pose-sitting" src="/opening-dog-sitting.webp" alt="" width="480" height="408" decoding="async" onLoad={event => {
+                  void event.currentTarget.decode().then(() => setSittingReady(true), () => {});
+                }} />
                 <img className="arrival-pose arrival-pose-high-five" src="/opening-dog-high-five.webp" alt="" width="480" height="408" decoding="async" />
               </span>
               <span className="arrival-high-five-word">짝!</span>
