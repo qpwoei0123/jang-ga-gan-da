@@ -64,8 +64,8 @@ export function InvitationGate({ children }: { children: ReactNode }) {
         if (active) setProgress({ complete, total });
       }, controller.signal),
       fontReady,
-      // Cached resources still leave time to see the photo medley.
-      new Promise<void>(resolve => { medleyTimeout = window.setTimeout(resolve, 1000); }),
+      // Always show all five photos for 500 ms each, even on a cached visit.
+      new Promise<void>(resolve => { medleyTimeout = window.setTimeout(resolve, 2500); }),
     ]).then(async ([failed]) => {
       clearTimeout(fontTimeout);
       const decoded = failed.length ? [] : await Promise.allSettled(images.map(image => image.decode()));

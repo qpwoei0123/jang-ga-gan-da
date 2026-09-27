@@ -87,9 +87,8 @@
   .arrival-speech-hint { margin-top:5px; min-height:18px; font-size:14px; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .newspaper-arrival *, .newspaper-arrival *::before, .newspaper-arrival.is-opening { animation:none!important; transition:none!important; }
+  .newspaper-arrival :not(.arrival-medley-frame), .newspaper-arrival *::before, .newspaper-arrival.is-opening { animation:none!important; transition:none!important; }
   .is-dog-ready .arrival-dog { transform:none; }
   .arrival-paw-ripple { display:none; }
-  .arrival-medley-frame:first-child { opacity:1; }
   .is-arrival-opening > .wedding-site { animation:none; }
 }
