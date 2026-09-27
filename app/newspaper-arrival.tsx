@@ -12,7 +12,6 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
 }) {
   const [arrived, setArrived] = useState(false);
   const [waiting, setWaiting] = useState(false);
-  const [asideReady, setAsideReady] = useState(false);
   const [highFiving, setHighFiving] = useState(false);
   const highFiveTimer = useRef<number | null>(null);
   const offeringPaw = arrived && prepared;
@@ -41,47 +40,40 @@ export default function NewspaperArrival({ prepared, problem, opening, complete,
     highFiveTimer.current = window.setTimeout(onOpen, duration);
   }
 
+  const speaking = highFiving || opening;
+
   return (
-    <section className={`newspaper-arrival${arrived ? " is-arrived" : ""}${offeringPaw ? " is-offering-paw" : ""}${highFiving ? " is-high-fiving" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="우리 집 강아지가 전하는 결혼 특별호">
+    <section className={`newspaper-arrival${arrived ? " is-arrived" : ""}${offeringPaw ? " is-offering-paw" : ""}${highFiving ? " is-high-fiving" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="뚜이가 전하는 한원영과 이나경의 결혼 소식">
       <div className="arrival-layout">
-        <header className="arrival-heading">
-          <span className="arrival-kicker"><span>결혼 특별호</span><span>2026. 11. 01</span></span>
-          <span className="arrival-title"><span>The</span> Wedding News</span>
-          <h1 className="arrival-headline"><span>호외요, 호외!</span><strong>우리 가족이 결혼한대요!</strong></h1>
-          <span className="arrival-names">한원영 · 이나경</span>
-        </header>
         <div className="arrival-hero">
-          <span className="arrival-halo" aria-hidden="true" />
+          <div className="arrival-speech">
+            <div role="status" aria-live="polite" aria-atomic="true">
+              <strong>{speaking ? "짝! 반가워요!" : "호외요, 호외~!"}</strong>
+              <p>{speaking ? "경사났어요, 여러분~!" : <>원영이랑 나경이가<br />결혼한대요!</>}</p>
+              {!speaking && <span className="arrival-speech-date">11월 1일이에요!</span>}
+              <span className="arrival-speech-hint">{opening ? "두 사람의 이야기를 펼칠게요!" : highFiving ? "하이파이브! 신문 받아 가세요~" : problem ? "앗, 신문이 늦어지고 있어요." : canHighFive ? waiting ? "제 앞발, 여기 있어요~ 하이파이브!" : "제 앞발에 하이파이브 해주세요!" : prepared ? "제가 지금 갈게요~" : "잠깐만요, 신문을 준비하고 있어요."}</span>
+            </div>
+            {!prepared && !problem && !opening && <progress className="arrival-progress" max={total} value={complete} aria-label="신문 첫 장 준비 진행률" />}
+            {problem && !opening && <div className="arrival-retry">
+              <button type="button" onClick={() => window.location.reload()}>다시 불러오기</button>
+              <button type="button" onClick={onOpen}>먼저 읽기</button>
+            </div>}
+          </div>
           <div className="arrival-walk">
             <div className="arrival-dog">
               <span className="arrival-shadow" aria-hidden="true" />
               <div className="arrival-gait">
                 <img className="arrival-pose-walking" src="/opening-dog.webp" alt="" width="480" height="408" fetchPriority="high" />
                 <img className="arrival-pose-paw" src="/opening-dog-high-five.webp" alt="" width="480" height="408" decoding="async" />
-                <button type="button" className="arrival-paw-touch" disabled={!canHighFive} onClick={highFive} aria-label="뚜이의 앞발을 터치해 하이파이브하고 결혼 신문 펼치기" />
-                {canHighFive && <span className="arrival-paw-hint" aria-hidden="true">앞발을 톡!<span>↖</span></span>}
-                {highFiving && <span className="arrival-high-five-word" aria-hidden="true">짝!</span>}
+                <svg className="arrival-paw-outline" viewBox="0 0 480 408" aria-hidden="true">
+                  <path d="M215 307 C205 302 199 313 196 325 C182 333 185 350 191 359 C188 373 199 386 213 390 C226 403 252 405 267 395 C289 390 302 374 303 356 C308 338 298 319 283 313 C265 300 246 313 236 307 C226 298 220 303 215 307 Z" />
+                </svg>
+                <button type="button" className="arrival-paw-touch" disabled={!canHighFive} onClick={highFive} aria-label="뚜이의 점선으로 표시된 앞발에 하이파이브하고 결혼 신문 펼치기" />
               </div>
             </div>
           </div>
-          {waiting && !highFiving && !opening && <span className={`arrival-aside${asideReady ? " is-visible" : ""}`} aria-hidden="true">
-            <img src="/dog-family/side-eye.webp" alt="" width="120" height="144" decoding="async" onLoad={event => {
-              void event.currentTarget.decode().then(() => setAsideReady(true), () => {});
-            }} />
-            <span>제 앞발에<br />하이파이브 해주세요!</span>
-          </span>}
-          {(highFiving || opening) && <span className="arrival-opening-call" aria-hidden="true">경사났어요, 여러분~!</span>}
-        </div>
-        <div className="arrival-footer">
-          <span className="arrival-status" role="status">{opening ? "두 사람의 이야기를 펼칩니다." : highFiving ? "짝! 하이파이브!" : problem ? "신문 첫 장을 불러오지 못했어요." : canHighFive ? "뚜이의 앞발을 톡, 하이파이브하면 신문이 펼쳐져요." : "결혼 특별호 첫 장을 준비하고 있어요."}</span>
-          <span className="arrival-footer-note">11년의 이야기, 새로운 시작</span>
-          {!prepared && !problem && !opening && <progress className="arrival-progress" max={total} value={complete} aria-label="신문 첫 장 준비 진행률" />}
         </div>
       </div>
-      {problem && !opening && <div className="arrival-retry">
-        <button type="button" onClick={() => window.location.reload()}>다시 불러오기</button>
-        <button type="button" onClick={onOpen}>먼저 읽기</button>
-      </div>}
     </section>
   );
 }
