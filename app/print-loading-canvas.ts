@@ -40,7 +40,7 @@ function createArtwork(photo?: HTMLImageElement) {
   text("Wedding News", 111, 65, { weight: 700 });
   rule(129, 3); rule(135);
   text("VOL. 01", 159, 13, { font: "Arial", x: 40, align: "left" });
-  text("SATURDAY, OCTOBER 17, 2026", 159, 13, { font: "Arial" });
+  text("SUNDAY, NOVEMBER 1, 2026", 159, 13, { font: "Arial" });
   text("SPECIAL", 159, 13, { font: "Arial", x: 600, align: "right" });
   rule(173);
   text("우리, 결혼합니다.", 250, 55, { font: korean, weight: 900 });
@@ -63,7 +63,7 @@ function createArtwork(photo?: HTMLImageElement) {
   }
 
   rule(614);
-  text("2026. 10. 17.", 663, 38, { color: "#303529" });
+  text("2026. 11. 01.", 663, 38, { color: "#303529" });
   text("토요일 오후 2시", 701, 23, { font: korean, weight: 600, color: "#4d5940" });
   rule(731); rule(737, 2);
   text("A NEW CHAPTER BEGINS", 770, 14, { color: "#586447" });

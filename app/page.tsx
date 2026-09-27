@@ -5,6 +5,7 @@ import { InvitationGate, useAssetsReady } from "./asset-loader";
 import WeddingSong from "./wedding-song";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperArticle from "./newspaper-article";
+import NewspaperInterview from "./newspaper-interview";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
 
@@ -233,7 +234,7 @@ function WeddingSearchPuzzle() {
             </figure>
             <article>
               <span>CORRECTION / 편집국 정정 보도</span>
-              <h3>평생 동거인 모집,<br />10년 심사 끝에 둘 다 합격</h3>
+              <h3>평생 동거인 모집,<br />11년 심사 끝에 둘 다 합격</h3>
               <p>지원자 한원영과 이나경은 장기 심사를 무사히 통과했다. 재공고는 없으며 계약 기간은 평생이다.</p>
               <blockquote>뚜이 편집장 “다 찾았으면 이제 간식 찾아.”</blockquote>
             </article>
@@ -246,9 +247,9 @@ function WeddingSearchPuzzle() {
             </figure>
             <article>
               <span>EDITORIAL / 오늘의 사설</span>
-              <h3>10년이면 승인 도장 찍을 때도 됐다</h3>
+              <h3>11년이면 승인 도장 찍을 때도 됐다</h3>
               <p className="dropcap">본지는 2016년부터 두 사람을 지켜봤다. 십 년이면 표본도 충분하다. 저녁 메뉴는 아직 합의하지 못하지만 함께 먹겠다는 결론은 늘 같았다.</p>
-              <blockquote>“연애 10년이면 기사도 충분하다. 편집국의 결론은 결혼 승인.”</blockquote>
+              <blockquote>“연애 11년이면 기사도 충분하다. 편집국의 결론은 결혼 승인.”</blockquote>
             </article>
           </>
         )}
@@ -275,7 +276,7 @@ function WeddingNewspaper() {
     <>
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
       <main className="wedding-site" aria-label="한원영과 이나경의 웨딩 신문">
-        <div className="edition"><article className="paper-page cover-page" id="top">
+        <article className="edition paper-page cover-page" id="top">
           <div className="cover-utility">
             <span>The Grand Hall</span>
 
@@ -287,29 +288,33 @@ function WeddingNewspaper() {
           </header>
           <div className="issue-line">
             <span>ISSUE VOL. 1</span>
-            <span>SATURDAY, OCTOBER 17, 2026</span>
+            <span>SUNDAY, NOVEMBER 1, 2026</span>
             <span>PRICE: ONE BLESSING</span>
           </div>
           <div className="cover-announcement" data-ddui-tip="오늘 신문 주인공은 우리 형누나예요~">
             <p>CELEBRATING THE UNION OF</p>
             <h2>한원영 <i>&amp;</i> 이나경</h2>
-            <span>10년의 연애 끝, 가족 앞에서 결혼합니다.</span>
+            <span>11년의 연애 끝, 가족 앞에서 결혼합니다.</span>
           </div>
           <CoverPhoto />
           <NewspaperArticle kind="reaction" />
           <NewspaperArticle kind="history" photoSrc="/history-hanbok.webp" />
-        </article>
-        </div>
-        <CenterfoldGallery />
-        <section className="paper-page details-page" id="details" data-ddui-tip="형누나가 결혼합니다! 많이 많이 축하해 주세요~" data-ddui-celebrate="true">
-          <h2 className="thanks-heading">마음을 전합니다</h2>
-          <div className="announcement-note">
-            <p>가족들과 함께 조용히 예식을 올립니다.</p>
-            <p>오랜 시간 저희의 곁을 지켜주신<br />모든 분께 감사드립니다.<br />보내주시는 축하를 마음에 담고<br />서로 아끼며 잘 살겠습니다.</p>
-            <div className="announcement-signature">
-              <div>한동현 · 김현정의 아들 <strong>한원영</strong></div>
-              <div>이광범 · 성호숙의 딸 <strong>이나경</strong></div>
+          <NewspaperInterview />
+          <footer className="newspaper-footer">
+            <p className="newspaper-closing">취재는 여기까지. 두 사람의 이야기는 계속됩니다.</p>
+            <div className="newspaper-imprint">
+              <span>THE WEDDING NEWS</span>
+              <time dateTime="2026-11-01">2026.11.01</time>
+              <span aria-label="1면">01</span>
             </div>
+          </footer>
+        </article>
+        <CenterfoldGallery />
+        <section className="paper-page details-page" id="details" aria-label="가족식 안내" data-ddui-tip="형누나가 결혼합니다! 많이 많이 축하해 주세요~" data-ddui-celebrate="true">
+          <div className="announcement-note">
+            <p>저희 두 사람은 이번 결혼식을<br />양가 가족과 함께하는 작은 가족식으로 마련했습니다.</p>
+            <p>예식은 양가 가족만을 모시고 진행할 예정으로,<br />가족 외에는 별도로 초대하지 않는 점<br />너그러운 마음으로 양해 부탁드립니다.</p>
+            <p>함께하지 못하는 아쉬운 마음 대신<br />저희의 새로운 시작을 따뜻하게 축복해 주시면<br />그 마음 소중히 간직하겠습니다.</p>
           </div>
           <p className="gallery-signoff">한원영 · 이나경</p>
         </section>

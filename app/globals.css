@@ -93,7 +93,7 @@ html:is([data-assets="loading"], [data-assets="preparing"], [data-assets="printi
 
 /* Print directly onto the existing front page. Its geometry never changes. */
 .asset-loader.is-on-page:not(.is-error) { display: block; padding: 0; overflow: hidden; background: transparent; pointer-events: none; }
-.asset-scene.is-page-printing .edition > :not(.cover-page) { visibility: hidden; }
+.asset-scene.is-page-printing .wedding-site > :not(.cover-page) { visibility: hidden; }
 .asset-scene.is-page-printing .cover-page > * {
   clip-path: inset(0 0 var(--print-cut, 100%) 0);
   text-shadow: var(--print-registration, 0px) 0 rgb(0 166 204 / 55%), calc(-1 * var(--print-registration, 0px)) 0 rgb(232 61 121 / 45%);
@@ -452,12 +452,35 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .newspaper-article { display:flow-root; margin-top:1.5rem; font-family:var(--text); }
 .newspaper-article + .newspaper-article { margin-top:1rem; padding-top:.875rem; border-top:1px solid var(--rule-color); }
 .newspaper-article .article-kicker { margin:0 0 .3125rem; font:700 .6875rem/1.4 var(--sans); letter-spacing:-.025em; }
-.newspaper-article h2 { margin:.375rem 0 .5625rem; font:400 1.625rem/1.3 var(--text); letter-spacing:-.04em; overflow-wrap:anywhere; }
+.newspaper-article h2 { margin:.375rem 0 .5625rem; font:600 1.625rem/1.3 var(--text); letter-spacing:-.03em; overflow-wrap:anywhere; }
 .newspaper-article .article-deck { margin:0 0 .625rem; color:var(--muted); font:700 .75rem/1.45 var(--sans); }
-.newspaper-article .article-body { margin:0; font:.9375rem/1.7 var(--text); letter-spacing:-.025em; text-align:justify; overflow-wrap:anywhere; }
-.newspaper-article .article-photo { width:min(10.125rem,51%); margin:.1875rem auto .75rem; }
-.newspaper-article .article-photo img { width:100%; height:auto; aspect-ratio:2 / 3; object-fit:cover; filter:grayscale(1) contrast(1.08); }
+.newspaper-article .article-body { margin:0; font:400 1rem/1.6 var(--text); letter-spacing:-.015em; text-align:justify; overflow-wrap:anywhere; }
+.newspaper-article .article-photo { width:100%; margin:.1875rem 0 .75rem; }
+.newspaper-article .article-photo-print { position:relative; isolation:isolate; }
+.newspaper-article .article-photo img { width:100%; height:auto; aspect-ratio:4 / 5; object-fit:cover; object-position:50% 65%; filter:grayscale(1) brightness(1.1) contrast(.82); }
+.newspaper-article .article-photo-display { aspect-ratio:4 / 5; overflow:hidden; }
+.newspaper-article .article-photo-display img { position:absolute; inset:0; height:100%; opacity:0; transition:opacity .7s ease-in-out; }
+.newspaper-article .article-photo-display img.is-current { opacity:1; }
+.newspaper-article .article-photo-display::after { z-index:1; }
+@media (prefers-reduced-motion:reduce) { .newspaper-article .article-photo-display img { transition:none; } }
+.newspaper-article .article-photo-print::after { content:""; position:absolute; inset:0; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='.8'/%3E%3C/svg%3E"); opacity:.2; mix-blend-mode:soft-light; box-shadow:inset 0 0 18px rgb(255 255 255 / 18%); }
 .newspaper-article .article-photo figcaption { margin:0; padding-top:.1875rem; color:var(--muted); font:.6875rem/1.4 var(--sans); text-align:center; overflow-wrap:anywhere; }
+
+.interview-question { margin-top:1rem; }
+.interview-question + .interview-question { padding-top:.875rem; border-top:1px solid var(--line); }
+.interview-question h3 { margin:0 0 .625rem; font:700 .875rem/1.55 var(--sans); letter-spacing:-.025em; }
+.interview-question-number { font-weight:400; }
+.interview-question dl { display:grid; gap:.5rem; margin:0; }
+.interview-answer { display:grid; grid-template-columns:44px minmax(0,1fr); gap:.5rem; align-items:start; }
+.interview-answer dt { font:600 .8125rem/1.6 var(--text); }
+.interview-face { display:block; width:44px; height:44px; object-fit:contain; }
+.interview-answer dd { margin:0; font:400 1rem/1.6 var(--text); letter-spacing:-.015em; overflow-wrap:anywhere; }
+
+.newspaper-footer { margin-top:1.5rem; padding:.875rem 0 .5rem; border-top:3px double var(--rule-color); }
+.newspaper-closing { margin:0 0 .875rem; color:var(--muted); font:.8125rem/1.7 var(--text); text-align:center; text-wrap:balance; }
+.newspaper-imprint { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:.375rem .75rem; color:var(--muted); font:.75rem/1.5 var(--sans); }
+.newspaper-imprint > :first-child { margin-right:auto; letter-spacing:.025em; }
+.newspaper-imprint time { font-variant-numeric:tabular-nums; }
 
 .cover-carousel-viewport { overflow:hidden; }
 .cover-carousel-track { display:flex; touch-action:pan-y pinch-zoom; }
@@ -584,7 +607,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .lightbox-content header,.lightbox-content footer { display:flex; align-items:center; justify-content:space-between; gap:16px; font:12px/1.5 var(--sans); }
 .lightbox-content header span { color:#bbb; letter-spacing:.1em; }
 .lightbox-content button { background:transparent; border:0; color:#fff; min-width:48px; min-height:48px; font:30px/1 sans-serif; cursor:pointer; }
-.lightbox-content footer p { margin:0; text-align:center; color:#ddd; font:13px/1.5 var(--sans); }
 .lightbox-image { display:flex; align-items:center; justify-content:center; min-height:0; touch-action:pan-y; }
 .lightbox-image img { display:block; max-width:100%; max-height:100%; object-fit:contain; }
 .wedding-site .details-page { width:min(100%,600px); min-height:0; margin:0 auto; padding:62px 24px 100px; background:#fff; text-align:center; }
@@ -618,7 +640,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 @keyframes ddui-word-flight { 0% { opacity:0; transform:translate(0,0); } 12%,45% { opacity:1; } 100% { opacity:0; transform:translate(calc(-1 * var(--drift)),calc(-1 * var(--rise))); } }
 .lightbox-content footer { justify-content:flex-start; padding-right:65px; gap:12px; }
 .lightbox-content footer nav { display:flex; flex:none; gap:4px; }
-.lightbox-content footer p { font-size:12px; text-align:left; }
 .ddui-music { position:fixed; z-index:81; right:8px; bottom:82px; margin:0; }
 body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 @media(max-width:600px) { .heart-puzzle { aspect-ratio:1 / 1.35; } .heart-tile { border-width:2px; } }
@@ -686,7 +707,7 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 /* Keep the invitation visible behind the enlarged photograph. */
 .gallery-lightbox { background:transparent; color:#242424; }
 .gallery-lightbox::backdrop { background:rgb(255 255 255 / 48%); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
-.lightbox-content header span,.lightbox-content footer p { color:#333; }
+.lightbox-content header span { color:#333; }
 .lightbox-content button { color:#242424; }
 .gallery-lightbox button:focus-visible { outline-color:#333; }
 @supports not (backdrop-filter:blur(1px)) { .gallery-lightbox::backdrop { background:rgb(255 255 255 / 92%); } }
@@ -708,7 +729,7 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .heart-gallery-hint { margin:22px 0 0; color:var(--reading-muted); font:12px/1.7 var(--sans); }
 .wedding-site .details-page { max-width:490px; padding:var(--section-space) 28px 72px; }
 .thanks-heading::before { content:""; display:block; width:32px; height:1px; background:#b9b1a6; margin:0 auto 28px; }
-.wedding-site .announcement-note { padding:24px 0 0; }
+.wedding-site .announcement-note { padding:0; }
 .wedding-site .announcement-note p { margin:0 0 24px; font:400 22px/1.75 var(--handwriting); color:#494640; word-break:keep-all; }
 .wedding-site .announcement-signature { margin-top:32px; gap:10px; font:400 13px/1.85 var(--text); color:#514d47; }
 .wedding-site .announcement-signature strong { font-weight:600; color:#272521; }
@@ -721,7 +742,6 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .lightbox-content header button:active,.lightbox-content nav button:active { transform:scale(.94); background:#fff; }
 .lightbox-content nav { gap:10px; }
 .lightbox-content footer { padding-right:60px; gap:16px; }
-.lightbox-content footer p { font:12px/1.6 var(--text); word-break:keep-all; text-wrap:balance; }
 .lightbox-image { padding:4px 0 12px; }
 .lightbox-image img { box-shadow:0 8px 30px #30291f18; }
 @media(hover:hover) { .lightbox-content header button:hover,.lightbox-content nav button:hover { background:#fff; } }
@@ -742,8 +762,8 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .wedding-site .edition { isolation:auto; filter:none; background:transparent; box-shadow:none; }
 .wedding-site .edition::before { z-index:0; opacity:1; mix-blend-mode:normal; filter:none; background:var(--paper); box-shadow:0 5px 22px #29231b12; }
 .wedding-site .edition::after { z-index:3; opacity:.18; mix-blend-mode:multiply; }
-.wedding-site .edition > .paper-page { overflow:visible; }
-.wedding-site .edition > .paper-page > * { z-index:2; }
+.wedding-site .edition.paper-page { margin:0 auto; padding:calc(18 * var(--paper-unit)) var(--page-gutter) calc(15 * var(--paper-unit)); overflow:visible; }
+.wedding-site .edition.paper-page > * { z-index:2; }
 .heart-gallery { background:transparent; }
 .heart-gallery-heading,.heart-puzzle,.heart-gallery-hint,.thanks-heading,.announcement-note,.gallery-signoff { position:relative; z-index:2; }
 .ddui-companion { z-index:1; }
@@ -769,10 +789,17 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
   min-height:0;
 }
 .lightbox-stage header { display:flex; align-items:center; justify-content:space-between; }
-.lightbox-stage .lightbox-image { padding:0 46px; }
+.lightbox-stage .lightbox-image { position:relative; margin:0 46px; padding:0; isolation:isolate; }
 .lightbox-stage .lightbox-image img { max-width:100%; max-height:100%; }
 .lightbox-stage footer { justify-content:center; min-height:44px; padding:0; }
-.lightbox-stage footer p { max-width:100%; text-align:center; }
+.lightbox-frame { position:absolute; inset:0; display:grid; place-items:center; pointer-events:none; }
+.lightbox-frame img { grid-area:1 / 1; width:100%; height:100%; min-width:0; min-height:0; object-fit:contain; box-shadow:none; }
+.lightbox-frame.is-current { z-index:1; pointer-events:auto; animation:lightbox-photo-in 280ms ease-out both; }
+.lightbox-frame.is-previous { animation:lightbox-photo-out 280ms ease-out both; }
+.lightbox-frame .lightbox-full { opacity:0; transition:opacity 180ms ease-out; }
+.lightbox-frame .lightbox-full.is-decoded { opacity:1; }
+@keyframes lightbox-photo-in { from { opacity:0; transform:translateX(var(--photo-enter-x)); } to { opacity:1; transform:none; } }
+@keyframes lightbox-photo-out { from { opacity:1; } to { opacity:0; } }
 .lightbox-stage footer nav { position:absolute; inset:0; pointer-events:none; }
 .lightbox-stage footer nav button {
   position:absolute;
@@ -786,12 +813,15 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 @media(max-width:600px) {
   .gallery-lightbox .lightbox-content { padding-top:max(12px,env(safe-area-inset-top)); padding-bottom:max(12px,env(safe-area-inset-bottom)); }
   .lightbox-stage { width:100%; height:100%; gap:8px; }
-  .lightbox-stage .lightbox-image { padding:0; }
-  .lightbox-stage footer { flex-direction:column; gap:6px; }
-  .lightbox-stage footer p { order:-1; }
+  .lightbox-stage .lightbox-image { margin:0; }
   .lightbox-stage footer nav { position:static; display:flex; justify-content:center; gap:20px; pointer-events:auto; }
   .lightbox-stage footer nav button { position:static; transform:none; }
   .lightbox-stage footer nav button:active { transform:scale(.94); }
+}
+@media(prefers-reduced-motion:reduce) {
+  .lightbox-frame.is-current,.lightbox-frame.is-previous { animation:none; }
+  .lightbox-frame.is-previous { opacity:0; }
+  .lightbox-frame .lightbox-full { transition:none; }
 }
 
 /* A single quiet entrance for the front page and closing note. */

@@ -2,6 +2,8 @@
 @font-face { font-family:"MaruBuri"; font-style:normal; font-weight:400; font-display:swap; src:url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.woff2") format("woff2"); }
 @font-face { font-family:"MaruBuri"; font-style:normal; font-weight:600; font-display:swap; src:url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.woff2") format("woff2"); }
 @font-face { font-family:"MaruBuri"; font-style:normal; font-weight:700; font-display:swap; src:url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.woff2") format("woff2"); }
+@font-face { font-family:"Noto Serif KR"; font-style:normal; font-weight:400; font-display:swap; src:url("/fonts/noto-serif-kr-400.woff2") format("woff2"); }
+@font-face { font-family:"Noto Serif KR"; font-style:normal; font-weight:600; font-display:swap; src:url("/fonts/noto-serif-kr-600.woff2") format("woff2"); }
 /* Shared newspaper foundations. Canvas reads the same custom properties. */
 :root {
   --handwriting: "NanumDaHaengCe", "MaruBuri", serif;
@@ -35,6 +37,7 @@
 }
 
 .edition {
+  --text: "Noto Serif KR", "MaruBuri", serif;
   --space-8: calc(8 * var(--paper-unit));
   --space-12: calc(12 * var(--paper-unit));
   --space-16: calc(16 * var(--paper-unit));
