@@ -29,7 +29,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     document.documentElement.dataset.assets = "loading";
     // Only first-page artwork belongs to the entrance; offscreen photos stay lazy.
     const images = [...scene.current!.querySelectorAll<HTMLImageElement>(".cover-photo img")];
-    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/paper-crumple.webp"])];
+    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/opening-dog-high-five.webp", "/paper-crumple.webp"])];
     const controller = new AbortController();
     const fonts = Promise.allSettled([
       document.fonts.load('400 16px "Noto Serif KR"', "한원영 이나경 결혼합니다"),
