@@ -662,8 +662,9 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .heart-dog img { display:block; width:100%; height:100%; min-height:0; max-height:100%; object-fit:contain; object-position:center top; transform-origin:50% 78%; user-select:none; }
 .heart-dog[data-pressed=true] img { filter:brightness(.94); }
 .heart-dog:focus-visible { position:relative; z-index:8; outline:2px solid var(--focus-ink,#555046); outline-offset:3px; }
-.wedding-site { padding-top:16px; }
-.wedding-site .edition { width:min(calc(100% - 24px),390px); box-shadow:0 5px 22px #29231b12; }
+.wedding-site { padding-top:0; }
+.wedding-site .edition { width:100%; max-width:390px; box-shadow:0 5px 22px #29231b12; }
+@media(max-width:600px) { .wedding-site .edition { max-width:none; } }
 .ddui-flying-word { padding:0; border-radius:0; background:none; box-shadow:none; color:#242424; -webkit-text-stroke:3px #fff; paint-order:stroke fill; text-shadow:0 1px 2px #fff; font-size:17px; }
 .ddui-words { right:20px; }
 @media(max-width:600px) { .heart-puzzle { gap:4px; aspect-ratio:7 / 6; } }
