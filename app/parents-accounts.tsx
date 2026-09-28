@@ -1,9 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useAssetsReady } from "./asset-loader";
+import { HIGH_FIVE_SOUND, PAPER_UNFOLD_SOUND, playDecodedSound } from "./audio-bank";
 import { parentAccountGroups, type ParentAccount } from "./parents-accounts-data";
 
 export default function ParentsAccounts() {
+  const ready = useAssetsReady();
+  const cta = useRef<HTMLButtonElement>(null);
+  const celebrated = useRef(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -20,6 +25,34 @@ export default function ParentsAccounts() {
     cancelAnimationFrame(revealFrame.current);
     clearTimeout(closeTimer.current);
   }, []);
+
+  useEffect(() => {
+    const button = cta.current;
+    if (!ready || !button || celebrated.current) return;
+    const confettiReady = import("canvas-confetti").catch(() => null);
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting || entry.intersectionRatio < .75 || celebrated.current) return;
+      celebrated.current = true;
+      observer.disconnect();
+
+      void confettiReady.then(module => {
+        if (!button.isConnected) return;
+        // The entrance high-five has already unlocked audio on mobile.
+        playDecodedSound(HIGH_FIVE_SOUND, .17);
+        playDecodedSound(PAPER_UNFOLD_SOUND, .24);
+        if (!module) return;
+        const rect = button.getBoundingClientRect();
+        const y = Math.min(.9, Math.max(.1, rect.top / innerHeight));
+        const left = Math.min(.95, Math.max(.05, rect.left / innerWidth));
+        const right = Math.min(.95, Math.max(.05, rect.right / innerWidth));
+        const paper = { particleCount: 26, spread: 48, startVelocity: 24, gravity: 1.05, scalar: .72, shapes: ["square" as const], colors: ["#292621", "#9c9182", "#d5c6ae", "#eee8dc"], disableForReducedMotion: true, zIndex: 100 };
+        void module.default({ ...paper, angle: 60, origin: { x: left, y } });
+        void module.default({ ...paper, angle: 120, origin: { x: right, y } });
+      });
+    }, { threshold: .75 });
+    observer.observe(button);
+    return () => observer.disconnect();
+  }, [ready]);
 
   useEffect(() => {
     if (!open) return;
@@ -77,7 +110,7 @@ export default function ParentsAccounts() {
   }
 
   return <div className="parents-accounts">
-    <button className="parents-accounts-cta" type="button" aria-haspopup="dialog" aria-expanded={open} aria-controls="parents-accounts-dialog" onClick={showAccounts}>
+    <button ref={cta} className="parents-accounts-cta" type="button" aria-haspopup="dialog" aria-expanded={open} aria-controls="parents-accounts-dialog" onClick={showAccounts}>
       축하의 마음 전하기
     </button>
     <dialog id="parents-accounts-dialog" ref={dialog} className="parents-accounts-dialog" data-visible={visible} aria-labelledby="parents-accounts-title" aria-describedby="parents-accounts-intro" onClose={() => {
