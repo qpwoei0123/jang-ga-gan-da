@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import ArrivalDialogue from "./arrival-dialogue";
 import { arrivalMedley } from "./arrival-preview";
 import { HIGH_FIVE_SOUND, playDecodedSound } from "./audio-bank";
 
@@ -64,14 +65,7 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
       <div className="arrival-layout">
         <div className="arrival-hero">
           <div className="arrival-speech">
-            <div role="status" aria-live="polite" aria-atomic="true">
-              {speaking ? <p className="arrival-high-five-line">짝! 신문 받아 가세요~</p> : <>
-                <strong>호외요, 호외~!</strong>
-                <p>원영이랑 나경이가<br />결혼한대요!</p>
-                <span className="arrival-speech-date">11월 1일이에요!</span>
-                <span className="arrival-speech-hint">{problem ? "앗, 신문이 늦어지고 있어요." : canHighFive ? waiting ? "제 앞발, 여기 있어요~ 하이파이브!" : "제 앞발에 하이파이브 해주세요!" : prepared ? "제가 지금 갈게요~" : "잠깐만요, 신문을 준비하고 있어요."}</span>
-              </>}
-            </div>
+            <ArrivalDialogue active={(entering || problem) && !opening} farewell={speaking} hint={problem ? "앗, 신문이 늦어지고 있어요." : canHighFive ? waiting ? "제 앞발, 여기 있어요~ 하이파이브!" : "제 앞발에 하이파이브 해주세요!" : prepared ? "제가 지금 갈게요~" : "잠깐만요, 신문을 준비하고 있어요."} />
             {!prepared && !problem && !opening && <progress className="arrival-progress" max={total} value={complete} aria-label="신문 첫 장 준비 진행률" />}
             {problem && !opening && <div className="arrival-retry">
               <button type="button" onClick={() => window.location.reload()}>다시 불러오기</button>
