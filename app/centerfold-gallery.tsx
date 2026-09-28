@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { gsap } from "gsap";
 import { useAssetsReady } from "./asset-loader";
 import { GALLERY_SHUTTER_SOUND, playDecodedSound } from "./audio-bank";
+import { useJellyTouch } from "./use-jelly-touch";
 
 // Rectangular prints form the outline themselves; no heart mask or rotated tiles.
 const photos = [
@@ -54,12 +55,14 @@ function LightboxPhoto({photo,active,direction}:{photo:Photo;active:boolean;dire
 export default function CenterfoldGallery() {
   const ready=useAssetsReady();
   const puzzle=useRef<HTMLDivElement>(null);
+  const dogButton=useRef<HTMLButtonElement>(null);
   const dialog=useRef<HTMLDialogElement>(null);
   const touchStart=useRef<{x:number;y:number} | null>(null);
   const [selected,setSelected]=useState<Selection | null>(null);
   const isOpen=selected!==null;
   const index=selected?.index ?? 0;
   const move=(direction:number)=>setSelected(current=>current===null?null:{index:(current.index+direction+photos.length)%photos.length,previous:current.index,direction});
+  useJellyTouch(dogButton,true);
 
   useEffect(()=>{
     if(!isOpen)return;
@@ -121,7 +124,7 @@ export default function CenterfoldGallery() {
       {photos.map((photo,i)=><button key={photo.src} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>{playDecodedSound(GALLERY_SHUTTER_SOUND,.5);setSelected({index:i,previous:null,direction:1});}}>
         <img src={photo.thumbnail} alt={photo.caption} loading="lazy" draggable="false" decoding="async" style={{scale:photo.zoom ?? 1}}/>
       </button>)}
-      <span className="heart-dog" role="img" aria-label="사진 사이에 고개를 내민 뚜이"><img src="/dog-family/thanks.webp" alt="" loading="lazy" decoding="async" /></span>
+      <button ref={dogButton} className="heart-dog" type="button" aria-label="뚜이 꾹 누르기"><img src="/dog-family/thanks.webp" alt="" loading="lazy" decoding="async" draggable="false" /></button>
     </div>
     <p className="heart-gallery-hint">사진을 누르면 더 크게 볼 수 있어요.</p>
     <dialog ref={dialog} className="gallery-lightbox" aria-label="웨딩 사진 크게 보기" onCancel={close} onClose={()=>setSelected(null)} onClick={event=>{if(event.target===event.currentTarget)close();}} onKeyDown={event=>{if(event.key==="ArrowRight"){event.preventDefault();move(1);}if(event.key==="ArrowLeft"){event.preventDefault();move(-1);}}}>
