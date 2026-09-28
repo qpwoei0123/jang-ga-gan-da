@@ -297,7 +297,7 @@ function WeddingNewspaper() {
           <div className="cover-announcement" data-ddui-tip="오늘 신문 주인공은 우리 형누나예요~">
             <p>CELEBRATING THE UNION OF</p>
             <h2>한원영 <i>&amp;</i> 이나경</h2>
-            <span>11년의 연애 끝, 가족 앞에서 결혼합니다.</span>
+            <span>11년의 연애 끝, 결혼합니다.</span>
           </div>
           <CoverPhoto />
           <NewspaperArticle kind="reaction" />
@@ -306,21 +306,16 @@ function WeddingNewspaper() {
           <footer className="newspaper-footer">
             <p className="newspaper-closing">취재는 여기까지. 두 사람의 이야기는 계속됩니다.</p>
             <FamilyDogNote />
-            <div className="newspaper-imprint">
-              <span>THE WEDDING NEWS</span>
-              <time dateTime="2026-11-01">2026.11.01</time>
-              <span aria-label="1면">01</span>
-            </div>
           </footer>
         </article>
         <CenterfoldGallery />
         <section className="paper-page details-page" id="details" aria-label="가족식 안내" data-ddui-tip="형누나가 결혼합니다! 많이 많이 축하해 주세요~" data-ddui-celebrate="true">
           <div className="announcement-note">
             <p>저희 두 사람은 이번 결혼식을<br />양가 가족과 함께하는 작은 가족식으로 마련했습니다.</p>
-            <p>예식은 양가 가족만을 모시고 진행할 예정으로,<br />가족 외에는 별도로 초대하지 않는 점<br />너그러운 마음으로 양해 부탁드립니다.</p>
+            <p>예식은 미리 초대드린 가족분들과 함께할 예정입니다.<br />직접 모시지 못하는 점 너그러운 마음으로 이해해 주시면 감사하겠습니다.</p>
             <p>함께하지 못하는 아쉬운 마음 대신<br />저희의 새로운 시작을 따뜻하게 축복해 주시면<br />그 마음 소중히 간직하겠습니다.</p>
           </div>
-          <p className="gallery-signoff">한원영 · 이나경</p>
+          <p className="gallery-signoff"><span>한동현 · 김현정의 아들 한원영</span><span>이광범 · 성호숙의 딸 이나경</span></p>
           <ParentsAccounts />
         </section>
         <WeddingSong showAnnouncement={false}/>

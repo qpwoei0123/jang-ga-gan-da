@@ -79,7 +79,6 @@ export default function ParentsAccounts() {
   return <div className="parents-accounts">
     <button className="parents-accounts-cta" type="button" aria-haspopup="dialog" aria-expanded={open} aria-controls="parents-accounts-dialog" onClick={showAccounts}>
       축하의 마음 전하기
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 5.8a5.2 5.2 0 0 0-7.4 0l-.8.8-.8-.8a5.2 5.2 0 0 0-7.4 7.4L12 21l8.2-7.8a5.2 5.2 0 0 0 0-7.4Z" /></svg>
     </button>
     <dialog id="parents-accounts-dialog" ref={dialog} className="parents-accounts-dialog" data-visible={visible} aria-labelledby="parents-accounts-title" aria-describedby="parents-accounts-intro" onClose={() => {
       setOpen(false);

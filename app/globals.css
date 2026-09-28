@@ -479,9 +479,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 
 .newspaper-footer { margin-top:1.5rem; padding:.875rem 0 .5rem; border-top:3px double var(--rule-color); }
 .newspaper-closing { margin:0 0 .875rem; color:var(--muted); font:.8125rem/1.7 var(--text); text-align:center; text-wrap:balance; }
-.newspaper-imprint { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:.375rem .75rem; color:var(--muted); font:.75rem/1.5 var(--sans); }
-.newspaper-imprint > :first-child { margin-right:auto; letter-spacing:.025em; }
-.newspaper-imprint time { font-variant-numeric:tabular-nums; }
 
 .cover-carousel-viewport { overflow:hidden; }
 .cover-carousel-track { display:flex; touch-action:pan-y pinch-zoom; }
@@ -661,6 +658,8 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .heart-tile:nth-child(9) { grid-area:4 / 3 / 6 / 5; }
 .heart-tile:nth-child(10) { grid-area:5 / 5 / 6 / 6; }
 .heart-tile:nth-child(11) { grid-area:6 / 4 / 7 / 5; }
+.heart-dog { grid-area:5 / 2 / 6 / 3; display:grid; place-items:end center; align-self:stretch; overflow:visible; }
+.heart-dog img { display:block; width:100%; height:100%; object-fit:contain; object-position:center bottom; }
 .wedding-site { padding-top:16px; }
 .wedding-site .edition { width:min(calc(100% - 24px),390px); box-shadow:0 5px 22px #29231b12; }
 .ddui-flying-word { padding:0; border-radius:0; background:none; box-shadow:none; color:#242424; -webkit-text-stroke:3px #fff; paint-order:stroke fill; text-shadow:0 1px 2px #fff; font-size:17px; }
@@ -734,10 +733,10 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .wedding-site .announcement-note p { margin:0 0 24px; font:400 22px/1.75 var(--handwriting); color:#494640; word-break:keep-all; }
 .wedding-site .announcement-signature { margin-top:32px; gap:10px; font:400 13px/1.85 var(--text); color:#514d47; }
 .wedding-site .announcement-signature strong { font-weight:600; color:#272521; }
-.gallery-signoff { margin-top:34px; color:#65615b; font:12px/1.6 var(--text); letter-spacing:.06em; }
+.gallery-signoff { margin-top:34px; color:#65615b; font:12px/1.9 var(--text); letter-spacing:.02em; }
+.gallery-signoff span { display:block; }
 .parents-accounts { position:relative; z-index:2; margin-top:36px; text-align:center; }
-.parents-accounts-cta { display:inline-flex; align-items:center; justify-content:center; gap:14px; min-height:48px; padding:12px 24px; border:1px solid #b8aa95; border-radius:3px; background:#f0ebe3; color:#403a32; font:400 14px/1.6 var(--text); cursor:pointer; transition:background .18s ease,border-color .18s ease; }
-.parents-accounts-cta svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.25; stroke-linejoin:round; }
+.parents-accounts-cta { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:12px 24px; border:1px solid #b8aa95; border-radius:3px; background:#f0ebe3; color:#403a32; font:400 14px/1.6 var(--text); cursor:pointer; transition:background .18s ease,border-color .18s ease; }
 .parents-accounts-dialog { position:fixed; inset:auto 0 0; width:100%; max-width:none; max-height:85dvh; margin:0; padding:0; border:1px solid #e4ded5; border-bottom:0; border-radius:24px 24px 0 0; background:#faf9f6; color:#38342f; text-align:left; box-shadow:0 -16px 48px #30291f26; overflow-y:auto; overscroll-behavior:contain; transform:translate3d(0,calc(100% + 24px),0); transition:transform 380ms cubic-bezier(.2,.8,.2,1); will-change:transform; }
 .parents-accounts-dialog[data-visible="true"] { transform:translate3d(0,var(--drawer-drag,0px),0); }
 .parents-accounts-dialog[data-dragging="true"] { transition:none; }
