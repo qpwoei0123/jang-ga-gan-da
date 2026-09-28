@@ -92,5 +92,3 @@
 }
 
 .arrival-dialogue-accessible { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
-.arrival-voice-toggle { min-height:44px; padding:8px 12px; border:0; background:transparent; color:#6c5e49; font:14px/1.4 var(--handwriting); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
-.arrival-voice-toggle:focus-visible { outline:2px solid #756047; outline-offset:2px; border-radius:4px; }

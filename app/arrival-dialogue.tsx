@@ -10,7 +10,6 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
   const text = farewell ? "짝! 신문 받아 가세요~" : `${heading}\n${announcement}\n${hint}`;
   const [shown, setShown] = useState("");
   const [soundReady, setSoundReady] = useState(false);
-  const [replay, setReplay] = useState(0);
   const visible = useRef("");
   const audio = useRef<AudioContext | null>(null);
 
@@ -19,10 +18,32 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
     if (!Audio) return;
     const context = new Audio();
     audio.current = context;
-    void context.resume().then(() => {
-      if (audio.current === context && context.state === "running") setSoundReady(true);
-    }).catch(() => {});
-    return () => { audio.current = null; void context.close().catch(() => {}); };
+    let enabled = false;
+    function enableSound() {
+      if (enabled || audio.current !== context || context.state !== "running") return;
+      enabled = true;
+      // If autoplay was blocked, repeat the visible line with sound after the first gesture.
+      if (visible.current) {
+        visible.current = "";
+        setShown("");
+      }
+      setSoundReady(true);
+    }
+    function trySound() {
+      if (context.state === "running") { enableSound(); return; }
+      void context.resume().then(enableSound).catch(() => {});
+    }
+    trySound();
+    document.addEventListener("pointerdown", trySound, true);
+    document.addEventListener("keydown", trySound, true);
+    document.addEventListener("click", trySound, true);
+    return () => {
+      document.removeEventListener("pointerdown", trySound, true);
+      document.removeEventListener("keydown", trySound, true);
+      document.removeEventListener("click", trySound, true);
+      audio.current = null;
+      void context.close().catch(() => {});
+    };
   }, []);
 
   useEffect(() => {
@@ -42,22 +63,7 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
     }
     timer = window.setTimeout(next, 60);
     return () => window.clearTimeout(timer);
-  }, [active, text, soundReady, replay, farewell, voiceStyle]);
-
-  async function replayVoice() {
-    const Audio = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-    if (!Audio) return;
-    try {
-      const context = audio.current ?? new Audio();
-      audio.current = context;
-      await context.resume();
-      if (context.state !== "running") return;
-      visible.current = "";
-      setShown("");
-      setSoundReady(true);
-      setReplay(value => value + 1);
-    } catch { /* The text remains available when audio is unavailable. */ }
-  }
+  }, [active, text, soundReady, farewell, voiceStyle]);
 
   function line(value: string, offset: number) {
     const count = Math.max(0, Math.min(value.length, shown.length - offset));
@@ -73,6 +79,5 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
         <span className="arrival-speech-hint">{line(hint, heading.length + announcement.length + 2)}</span>
       </>}
     </div>
-    {!farewell && <button className="arrival-voice-toggle" type="button" onClick={replayVoice}>{soundReady ? "다시 듣기" : "목소리 듣기"}</button>}
   </>;
 }
