@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { InvitationGate, usePreloadStarted } from "./asset-loader";
 import WeddingSong from "./wedding-song";
 import CenterfoldGallery from "./centerfold-gallery";
@@ -312,6 +312,18 @@ function WeddingNewspaper() {
 }
 
 export default function Home() {
+  useEffect(() => {
+    const preventImageMenu = (event: Event) => {
+      if (event.target instanceof HTMLImageElement) event.preventDefault();
+    };
+    document.addEventListener("contextmenu", preventImageMenu, true);
+    document.addEventListener("dragstart", preventImageMenu, true);
+    return () => {
+      document.removeEventListener("contextmenu", preventImageMenu, true);
+      document.removeEventListener("dragstart", preventImageMenu, true);
+    };
+  }, []);
+
   return (
     <InvitationGate>
       <WeddingNewspaper />
