@@ -1,5 +1,4 @@
 import HistoryPhotoDisplay from "./history-photo-display";
-import FamilyDogNote from "./family-dog-note";
 
 export default function NewspaperArticle({ kind, photoSrc }: {
   kind: "reaction" | "history";
@@ -22,6 +21,5 @@ export default function NewspaperArticle({ kind, photoSrc }: {
     <p className="article-body">{history
       ? "국립중앙말티푸박물관이 오래된 혼인 사진 네 장을 새로 공개했다. 박물관 측은 “어디선가 본 듯한 수상한 부부다. 전생에도 키 차이는 어쩔 수 없나 보다ㅋ”라고 밝혔다. 정확한 감정을 하려 했으나 괴도 강아지가 사진을 물고 달아나 조사가 중단됐다."
       : "신부 이나경은 GD와의 결혼이 무산돼 유감을 표했다. “딱 하나 아쉬운 건, GD랑 결혼은 꿈도 못 꾼다는 것.” “어쩌다 식장까지 잡았다”는 신부는 말끝마다 웃음을 참지 못했다. 신랑은 “그걸 왜 청첩장에 쓰냐”며 어이없어했다."}</p>
-    {history && <FamilyDogNote kind="history" />}
   </article>;
 }

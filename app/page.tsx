@@ -305,7 +305,7 @@ function WeddingNewspaper() {
           <NewspaperInterview />
           <footer className="newspaper-footer">
             <p className="newspaper-closing">취재는 여기까지. 두 사람의 이야기는 계속됩니다.</p>
-            <FamilyDogNote kind="reporter" />
+            <FamilyDogNote />
             <div className="newspaper-imprint">
               <span>THE WEDDING NEWS</span>
               <time dateTime="2026-11-01">2026.11.01</time>
@@ -322,7 +322,6 @@ function WeddingNewspaper() {
           </div>
           <p className="gallery-signoff">한원영 · 이나경</p>
           <ParentsAccounts />
-          <FamilyDogNote kind="thanks" />
         </section>
         <WeddingSong showAnnouncement={false}/>
       </main>

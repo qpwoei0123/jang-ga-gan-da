@@ -36,6 +36,66 @@ export function syllableDelay(letter: string, style: VoiceStyle) {
   return base / voices[style].speed;
 }
 
+export type VoiceSample = { buffer: AudioBuffer; slots: { offset: number; duration: number }[] };
+
+// Pull short voiced grains from the user's example recording, skipping pauses.
+export function prepareVoiceSample(buffer: AudioBuffer): VoiceSample {
+  const samples = buffer.getChannelData(0);
+  const frameSize = Math.max(1, Math.floor(buffer.sampleRate * .01));
+  const active: boolean[] = [];
+  for (let start = 0; start < samples.length; start += frameSize) {
+    let sum = 0;
+    const end = Math.min(start + frameSize, samples.length);
+    for (let i = start; i < end; i++) sum += samples[i] * samples[i];
+    active.push(Math.sqrt(sum / (end - start)) > .035);
+  }
+
+  const slots: VoiceSample["slots"] = [];
+  let start = -1;
+  let quiet = 0;
+  function addSpan(from: number, to: number) {
+    const duration = (to - from) * .01;
+    if (duration < .07) return;
+    const spanStart = from * .01;
+    const spanEnd = Math.min(to * .01, buffer.duration);
+    for (let offset = spanStart; offset + .065 <= spanEnd; offset += .06) {
+      slots.push({ offset, duration: Math.min(.095, spanEnd - offset) });
+    }
+  }
+  for (let i = 0; i < active.length; i++) {
+    if (active[i] && start < 0) start = i;
+    if (start >= 0) {
+      quiet = active[i] ? 0 : quiet + 1;
+      if (quiet >= 4) {
+        addSpan(start, i - quiet + 1);
+        start = -1;
+        quiet = 0;
+      }
+    }
+  }
+  if (start >= 0) addSpan(start, active.length);
+  return { buffer, slots };
+}
+
+export function speakSampledSyllable(context: AudioContext, sample: VoiceSample, letter: string, position: number) {
+  if (context.state !== "running" || !/[가-힣a-z0-9]/i.test(letter) || !sample.slots.length) return;
+  const slot = sample.slots[position % sample.slots.length];
+  const source = context.createBufferSource();
+  const gain = context.createGain();
+  const rate = 1 + (((position * 7 + letter.charCodeAt(0)) % 7) - 3) * .012;
+  const duration = slot.duration / rate;
+  const now = context.currentTime;
+  source.buffer = sample.buffer;
+  source.playbackRate.value = rate;
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(.58, now + .009);
+  gain.gain.setValueAtTime(.58, now + Math.max(.01, duration - .025));
+  gain.gain.linearRampToValueAtTime(0, now + duration);
+  source.connect(gain).connect(context.destination);
+  source.onended = () => { source.disconnect(); gain.disconnect(); };
+  source.start(now, slot.offset, slot.duration);
+}
+
 export function speakSyllable(context: AudioContext, letter: string, style: VoiceStyle, position: number) {
   if (context.state !== "running" || !/[가-힣a-z0-9]/i.test(letter)) return;
 

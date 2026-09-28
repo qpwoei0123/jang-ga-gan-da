@@ -1,67 +1,77 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { syllableDelay } from "./animalese-voice";
+import { prepareVoiceSample, speakSampledSyllable, speakSyllable, syllableDelay, type VoiceSample, type VoiceStyle } from "./animalese-voice";
 
 const heading = "호외요, 호외~!";
 const announcement = "형아랑 누나랑\n결혼한대요!";
 
-export default function ArrivalDialogue({ active, hint, farewell }: { active: boolean; hint: string; farewell: boolean }) {
+export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "peppy" }: { active: boolean; hint: string; farewell: boolean; voiceStyle?: VoiceStyle }) {
   const text = farewell ? "짝! 신문 받아 가세요~" : `${heading}\n${announcement}\n${hint}`;
   const [shown, setShown] = useState("");
+  const [soundReady, setSoundReady] = useState(false);
   const [replay, setReplay] = useState(0);
   const visible = useRef("");
-  const audio = useRef<HTMLAudioElement | null>(null);
-  const blocked = useRef(false);
-  const attempted = useRef(false);
-  const activeNow = useRef(active);
-  const farewellNow = useRef(farewell);
+  const audio = useRef<AudioContext | null>(null);
+  const sample = useRef<VoiceSample | null>(null);
+  const sampleFailed = useRef(false);
 
   useEffect(() => {
-    activeNow.current = active;
-    farewellNow.current = farewell;
-  }, [active, farewell]);
-
-  useEffect(() => {
-    const player = new Audio("/sounds/animalese.wav");
-    player.preload = "auto";
-    player.volume = .8;
-    audio.current = player;
-    function retrySound() {
-      if (!blocked.current || !activeNow.current || farewellNow.current) return;
-      blocked.current = false;
-      player.currentTime = 0;
-      void player.play().then(() => {
-        if (audio.current !== player) return;
-        visible.current = "";
-        setShown("");
-        setReplay(value => value + 1);
-      }).catch(() => { blocked.current = true; });
+    const Audio = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!Audio) return;
+    const context = new Audio();
+    const controller = new AbortController();
+    audio.current = context;
+    function restartSpeech() {
+      if (!visible.current) return;
+      visible.current = "";
+      setShown("");
+      setReplay(value => value + 1);
     }
-    document.addEventListener("pointerdown", retrySound, true);
-    document.addEventListener("keydown", retrySound, true);
-    document.addEventListener("click", retrySound, true);
+    void fetch("/sounds/animalese.wav", { signal: controller.signal })
+      .then(response => {
+        if (!response.ok) throw new Error("Voice sample unavailable");
+        return response.arrayBuffer();
+      })
+      .then(bytes => context.decodeAudioData(bytes))
+      .then(buffer => {
+        if (audio.current !== context) return;
+        const prepared = prepareVoiceSample(buffer);
+        if (!prepared.slots.length) throw new Error("Voice sample has no usable sound");
+        sample.current = prepared;
+        if (context.state === "running") restartSpeech();
+      })
+      .catch(() => {
+        if (audio.current !== context) return;
+        sampleFailed.current = true;
+        if (context.state === "running") restartSpeech();
+      });
+    let enabled = false;
+    function enableSound() {
+      if (enabled || audio.current !== context || context.state !== "running") return;
+      enabled = true;
+      // A blocked first play repeats the visible line when sound becomes possible.
+      if (sample.current || sampleFailed.current) restartSpeech();
+      setSoundReady(true);
+    }
+    function trySound() {
+      if (context.state === "running") { enableSound(); return; }
+      void context.resume().then(enableSound).catch(() => {});
+    }
+    trySound();
+    document.addEventListener("pointerdown", trySound, true);
+    document.addEventListener("keydown", trySound, true);
+    document.addEventListener("click", trySound, true);
     return () => {
-      document.removeEventListener("pointerdown", retrySound, true);
-      document.removeEventListener("keydown", retrySound, true);
-      document.removeEventListener("click", retrySound, true);
+      document.removeEventListener("pointerdown", trySound, true);
+      document.removeEventListener("keydown", trySound, true);
+      document.removeEventListener("click", trySound, true);
+      controller.abort();
       audio.current = null;
-      attempted.current = false;
-      blocked.current = false;
-      player.pause();
+      sample.current = null;
+      void context.close().catch(() => {});
     };
   }, []);
-
-  useEffect(() => {
-    if (!active || farewell) {
-      if (farewell) audio.current?.pause();
-      return;
-    }
-    if (attempted.current || !audio.current) return;
-    attempted.current = true;
-    const player = audio.current;
-    void player.play().then(() => { blocked.current = false; }).catch(() => { blocked.current = true; });
-  }, [active, farewell]);
 
   useEffect(() => {
     if (!active) return;
@@ -75,11 +85,15 @@ export default function ArrivalDialogue({ active, hint, farewell }: { active: bo
       const letter = text[index++];
       visible.current = text.slice(0, index);
       setShown(visible.current);
-      timer = window.setTimeout(next, farewell ? 43 : syllableDelay(letter, "peppy"));
+      if (soundReady && audio.current) {
+        if (sample.current) speakSampledSyllable(audio.current, sample.current, letter, index);
+        else if (sampleFailed.current) speakSyllable(audio.current, letter, voiceStyle, index);
+      }
+      timer = window.setTimeout(next, farewell ? 43 : syllableDelay(letter, voiceStyle));
     }
     timer = window.setTimeout(next, 60);
     return () => window.clearTimeout(timer);
-  }, [active, text, replay, farewell]);
+  }, [active, text, soundReady, replay, farewell, voiceStyle]);
 
   function line(value: string, offset: number) {
     const count = Math.max(0, Math.min(value.length, shown.length - offset));

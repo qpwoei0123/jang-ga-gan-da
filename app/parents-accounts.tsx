@@ -77,11 +77,10 @@ export default function ParentsAccounts() {
   }
 
   return <div className="parents-accounts">
-    <button className="parents-accounts-cta" type="button" aria-haspopup="dialog" aria-expanded={open} aria-controls="parents-accounts-dialog" aria-describedby="parents-accounts-note" onClick={showAccounts}>
+    <button className="parents-accounts-cta" type="button" aria-haspopup="dialog" aria-expanded={open} aria-controls="parents-accounts-dialog" onClick={showAccounts}>
       축하의 마음 전하기
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 5.8a5.2 5.2 0 0 0-7.4 0l-.8.8-.8-.8a5.2 5.2 0 0 0-7.4 7.4L12 21l8.2-7.8a5.2 5.2 0 0 0 0-7.4Z" /></svg>
     </button>
-    <p className="parents-accounts-note" id="parents-accounts-note">양가 부모님 계좌 안내</p>
     <dialog id="parents-accounts-dialog" ref={dialog} className="parents-accounts-dialog" data-visible={visible} aria-labelledby="parents-accounts-title" aria-describedby="parents-accounts-intro" onClose={() => {
       setOpen(false);
       setVisible(false);
@@ -113,8 +112,8 @@ export default function ParentsAccounts() {
         {accounts.length ? <ul>{accounts.map((account, index) => {
           const id = `${groupIndex}-${index}`;
           return <li className="parents-account-row" key={id}>
-            <div><p className="parents-account-holder">{account.holder}</p><p className="parents-account-bank">{account.bank}</p><p className="parents-account-number">{account.number}</p></div>
-            <button type="button" className="parents-account-copy" aria-label={`${account.holder}님 계좌번호 복사`} onClick={() => copyAccount(account, id)}>{copied === id ? "복사 완료" : "복사"}</button>
+            <div><p className="parents-account-holder"><span>{account.relation}</span> {account.holder}</p><p className="parents-account-bank">{account.bank}</p><p className="parents-account-number">{account.number}</p></div>
+            <button type="button" className="parents-account-copy" aria-label={`${title} ${account.relation} ${account.holder}님 계좌번호 복사`} onClick={() => copyAccount(account, id)}>{copied === id ? "복사 완료" : "복사"}</button>
           </li>;
         })}</ul> : <p className="parents-account-empty">계좌 정보를 준비하고 있습니다.</p>}
       </section>)}
