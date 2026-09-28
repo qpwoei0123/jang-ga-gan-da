@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { InvitationGate, usePreloadStarted } from "./asset-loader";
-import WeddingSong from "./wedding-song";
+import DeliverySong from "./delivery-song";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperArticle from "./newspaper-article";
 import NewspaperInterview from "./newspaper-interview";
@@ -266,6 +266,7 @@ function WeddingNewspaper() {
     <>
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
       <main className="wedding-site" aria-label="한원영과 이나경의 웨딩 신문">
+        <DeliverySong />
         <article className="edition paper-page cover-page" id="top">
           <div className="cover-utility">
             <span>The Grand Hall</span>
@@ -305,7 +306,6 @@ function WeddingNewspaper() {
           <p className="gallery-signoff"><span>한동현 · 김현정의 아들 한원영</span><span>이광범 · 성호숙의 딸 이나경</span></p>
           <ParentsAccounts />
         </section>
-        <WeddingSong showAnnouncement={false}/>
       </main>
     </>
   );

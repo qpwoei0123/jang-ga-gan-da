@@ -4,7 +4,6 @@ import { speechFlight } from "./ddui-speech-motion";
 import confetti from "canvas-confetti";
 import { useJellyTouch } from "./use-jelly-touch";
 import { useAssetsReady } from "./asset-loader";
-import WeddingSong from "./wedding-song";
 
 export default function GalleryDdui() {
   const ready=useAssetsReady();
@@ -65,7 +64,6 @@ export default function GalleryDdui() {
   },[ready,say]);
   const touch=()=>{const lines=['헤헤, 간지러워요!','같이 보고 있어요~','저도 신나요!'];say(lines[Math.floor(Math.random()*lines.length)]);};
   return <div ref={follower} className="gallery-curator ddui-companion" data-visible={visible}>
-    <WeddingSong/>
     <div className="ddui-words" aria-live="polite">
       {words.map(word=><p key={word.id} className="ddui-flying-word" style={word.flight} onAnimationEnd={event=>{if(event.target===event.currentTarget)setWords(previous=>previous.filter(item=>item.id!==word.id));}}><span className="ddui-speech-sway">{word.text}</span></p>)}
     </div>

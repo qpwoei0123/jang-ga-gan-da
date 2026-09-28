@@ -573,6 +573,19 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 
 /* The newspaper opens into a quiet, unmasked photographic heart. */
 .wedding-site { --paper-unit:min(1px,.2564102564cqw); background:#fff; }
+.delivery-song { width:100%; padding:28px 12px 34px; background:#f3f0e9; color:#27231e; text-align:center; }
+.delivery-song-heading { position:relative; max-width:480px; margin:0 auto 14px; padding:0 42px 12px; border-bottom:1px solid #a9a298; }
+.delivery-song-kicker { display:block; margin-bottom:7px; font:700 10px/1.4 var(--sans); letter-spacing:.16em; }
+.delivery-song-heading p { display:flex; align-items:baseline; justify-content:center; gap:12px; margin:0; }
+.delivery-song-heading strong { font:600 27px/1.25 var(--text); }
+.delivery-song-heading p span { font:12px/1.5 var(--sans); }
+.delivery-song-disc { position:absolute; right:3px; bottom:11px; display:grid; place-items:center; width:28px; height:28px; border:4px solid #292722; border-radius:50%; background:#d9cfbe; font:12px/1 var(--sans); }
+.delivery-song-player { width:min(100%,480px); min-height:200px; aspect-ratio:16/9; margin:0 auto; background:#181818; }
+.delivery-song-player iframe { display:block; width:100%; height:100%; border:0; }
+.delivery-song-start { display:inline-flex; align-items:center; justify-content:center; gap:18px; min-height:44px; margin:15px auto 0; padding:8px 24px; border:1px solid #292722; background:#292722; color:#fff; font:600 13px/1.4 var(--sans); text-decoration:none; cursor:pointer; }
+.delivery-song-start:hover,.delivery-song-start:focus-visible { background:#4a4339; }
+.delivery-song-caption { margin:14px auto 0; color:#716b62; font:11px/1.5 var(--sans); }
+@media(max-width:360px) { .delivery-song { padding-inline:10px; } }
 .wedding-site .edition { padding-bottom:42px; }
 .heart-gallery { position:relative; padding:76px 20px 36px; background:#fff; color:#222; font-family:var(--sans); }
 .heart-gallery-heading { text-align:center; margin:0 auto 40px; }

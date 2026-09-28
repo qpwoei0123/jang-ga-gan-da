@@ -3,6 +3,7 @@ export type YouTubePlayer = {
   pauseVideo(): void;
   destroy(): void;
   getIframe(): HTMLIFrameElement;
+  getPlayerState(): number;
 };
 type YouTubeAPI = { Player: new (element: HTMLElement, options: {
   host: string;
@@ -10,7 +11,12 @@ type YouTubeAPI = { Player: new (element: HTMLElement, options: {
   width: number;
   height: number;
   playerVars: Record<string, string | number>;
-  events: { onReady(event: { target: YouTubePlayer }): void; onError(): void };
+  events: {
+    onReady(event: { target: YouTubePlayer }): void;
+    onStateChange(event: { data: number }): void;
+    onAutoplayBlocked(): void;
+    onError(): void;
+  };
 }) => YouTubePlayer };
 type YouTubeWindow = Window & { YT?: YouTubeAPI; onYouTubeIframeAPIReady?: () => void };
 let apiPromise: Promise<YouTubeAPI> | undefined;
