@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ArrivalDialogue from "./arrival-dialogue";
 import { arrivalMedley } from "./arrival-preview";
 import { HIGH_FIVE_SOUND, playDecodedSound } from "./audio-bank";
@@ -18,11 +18,13 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
   const [walkingReady, setWalkingReady] = useState(false);
   const [waiting, setWaiting] = useState(false);
   const [highFiving, setHighFiving] = useState(false);
+  const [pawPoseVisible, setPawPoseVisible] = useState(false);
   const highFiveTimer = useRef<number | null>(null);
   const walkingImage = useRef<HTMLImageElement>(null);
   const entering = prepared && walkingReady;
   const offeringPaw = arrived && prepared;
-  const canHighFive = offeringPaw && !highFiving && !opening;
+  const canHighFive = offeringPaw && pawPoseVisible && !highFiving && !opening;
+  const revealPawPose = useCallback(() => setPawPoseVisible(true), []);
 
   useEffect(() => {
     let active = true;
@@ -61,11 +63,11 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
   const speaking = highFiving || opening;
 
   return (
-    <section className={`newspaper-arrival${preloading ? " is-preloading" : ""}${entering ? " is-dog-ready" : " is-loading"}${arrived ? " is-arrived" : ""}${offeringPaw ? " is-offering-paw" : ""}${highFiving ? " is-high-fiving" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="뚜이가 전하는 한원영과 이나경의 결혼 소식">
+    <section className={`newspaper-arrival${preloading ? " is-preloading" : ""}${entering ? " is-dog-ready" : " is-loading"}${arrived ? " is-arrived" : ""}${pawPoseVisible && offeringPaw ? " is-offering-paw" : ""}${highFiving ? " is-high-fiving" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="뚜이가 전하는 한원영과 이나경의 결혼 소식">
       <div className="arrival-layout">
         <div className="arrival-hero">
           <div className="arrival-speech">
-            <ArrivalDialogue active={(entering || problem) && !opening} farewell={speaking} hint={problem ? "앗, 신문이 늦어지고 있어요." : canHighFive ? waiting ? "제 앞발, 여기 있어요~ 하이파이브!" : "제 앞발에 하이파이브 해주세요!" : prepared ? "제가 지금 갈게요~" : "잠깐만요, 신문을 준비하고 있어요."} />
+            <ArrivalDialogue active={(entering || problem) && !opening} farewell={speaking} onPawHintStart={revealPawPose} hint={problem ? "앗, 신문이 늦어지고 있어요." : offeringPaw ? waiting ? "제 앞발, 여기 있어요~ 하이파이브!" : "제 앞발에 하이파이브 해주세요!" : prepared ? "제가 지금 갈게요~" : "잠깐만요, 신문을 준비하고 있어요."} />
             {!prepared && !problem && !opening && <progress className="arrival-progress" max={total} value={complete} aria-label="신문 첫 장 준비 진행률" />}
             {problem && !opening && <div className="arrival-retry">
               <button type="button" onClick={() => window.location.reload()}>다시 불러오기</button>

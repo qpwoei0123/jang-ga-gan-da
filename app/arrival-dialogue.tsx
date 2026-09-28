@@ -6,7 +6,7 @@ import { prepareVoiceSample, speakSampledSyllable, speakSyllable, syllableDelay,
 const heading = "호외요, 호외~!";
 const announcement = "형아랑 누나랑\n결혼한대요!";
 
-export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "peppy" }: { active: boolean; hint: string; farewell: boolean; voiceStyle?: VoiceStyle }) {
+export default function ArrivalDialogue({ active, hint, farewell, onPawHintStart, voiceStyle = "peppy" }: { active: boolean; hint: string; farewell: boolean; onPawHintStart: () => void; voiceStyle?: VoiceStyle }) {
   const text = farewell ? "짝! 신문 받아 가세요~" : `${heading}\n${announcement}\n${hint}`;
   const [shown, setShown] = useState("");
   const [soundReady, setSoundReady] = useState(false);
@@ -82,6 +82,7 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
     function next() {
       if (document.hidden) { timer = window.setTimeout(next, 150); return; }
       if (index >= text.length) return;
+      if (!farewell && hint.startsWith("제 앞발") && index === heading.length + announcement.length + 2) onPawHintStart();
       const letter = text[index++];
       visible.current = text.slice(0, index);
       setShown(visible.current);
@@ -93,10 +94,13 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
     }
     timer = window.setTimeout(next, 60);
     return () => window.clearTimeout(timer);
-  }, [active, text, soundReady, replay, farewell, voiceStyle]);
+  }, [active, text, soundReady, replay, farewell, hint, onPawHintStart, voiceStyle]);
+
+  let shownLength = 0;
+  while (shownLength < shown.length && shown[shownLength] === text[shownLength]) shownLength++;
 
   function line(value: string, offset: number) {
-    const count = Math.max(0, Math.min(value.length, shown.length - offset));
+    const count = Math.max(0, Math.min(value.length, shownLength - offset));
     return <><span>{value.slice(0, count)}</span><span style={{ visibility: "hidden" }}>{value.slice(count)}</span></>;
   }
 
