@@ -311,7 +311,7 @@ function WeddingNewspaper() {
         <CenterfoldGallery />
         <section className="paper-page details-page" id="details" aria-label="가족식 안내" data-ddui-tip="형누나가 결혼합니다! 많이 많이 축하해 주세요~" data-ddui-celebrate="true">
           <div className="announcement-note">
-            <p>저희 두 사람은 이번 결혼식을<br />양가 가족과 함께하는 작은 가족식으로 마련했습니다.</p>
+            <p>저희 두 사람은 양가 가족을 중심으로<br />작은 가족식을 준비했습니다.</p>
             <p>예식은 미리 초대드린 가족분들과 함께할 예정입니다.<br />직접 모시지 못하는 점 너그러운 마음으로 이해해 주시면 감사하겠습니다.</p>
             <p>함께하지 못하는 아쉬운 마음 대신<br />저희의 새로운 시작을 따뜻하게 축복해 주시면<br />그 마음 소중히 간직하겠습니다.</p>
           </div>
