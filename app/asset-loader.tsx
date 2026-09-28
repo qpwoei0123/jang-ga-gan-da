@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { HIGH_FIVE_SOUND, preloadSound } from "./audio-bank";
+import { GALLERY_SHUTTER_SOUND, HIGH_FIVE_SOUND, PAPER_UNFOLD_SOUND, playDecodedSound, preloadSound } from "./audio-bank";
 import { preloadResources } from "./resource-preloader";
 import PrintLoading from "./print-loading";
 import PagePrint from "./print-page";
@@ -46,7 +46,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     let active = true;
     // Only first-page artwork belongs to the entrance; offscreen photos stay lazy.
     const images = [...scene.current!.querySelectorAll<HTMLImageElement>(".cover-photo img")];
-    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/opening-dog-high-five.webp", "/paper-crumple.webp", HIGH_FIVE_SOUND])];
+    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/opening-dog-high-five.webp", "/paper-crumple.webp", HIGH_FIVE_SOUND, PAPER_UNFOLD_SOUND, GALLERY_SHUTTER_SOUND])];
     const controller = new AbortController();
     const fonts = Promise.allSettled([
       document.fonts.load('400 16px "Noto Serif KR"', "한원영 이나경 결혼합니다"),
@@ -91,7 +91,9 @@ export function InvitationGate({ children }: { children: ReactNode }) {
   }, [ready]);
 
   return <PreloadStarted.Provider value={preloading}><AssetsReady.Provider value={ready}>
-    <div ref={scene} className={`asset-scene${ready ? "" : opened ? " is-arrival-opening" : " is-preparing"}`} inert={!ready} aria-hidden={!ready} onAnimationEnd={event => {
+    <div ref={scene} className={`asset-scene${ready ? "" : opened ? " is-arrival-opening" : " is-preparing"}`} inert={!ready} aria-hidden={!ready} onAnimationStart={event => {
+      if (event.animationName === "arrival-page-unfold") playDecodedSound(PAPER_UNFOLD_SOUND, .42);
+    }} onAnimationEnd={event => {
       if (event.animationName === "arrival-page-unfold") setReady(true);
     }}>{children}</div>
     {!ready && <NewspaperArrival
@@ -103,6 +105,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
       total={progress.total}
       onOpen={() => {
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) playDecodedSound(PAPER_UNFOLD_SOUND, .42);
         setOpened(true);
       }}
     />}

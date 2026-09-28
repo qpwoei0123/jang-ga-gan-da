@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { gsap } from "gsap";
 import { useAssetsReady } from "./asset-loader";
+import { GALLERY_SHUTTER_SOUND, playDecodedSound } from "./audio-bank";
 
 // Rectangular prints form the outline themselves; no heart mask or rotated tiles.
 const photos = [
@@ -117,7 +118,7 @@ export default function CenterfoldGallery() {
   return <section className="heart-gallery" id="photo-edition" aria-labelledby="gallery-title">
     <header className="heart-gallery-heading"><h2 id="gallery-title">함께 모은 순간들</h2><p>하나하나 모여, 우리의 마음이 되었습니다.</p></header>
     <div ref={puzzle} className="heart-puzzle" aria-label="하트 모양으로 모은 열한 장의 사진">
-      {photos.map((photo,i)=><button key={photo.src} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>setSelected({index:i,previous:null,direction:1})}>
+      {photos.map((photo,i)=><button key={photo.src} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>{playDecodedSound(GALLERY_SHUTTER_SOUND,.5);setSelected({index:i,previous:null,direction:1});}}>
         <img src={photo.thumbnail} alt={photo.caption} loading="lazy" draggable="false" decoding="async" style={{scale:photo.zoom ?? 1}}/>
       </button>)}
     </div>

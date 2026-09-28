@@ -10,6 +10,10 @@ export const INTRO_BATTLE_SOUND = "/sounds/intro-pokemon-battle.mp3";
 export const YOSHI_TONGUE_SOUND = "/sounds/no-5-yoshi-tongue.mp3";
 // Trimmed from Pixabay's “Smack” (freesound_community, sound effect 107626).
 export const HIGH_FIVE_SOUND = "/sounds/high-five-smack.wav";
+// Trimmed from Pixabay's “Paper Rustle” (freesound_community, sound effect 81855).
+export const PAPER_UNFOLD_SOUND = "/sounds/paper-unfold.wav";
+// Trimmed from Pixabay's “camera shutter” (freesound_community, sound effect 95121).
+export const GALLERY_SHUTTER_SOUND = "/sounds/gallery-shutter.wav";
 
 export const NO_ATTEMPT_EXTRA_SOUNDS = [
   [],
