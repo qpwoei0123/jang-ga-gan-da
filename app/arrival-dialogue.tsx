@@ -1,35 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { speakSyllable, syllableDelay, type VoiceStyle } from "./animalese-voice";
 
 const heading = "호외요, 호외~!";
 const announcement = "형아랑 누나랑\n결혼한대요!";
 
-// Short voiced syllables with vowel-like resonances, synthesized locally.
-function chatter(context: AudioContext, letter: string) {
-  if (context.state !== "running" || !/[가-힣a-z0-9]/i.test(letter)) return;
-  const now = context.currentTime;
-  const seed = letter.charCodeAt(0);
-  const voice = context.createOscillator();
-  const envelope = context.createGain();
-  const vowel = context.createBiquadFilter();
-  voice.type = "sawtooth";
-  const pitch = 310 + (seed % 9) * 32;
-  voice.frequency.setValueAtTime(pitch, now);
-  voice.frequency.exponentialRampToValueAtTime(pitch * .78, now + .065);
-  vowel.type = "bandpass";
-  vowel.frequency.value = 850 + (seed % 5) * 260;
-  vowel.Q.value = 2.4;
-  envelope.gain.setValueAtTime(0, now);
-  envelope.gain.linearRampToValueAtTime(.075, now + .009);
-  envelope.gain.exponentialRampToValueAtTime(.001, now + .075);
-  voice.connect(vowel).connect(envelope).connect(context.destination);
-  voice.onended = () => { voice.disconnect(); vowel.disconnect(); envelope.disconnect(); };
-  voice.start(now);
-  voice.stop(now + .08);
-}
-
-export default function ArrivalDialogue({ active, hint, farewell }: { active: boolean; hint: string; farewell: boolean }) {
+export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "peppy" }: { active: boolean; hint: string; farewell: boolean; voiceStyle?: VoiceStyle }) {
   const text = farewell ? "짝! 신문 받아 가세요~" : `${heading}\n${announcement}\n${hint}`;
   const [shown, setShown] = useState("");
   const [muted, setMuted] = useState(true);
@@ -60,12 +37,12 @@ export default function ArrivalDialogue({ active, hint, farewell }: { active: bo
       const letter = text[index++];
       visible.current = text.slice(0, index);
       setShown(visible.current);
-      if (!muted && audio.current) chatter(audio.current, letter);
-      timer = window.setTimeout(next, farewell ? 43 : /[!~.,\n]/.test(letter) ? 170 : 68);
+      if (!muted && audio.current) speakSyllable(audio.current, letter, voiceStyle, index);
+      timer = window.setTimeout(next, farewell ? 43 : syllableDelay(letter, voiceStyle));
     }
     timer = window.setTimeout(next, 60);
     return () => window.clearTimeout(timer);
-  }, [active, text, muted, replay, farewell]);
+  }, [active, text, muted, replay, farewell, voiceStyle]);
 
   async function toggleVoice() {
     if (!muted) { setMuted(true); return; }
