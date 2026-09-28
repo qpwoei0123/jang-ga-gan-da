@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { preloadSound } from "./audio-bank";
+import { HIGH_FIVE_SOUND, preloadSound } from "./audio-bank";
 import { preloadResources } from "./resource-preloader";
 import PrintLoading from "./print-loading";
 import PagePrint from "./print-page";
@@ -46,7 +46,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     let active = true;
     // Only first-page artwork belongs to the entrance; offscreen photos stay lazy.
     const images = [...scene.current!.querySelectorAll<HTMLImageElement>(".cover-photo img")];
-    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/opening-dog-high-five.webp", "/paper-crumple.webp"])];
+    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/opening-dog-high-five.webp", "/paper-crumple.webp", HIGH_FIVE_SOUND])];
     const controller = new AbortController();
     const fonts = Promise.allSettled([
       document.fonts.load('400 16px "Noto Serif KR"', "한원영 이나경 결혼합니다"),
@@ -60,7 +60,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     })]);
     setProgress({ complete: 0, total: sources.length });
     Promise.all([
-      preloadResources(sources, preloadImage, (complete, total) => {
+      preloadResources(sources, preloadAsset, (complete, total) => {
         if (active) setProgress({ complete, total });
       }, controller.signal),
       fontReady,

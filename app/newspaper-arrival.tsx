@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { arrivalMedley } from "./arrival-preview";
+import { HIGH_FIVE_SOUND, playDecodedSound } from "./audio-bank";
 
 export default function NewspaperArrival({ preloading, prepared, problem, opening, complete, total, onOpen }: {
   preloading: boolean;
@@ -51,6 +52,7 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
 
   function highFive() {
     if (!canHighFive || highFiveTimer.current !== null) return;
+    playDecodedSound(HIGH_FIVE_SOUND, .75);
     setHighFiving(true);
     highFiveTimer.current = window.setTimeout(onOpen, 1000);
   }
@@ -94,7 +96,11 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
                   <circle className="arrival-paw-ring" cx="244" cy="352" r="75" />
                   <circle className="arrival-paw-ripple" cx="244" cy="352" r="75" />
                 </svg>
-                <button type="button" className="arrival-paw-touch" disabled={!canHighFive} onClick={highFive} aria-label="뚜이의 점선으로 표시된 앞발에 하이파이브하고 결혼 신문 펼치기" />
+                <button type="button" className="arrival-paw-touch" disabled={!canHighFive} onPointerDown={event => {
+                  if (event.isPrimary && event.button === 0) highFive();
+                }} onClick={event => {
+                  if (event.detail === 0) highFive();
+                }} aria-label="뚜이의 점선으로 표시된 앞발에 하이파이브하고 결혼 신문 펼치기" />
               </div>
             </div>
           </div>
