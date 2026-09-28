@@ -857,8 +857,7 @@ body:has(.parents-accounts-dialog[open]) .ddui-music { visibility:hidden; }
   .lightbox-frame .lightbox-full { transition:none; }
 }
 
-/* A single quiet entrance for the front page and closing note. */
-.cover-photo[data-revealed=true],
+/* Keep the page-unfold animation as the cover's only entrance. */
 .newspaper-article[data-revealed=true],
 .details-page[data-revealed=true] { animation:editorial-appear 280ms cubic-bezier(.2,.8,.2,1) both; }
 @keyframes editorial-appear {
@@ -866,7 +865,6 @@ body:has(.parents-accounts-dialog[open]) .ddui-music { visibility:hidden; }
   to { opacity:1; transform:none; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .cover-photo[data-revealed=true],
   .newspaper-article[data-revealed=true],
   .details-page[data-revealed=true] { animation:none; }
 }

@@ -272,7 +272,7 @@ function WeddingNewspaper() {
         observer.unobserve(entry.target);
       });
     }, { threshold: .12 });
-    document.querySelectorAll(".cover-photo, .newspaper-article, .details-page").forEach(element => observer.observe(element));
+    document.querySelectorAll(".newspaper-article, .details-page").forEach(element => observer.observe(element));
     return () => observer.disconnect();
   }, [ready]);
   return (
