@@ -5,9 +5,9 @@
 export type VoiceStyle = "peppy" | "normal" | "lazy";
 
 const voices: Record<VoiceStyle, { pitch: number; speed: number; variance: number; gain: number }> = {
-  peppy: { pitch: 380, speed: 1.18, variance: .075, gain: .16 },
-  normal: { pitch: 300, speed: 1, variance: .04, gain: .18 },
-  lazy: { pitch: 235, speed: .8, variance: .025, gain: .2 },
+  peppy: { pitch: 1.4, speed: 1.3, variance: .075, gain: .16 },
+  normal: { pitch: 1, speed: 1, variance: .04, gain: .18 },
+  lazy: { pitch: .8, speed: .8, variance: .025, gain: .2 },
 };
 
 // Approximate first and second vowel resonances for the 21 Hangul medials.
@@ -48,7 +48,7 @@ export function speakSyllable(context: AudioContext, letter: string, style: Voic
   const [f1, f2] = vowels[medial];
   const now = context.currentTime;
   const duration = Math.min(.11, syllableDelay(letter, style) / 1000 * .9);
-  const pitch = voice.pitch * (1 + (((position * 7 + code) % 9) - 4) / 4 * voice.variance);
+  const pitch = 300 * voice.pitch * (1 + (((position * 7 + code) % 9) - 4) / 4 * voice.variance);
 
   const source = context.createOscillator();
   source.type = "sawtooth";

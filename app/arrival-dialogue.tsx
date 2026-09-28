@@ -9,7 +9,7 @@ const announcement = "형아랑 누나랑\n결혼한대요!";
 export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "peppy" }: { active: boolean; hint: string; farewell: boolean; voiceStyle?: VoiceStyle }) {
   const text = farewell ? "짝! 신문 받아 가세요~" : `${heading}\n${announcement}\n${hint}`;
   const [shown, setShown] = useState("");
-  const [muted, setMuted] = useState(true);
+  const [soundReady, setSoundReady] = useState(false);
   const [replay, setReplay] = useState(0);
   const visible = useRef("");
   const audio = useRef<AudioContext | null>(null);
@@ -20,7 +20,7 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
     const context = new Audio();
     audio.current = context;
     void context.resume().then(() => {
-      if (audio.current === context && context.state === "running") setMuted(false);
+      if (audio.current === context && context.state === "running") setSoundReady(true);
     }).catch(() => {});
     return () => { audio.current = null; void context.close().catch(() => {}); };
   }, []);
@@ -37,15 +37,14 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
       const letter = text[index++];
       visible.current = text.slice(0, index);
       setShown(visible.current);
-      if (!muted && audio.current) speakSyllable(audio.current, letter, voiceStyle, index);
+      if (soundReady && audio.current) speakSyllable(audio.current, letter, voiceStyle, index);
       timer = window.setTimeout(next, farewell ? 43 : syllableDelay(letter, voiceStyle));
     }
     timer = window.setTimeout(next, 60);
     return () => window.clearTimeout(timer);
-  }, [active, text, muted, replay, farewell, voiceStyle]);
+  }, [active, text, soundReady, replay, farewell, voiceStyle]);
 
-  async function toggleVoice() {
-    if (!muted) { setMuted(true); return; }
+  async function replayVoice() {
     const Audio = window.AudioContext ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!Audio) return;
     try {
@@ -55,7 +54,7 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
       if (context.state !== "running") return;
       visible.current = "";
       setShown("");
-      setMuted(false);
+      setSoundReady(true);
       setReplay(value => value + 1);
     } catch { /* The text remains available when audio is unavailable. */ }
   }
@@ -74,6 +73,6 @@ export default function ArrivalDialogue({ active, hint, farewell, voiceStyle = "
         <span className="arrival-speech-hint">{line(hint, heading.length + announcement.length + 2)}</span>
       </>}
     </div>
-    {!farewell && <button className="arrival-voice-toggle" type="button" onClick={toggleVoice} aria-pressed={!muted}>{muted ? "목소리 듣기" : "소리 끄기"}</button>}
+    {!farewell && <button className="arrival-voice-toggle" type="button" onClick={replayVoice}>{soundReady ? "다시 듣기" : "목소리 듣기"}</button>}
   </>;
 }
