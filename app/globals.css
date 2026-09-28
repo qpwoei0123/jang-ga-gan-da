@@ -205,12 +205,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .cover-the { margin-right: calc(4 * var(--paper-unit)); font: 700 calc(20 * var(--paper-unit))/1 var(--blackletter); }
 .cover-masthead h1 { margin: 0; font: 700 calc(39 * var(--paper-unit))/.92 var(--blackletter); letter-spacing: -.035em; }
 .issue-line { padding: calc(5 * var(--paper-unit)) 0; border-top: 1px solid var(--line-strong); border-bottom: var(--rule-double); }
-.cover-bgm { margin:calc(18 * var(--paper-unit)) 0 calc(2 * var(--paper-unit)); }
-.cover-bgm-heading { display:flex; align-items:baseline; justify-content:space-between; gap:8px; margin-bottom:calc(7 * var(--paper-unit)); padding-bottom:calc(5 * var(--paper-unit)); border-bottom:1px solid var(--line-strong); }
-.cover-bgm-heading span { font:700 calc(8 * var(--paper-unit))/1 var(--sans); letter-spacing:.12em; }
-.cover-bgm-heading strong { font:600 calc(12 * var(--paper-unit))/1.2 var(--text); }
-.cover-bgm-screen { width:100%; aspect-ratio:16 / 9; background:#24211e; }
-.cover-bgm-screen iframe { display:block; width:100%; height:100%; border:0; }
 .cover-announcement { padding: var(--space-16) 0 calc(13 * var(--paper-unit)); text-align: center; }
 .cover-announcement p { margin: 0 0 calc(4 * var(--paper-unit)); font: calc(14 * var(--paper-unit))/1 var(--display); letter-spacing: .025em; }
 .cover-announcement h2 { margin: 0; font: calc(25 * var(--paper-unit))/1.05 var(--text); letter-spacing: -.025em; }
