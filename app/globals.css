@@ -573,19 +573,32 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 
 /* The newspaper opens into a quiet, unmasked photographic heart. */
 .wedding-site { --paper-unit:min(1px,.2564102564cqw); background:#fff; }
-.delivery-song { width:100%; padding:28px 12px 34px; background:#f3f0e9; color:#27231e; text-align:center; }
-.delivery-song-heading { position:relative; max-width:480px; margin:0 auto 14px; padding:0 42px 12px; border-bottom:1px solid #a9a298; }
+.delivery-song { width:100%; padding:28px 12px 42px; background:#f3f0e9; color:#27231e; text-align:center; }
+.delivery-song-heading { position:relative; max-width:480px; margin:0 auto 30px; padding:0 12px 12px; border-bottom:1px solid #a9a298; }
 .delivery-song-kicker { display:block; margin-bottom:7px; font:700 10px/1.4 var(--sans); letter-spacing:.16em; }
 .delivery-song-heading p { display:flex; align-items:baseline; justify-content:center; gap:12px; margin:0; }
 .delivery-song-heading strong { font:600 27px/1.25 var(--text); }
 .delivery-song-heading p span { font:12px/1.5 var(--sans); }
-.delivery-song-disc { position:absolute; right:3px; bottom:11px; display:grid; place-items:center; width:28px; height:28px; border:4px solid #292722; border-radius:50%; background:#d9cfbe; font:12px/1 var(--sans); }
-.delivery-song-player { width:min(100%,480px); min-height:200px; aspect-ratio:16/9; margin:0 auto; background:#181818; }
+.delivery-tv { position:relative; width:min(100%,540px); margin:0 auto 30px; padding:13px 13px 8px; border:2px solid #593920; border-radius:20px 18px 17px 19px; background:repeating-linear-gradient(100deg,#ffffff08 0 2px,#00000008 3px 5px,transparent 6px 11px),linear-gradient(135deg,#a46f40 0%,#80502c 28%,#633d24 67%,#99683d 100%); box-shadow:inset 2px 2px 2px #e1b58175,inset -4px -4px 7px #2416086e,0 5px 0 #4a301c,0 15px 24px #32251b35; transform:rotate(-1.7deg); }
+.delivery-tv::after { content:""; position:absolute; left:22%; right:22%; bottom:-15px; height:10px; border-radius:0 0 8px 8px; background:#4b301d; box-shadow:0 6px 9px #35251933; }
+.delivery-tv-antenna { position:absolute; left:50%; top:-20px; width:9px; height:9px; border-radius:50%; background:#614632; }
+.delivery-tv-antenna::before,.delivery-tv-antenna::after { content:""; position:absolute; bottom:5px; width:2px; height:26px; border-radius:2px; background:#7d7062; transform-origin:bottom; }
+.delivery-tv-antenna::before { left:3px; transform:rotate(-45deg); }
+.delivery-tv-antenna::after { left:5px; transform:rotate(45deg); }
+.delivery-tv-face { display:flex; align-items:stretch; gap:11px; }
+.delivery-tv-screen { flex:1; min-width:0; padding:7px; border:1px solid #241914; border-radius:13px; background:#251b17; box-shadow:inset 0 0 0 2px #b58959,0 2px 3px #2416089c; }
+.delivery-song-player { width:100%; min-height:200px; aspect-ratio:16/9; margin:0 auto; background:#181818; }
 .delivery-song-player iframe { display:block; width:100%; height:100%; border:0; }
+.delivery-tv-controls { display:flex; flex:0 0 40px; flex-direction:column; align-items:center; gap:13px; padding-top:11px; }
+.delivery-tv-knob { position:relative; display:block; width:29px; height:29px; border:3px solid #382719; border-radius:50%; background:radial-gradient(circle at 37% 30%,#dfb881,#987046 68%,#5c3922); box-shadow:1px 2px 2px #26180d9c; }
+.delivery-tv-knob::after { content:""; position:absolute; top:2px; left:50%; width:2px; height:7px; border-radius:2px; background:#3b271a; transform:rotate(34deg); transform-origin:bottom; }
+.delivery-tv-speaker { display:block; width:28px; height:33px; margin-top:auto; opacity:.7; background:repeating-linear-gradient(to bottom,#322317 0 2px,transparent 2px 6px); }
+.delivery-tv-label { display:flex; justify-content:space-between; gap:10px; margin:7px 5px 0; color:#ebd2ae; font:700 8px/1.2 var(--sans); letter-spacing:.11em; }
 .delivery-song-start { display:inline-flex; align-items:center; justify-content:center; gap:18px; min-height:44px; margin:15px auto 0; padding:8px 24px; border:1px solid #292722; background:#292722; color:#fff; font:600 13px/1.4 var(--sans); text-decoration:none; cursor:pointer; }
 .delivery-song-start:hover,.delivery-song-start:focus-visible { background:#4a4339; }
 .delivery-song-caption { margin:14px auto 0; color:#716b62; font:11px/1.5 var(--sans); }
-@media(max-width:360px) { .delivery-song { padding-inline:10px; } }
+@media(max-width:360px) { .delivery-song { padding-inline:10px; } .delivery-tv { padding-inline:9px; } .delivery-tv-face { gap:7px; } .delivery-tv-controls { flex-basis:33px; } .delivery-tv-knob { width:25px; height:25px; } .delivery-tv-speaker { width:25px; } .delivery-tv-screen { padding:5px; } }
+@media(prefers-reduced-motion:reduce) { .delivery-tv { transform:none; } }
 .wedding-site .edition { padding-bottom:42px; }
 .heart-gallery { position:relative; padding:76px 20px 36px; background:#fff; color:#222; font-family:var(--sans); }
 .heart-gallery-heading { text-align:center; margin:0 auto 40px; }
