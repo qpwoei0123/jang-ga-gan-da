@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { InvitationGate, usePreloadStarted } from "./asset-loader";
-import WeddingSong from "./wedding-song";
+import CoverBgm from "./cover-bgm";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperArticle from "./newspaper-article";
 import NewspaperInterview from "./newspaper-interview";
@@ -281,6 +281,7 @@ function WeddingNewspaper() {
             <span>SUNDAY, NOVEMBER 1, 2026</span>
             <span>PRICE: ONE BLESSING</span>
           </div>
+          <CoverBgm />
           <div className="cover-announcement" data-ddui-tip="오늘 신문 주인공은 우리 형누나예요~">
             <p>CELEBRATING THE UNION OF</p>
             <h2>한원영 <i>&amp;</i> 이나경</h2>
@@ -305,7 +306,6 @@ function WeddingNewspaper() {
           <p className="gallery-signoff"><span>한동현 · 김현정의 아들 한원영</span><span>이광범 · 성호숙의 딸 이나경</span></p>
           <ParentsAccounts />
         </section>
-        <WeddingSong showAnnouncement={false}/>
       </main>
     </>
   );
