@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { InvitationGate, useAssetsReady, usePreloadStarted } from "./asset-loader";
+import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { InvitationGate, usePreloadStarted } from "./asset-loader";
 import WeddingSong from "./wedding-song";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperArticle from "./newspaper-article";
@@ -262,19 +262,6 @@ function WeddingSearchPuzzle() {
 }
 
 function WeddingNewspaper() {
-  const ready = useAssetsReady();
-  useEffect(() => {
-    if (!ready || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.setAttribute("data-revealed", "true");
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: .12 });
-    document.querySelectorAll(".newspaper-article, .details-page").forEach(element => observer.observe(element));
-    return () => observer.disconnect();
-  }, [ready]);
   return (
     <>
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
