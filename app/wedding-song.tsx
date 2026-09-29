@@ -34,12 +34,12 @@ export default function WeddingSong({ showAnnouncement = true }: { showAnnouncem
   }, []);
 
   useEffect(() => {
-    if (!ready || !engine.current) return;
+    if (!engine.current) return;
     const audio = engine.current;
     const controller = new AbortController();
     let active = true;
     const timeout = window.setTimeout(() => controller.abort(), 30000);
-    // Sound starts preparing after the newspaper opens, without delaying entry.
+    // Prepare in parallel with the entrance so the music can start when the paper opens.
     fetch("/sounds/aurectheme-jazz-584847.mp3", { signal: controller.signal })
       .then(response => { if (!response.ok) throw new Error("Audio unavailable"); return response.arrayBuffer(); })
       .then(bytes => audio.context.decodeAudioData(bytes))
@@ -54,7 +54,7 @@ export default function WeddingSong({ showAnnouncement = true }: { showAnnouncem
     return () => {
       active = false; controller.abort(); clearTimeout(timeout);
     };
-  }, [ready, reportReady]);
+  }, [reportReady]);
 
   useEffect(() => {
     if (!ready || !loaded) return;

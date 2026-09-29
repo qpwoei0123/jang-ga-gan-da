@@ -8,6 +8,7 @@ import NewspaperInterview from "./newspaper-interview";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
 import FamilyDogNote from "./family-dog-note";
+import WeddingSong from "./wedding-song";
 
 const reports = [
   ["친구 제보 01", "결혼 발표, 사실상 뒤늦은 신고", "둘은 이미 서로의 주문을 대신하고 메뉴판도 한 장만 본다. 결혼은 새 소식이지만 생활은 오래전부터 그랬다."],
@@ -267,6 +268,7 @@ function WeddingNewspaper() {
   return (
     <>
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
+      <WeddingSong />
       <main className="wedding-site" aria-label="한원영과 이나경의 웨딩 신문">
         <article className="edition paper-page cover-page" id="top">
           <div className="double-rule" aria-hidden="true" />
