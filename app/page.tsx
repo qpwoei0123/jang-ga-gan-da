@@ -5,7 +5,6 @@ import { InvitationGate, usePreloadStarted } from "./asset-loader";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperArticle from "./newspaper-article";
 import NewspaperInterview from "./newspaper-interview";
-import ParentsAccounts from "./parents-accounts";
 import NewspaperDelivery from "./newspaper-delivery";
 import { ENABLE_DELIVERY_INTRO } from "./experience-config";
 import FamilyDogNote from "./family-dog-note";
@@ -302,7 +301,6 @@ function WeddingNewspaper() {
             <p>함께하지 못하는 아쉬운 마음 대신<br />저희의 새로운 시작을 따뜻하게 축복해 주시면<br />그 마음 소중히 간직하겠습니다.</p>
           </div>
           <p className="gallery-signoff"><span>한동현 · 김현정의 아들 한원영</span><span>이광범 · 성호숙의 딸 이나경</span></p>
-          <ParentsAccounts />
         </section>
       </main>
     </>
