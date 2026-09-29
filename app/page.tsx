@@ -2,7 +2,6 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { InvitationGate, usePreloadStarted } from "./asset-loader";
-import DeliverySong from "./delivery-song";
 import CenterfoldGallery from "./centerfold-gallery";
 import NewspaperArticle from "./newspaper-article";
 import NewspaperInterview from "./newspaper-interview";
@@ -67,7 +66,7 @@ function CoverPhoto() {
   return (
     <figure className="cover-photo" data-ddui-tip="둘이 제법 잘 어울리죠? 헤헤.">
       <div className="cover-photo-print">
-        <img src={preloading ? "/cover-doodle.webp" : undefined} alt="창가에 나란히 앉은 한원영과 이나경의 사진에 손글씨와 하트가 그려져 있다" width="1024" height="1536" fetchPriority="high" />
+        <img src={preloading ? "/couple-main.webp" : undefined} alt="창가에 나란히 앉아 꽃을 든 한원영과 이나경" width="1200" height="1800" fetchPriority="high" />
       </div>
     </figure>
   );
@@ -266,7 +265,6 @@ function WeddingNewspaper() {
     <>
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
       <main className="wedding-site" aria-label="한원영과 이나경의 웨딩 신문">
-        <DeliverySong />
         <article className="edition paper-page cover-page" id="top">
           <div className="cover-utility">
             <span>The Grand Hall</span>
