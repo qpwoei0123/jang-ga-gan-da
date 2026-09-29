@@ -5,9 +5,10 @@ import ArrivalDialogue from "./arrival-dialogue";
 import { arrivalMedley } from "./arrival-preview";
 import { HIGH_FIVE_SOUND, playDecodedSound } from "./audio-bank";
 
-export default function NewspaperArrival({ preloading, prepared, problem, opening, complete, total, onOpen }: {
+export default function NewspaperArrival({ preloading, prepared, returningVisitor, problem, opening, complete, total, onOpen }: {
   preloading: boolean;
   prepared: boolean;
+  returningVisitor: boolean;
   problem: boolean;
   opening: boolean;
   complete: number;
@@ -23,7 +24,8 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
   const walkingImage = useRef<HTMLImageElement>(null);
   const entering = prepared && walkingReady;
   const offeringPaw = arrived && prepared;
-  const canHighFive = offeringPaw && pawPoseVisible && !highFiving && !opening;
+  const pawReady = pawPoseVisible || returningVisitor;
+  const canHighFive = offeringPaw && pawReady && !highFiving && !opening;
   const revealPawPose = useCallback(() => setPawPoseVisible(true), []);
 
   useEffect(() => {
@@ -38,10 +40,10 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
 
   useEffect(() => {
     if (!entering) return;
-    const duration = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1350;
+    const duration = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : returningVisitor ? 320 : 1350;
     const timer = window.setTimeout(() => setArrived(true), duration);
     return () => clearTimeout(timer);
-  }, [entering]);
+  }, [entering, returningVisitor]);
 
   useEffect(() => {
     if (!canHighFive) return;
@@ -63,7 +65,7 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
   const speaking = highFiving || opening;
 
   return (
-    <section className={`newspaper-arrival${preloading ? " is-preloading" : ""}${entering ? " is-dog-ready" : " is-loading"}${arrived ? " is-arrived" : ""}${pawPoseVisible && offeringPaw ? " is-offering-paw" : ""}${highFiving ? " is-high-fiving" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="뚜이가 전하는 한원영과 이나경의 결혼 소식">
+    <section className={`newspaper-arrival${preloading ? " is-preloading" : ""}${returningVisitor ? " is-returning" : ""}${entering ? " is-dog-ready" : " is-loading"}${arrived ? " is-arrived" : ""}${pawReady && offeringPaw ? " is-offering-paw" : ""}${highFiving ? " is-high-fiving" : ""}${opening ? " is-opening" : ""}${problem ? " has-problem" : ""}`} aria-label="뚜이가 전하는 한원영과 이나경의 결혼 소식">
       <div className="arrival-layout">
         <div className="arrival-hero">
           <div className="arrival-speech">

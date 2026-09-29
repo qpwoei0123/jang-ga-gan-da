@@ -2,8 +2,21 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://wedding-edition-newspaper.han-10.chatgpt.site"),
   title: "The Wedding News | 한원영·이나경",
-  description: "11년을 함께한 한원영·이나경의 결혼 소식과 웨딩 화보, 가족식 안내를 담은 웨딩 신문입니다.",
+  description: "2026년 11월 1일, 11년을 함께한 한원영·이나경의 결혼 소식을 담은 웨딩 신문입니다.",
+  openGraph: {
+    type: "website",
+    title: "한원영 & 이나경 | The Wedding News",
+    description: "2026년 11월 1일, 두 사람의 결혼 소식을 전합니다.",
+    images: [{ url: "/og.png", width: 1731, height: 909, alt: "한원영과 이나경의 웨딩 신문, 2026년 11월 1일" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "한원영 & 이나경 | The Wedding News",
+    description: "2026년 11월 1일, 두 사람의 결혼 소식을 전합니다.",
+    images: ["/og.png"],
+  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

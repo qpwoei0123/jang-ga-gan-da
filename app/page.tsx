@@ -66,6 +66,10 @@ function CoverPhoto() {
     <figure className="cover-photo" data-ddui-tip="둘이 제법 잘 어울리죠? 헤헤.">
       <div className="cover-photo-print">
         <img src={preloading ? "/couple-main.webp" : undefined} alt="창가에 나란히 앉아 꽃을 든 한원영과 이나경" width="1200" height="1800" fetchPriority="high" />
+        <time className="cover-date-ink" dateTime="2026-11-01">
+          <span>26년 11월 1일</span>
+          <svg viewBox="0 0 230 14" preserveAspectRatio="none" aria-hidden="true"><path d="M4 8.5c40-5 91-5.5 139-3.5 30 1 57 1.5 81-1" /></svg>
+        </time>
       </div>
     </figure>
   );
@@ -265,10 +269,6 @@ function WeddingNewspaper() {
       {ENABLE_DELIVERY_INTRO && <NewspaperDelivery />}
       <main className="wedding-site" aria-label="한원영과 이나경의 웨딩 신문">
         <article className="edition paper-page cover-page" id="top">
-          <div className="cover-utility">
-            <span>The Grand Hall</span>
-
-          </div>
           <div className="double-rule" aria-hidden="true" />
           <header className="cover-masthead">
             <span className="cover-the">The</span>
@@ -297,7 +297,7 @@ function WeddingNewspaper() {
         <section className="paper-page details-page" id="details" aria-label="가족식 안내" data-ddui-tip="형누나가 결혼합니다! 많이 많이 축하해 주세요~" data-ddui-celebrate="true">
           <div className="announcement-note">
             <p>저희 두 사람은 양가 가족을 중심으로<br />작은 가족식을 준비했습니다.</p>
-            <p>예식은 미리 초대드린 가족분들과 함께할 예정입니다.<br />직접 모시지 못하는 점 너그러운 마음으로 이해해 주시면 감사하겠습니다.</p>
+            <p>예식은 미리 초대드린 분들과 함께할 예정입니다.<br />직접 모시지 못하는 점 너그러운 마음으로 이해해 주시면 감사하겠습니다.</p>
             <p>함께하지 못하는 아쉬운 마음 대신<br />저희의 새로운 시작을 따뜻하게 축복해 주시면<br />그 마음 소중히 간직하겠습니다.</p>
           </div>
           <p className="gallery-signoff"><span>한동현 · 김현정의 아들 한원영</span><span>이광범 · 성호숙의 딸 이나경</span></p>

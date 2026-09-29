@@ -30,6 +30,7 @@
 .arrival-medley p { margin:0; color:#6c5e49; font:14px/1.5 var(--sans); }
 .arrival-dog { position:relative; width:var(--arrival-dog-width); aspect-ratio:480 / 408; opacity:0; transform:translateX(calc(100% + 60px)); }
 .is-dog-ready .arrival-dog { opacity:1; animation:arrival-approach 1.35s cubic-bezier(.16,.7,.32,1) both; }
+.is-returning.is-dog-ready .arrival-dog { animation-duration:.32s; }
 .arrival-gait { position:absolute; inset:0; transform-origin:50% 92%; animation:arrival-waddle .38s ease-in-out infinite; }
 .arrival-gait > img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:opacity .24s; }
 .arrival-pose-paw { opacity:0; }

@@ -182,7 +182,7 @@ html:is([data-assets="loading"], [data-assets="preparing"], [data-assets="printi
 .edition::before { content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: .16; mix-blend-mode: multiply; filter: grayscale(1) contrast(1.08) brightness(1.08); background-image: var(--paper-grain), radial-gradient(circle at 22% 31%, rgb(23 23 22 / 24%) 0 .38px, transparent .68px), radial-gradient(circle at 73% 64%, rgb(23 23 22 / 18%) 0 .34px, transparent .64px); background-position: 52% 46%, 0 0, 0 0; background-size: calc(620 * var(--paper-unit)) calc(620 * var(--paper-unit)), calc(23 * var(--paper-unit)) calc(29 * var(--paper-unit)), calc(31 * var(--paper-unit)) calc(37 * var(--paper-unit)); }
 .edition::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: .13; mix-blend-mode: multiply; background: linear-gradient(104deg, transparent 0 37%, rgb(80 66 49 / 11%) 38%, transparent 39% 100%), linear-gradient(8deg, transparent 0 67%, rgb(255 255 255 / 35%) 68%, transparent 69% 100%), radial-gradient(ellipse at 12% 8%, rgb(75 58 38 / 10%), transparent 34%), radial-gradient(ellipse at 88% 94%, rgb(75 58 38 / 9%), transparent 36%); }
 .paper-page > *, .chronicle > * { position: relative; z-index: 1; }
-.page-topline, .page-bottomline, .cover-utility, .issue-line { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); font: 700 calc(6.5 * var(--paper-unit))/1.25 var(--sans); letter-spacing: .02em; }
+.page-topline, .page-bottomline, .issue-line { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); font: 700 calc(6.5 * var(--paper-unit))/1.25 var(--sans); letter-spacing: .02em; }
 .page-topline { padding-bottom: calc(7 * var(--paper-unit)); border-bottom: 1px solid var(--line); color: var(--muted); }
 .page-topline span:nth-child(2) { text-align: center; }
 .page-bottomline { margin-top: calc(17 * var(--paper-unit)); padding-top: calc(7 * var(--paper-unit)); border-top: 1px solid var(--line-strong); color: var(--muted); }
@@ -198,8 +198,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 /* 01 — front */
 .cover-page { display: flex; flex-direction: column; min-height: calc(770 * var(--paper-unit)); }
 .cover-page > .page-bottomline { margin-top: auto; }
-.cover-utility { margin-bottom: calc(7 * var(--paper-unit)); color: var(--muted); }
-.cover-utility a { display: inline-flex; align-items: center; min-height: calc(44 * var(--paper-unit)); padding: var(--space-8) 0 var(--space-8) var(--space-12); color: var(--ink); font-size: calc(13 * var(--paper-unit)); font-weight: 800; }
 .cover-sections { display: flex; justify-content: center; gap: var(--space-8); padding: calc(6 * var(--paper-unit)) 0 calc(5 * var(--paper-unit)); font: 700 calc(5.6 * var(--paper-unit))/1 var(--sans); letter-spacing: .04em; }
 .cover-masthead { display: flex; align-items: baseline; justify-content: center; padding: var(--space-12) 0 var(--space-8); white-space: nowrap; }
 .cover-the { margin-right: calc(4 * var(--paper-unit)); font: 700 calc(20 * var(--paper-unit))/1 var(--blackletter); }
@@ -213,6 +211,8 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .cover-photo { margin: 0; }
 .cover-photo-print { position: relative; width: 100%; margin: 0 auto; overflow: hidden; }
 .cover-photo img { width:100%; height:auto; aspect-ratio:2/3; object-fit:cover; filter:var(--photo-ink); }
+.cover-date-ink { position:absolute; z-index:2; top:7%; left:6%; display:block; color:#684a38; font:400 calc(31 * var(--paper-unit))/1.08 var(--handwriting); text-shadow:0 1px 2px rgb(255 255 255 / 85%); white-space:nowrap; pointer-events:none; transform:rotate(-6deg); }
+.cover-date-ink svg { display:block; width:100%; height:calc(10 * var(--paper-unit)); margin-top:calc(-2 * var(--paper-unit)); fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; opacity:.8; }
 
 /* 02 — culture pages: a photographic record */
 .chronicle { color:var(--ink); overflow:clip; }
@@ -709,7 +709,7 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 
 /* Keep the invitation visible behind the enlarged photograph. */
 .gallery-lightbox { background:transparent; color:#242424; }
-.gallery-lightbox::backdrop { background:rgb(255 255 255 / 48%); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+.gallery-lightbox::backdrop { background:rgb(250 249 246 / 84%); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
 .lightbox-content header span { color:#333; }
 .lightbox-content button { color:#242424; }
 .gallery-lightbox button:focus-visible { outline-color:#333; }

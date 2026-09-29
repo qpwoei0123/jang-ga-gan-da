@@ -24,11 +24,13 @@ export function InvitationGate({ children }: { children: ReactNode }) {
   const [opened, setOpened] = useState(false);
   const [ready, setReady] = useState(false);
   const [preloading, setPreloading] = useState(false);
+  const [returningVisitor, setReturningVisitor] = useState(false);
   const allReady = resources === "ready";
   const problem = !allReady && (expired || resources === "error");
 
   useEffect(() => {
     document.documentElement.dataset.assets = "loading";
+    try { setReturningVisitor(window.localStorage.getItem("wedding-news-opened-v1") === "1"); } catch {}
     // Paint the inline photo medley before starting the first-page image requests.
     let secondFrame = 0;
     const firstFrame = requestAnimationFrame(() => {
@@ -64,8 +66,8 @@ export function InvitationGate({ children }: { children: ReactNode }) {
         if (active) setProgress({ complete, total });
       }, controller.signal),
       fontReady,
-      // Always show all five photos for 500 ms each, even on a cached visit.
-      new Promise<void>(resolve => { medleyTimeout = window.setTimeout(resolve, 2500); }),
+      // Let returning readers reach the paper as soon as the first page is ready.
+      new Promise<void>(resolve => { medleyTimeout = window.setTimeout(resolve, returningVisitor ? 0 : 2500); }),
     ]).then(async ([failed]) => {
       clearTimeout(fontTimeout);
       const decoded = failed.length ? [] : await Promise.allSettled(images.map(image => image.decode()));
@@ -73,7 +75,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     }).catch(() => {});
     const timeout = window.setTimeout(() => { if (active) setExpired(true); }, 30000);
     return () => { active = false; controller.abort(); clearTimeout(timeout); clearTimeout(fontTimeout); clearTimeout(medleyTimeout); };
-  }, [preloading]);
+  }, [preloading, returningVisitor]);
 
   useEffect(() => {
     if (!opened) return;
@@ -99,6 +101,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     {!ready && <NewspaperArrival
       preloading={preloading}
       prepared={allReady}
+      returningVisitor={returningVisitor}
       problem={problem}
       opening={opened}
       complete={progress.complete}
@@ -106,6 +109,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
       onOpen={() => {
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) playDecodedSound(PAPER_UNFOLD_SOUND, .42);
+        try { window.localStorage.setItem("wedding-news-opened-v1", "1"); } catch {}
         setOpened(true);
       }}
     />}
