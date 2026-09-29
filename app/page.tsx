@@ -67,10 +67,6 @@ function CoverPhoto() {
     <figure className="cover-photo" data-ddui-tip="둘이 제법 잘 어울리죠? 헤헤.">
       <div className="cover-photo-print">
         <img src={preloading ? "/couple-main.webp" : undefined} alt="창가에 나란히 앉아 꽃을 든 한원영과 이나경" width="1200" height="1800" fetchPriority="high" />
-        <time className="cover-date-ink" dateTime="2026-11-01">
-          <span>26년 11월 1일</span>
-          <svg viewBox="0 0 230 14" preserveAspectRatio="none" aria-hidden="true"><path d="M4 8.5c40-5 91-5.5 139-3.5 30 1 57 1.5 81-1" /></svg>
-        </time>
       </div>
     </figure>
   );

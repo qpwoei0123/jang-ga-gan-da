@@ -211,8 +211,6 @@ figcaption { margin-top: calc(5 * var(--paper-unit)); color: var(--muted); font:
 .cover-photo { margin: 0; }
 .cover-photo-print { position: relative; width: 100%; margin: 0 auto; overflow: hidden; }
 .cover-photo img { width:100%; height:auto; aspect-ratio:2/3; object-fit:cover; filter:var(--photo-ink); }
-.cover-date-ink { position:absolute; z-index:2; top:7%; left:6%; display:block; color:#684a38; font:400 calc(31 * var(--paper-unit))/1.08 var(--handwriting); text-shadow:0 1px 2px rgb(255 255 255 / 85%); white-space:nowrap; pointer-events:none; transform:rotate(-6deg); }
-.cover-date-ink svg { display:block; width:100%; height:calc(10 * var(--paper-unit)); margin-top:calc(-2 * var(--paper-unit)); fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; opacity:.8; }
 
 /* 02 — culture pages: a photographic record */
 .chronicle { color:var(--ink); overflow:clip; }
