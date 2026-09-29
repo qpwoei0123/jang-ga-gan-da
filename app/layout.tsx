@@ -3,19 +3,19 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://wedding-edition-newspaper.han-10.chatgpt.site"),
-  title: "The Wedding News | 한원영·이나경",
-  description: "2026년 11월 1일, 11년을 함께한 한원영·이나경의 결혼 소식을 담은 웨딩 신문입니다.",
+  title: "원영 · 나경 | The Wedding News",
+  description: "2026년 11월 1일, 11년을 함께한 원영과 나경의 결혼 소식을 담은 웨딩 신문입니다.",
   openGraph: {
     type: "website",
-    title: "한원영 & 이나경 | The Wedding News",
+    title: "원영 · 나경, 결혼합니다",
     description: "2026년 11월 1일, 두 사람의 결혼 소식을 전합니다.",
-    images: [{ url: "/og.png", width: 1731, height: 909, alt: "한원영과 이나경의 웨딩 신문, 2026년 11월 1일" }],
+    images: [{ url: "/og.png?v=2", width: 1200, height: 630, alt: "원영과 나경의 웨딩 신문, 2026년 11월 1일" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "한원영 & 이나경 | The Wedding News",
+    title: "원영 · 나경, 결혼합니다",
     description: "2026년 11월 1일, 두 사람의 결혼 소식을 전합니다.",
-    images: ["/og.png"],
+    images: ["/og.png?v=2"],
   },
   icons: {
     icon: "/favicon.svg",
