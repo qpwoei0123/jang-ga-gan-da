@@ -9,13 +9,13 @@ export const metadata: Metadata = {
     type: "website",
     title: "원영 · 나경, 결혼합니다",
     description: "2026년 11월 1일, 두 사람의 결혼 소식을 전합니다.",
-    images: [{ url: "/og.png?v=2", width: 1200, height: 630, alt: "원영과 나경의 웨딩 신문, 2026년 11월 1일" }],
+    images: [{ url: "/og.png?v=3", width: 1733, height: 908, alt: "빨간 신발을 나란히 신은 웨딩 사진 위에 적힌 11년 연애 끝, 결혼합니다. 26.11.01" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "원영 · 나경, 결혼합니다",
     description: "2026년 11월 1일, 두 사람의 결혼 소식을 전합니다.",
-    images: ["/og.png?v=2"],
+    images: ["/og.png?v=3"],
   },
   icons: {
     icon: "/favicon.svg",
