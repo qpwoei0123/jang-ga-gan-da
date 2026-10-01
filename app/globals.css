@@ -734,7 +734,7 @@ body:has(.gallery-lightbox[open]) .ddui-music { visibility:hidden; }
 .wedding-site .announcement-note p { margin:0 0 24px; font:400 22px/1.75 var(--handwriting); color:#494640; word-break:keep-all; }
 .wedding-site .announcement-signature { margin-top:32px; gap:10px; font:400 13px/1.85 var(--text); color:#514d47; }
 .wedding-site .announcement-signature strong { font-weight:600; color:#272521; }
-.gallery-signoff { margin-top:34px; color:#65615b; font:12px/1.9 var(--text); letter-spacing:.02em; }
+.gallery-signoff { margin-top:34px; color:#65615b; font:14px/1.9 var(--text); letter-spacing:.02em; }
 .gallery-signoff span { display:block; }
 .parents-accounts { position:relative; z-index:2; margin-top:36px; text-align:center; }
 .parents-accounts-cta { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:12px 24px; border:1px solid #b8aa95; border-radius:3px; background:#f0ebe3; color:#403a32; font:400 14px/1.6 var(--text); cursor:pointer; transition:background .18s ease,border-color .18s ease; }

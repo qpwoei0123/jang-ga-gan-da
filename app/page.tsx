@@ -275,7 +275,6 @@ function WeddingNewspaper() {
           <div className="issue-line">
             <span>ISSUE VOL. 1</span>
             <span>SUNDAY, NOVEMBER 1, 2026</span>
-            <span>PRICE: ONE BLESSING</span>
           </div>
           <div className="cover-announcement" data-ddui-tip="오늘 신문 주인공은 우리 형누나예요~">
             <p>CELEBRATING THE UNION OF</p>
