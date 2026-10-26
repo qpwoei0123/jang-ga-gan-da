@@ -1,12 +1,13 @@
 "use client";
 
+import { publicAsset } from "../public-asset.ts";
 import AssetGate from "../asset-loader";
 import styles from "./quality-guide.module.css";
 
 const GUIDE_ASSETS = [
-  "/paper-crumple.webp",
-  "/dog-run-sprite-ddui-timid.webp",
-  "/will-smith-original.png",
+  publicAsset("/paper-crumple.webp"),
+  publicAsset("/dog-run-sprite-ddui-timid.webp"),
+  publicAsset("/will-smith-original.png"),
 ] as const;
 
 const levels = [
@@ -63,7 +64,7 @@ function QualityGuide() {
             <div className={styles.scene} aria-label={`${level.name} 예시`}>
               <span className={styles.sceneHeadline}>거절 버튼<br />현장서 도주</span>
               <span className={styles.dog} role="img" aria-label="신문을 물고 온 뚜이" />
-              <img className={styles.will} src="/will-smith-original.png" alt="거절 버튼을 잡으러 온 윌 스미스 패러디 컷아웃" width="348" height="542" />
+              <img className={styles.will} src={publicAsset("/will-smith-original.png")} alt="거절 버튼을 잡으러 온 윌 스미스 패러디 컷아웃" width="348" height="542" />
               <span className={styles.noButton}>아니요</span>
               <span className={styles.pressMark}>THE COUPLE TIMES</span>
             </div>

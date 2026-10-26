@@ -11,7 +11,9 @@
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "npm run build && node --experimental-strip-types --test tests/*.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "build:pages": "GITHUB_PAGES=true vinext build && node scripts/prepare-pages.mjs",
+    "test:pages": "node --experimental-strip-types --test tests/pages/*.test.mjs"
   },
   "dependencies": {
     "canvas-confetti": "1.9.4",

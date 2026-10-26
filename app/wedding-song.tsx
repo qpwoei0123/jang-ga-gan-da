@@ -1,5 +1,6 @@
 "use client";
 
+import { publicAsset } from "./public-asset.ts";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { speechFlight } from "./ddui-speech-motion";
 import { useAssetsReady, useReportPlayerReady } from "./asset-loader";
@@ -40,7 +41,7 @@ export default function WeddingSong({ showAnnouncement = true }: { showAnnouncem
     let active = true;
     const timeout = window.setTimeout(() => controller.abort(), 30000);
     // Prepare in parallel with the entrance so the music can start when the paper opens.
-    fetch("/sounds/aurectheme-jazz-584847.mp3", { signal: controller.signal })
+    fetch(publicAsset("/sounds/aurectheme-jazz-584847.mp3"), { signal: controller.signal })
       .then(response => { if (!response.ok) throw new Error("Audio unavailable"); return response.arrayBuffer(); })
       .then(bytes => audio.context.decodeAudioData(bytes))
       .then(buffer => {

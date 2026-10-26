@@ -1,19 +1,20 @@
+import { publicAsset } from "./public-asset.ts";
 "use client";
 
-export const NO_DAMAGE_SOUND = "/sounds/no-4-minecraft-hit.mp3";
-export const CLASSIC_HURT_SOUND = "/sounds/no-1-classic-hurt.mp3";
-export const GUNSHOT_SOUND = "/sounds/no-extra-gunshot-jbudden.mp3";
-export const FAHHHH_SOUND = "/sounds/no-2-fahhhh.mp3";
-export const SANS_VOICE_SOUND = "/sounds/voice-sans.mp3";
-export const YES_TADA_SOUND = "/sounds/yes-ta-da.mp3";
-export const INTRO_BATTLE_SOUND = "/sounds/intro-pokemon-battle.mp3";
-export const YOSHI_TONGUE_SOUND = "/sounds/no-5-yoshi-tongue.mp3";
+export const NO_DAMAGE_SOUND = publicAsset("/sounds/no-4-minecraft-hit.mp3");
+export const CLASSIC_HURT_SOUND = publicAsset("/sounds/no-1-classic-hurt.mp3");
+export const GUNSHOT_SOUND = publicAsset("/sounds/no-extra-gunshot-jbudden.mp3");
+export const FAHHHH_SOUND = publicAsset("/sounds/no-2-fahhhh.mp3");
+export const SANS_VOICE_SOUND = publicAsset("/sounds/voice-sans.mp3");
+export const YES_TADA_SOUND = publicAsset("/sounds/yes-ta-da.mp3");
+export const INTRO_BATTLE_SOUND = publicAsset("/sounds/intro-pokemon-battle.mp3");
+export const YOSHI_TONGUE_SOUND = publicAsset("/sounds/no-5-yoshi-tongue.mp3");
 // Trimmed from Pixabay's “Smack” (freesound_community, sound effect 107626).
-export const HIGH_FIVE_SOUND = "/sounds/high-five-smack.wav";
+export const HIGH_FIVE_SOUND = publicAsset("/sounds/high-five-smack.wav");
 // Trimmed from Pixabay's “Paper Rustle” (freesound_community, sound effect 81855).
-export const PAPER_UNFOLD_SOUND = "/sounds/paper-unfold.wav";
+export const PAPER_UNFOLD_SOUND = publicAsset("/sounds/paper-unfold.wav");
 // Trimmed from Pixabay's “camera shutter” (freesound_community, sound effect 95121).
-export const GALLERY_SHUTTER_SOUND = "/sounds/gallery-shutter.wav";
+export const GALLERY_SHUTTER_SOUND = publicAsset("/sounds/gallery-shutter.wav");
 
 export const NO_ATTEMPT_EXTRA_SOUNDS = [
   [],
@@ -23,7 +24,7 @@ export const NO_ATTEMPT_EXTRA_SOUNDS = [
   [[GUNSHOT_SOUND, .63], [FAHHHH_SOUND, .72]],
 ] as const;
 
-export const WILL_EXIT_SOUND = "/sounds/will-exit-get-out.mp3";
+export const WILL_EXIT_SOUND = publicAsset("/sounds/will-exit-get-out.mp3");
 export const INTERACTION_SOUNDS = [
   NO_DAMAGE_SOUND,
   CLASSIC_HURT_SOUND,

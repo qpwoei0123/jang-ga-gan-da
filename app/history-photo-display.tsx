@@ -1,12 +1,13 @@
 "use client";
 
+import { publicAsset } from "./public-asset.ts";
 import { useEffect, useRef, useState } from "react";
 import { useAssetsReady } from "./asset-loader";
 
 const additionalPhotos = [
-  "/history-hanbok-playful.webp",
-  "/history-hanbok-flute.webp",
-  "/history-hanbok-together.webp",
+  publicAsset("/history-hanbok-playful.webp"),
+  publicAsset("/history-hanbok-flute.webp"),
+  publicAsset("/history-hanbok-together.webp"),
 ];
 
 export default function HistoryPhotoDisplay({ photoSrc }: { photoSrc: string }) {

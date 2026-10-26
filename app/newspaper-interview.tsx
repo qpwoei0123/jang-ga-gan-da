@@ -1,3 +1,4 @@
+import { publicAsset } from "./public-asset.ts";
 const questions = [
   {
     question: "고3 때보다 업그레이드된 점, 아직 그대로인 점은?",
@@ -29,8 +30,8 @@ export default function NewspaperInterview() {
     {questions.map(({ question, groom, bride, groomFace, brideFace }, index) => <section className="interview-question" key={question} aria-labelledby={`interview-question-${index + 1}`}>
       <h3 id={`interview-question-${index + 1}`}><span className="interview-question-number" aria-hidden="true">Q{index + 1}.</span> {question}</h3>
       <dl>
-        <div className="interview-answer"><dt><img className="interview-face" src={`/interview/${groomFace}.webp`} alt="신랑" width="44" height="44" loading="lazy" decoding="async" /></dt><dd>{groom}</dd></div>
-        <div className="interview-answer"><dt><img className="interview-face" src={`/interview/${brideFace}.webp`} alt="신부" width="44" height="44" loading="lazy" decoding="async" /></dt><dd>{bride}</dd></div>
+        <div className="interview-answer"><dt><img className="interview-face" src={publicAsset(`/interview/${groomFace}.webp`)} alt="신랑" width="44" height="44" loading="lazy" decoding="async" /></dt><dd>{groom}</dd></div>
+        <div className="interview-answer"><dt><img className="interview-face" src={publicAsset(`/interview/${brideFace}.webp`)} alt="신부" width="44" height="44" loading="lazy" decoding="async" /></dt><dd>{bride}</dd></div>
       </dl>
     </section>)}
   </article>;

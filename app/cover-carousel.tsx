@@ -1,13 +1,14 @@
 "use client";
 
+import { publicAsset } from "./public-asset.ts";
 import { useEffect, useState } from "react";
 
 import useEmblaCarousel from "embla-carousel-react";
 
 const photos = [
-  { src: "/couple-main.webp", alt: "창가에 나란히 앉아 꽃을 든 한원영과 이나경" },
-  { src: "/history/2025.jpg", alt: "2025년, 함께한 한원영과 이나경" },
-  { src: "/history/2026.jpg", alt: "2026년, 결혼을 앞둔 한원영과 이나경" },
+  { src: publicAsset("/couple-main.webp"), alt: "창가에 나란히 앉아 꽃을 든 한원영과 이나경" },
+  { src: publicAsset("/history/2025.jpg"), alt: "2025년, 함께한 한원영과 이나경" },
+  { src: publicAsset("/history/2026.jpg"), alt: "2026년, 결혼을 앞둔 한원영과 이나경" },
 ];
 
 export default function CoverCarousel() {

@@ -1,3 +1,18 @@
+# 장가간다 · 두 사람의 특별호
+
+- GitHub Pages: https://qpwoei0123.github.io/jang-ga-gan-da/
+- 기존 GPT Sites: https://wedding-edition-newspaper.han-10.chatgpt.site/
+
+## GitHub Pages 배포
+
+`main`에 push하면 `.github/workflows/pages.yml`이 정적 빌드와 경로 검증 후 배포합니다.
+Node.js 22에서 `npm ci`, `npm run build:pages`, `npm run test:pages`로 같은 결과물을 확인할 수 있습니다.
+배포 파일은 `dist/client/`에 생성됩니다. 사진·음원·폰트와 공유 미리보기도 저장소 하위 경로를 사용합니다.
+
+기존 `npm run build`는 Sites용 Worker 빌드를 유지합니다. GitHub Pages 배포는 GPT Sites에 push하거나 재배포하지 않습니다.
+
+---
+
 # vinext-starter
 
 A clean full-stack starter running on

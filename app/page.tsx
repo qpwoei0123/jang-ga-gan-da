@@ -1,5 +1,6 @@
 "use client";
 
+import { publicAsset } from "./public-asset.ts";
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { InvitationGate, usePreloadStarted } from "./asset-loader";
 import CenterfoldGallery from "./centerfold-gallery";
@@ -66,7 +67,7 @@ function CoverPhoto() {
   return (
     <figure className="cover-photo" data-ddui-tip="둘이 제법 잘 어울리죠? 헤헤.">
       <div className="cover-photo-print">
-        <img src={preloading ? "/couple-main.webp" : undefined} alt="창가에 나란히 앉아 꽃을 든 한원영과 이나경" width="1200" height="1800" fetchPriority="high" />
+        <img src={preloading ? publicAsset("/couple-main.webp") : undefined} alt="창가에 나란히 앉아 꽃을 든 한원영과 이나경" width="1200" height="1800" fetchPriority="high" />
       </div>
     </figure>
   );
@@ -283,7 +284,7 @@ function WeddingNewspaper() {
           </div>
           <CoverPhoto />
           <NewspaperArticle kind="reaction" />
-          <NewspaperArticle kind="history" photoSrc="/history-hanbok.webp" />
+          <NewspaperArticle kind="history" photoSrc={publicAsset("/history-hanbok.webp")} />
           <NewspaperInterview />
           <footer className="newspaper-footer">
             <p className="newspaper-closing">취재는 여기까지. 두 사람의 이야기는 계속됩니다.</p>

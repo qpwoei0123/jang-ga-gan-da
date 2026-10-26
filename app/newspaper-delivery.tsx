@@ -1,5 +1,6 @@
 "use client";
 
+import { publicAsset } from "./public-asset.ts";
 import confetti from "canvas-confetti";
 import { useAssetsReady } from "./asset-loader";
 import {
@@ -345,7 +346,7 @@ export default function NewspaperDelivery() {
 
         {willActive && (
           <span className="will-catcher" aria-hidden="true">
-            <img src="/will-smith-original.png" alt="" width="348" height="542" draggable="false" />
+            <img src={publicAsset("/will-smith-original.png")} alt="" width="348" height="542" draggable="false" />
           </span>
         )}
 
@@ -398,7 +399,7 @@ export default function NewspaperDelivery() {
         )}
 
         <span className="delivery-brand-reveal" aria-hidden="true">
-          <img src="/favicon.svg" alt="" width="48" height="48" draggable="false" />
+          <img src={publicAsset("/favicon.svg")} alt="" width="48" height="48" draggable="false" />
         </span>
       </div>
     </div>

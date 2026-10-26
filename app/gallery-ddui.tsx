@@ -1,4 +1,7 @@
 "use client";
+
+import { publicAsset } from "./public-asset.ts";
+
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { speechFlight } from "./ddui-speech-motion";
 import confetti from "canvas-confetti";
@@ -67,6 +70,6 @@ export default function GalleryDdui() {
     <div className="ddui-words" aria-live="polite">
       {words.map(word=><p key={word.id} className="ddui-flying-word" style={word.flight} onAnimationEnd={event=>{if(event.target===event.currentTarget)setWords(previous=>previous.filter(item=>item.id!==word.id));}}><span className="ddui-speech-sway">{word.text}</span></p>)}
     </div>
-    <div className="ddui-peek"><button ref={button} className="curator-dog" type="button" aria-label="뚜이 쓰다듬기" onClick={touch}><img src="/history/ddui.webp" alt="" width="64" height="64"/></button></div>
+    <div className="ddui-peek"><button ref={button} className="curator-dog" type="button" aria-label="뚜이 쓰다듬기" onClick={touch}><img src={publicAsset("/history/ddui.webp")} alt="" width="64" height="64"/></button></div>
   </div>;
 }

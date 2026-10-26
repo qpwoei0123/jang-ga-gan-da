@@ -1,5 +1,6 @@
 "use client";
 
+import { publicAsset } from "./public-asset.ts";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { gsap } from "gsap";
 import { useAssetsReady } from "./asset-loader";
@@ -8,20 +9,20 @@ import { useJellyTouch } from "./use-jelly-touch";
 
 // Rectangular prints form the outline themselves; no heart mask or rotated tiles.
 const photos = [
-  { src:"/gallery/stair-wave.webp", width:1800, position:"50% 48%", caption:"계단 위를 올려다보며 손을 흔드는 두 사람.", tip:"형누나가 여기 보고 인사해요~" },
-  { src:"/gallery/stair-kiss.webp", width:1200, position:"50% 45%", caption:"계단 난간 사이로 서로에게 입을 맞추는 두 사람.", tip:"둘만의 다정한 순간이에요." },
-  { src:"/gallery/hallway-embrace.webp", width:1245, position:"57% 50%", caption:"복도에서 서로를 끌어안은 두 사람.", tip:"꼭 붙어 있는 형누나, 제가 좋아하는 사진이에요." },
-  { src:"/gallery/floor-wink.webp", width:1247, position:"50% 28%", caption:"타일 바닥에 엎드려 윙크하는 두 사람.", tip:"같이 장난치면 더 즐거워요. 헤헤." },
-  { src:"/gallery/stair-peek.webp", width:1200, position:"70% 53%", caption:"계단 난간 뒤에서 얼굴을 내민 두 사람.", tip:"계단 너머에 형누나가 숨어 있어요!" },
-  { src:"/gallery/stair-laugh.webp", width:1200, position:"50% 34%", caption:"청색 옷을 맞춰 입고 계단에 앉아 웃는 두 사람.", tip:"형누나가 웃으면 저도 좋아요." },
-  { src:"/gallery/cafe-together.webp", width:1354, position:"65% 50%", zoom:1.35, caption:"햇살 드는 카페에서 나란히 선 두 사람.", tip:"함께 서 있는 모습도 찬찬히 봐주세요~" },
-  { src:"/history/2018.webp", width:1066, position:"50% 38%", caption:"둘만의 한 장면.", tip:"여기에도 둘의 순간이 숨어 있어요." },
-  { src:"/gallery/peek-wall.webp", width:976, position:"50% 50%", caption:"벽돌 벽 옆에서 함께 고개를 내민 두 사람.", tip:"빼꼼! 형누나가 같이 얼굴을 내밀었어요." },
-  { src:"/gallery/mirror-smile.webp", width:1200, position:"50% 100%", zoom:1.8, caption:"작은 거울 속에서 장난스러운 표정을 짓는 두 사람.", tip:"거울 속 둘의 표정을 크게 봐요!" },
-  { src:"/gallery/street-mirror.webp", width:1024, position:"50% 100%", caption:"길가의 둥근 거울에 함께 비친 두 사람.", tip:"하트 끝에도 형누나의 장난이 숨어 있어요." },
+  { src:publicAsset("/gallery/stair-wave.webp"), width:1800, position:"50% 48%", caption:"계단 위를 올려다보며 손을 흔드는 두 사람.", tip:"형누나가 여기 보고 인사해요~" },
+  { src:publicAsset("/gallery/stair-kiss.webp"), width:1200, position:"50% 45%", caption:"계단 난간 사이로 서로에게 입을 맞추는 두 사람.", tip:"둘만의 다정한 순간이에요." },
+  { src:publicAsset("/gallery/hallway-embrace.webp"), width:1245, position:"57% 50%", caption:"복도에서 서로를 끌어안은 두 사람.", tip:"꼭 붙어 있는 형누나, 제가 좋아하는 사진이에요." },
+  { src:publicAsset("/gallery/floor-wink.webp"), width:1247, position:"50% 28%", caption:"타일 바닥에 엎드려 윙크하는 두 사람.", tip:"같이 장난치면 더 즐거워요. 헤헤." },
+  { src:publicAsset("/gallery/stair-peek.webp"), width:1200, position:"70% 53%", caption:"계단 난간 뒤에서 얼굴을 내민 두 사람.", tip:"계단 너머에 형누나가 숨어 있어요!" },
+  { src:publicAsset("/gallery/stair-laugh.webp"), width:1200, position:"50% 34%", caption:"청색 옷을 맞춰 입고 계단에 앉아 웃는 두 사람.", tip:"형누나가 웃으면 저도 좋아요." },
+  { src:publicAsset("/gallery/cafe-together.webp"), width:1354, position:"65% 50%", zoom:1.35, caption:"햇살 드는 카페에서 나란히 선 두 사람.", tip:"함께 서 있는 모습도 찬찬히 봐주세요~" },
+  { src:publicAsset("/history/2018.webp"), width:1066, position:"50% 38%", caption:"둘만의 한 장면.", tip:"여기에도 둘의 순간이 숨어 있어요." },
+  { src:publicAsset("/gallery/peek-wall.webp"), width:976, position:"50% 50%", caption:"벽돌 벽 옆에서 함께 고개를 내민 두 사람.", tip:"빼꼼! 형누나가 같이 얼굴을 내밀었어요." },
+  { src:publicAsset("/gallery/mirror-smile.webp"), width:1200, position:"50% 100%", zoom:1.8, caption:"작은 거울 속에서 장난스러운 표정을 짓는 두 사람.", tip:"거울 속 둘의 표정을 크게 봐요!" },
+  { src:publicAsset("/gallery/street-mirror.webp"), width:1024, position:"50% 100%", caption:"길가의 둥근 거울에 함께 비친 두 사람.", tip:"하트 끝에도 형누나의 장난이 숨어 있어요." },
 ].map(photo => {
   const file=photo.src.slice(photo.src.lastIndexOf("/")+1);
-  return {...photo, thumbnail:`/gallery/thumbs/${file}`, mobile:`/gallery/mobile/${file}`};
+  return {...photo, thumbnail:publicAsset(`/gallery/thumbs/${file}`), mobile:publicAsset(`/gallery/mobile/${file}`)};
 });
 
 type Photo = typeof photos[number];
@@ -124,7 +125,7 @@ export default function CenterfoldGallery() {
       {photos.map((photo,i)=><button key={photo.src} type="button" className="heart-tile" data-ddui-tip={photo.tip} style={{"--photo-position":photo.position} as CSSProperties} aria-label={`${i+1}번째 사진 크게 보기: ${photo.caption}`} onClick={()=>{playDecodedSound(GALLERY_SHUTTER_SOUND,.5);setSelected({index:i,previous:null,direction:1});}}>
         <img src={photo.thumbnail} alt={photo.caption} loading="lazy" draggable="false" decoding="async" style={{scale:photo.zoom ?? 1}}/>
       </button>)}
-      <button ref={dogButton} className="heart-dog" type="button" aria-label="뚜이 꾹 누르기"><img src="/dog-family/thanks.webp" alt="" loading="lazy" decoding="async" draggable="false" /></button>
+      <button ref={dogButton} className="heart-dog" type="button" aria-label="뚜이 꾹 누르기"><img src={publicAsset("/dog-family/thanks.webp")} alt="" loading="lazy" decoding="async" draggable="false" /></button>
     </div>
     <p className="heart-gallery-hint">사진을 누르면 더 크게 볼 수 있어요.</p>
     <dialog ref={dialog} className="gallery-lightbox" aria-label="웨딩 사진 크게 보기" onCancel={close} onClose={()=>setSelected(null)} onClick={event=>{if(event.target===event.currentTarget)close();}} onKeyDown={event=>{if(event.key==="ArrowRight"){event.preventDefault();move(1);}if(event.key==="ArrowLeft"){event.preventDefault();move(-1);}}}>

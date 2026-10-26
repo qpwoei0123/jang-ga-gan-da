@@ -1,5 +1,6 @@
 "use client";
 
+import { publicAsset } from "./public-asset.ts";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ArrivalDialogue from "./arrival-dialogue";
 import { arrivalMedley } from "./arrival-preview";
@@ -84,10 +85,10 @@ export default function NewspaperArrival({ preloading, prepared, problem, openin
             <div className="arrival-dog">
               <span className="arrival-shadow" aria-hidden="true" />
               <div className="arrival-gait">
-                <img ref={walkingImage} className="arrival-pose-walking" src={preloading ? "/opening-dog.webp" : undefined} alt="" width="480" height="408" fetchPriority="high" decoding="async" onLoad={event => {
+                <img ref={walkingImage} className="arrival-pose-walking" src={preloading ? publicAsset("/opening-dog.webp") : undefined} alt="" width="480" height="408" fetchPriority="high" decoding="async" onLoad={event => {
                   event.currentTarget.decode().then(() => setWalkingReady(true)).catch(() => {});
                 }} />
-                <img className="arrival-pose-paw" src={preloading ? "/opening-dog-high-five.webp" : undefined} alt="" width="480" height="408" decoding="async" />
+                <img className="arrival-pose-paw" src={preloading ? publicAsset("/opening-dog-high-five.webp") : undefined} alt="" width="480" height="408" decoding="async" />
                 <svg className="arrival-paw-outline" viewBox="0 0 480 408" aria-hidden="true">
                   <circle className="arrival-paw-ring" cx="244" cy="352" r="75" />
                   <circle className="arrival-paw-ripple" cx="244" cy="352" r="75" />

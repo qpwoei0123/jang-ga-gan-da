@@ -1,5 +1,6 @@
 "use client";
 
+import { publicAsset } from "./public-asset.ts";
 import { useEffect, useRef, useState } from "react";
 import { prepareVoiceSample, speakSampledSyllable, speakSyllable, syllableDelay, type VoiceSample, type VoiceStyle } from "./animalese-voice";
 
@@ -28,7 +29,7 @@ export default function ArrivalDialogue({ active, hint, farewell, onPawHintStart
       setShown("");
       setReplay(value => value + 1);
     }
-    void fetch("/sounds/animalese.wav", { signal: controller.signal })
+    void fetch(publicAsset("/sounds/animalese.wav"), { signal: controller.signal })
       .then(response => {
         if (!response.ok) throw new Error("Voice sample unavailable");
         return response.arrayBuffer();

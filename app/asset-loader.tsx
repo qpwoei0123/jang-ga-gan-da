@@ -1,5 +1,6 @@
 "use client";
 
+import { publicAsset } from "./public-asset.ts";
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { GALLERY_SHUTTER_SOUND, HIGH_FIVE_SOUND, PAPER_UNFOLD_SOUND, playDecodedSound, preloadSound } from "./audio-bank";
 import { preloadResources } from "./resource-preloader";
@@ -46,7 +47,7 @@ export function InvitationGate({ children }: { children: ReactNode }) {
     let active = true;
     // Only first-page artwork belongs to the entrance; offscreen photos stay lazy.
     const images = [...scene.current!.querySelectorAll<HTMLImageElement>(".cover-photo img")];
-    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), "/opening-dog.webp", "/opening-dog-high-five.webp", "/paper-crumple.webp", HIGH_FIVE_SOUND, PAPER_UNFOLD_SOUND, GALLERY_SHUTTER_SOUND])];
+    const sources = [...new Set([...images.map(image => image.currentSrc || image.src), publicAsset("/opening-dog.webp"), publicAsset("/opening-dog-high-five.webp"), publicAsset("/paper-crumple.webp"), HIGH_FIVE_SOUND, PAPER_UNFOLD_SOUND, GALLERY_SHUTTER_SOUND])];
     const controller = new AbortController();
     const fonts = Promise.allSettled([
       document.fonts.load('400 16px "Noto Serif KR"', "한원영 이나경 결혼합니다"),
@@ -249,7 +250,7 @@ export default function AssetGate({ assets, children, label = "신문 인쇄 준
               <button type="button" onClick={() => setAttempt((current) => current + 1)}>다시 불러오기</button>
             </div> : printOnPage
               ? <PagePrint sceneRef={sceneRef} complete={complete} total={total} resourcesReady={status === "printing" || status === "exiting"} onPrinted={finishPrinting} />
-              : <PrintLoading complete={complete} total={total} preparing={status === "preparing"} resourcesReady={status === "printing" || status === "exiting"} onPrinted={finishPrinting} photo={preparedImages.get("/couple-main.webp")} />}
+              : <PrintLoading complete={complete} total={total} preparing={status === "preparing"} resourcesReady={status === "printing" || status === "exiting"} onPrinted={finishPrinting} photo={preparedImages.get(publicAsset("/couple-main.webp"))} />}
         </div>
       )}
     </AssetsReady.Provider>
